@@ -1,0 +1,48 @@
+   1              		.file	"lab.c"
+   9              	.Ltext0:
+  10              		.align	2
+  11              		.global	lab
+  13              	lab:
+  14              	.LFB2:
+  15              		.file 1 "lab.c"
+   1:lab.c         **** /*
+   2:lab.c         ****  * lab.c
+   3:lab.c         ****  *
+   4:lab.c         ****  *  Created on: Jan 26, 2015
+   5:lab.c         ****  *      Author: hanley6
+   6:lab.c         ****  */
+   7:lab.c         **** 
+   8:lab.c         **** #include "lab.h"
+   9:lab.c         **** 
+  10:lab.c         **** void lab(void)
+  11:lab.c         **** {
+  16              	 Function supports interworking.
+  17              		@ args = 0, pretend = 0, frame = 0
+  18              		@ frame_needed = 1, uses_anonymous_args = 0
+  19              		mov	ip, sp
+  20 0000 0DC0A0E1 	.LCFI0:
+  21              		stmfd	sp!, {fp, ip, lr, pc}
+  22 0004 00D82DE9 	.LCFI1:
+  23              		sub	fp, ip, #4
+  24 0008 04B04CE2 	.LCFI2:
+  25              		.loc 1 14 0
+  12:lab.c         **** 
+  13:lab.c         **** 
+  14:lab.c         **** }
+  26              	B2:
+  27 000c 0CD04BE2 		.file 1 "lab.c"
+  28 0010 00689DE8 		.loc 1 11 0
+  29 0014 1EFF2FE1 		@ Function supports interworking.
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32              		mov	ip, sp
+  33              	.LCFI0:
+  76              		.uleb128 0x3
+DEFINED SYMBOLS
+                            *ABS*:00000000 lab.c
+C:\Users\hanley6\AppData\Local\Temp/cc6Nlaaa.s:13     .text:00000000 lab
+C:\Users\hanley6\AppData\Local\Temp/cc6Nlaaa.s:20     .text:00000000 $a
+                            *COM*:00000004 GPS_timeout
+                            *COM*:00000001 SYSTEM_initialized
+
+NO UNDEFINED SYMBOLS

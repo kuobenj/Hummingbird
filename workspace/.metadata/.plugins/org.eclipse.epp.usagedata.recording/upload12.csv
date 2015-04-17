@@ -1,0 +1,26 @@
+what,kind,bundleId,bundleVersion,description,time
+java.runtime.version,sysinfo,,,"1.6.0_11-b03",1429193955381
+java.specification.name,sysinfo,,,"Java Platform API Specification",1429193955381
+java.specification.vendor,sysinfo,,,"Sun Microsystems Inc.",1429193955381
+java.specification.version,sysinfo,,,"1.6",1429193955381
+java.vendor,sysinfo,,,"Sun Microsystems Inc.",1429193955381
+java.version,sysinfo,,,"1.6.0_11",1429193955381
+java.vm.info,sysinfo,,,"mixed mode",1429193955381
+java.vm.name,sysinfo,,,"Java HotSpot(TM) Client VM",1429193955381
+java.vm.specification.name,sysinfo,,,"Java Virtual Machine Specification",1429193955381
+java.vm.specification.vendor,sysinfo,,,"Sun Microsystems Inc.",1429193955381
+java.vm.specification.version,sysinfo,,,"1.0",1429193955381
+java.vm.vendor,sysinfo,,,"Sun Microsystems Inc.",1429193955381
+java.vm.version,sysinfo,,,"11.0-b16",1429193955381
+started,bundle,org.eclipse.mylyn.commons.ui,3.2.0.v20090617-0100-e3x,"org.eclipse.mylyn.commons.ui",1429193955600
+started,bundle,org.eclipse.mylyn.bugzilla.core,3.2.0.v20090617-0100-e3x,"org.eclipse.mylyn.bugzilla.core",1429193955707
+started,bundle,org.eclipse.mylyn.bugzilla.ui,3.2.0.v20090617-0100-e3x,"org.eclipse.mylyn.bugzilla.ui",1429193955777
+started,bundle,org.eclipse.mylyn.tasks.ui,3.2.0.v20090617-0100-e3x,"org.eclipse.mylyn.tasks.ui",1429193956055
+started,bundle,org.eclipse.mylyn.team.ui,3.2.0.v20090617-0100-e3x,"org.eclipse.mylyn.team.ui",1429193956238
+started,bundle,org.eclipse.update.scheduler,3.2.200.v20081127,"org.eclipse.update.scheduler",1429193956326
+started,bundle,org.eclipse.update.core,3.2.300.v20090525,"org.eclipse.update.core",1429193956423
+started,bundle,org.eclipse.mylyn.monitor.ui,3.2.0.v20090617-0100-e3x,"org.eclipse.mylyn.monitor.ui",1429193956424
+started,bundle,org.eclipse.epp.usagedata.ui,1.1.0.R200906100410,"org.eclipse.epp.usagedata.ui",1429193956437
+deactivated,workbench,org.eclipse.ui.workbench,3.5.0.I20090603-2000,"",1429193956970
+activated,workbench,org.eclipse.ui.workbench,3.5.0.I20090603-2000,"",1429193960837
+opened,editor,org.eclipse.cdt.ui,5.1.0.200906161748,"org.eclipse.cdt.ui.editor.CEditor",1429193965994

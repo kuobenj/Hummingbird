@@ -1,0 +1,13 @@
+what,kind,bundleId,bundleVersion,description,time
+deactivated,workbench,org.eclipse.ui.workbench,3.5.0.I20090603-2000,"",1428693420786
+activated,workbench,org.eclipse.ui.workbench,3.5.0.I20090603-2000,"",1428693422394
+deactivated,workbench,org.eclipse.ui.workbench,3.5.0.I20090603-2000,"",1428693422408
+activated,workbench,org.eclipse.ui.workbench,3.5.0.I20090603-2000,"",1428693424106
+closed,workbench,org.eclipse.ui.workbench,3.5.0.I20090603-2000,"",1428693424184
+stopped,bundle,com.zylin.embeddedcdt,4.9.1,"com.zylin.embeddedcdt",1428693424306
+stopped,bundle,org.eclipse.cdt.debug.mi.ui,6.0.0.200906161748,"org.eclipse.cdt.debug.mi.ui",1428693424308
+stopped,bundle,org.eclipse.cdt.debug.mi.core,6.0.0.200906161748,"org.eclipse.cdt.debug.mi.core",1428693424310
+stopped,bundle,org.eclipse.cdt.dsf.gdb.ui,2.0.0.200906161748,"org.eclipse.cdt.dsf.gdb.ui",1428693424312
+stopped,bundle,org.eclipse.cdt.dsf.ui,2.0.0.200906161748,"org.eclipse.cdt.dsf.ui",1428693424353
+stopped,bundle,org.eclipse.cdt.launch,6.0.0.200906161748,"org.eclipse.cdt.launch",1428693424405
+stopped,bundle,org.eclipse.cdt.debug.ui,6.0.0.200906161748,"org.eclipse.cdt.debug.ui",1428693424405

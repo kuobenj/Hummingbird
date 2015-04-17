@@ -1,0 +1,26 @@
+what,kind,bundleId,bundleVersion,description,time
+started,bundle,com.zylin.embeddedcdt,4.9.1,"com.zylin.embeddedcdt",1429194331157
+started,bundle,org.eclipse.cdt.launch,6.0.0.200906161748,"org.eclipse.cdt.launch",1429194331174
+started,bundle,org.eclipse.cdt.debug.ui,6.0.0.200906161748,"org.eclipse.cdt.debug.ui",1429194331223
+activated,workbench,org.eclipse.ui.workbench,3.5.0.I20090603-2000,"",1429194334013
+error,log,,,"Failed command: monitor flash write 0 main.bin 0x0",1429194342583
+deactivated,workbench,org.eclipse.ui.workbench,3.5.0.I20090603-2000,"",1429194349379
+activated,workbench,org.eclipse.ui.workbench,3.5.0.I20090603-2000,"",1429194353195
+opened,view,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.DebugView",1429194353459
+opened,view,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.VariableView",1429194353533
+activated,perspective,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.DebugPerspective",1429194353558
+opened,view,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.BreakpointView",1429194353688
+opened,view,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.MemoryView",1429194353735
+opened,view,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.RegisterView",1429194353767
+opened,view,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.ModuleView",1429194353784
+started,bundle,org.eclipse.compare.core,3.5.0.I20090430-0408,"org.eclipse.compare.core",1429194354202
+opened,editor,org.eclipse.cdt.ui,5.1.0.200906161748,"org.eclipse.cdt.ui.editor.CEditor",1429194354219
+activated,view,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.DebugView",1429194356890
+executed,command,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.commands.Resume",1429194357014
+executed,command,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.commands.Resume",1429194361815
+opened,editor,org.eclipse.cdt.debug.ui,6.0.0.200906161748,"org.eclipse.cdt.debug.ui.SourceNotFoundEditor",1429194367316
+closed,editor,org.eclipse.cdt.ui,5.1.0.200906161748,"org.eclipse.cdt.ui.editor.CEditor",1429194367331
+executed,command,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.commands.Terminate",1429194370064
+activated,editor,org.eclipse.cdt.debug.ui,6.0.0.200906161748,"org.eclipse.cdt.debug.ui.SourceNotFoundEditor",1429194386053
+activated,view,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.DebugView",1429194386061
+closed,editor,org.eclipse.cdt.debug.ui,6.0.0.200906161748,"org.eclipse.cdt.debug.ui.SourceNotFoundEditor",1429194386061

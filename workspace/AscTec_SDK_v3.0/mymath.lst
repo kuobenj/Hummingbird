@@ -1,0 +1,127 @@
+   1              		.file	"mymath.c"
+   9              	.Ltext0:
+  10              		.align	2
+  11              		.global	fast_abs
+  13              	fast_abs:
+  14              	.LFB2:
+  15              		.file 1 "mymath.c"
+   1:mymath.c      **** /*
+   2:mymath.c      **** 
+   3:mymath.c      **** Copyright (c) 2011, Ascending Technologies GmbH
+   4:mymath.c      **** All rights reserved.
+   5:mymath.c      **** 
+   6:mymath.c      **** Redistribution and use in source and binary forms, with or without
+   7:mymath.c      **** modification, are permitted provided that the following conditions are met:
+   8:mymath.c      **** 
+   9:mymath.c      ****  * Redistributions of source code must retain the above copyright notice,
+  10:mymath.c      ****    this list of conditions and the following disclaimer.
+  11:mymath.c      ****  * Redistributions in binary form must reproduce the above copyright
+  12:mymath.c      ****    notice, this list of conditions and the following disclaimer in the
+  13:mymath.c      ****    documentation and/or other materials provided with the distribution.
+  14:mymath.c      **** 
+  15:mymath.c      **** THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND ANY
+  16:mymath.c      **** EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  17:mymath.c      **** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  18:mymath.c      **** DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR ANY
+  19:mymath.c      **** DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  20:mymath.c      **** (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  21:mymath.c      **** SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  22:mymath.c      **** CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+  23:mymath.c      **** LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+  24:mymath.c      **** OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+  25:mymath.c      **** DAMAGE.
+  26:mymath.c      **** 
+  27:mymath.c      ****  */
+  28:mymath.c      **** 
+  29:mymath.c      **** #include "mymath.h"
+  30:mymath.c      **** 
+  31:mymath.c      **** inline int fast_abs(int x)
+  32:mymath.c      **** {
+  16              	 Function supports interworking.
+  17              		@ args = 0, pretend = 0, frame = 0
+  18              		@ frame_needed = 0, uses_anonymous_args = 0
+  19              		@ link register save eliminated.
+  20              	.LVL0:
+  21              		.loc 1 36 0
+  33:mymath.c      **** 
+  34:mymath.c      **** 	if(x>0) return x; else return (-x);
+  35:mymath.c      **** 
+  36:mymath.c      **** }
+  22              	0, #0
+  23 0000 000050E3 		rsblt	r0, r0, #0
+  24 0004 000060B2 	.LVL1:
+  25              		.loc 1 32 0
+  26              		@ lr needed for prologue
+  27              		.loc 1 36 0
+  28              		bx	lr
+  29 0008 1EFF2FE1 	.LFE2:
+  31              		.global	__divsi3
+  32              		.align	2
+  33              		.global	fast_sqrt
+  35              	fast_sqrt:
+  36              	.LFB3:
+  37              		.loc 1 39 0
+  37:mymath.c      **** 
+  38:mymath.c      **** int fast_sqrt(int x)
+  39:mymath.c      **** {
+  38              	orts interworking.
+  39              		@ args = 0, pretend = 0, frame = 0
+  40              		@ frame_needed = 0, uses_anonymous_args = 0
+  41              	.LVL2:
+  42              		.loc 1 42 0
+  40:mymath.c      **** 	int l=0,r=0;
+  41:mymath.c      **** 	l=x;
+  42:mymath.c      **** 	while(fast_abs(l-r)>1){
+  43              	r3, r0, r0, asr #31
+  44 000c C03F20E0 		sub	r3, r3, r0, asr #31
+  45 0010 C03F43E0 		cmp	r3, #1
+  46 0014 010053E3 		.loc 1 39 0
+  47              		stmfd	sp!, {r4, r5, lr}
+  48 0018 30402DE9 	.LCFI0:
+  49              		.loc 1 39 0
+  50              		mov	r5, r0
+  51 001c 0050A0E1 		.loc 1 42 0
+  52              		movle	r4, r0
+  53 0020 0040A0D1 	.LVL3:
+  54              		ble	.L6
+  55 0024 0B0000DA 		mov	r4, r0
+  56 0028 0040A0E1 	.L7:
+  57              		.loc 1 43 0
+  43:mymath.c      **** 		r=x/l;
+  58              	v	r0, r5
+  59 002c 0410A0E1 		bl	__divsi3
+  60 0030 0500A0E1 	.LVL4:
+  61 0034 FEFFFFEB 		.loc 1 44 0
+  62              		add	r3, r4, r0
+  44:mymath.c      **** 		l=(l+r)/2;
+  63              	r3, r3, r3, lsr #31
+  64 0038 003084E0 		mov	r4, r3, asr #1
+  65 003c A33F83E0 		.loc 1 42 0
+  66 0040 C340A0E1 		rsb	r0, r0, r4
+  67              	.LVL5:
+  68 0044 040060E0 		cmp	r0, #0
+  69              		rsblt	r0, r0, #0
+  70 0048 000050E3 	.LVL6:
+  71 004c 000060B2 		cmp	r0, #1
+  72              		bgt	.L7
+  73 0050 010050E3 	.LVL7:
+  74 0054 F4FFFFCA 	.L6:
+  75              		.loc 1 47 0
+  76              		mov	r0, r4
+  45:mymath.c      **** 	}
+  46:mymath.c      **** 	return(l);
+  47:mymath.c      **** }
+  77              	4, r5, lr}
+  78 0058 0400A0E1 		bx	lr
+  79 005c 3040BDE8 	.LFE3:
+  81              		.section	.debug_frame,"",%progbits
+  82              	.Lframe0:
+ 125              	.Ldebug_loc0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 mymath.c
+C:\Users\hanley6\AppData\Local\Temp/ccC6maaa.s:13     .text:00000000 fast_abs
+C:\Users\hanley6\AppData\Local\Temp/ccC6maaa.s:23     .text:00000000 $a
+C:\Users\hanley6\AppData\Local\Temp/ccC6maaa.s:36     .text:0000000c fast_sqrt
+
+UNDEFINED SYMBOLS
+__divsi3

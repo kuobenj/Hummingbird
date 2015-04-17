@@ -1,0 +1,587 @@
+   1              		.file	"ssp.c"
+   9              	.Ltext0:
+  10              		.global	SSP_trans_cnt
+  11              		.bss
+  12              		.align	2
+  15              	SSP_trans_cnt:
+  16 0000 00000000 		.space	4
+  17              		.global	data_sent_to_LL
+  18              		.data
+  21              	data_sent_to_LL:
+  22 0000 01       		.byte	1
+  23              		.global	SSP_receiption_complete
+  26              	SSP_receiption_complete:
+  27 0001 01       		.byte	1
+  28              		.global	data_sent_to_HL
+  31              	data_sent_to_HL:
+  32 0002 01       		.byte	1
+  33              		.text
+  34              		.align	2
+  35              		.global	SSPHandler
+  37              	SSPHandler:
+  38              	.LFB2:
+  39              		.file 1 "ssp.c"
+   1:ssp.c         **** /*
+   2:ssp.c         **** 
+   3:ssp.c         **** Copyright (c) 2011, Ascending Technologies GmbH
+   4:ssp.c         **** All rights reserved.
+   5:ssp.c         **** 
+   6:ssp.c         **** Redistribution and use in source and binary forms, with or without
+   7:ssp.c         **** modification, are permitted provided that the following conditions are met:
+   8:ssp.c         **** 
+   9:ssp.c         ****  * Redistributions of source code must retain the above copyright notice,
+  10:ssp.c         ****    this list of conditions and the following disclaimer.
+  11:ssp.c         ****  * Redistributions in binary form must reproduce the above copyright
+  12:ssp.c         ****    notice, this list of conditions and the following disclaimer in the
+  13:ssp.c         ****    documentation and/or other materials provided with the distribution.
+  14:ssp.c         **** 
+  15:ssp.c         **** THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND ANY
+  16:ssp.c         **** EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  17:ssp.c         **** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  18:ssp.c         **** DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR ANY
+  19:ssp.c         **** DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  20:ssp.c         **** (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  21:ssp.c         **** SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  22:ssp.c         **** CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+  23:ssp.c         **** LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+  24:ssp.c         **** OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+  25:ssp.c         **** DAMAGE.
+  26:ssp.c         **** 
+  27:ssp.c         ****  */
+  28:ssp.c         **** 
+  29:ssp.c         **** #include "LPC214x.h"			/* LPC21XX Peripheral Registers	*/
+  30:ssp.c         **** #include "type.h"
+  31:ssp.c         **** #include "irq.h"
+  32:ssp.c         **** #include "ssp.h"
+  33:ssp.c         **** #include "main.h"
+  34:ssp.c         **** #include "system.h"
+  35:ssp.c         **** #include "LL_HL_comm.h"
+  36:ssp.c         **** #include "sdk.h"
+  37:ssp.c         **** 
+  38:ssp.c         **** char SPIWRData[128];
+  39:ssp.c         **** char SPIRDData[128];
+  40:ssp.c         **** int CurrentTxIndex;
+  41:ssp.c         **** int CurrentRxIndex;
+  42:ssp.c         **** unsigned int SPIWR_num_bytes;
+  43:ssp.c         **** 
+  44:ssp.c         **** volatile unsigned int SSP_trans_cnt=0;
+  45:ssp.c         **** 
+  46:ssp.c         **** unsigned char data_sent_to_LL=1;
+  47:ssp.c         **** 
+  48:ssp.c         **** unsigned char SSP_receiption_complete=1;
+  49:ssp.c         **** 
+  50:ssp.c         **** char data_sent_to_HL=1;
+  51:ssp.c         **** 
+  52:ssp.c         **** inline void SSPReceive(unsigned char);
+  53:ssp.c         **** 
+  54:ssp.c         **** void SSPHandler (void) __irq
+  55:ssp.c         **** {
+  40              	working.
+  41              		@ args = 0, pretend = 0, frame = 8
+  42              		@ frame_needed = 1, uses_anonymous_args = 0
+  43              		mov	ip, sp
+  44 0000 0DC0A0E1 	.LCFI0:
+  45              		stmfd	sp!, {fp, ip, lr, pc}
+  46 0004 00D82DE9 	.LCFI1:
+  47              		sub	fp, ip, #4
+  48 0008 04B04CE2 	.LCFI2:
+  49              		sub	sp, sp, #8
+  50 000c 08D04DE2 	.LCFI3:
+  51              		.loc 1 62 0
+  56:ssp.c         ****     int regValue;
+  57:ssp.c         ****     unsigned short input_data;
+  58:ssp.c         **** //    unsigned char timeout=0;
+  59:ssp.c         **** 
+  60:ssp.c         ****     IENABLE;				/* handles nested interrupt */
+  61:ssp.c         **** 
+  62:ssp.c         ****     regValue = SSPMIS;
+  52              	36870912
+  53 0010 0E32A0E3 		add	r3, r3, #425984
+  54 0014 1A3983E2 		add	r3, r3, #28
+  55 0018 1C3083E2 		ldr	r3, [r3, #0]
+  56 001c 003093E5 		str	r3, [fp, #-20]
+  57 0020 14300BE5 		.loc 1 63 0
+  63:ssp.c         ****     if ( regValue & SSPMIS_RORMIS )	/* Receive overrun interrupt */
+  58              	3, [fp, #-20]
+  59 0024 14301BE5 		and	r3, r3, #1
+  60 0028 013003E2 		and	r3, r3, #255
+  61 002c FF3003E2 		cmp	r3, #0
+  62 0030 000053E3 		beq	.L2
+  63 0034 0400000A 		.loc 1 65 0
+  64:ssp.c         ****     {
+  65:ssp.c         **** 		SSPICR = SSPICR_RORIC;		/* clear interrupt */
+  64              	3, #-536870912
+  65 0038 0E32A0E3 		add	r3, r3, #425984
+  66 003c 1A3983E2 		add	r3, r3, #32
+  67 0040 203083E2 		mov	r2, #1
+  68 0044 0120A0E3 		str	r2, [r3, #0]
+  69 0048 002083E5 	.L2:
+  70              		.loc 1 67 0
+  66:ssp.c         ****     }
+  67:ssp.c         ****     if ( regValue & SSPMIS_RTMIS )	/* Receive timeout interrupt */
+  71              	, [fp, #-20]
+  72 004c 14301BE5 		and	r3, r3, #2
+  73 0050 023003E2 		cmp	r3, #0
+  74 0054 000053E3 		beq	.L4
+  75 0058 0400000A 		.loc 1 69 0
+  68:ssp.c         ****     {
+  69:ssp.c         **** 		SSPICR = SSPICR_RTIC;		/* clear interrupt */
+  76              	r3, #-536870912
+  77 005c 0E32A0E3 		add	r3, r3, #425984
+  78 0060 1A3983E2 		add	r3, r3, #32
+  79 0064 203083E2 		mov	r2, #2
+  80 0068 0220A0E3 		str	r2, [r3, #0]
+  81 006c 002083E5 	.L4:
+  82              		.loc 1 72 0
+  70:ssp.c         ****     }
+  71:ssp.c         **** 
+  72:ssp.c         ****     if ( regValue & SSPMIS_RXMIS )	/* Rx at least half full */
+  83              	, [fp, #-20]
+  84 0070 14301BE5 		and	r3, r3, #4
+  85 0074 043003E2 		cmp	r3, #0
+  86 0078 000053E3 		beq	.L6
+  87 007c 1600000A 		.loc 1 75 0
+  73:ssp.c         ****     {
+  74:ssp.c         ****     			/* receive until it's empty */
+  75:ssp.c         **** 	while ( SSPSR & SSPSR_RNE )
+  88              	8
+  89 0080 0F0000EA 	.L9:
+  90              		.loc 1 77 0
+  76:ssp.c         **** 	{
+  77:ssp.c         **** 		input_data=SSPDR;
+  91              	v	r3, #-536870904
+  92 0084 8E32A0E3 		add	r3, r3, #425984
+  93 0088 1A3983E2 		ldr	r3, [r3, #0]
+  94 008c 003093E5 		strh	r3, [fp, #-14]	@ movhi
+  95 0090 BE304BE1 		.loc 1 81 0
+  78:ssp.c         **** 	    //SSPReceive(input_data&0xFF);
+  79:ssp.c         **** 	    //SSPReceive(input_data>>8);
+  80:ssp.c         **** 
+  81:ssp.c         **** 		SSP_rx_handler_HL(input_data&0xFF);
+  96              		r3, [fp, #-14]	@ movhi
+  97 0094 BE305BE1 		and	r3, r3, #255
+  98 0098 FF3003E2 		and	r3, r3, #255
+  99 009c FF3003E2 		mov	r0, r3
+ 100 00a0 0300A0E1 		bl	SSP_rx_handler_HL
+ 101 00a4 FEFFFFEB 		.loc 1 82 0
+  82:ssp.c         **** 		SSP_rx_handler_HL(input_data>>8);
+ 102              	r3, [fp, #-14]
+ 103 00a8 BE305BE1 		mov	r3, r3, lsr #8
+ 104 00ac 2334A0E1 		mov	r3, r3, asl #16
+ 105 00b0 0338A0E1 		mov	r3, r3, lsr #16
+ 106 00b4 2338A0E1 		and	r3, r3, #255
+ 107 00b8 FF3003E2 		mov	r0, r3
+ 108 00bc 0300A0E1 		bl	SSP_rx_handler_HL
+ 109 00c0 FEFFFFEB 	.L8:
+ 110              		.loc 1 75 0
+ 111              		mov	r3, #-536870900
+ 112 00c4 CE32A0E3 		add	r3, r3, #425984
+ 113 00c8 1A3983E2 		ldr	r3, [r3, #0]
+ 114 00cc 003093E5 		and	r3, r3, #4
+ 115 00d0 043003E2 		cmp	r3, #0
+ 116 00d4 000053E3 		bne	.L9
+ 117 00d8 E9FFFF1A 	.L6:
+ 118              		.loc 1 91 0
+  83:ssp.c         **** 
+  84:ssp.c         **** 		//SSP_trans_cnt+=2;
+  85:ssp.c         **** 	    /* Wait until the Busy bit is cleared */
+  86:ssp.c         **** 	//    while ( (!(SSPSR & SSPSR_BSY) )&&(timeout++<50) );
+  87:ssp.c         **** 	}				/* interrupt will be cleared when */
+  88:ssp.c         **** 					/* data register is read or written */
+  89:ssp.c         ****     }
+  90:ssp.c         **** 
+  91:ssp.c         ****     if ( regValue & SSPMIS_TXMIS )	/* Tx at least half empty */
+ 119              	0]
+ 120 00dc 14301BE5 		and	r3, r3, #8
+ 121 00e0 083003E2 		cmp	r3, #0
+ 122 00e4 000053E3 		beq	.L10
+ 123 00e8 2F00000A 		.loc 1 94 0
+  92:ssp.c         ****     {
+  93:ssp.c         **** 	/* transmit until it's full */
+  94:ssp.c         **** 	while ( (SSPSR & SSPSR_TNF) )
+ 124              	17
+ 125 00ec 280000EA 	.L13:
+ 126              		.loc 1 96 0
+  95:ssp.c         **** 	{
+  96:ssp.c         **** 	    if(CurrentTxIndex<SPIWR_num_bytes)
+ 127              	r	r3, .L18
+ 128 00f0 D0309FE5 		ldr	r3, [r3, #0]
+ 129 00f4 003093E5 		mov	r2, r3
+ 130 00f8 0320A0E1 		ldr	r3, .L18+4
+ 131 00fc C8309FE5 		ldr	r3, [r3, #0]
+ 132 0100 003093E5 		cmp	r2, r3
+ 133 0104 030052E1 		bcs	.L14
+ 134 0108 1400002A 		.loc 1 98 0
+  97:ssp.c         **** 	    {
+  98:ssp.c         **** 	    	SSPDR = SPIWRData[CurrentTxIndex]|(SPIWRData[CurrentTxIndex+1]<<8);
+ 135              	 #-536870904
+ 136 010c 8E12A0E3 		add	r1, r1, #425984
+ 137 0110 1A1981E2 		ldr	r3, .L18
+ 138 0114 AC309FE5 		ldr	r2, [r3, #0]
+ 139 0118 002093E5 		ldr	r3, .L18+8
+ 140 011c AC309FE5 		ldrb	r3, [r3, r2]	@ zero_extendqisi2
+ 141 0120 0230D3E7 		mov	r0, r3
+ 142 0124 0300A0E1 		ldr	r3, .L18
+ 143 0128 98309FE5 		ldr	r3, [r3, #0]
+ 144 012c 003093E5 		add	r2, r3, #1
+ 145 0130 012083E2 		ldr	r3, .L18+8
+ 146 0134 94309FE5 		ldrb	r3, [r3, r2]	@ zero_extendqisi2
+ 147 0138 0230D3E7 		mov	r3, r3, asl #8
+ 148 013c 0334A0E1 		orr	r3, r0, r3
+ 149 0140 033080E1 		str	r3, [r1, #0]
+ 150 0144 003081E5 		.loc 1 99 0
+  99:ssp.c         **** 	    	CurrentTxIndex+=2;
+ 151              	dr	r3, [r3, #0]
+ 152 0148 78309FE5 		add	r2, r3, #2
+ 153 014c 003093E5 		ldr	r3, .L18
+ 154 0150 022083E2 		str	r2, [r3, #0]
+ 155 0154 6C309FE5 		b	.L12
+ 156 0158 002083E5 	.L14:
+ 157 015c 0C0000EA 		.loc 1 103 0
+ 158              		ldr	r2, .L18
+ 100:ssp.c         **** 	    }
+ 101:ssp.c         **** 	    else
+ 102:ssp.c         **** 	    {
+ 103:ssp.c         **** 	    	CurrentTxIndex=0;
+ 159              	 #0
+ 160 0160 60209FE5 		str	r3, [r2, #0]
+ 161 0164 0030A0E3 		.loc 1 104 0
+ 162 0168 003082E5 		ldr	r2, .L18+4
+ 104:ssp.c         **** 	    	SPIWR_num_bytes=0;
+ 163              		r3, #0
+ 164 016c 58209FE5 		str	r3, [r2, #0]
+ 165 0170 0030A0E3 		.loc 1 105 0
+ 166 0174 003082E5 		ldr	r2, .L18+12
+ 105:ssp.c         **** 	    	data_sent_to_LL=1;
+ 167              		r3, #1
+ 168 0178 54209FE5 		strb	r3, [r2, #0]
+ 169 017c 0130A0E3 		.loc 1 106 0
+ 170 0180 0030C2E5 		mov	r3, #-536870904
+ 106:ssp.c         **** 			SSPDR=0;
+ 171              		r3, r3, #425984
+ 172 0184 8E32A0E3 		mov	r2, #0
+ 173 0188 1A3983E2 		str	r2, [r3, #0]
+ 174 018c 0020A0E3 	.L12:
+ 175 0190 002083E5 	.L17:
+ 176              		.loc 1 94 0
+ 177              		mov	r3, #-536870900
+ 178              		add	r3, r3, #425984
+ 179 0194 CE32A0E3 		ldr	r3, [r3, #0]
+ 180 0198 1A3983E2 		and	r3, r3, #2
+ 181 019c 003093E5 		cmp	r3, #0
+ 182 01a0 023003E2 		bne	.L13
+ 183 01a4 000053E3 	.L10:
+ 184 01a8 D0FFFF1A 		.loc 1 116 0
+ 185              		mov	r3, #0
+ 107:ssp.c         **** 	    }
+ 108:ssp.c         **** 
+ 109:ssp.c         **** 	    /* Wait until the Busy bit is cleared */
+ 110:ssp.c         **** 	//    while ( !(SSPSR & SSPSR_BSY) );
+ 111:ssp.c         **** 	}				/* interrupt will be cleared when */
+ 112:ssp.c         **** 					/* data register is read or written */
+ 113:ssp.c         ****     }
+ 114:ssp.c         **** 
+ 115:ssp.c         ****     IDISABLE;
+ 116:ssp.c         ****     VICVectAddr = 0;		/* Acknowledge Interrupt */
+ 186              	048
+ 187 01ac 0030A0E3 		mov	r2, #0
+ 188 01b0 FD3E43E2 		str	r2, [r3, #0]
+ 189 01b4 0020A0E3 		.loc 1 117 0
+ 190 01b8 002083E5 		sub	sp, fp, #12
+ 117:ssp.c         **** }
+ 191              	d	sp, {fp, sp, lr}
+ 192 01bc 0CD04BE2 		bx	lr
+ 193 01c0 00689DE8 	.L19:
+ 194 01c4 1EFF2FE1 		.align	2
+ 195              	.L18:
+ 196              		.word	CurrentTxIndex
+ 197              		.word	SPIWR_num_bytes
+ 198 01c8 00000000 		.word	SPIWRData
+ 199 01cc 00000000 		.word	data_sent_to_LL
+ 200 01d0 00000000 	.LFE2:
+ 202              		.align	2
+ 203              		.global	LL_write_init
+ 205              	LL_write_init:
+ 206              	.LFB3:
+ 207              		.loc 1 120 0
+ 208              		@ Function supports interworking.
+ 118:ssp.c         **** 
+ 119:ssp.c         **** void LL_write_init(void)
+ 120:ssp.c         **** {
+ 209              	nd = 0, frame = 0
+ 210              		@ frame_needed = 1, uses_anonymous_args = 0
+ 211              		mov	ip, sp
+ 212              	.LCFI4:
+ 213 01d8 0DC0A0E1 		stmfd	sp!, {fp, ip, lr, pc}
+ 214              	.LCFI5:
+ 215 01dc 00D82DE9 		sub	fp, ip, #4
+ 216              	.LCFI6:
+ 217 01e0 04B04CE2 		.loc 1 121 0
+ 218              		ldr	r2, .L22
+ 121:ssp.c         **** 		SPIWRData[0]='>';
+ 219              	62
+ 220 01e4 28209FE5 		strb	r3, [r2, #0]
+ 221 01e8 3E30A0E3 		.loc 1 122 0
+ 222 01ec 0030C2E5 		ldr	r2, .L22
+ 122:ssp.c         **** 		SPIWRData[1]='*';
+ 223              		r3, #42
+ 224 01f0 1C209FE5 		strb	r3, [r2, #1]
+ 225 01f4 2A30A0E3 		.loc 1 123 0
+ 226 01f8 0130C2E5 		ldr	r2, .L22
+ 123:ssp.c         **** 		SPIWRData[2]='>';
+ 227              		r3, #62
+ 228 01fc 10209FE5 		strb	r3, [r2, #2]
+ 229 0200 3E30A0E3 		.loc 1 124 0
+ 230 0204 0230C2E5 		sub	sp, fp, #12
+ 124:ssp.c         **** }
+ 231              	fd	sp, {fp, sp, lr}
+ 232 0208 0CD04BE2 		bx	lr
+ 233 020c 00689DE8 	.L23:
+ 234 0210 1EFF2FE1 		.align	2
+ 235              	.L22:
+ 236              		.word	SPIWRData
+ 237              	.LFE3:
+ 239              		.align	2
+ 240              		.global	LL_write
+ 242              	LL_write:
+ 243              	.LFB4:
+ 244              		.loc 1 127 0
+ 245              		@ Function supports interworking.
+ 125:ssp.c         **** 
+ 126:ssp.c         **** int LL_write(unsigned char *data, unsigned short cnt, unsigned char PD )	//write data to high-level
+ 127:ssp.c         **** {
+ 246              	etend = 0, frame = 20
+ 247              		@ frame_needed = 1, uses_anonymous_args = 0
+ 248              		mov	ip, sp
+ 249              	.LCFI7:
+ 250 0218 0DC0A0E1 		stmfd	sp!, {fp, ip, lr, pc}
+ 251              	.LCFI8:
+ 252 021c 00D82DE9 		sub	fp, ip, #4
+ 253              	.LCFI9:
+ 254 0220 04B04CE2 		sub	sp, sp, #20
+ 255              	.LCFI10:
+ 256 0224 14D04DE2 		str	r0, [fp, #-20]
+ 257              		mov	r3, r1
+ 258 0228 14000BE5 		strh	r3, [fp, #-24]	@ movhi
+ 259 022c 0130A0E1 		mov	r3, r2
+ 260 0230 B8314BE1 		strb	r3, [fp, #-28]
+ 261 0234 0230A0E1 		.loc 1 130 0
+ 262 0238 1C304BE5 		ldr	r3, .L38
+ 128:ssp.c         **** 	unsigned int i;
+ 129:ssp.c         **** 
+ 130:ssp.c         **** 	if(data_sent_to_LL)
+ 263              	]	@ zero_extendqisi2
+ 264 023c D0319FE5 		cmp	r3, #0
+ 265 0240 0030D3E5 		beq	.L25
+ 266 0244 000053E3 		.loc 1 132 0
+ 267 0248 1F00000A 		ldr	r3, .L38+4
+ 131:ssp.c         **** 	{
+ 132:ssp.c         **** 		SPIWRData[3]=PD;
+ 268              		r2, [fp, #-28]
+ 269 024c C4319FE5 		strb	r2, [r3, #3]
+ 270 0250 1C205BE5 		.loc 1 133 0
+ 271 0254 0320C3E5 		mov	r3, #0
+ 133:ssp.c         **** 		for(i=0; i<cnt; i++)
+ 272              		r3, [fp, #-16]
+ 273 0258 0030A0E3 		b	.L27
+ 274 025c 10300BE5 	.L28:
+ 275 0260 0A0000EA 		.loc 1 135 0
+ 276              		ldr	r3, [fp, #-16]
+ 134:ssp.c         **** 		{
+ 135:ssp.c         **** 			SPIWRData[i+4]=data[i];
+ 277              	r1, r3, #4
+ 278 0264 10301BE5 		ldr	r2, [fp, #-16]
+ 279 0268 041083E2 		ldr	r3, [fp, #-20]
+ 280 026c 10201BE5 		add	r3, r2, r3
+ 281 0270 14301BE5 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 282 0274 033082E0 		ldr	r2, .L38+4
+ 283 0278 0030D3E5 		strb	r3, [r2, r1]
+ 284 027c 94219FE5 		.loc 1 133 0
+ 285 0280 0130C2E7 		ldr	r3, [fp, #-16]
+ 286              		add	r3, r3, #1
+ 287 0284 10301BE5 		str	r3, [fp, #-16]
+ 288 0288 013083E2 	.L27:
+ 289 028c 10300BE5 		ldrh	r2, [fp, #-24]
+ 290              		ldr	r3, [fp, #-16]
+ 291 0290 B8215BE1 		cmp	r2, r3
+ 292 0294 10301BE5 		bhi	.L28
+ 293 0298 030052E1 		.loc 1 137 0
+ 294 029c F0FFFF8A 		ldrh	r3, [fp, #-24]
+ 136:ssp.c         **** 		}
+ 137:ssp.c         **** 		SPIWRData[cnt+4]=0;
+ 295              	dr	r2, .L38+4
+ 296 02a0 B8315BE1 		mov	r3, #0
+ 297 02a4 041083E2 		strb	r3, [r2, r1]
+ 298 02a8 68219FE5 		.loc 1 138 0
+ 299 02ac 0030A0E3 		ldrh	r3, [fp, #-24]
+ 300 02b0 0130C2E7 		add	r3, r3, #5
+ 138:ssp.c         **** 		SPIWR_num_bytes=cnt+5;
+ 301              	2, r3
+ 302 02b4 B8315BE1 		ldr	r3, .L38+8
+ 303 02b8 053083E2 		str	r2, [r3, #0]
+ 304 02bc 0320A0E1 		b	.L30
+ 305 02c0 54319FE5 	.L25:
+ 306 02c4 002083E5 		.loc 1 140 0
+ 307 02c8 470000EA 		ldrh	r2, [fp, #-24]
+ 308              		ldr	r3, .L38+8
+ 139:ssp.c         **** 	}
+ 140:ssp.c         **** 	else if(SPIWR_num_bytes+cnt<127)
+ 309              	 [r3, #0]
+ 310 02cc B8215BE1 		add	r3, r2, r3
+ 311 02d0 44319FE5 		cmp	r3, #126
+ 312 02d4 003093E5 		bhi	.L31
+ 313 02d8 033082E0 		.loc 1 142 0
+ 314 02dc 7E0053E3 		ldr	r3, .L38+8
+ 315 02e0 3E00008A 		ldr	r3, [r3, #0]
+ 141:ssp.c         **** 	{
+ 142:ssp.c         **** 		SPIWRData[SPIWR_num_bytes-1]='>';
+ 316              	, r3, #1
+ 317 02e4 30319FE5 		ldr	r2, .L38+4
+ 318 02e8 003093E5 		mov	r3, #62
+ 319 02ec 011043E2 		strb	r3, [r2, r1]
+ 320 02f0 20219FE5 		.loc 1 143 0
+ 321 02f4 3E30A0E3 		ldr	r3, .L38+8
+ 322 02f8 0130C2E7 		ldr	r1, [r3, #0]
+ 143:ssp.c         **** 		SPIWRData[0+SPIWR_num_bytes]='*';
+ 323              	, .L38+4
+ 324 02fc 18319FE5 		mov	r3, #42
+ 325 0300 001093E5 		strb	r3, [r2, r1]
+ 326 0304 0C219FE5 		.loc 1 144 0
+ 327 0308 2A30A0E3 		ldr	r3, .L38+8
+ 328 030c 0130C2E7 		ldr	r3, [r3, #0]
+ 144:ssp.c         **** 		SPIWRData[1+SPIWR_num_bytes]='>';
+ 329              	1, r3, #1
+ 330 0310 04319FE5 		ldr	r2, .L38+4
+ 331 0314 003093E5 		mov	r3, #62
+ 332 0318 011083E2 		strb	r3, [r2, r1]
+ 333 031c F4209FE5 		.loc 1 145 0
+ 334 0320 3E30A0E3 		ldr	r3, .L38+8
+ 335 0324 0130C2E7 		ldr	r3, [r3, #0]
+ 145:ssp.c         **** 		SPIWRData[2+SPIWR_num_bytes]=PD;
+ 336              	, r3, #2
+ 337 0328 EC309FE5 		ldr	r2, .L38+4
+ 338 032c 003093E5 		ldrb	r3, [fp, #-28]
+ 339 0330 021083E2 		strb	r3, [r2, r1]
+ 340 0334 DC209FE5 		.loc 1 146 0
+ 341 0338 1C305BE5 		ldr	r3, .L38+8
+ 342 033c 0130C2E7 		ldr	r3, [r3, #0]
+ 146:ssp.c         **** 		for(i=SPIWR_num_bytes; i<cnt+SPIWR_num_bytes; i++)
+ 343              	, [fp, #-16]
+ 344 0340 D4309FE5 		b	.L33
+ 345 0344 003093E5 	.L34:
+ 346 0348 10300BE5 		.loc 1 148 0
+ 347 034c 0E0000EA 		ldr	r3, [fp, #-16]
+ 348              		add	r1, r3, #3
+ 147:ssp.c         **** 		{
+ 148:ssp.c         **** 			SPIWRData[i+3]=data[i-SPIWR_num_bytes];
+ 349              	3, .L38+8
+ 350 0350 10301BE5 		ldr	r2, [r3, #0]
+ 351 0354 031083E2 		ldr	r3, [fp, #-16]
+ 352 0358 BC309FE5 		rsb	r3, r2, r3
+ 353 035c 002093E5 		mov	r2, r3
+ 354 0360 10301BE5 		ldr	r3, [fp, #-20]
+ 355 0364 033062E0 		add	r3, r2, r3
+ 356 0368 0320A0E1 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 357 036c 14301BE5 		ldr	r2, .L38+4
+ 358 0370 033082E0 		strb	r3, [r2, r1]
+ 359 0374 0030D3E5 		.loc 1 146 0
+ 360 0378 98209FE5 		ldr	r3, [fp, #-16]
+ 361 037c 0130C2E7 		add	r3, r3, #1
+ 362              		str	r3, [fp, #-16]
+ 363 0380 10301BE5 	.L33:
+ 364 0384 013083E2 		ldrh	r2, [fp, #-24]
+ 365 0388 10300BE5 		ldr	r3, .L38+8
+ 366              		ldr	r3, [r3, #0]
+ 367 038c B8215BE1 		add	r2, r2, r3
+ 368 0390 84309FE5 		ldr	r3, [fp, #-16]
+ 369 0394 003093E5 		cmp	r2, r3
+ 370 0398 032082E0 		bhi	.L34
+ 371 039c 10301BE5 		.loc 1 150 0
+ 372 03a0 030052E1 		ldrh	r2, [fp, #-24]
+ 373 03a4 E9FFFF8A 		ldr	r3, .L38+8
+ 149:ssp.c         **** 		}
+ 150:ssp.c         **** 		SPIWR_num_bytes+=cnt+5;
+ 374              	, r2, r3
+ 375 03a8 B8215BE1 		add	r2, r3, #5
+ 376 03ac 68309FE5 		ldr	r3, .L38+8
+ 377 03b0 003093E5 		str	r2, [r3, #0]
+ 378 03b4 033082E0 		.loc 1 151 0
+ 379 03b8 052083E2 		ldr	r3, .L38+8
+ 380 03bc 58309FE5 		ldr	r3, [r3, #0]
+ 381 03c0 002083E5 		sub	r1, r3, #1
+ 151:ssp.c         **** 		SPIWRData[SPIWR_num_bytes-1]=0;
+ 382              	 .L38+4
+ 383 03c4 50309FE5 		mov	r3, #0
+ 384 03c8 003093E5 		strb	r3, [r2, r1]
+ 385 03cc 011043E2 		b	.L30
+ 386 03d0 40209FE5 	.L31:
+ 387 03d4 0030A0E3 		.loc 1 153 0
+ 388 03d8 0130C2E7 		mov	r3, #0
+ 389 03dc 020000EA 		str	r3, [fp, #-32]
+ 390              		b	.L36
+ 152:ssp.c         **** 	}
+ 153:ssp.c         **** 	else return(0);
+ 391              	oc 1 154 0
+ 392 03e0 0030A0E3 		ldr	r3, .L38
+ 393 03e4 20300BE5 		mov	r2, #0
+ 394 03e8 040000EA 		strb	r2, [r3, #0]
+ 395              		.loc 1 156 0
+ 154:ssp.c         **** 	data_sent_to_LL=0;
+ 396              	r3, #1
+ 397 03ec 20309FE5 		str	r3, [fp, #-32]
+ 398 03f0 0020A0E3 	.L36:
+ 399 03f4 0020C3E5 		ldr	r3, [fp, #-32]
+ 155:ssp.c         **** 
+ 156:ssp.c         **** 	return(1);
+ 400              	c 1 157 0
+ 401 03f8 0130A0E3 		mov	r0, r3
+ 402 03fc 20300BE5 		sub	sp, fp, #12
+ 403              		ldmfd	sp, {fp, sp, lr}
+ 404 0400 20301BE5 		bx	lr
+ 157:ssp.c         **** }
+ 405              	
+ 406 0404 0300A0E1 		.align	2
+ 407 0408 0CD04BE2 	.L38:
+ 408 040c 00689DE8 		.word	data_sent_to_LL
+ 409 0410 1EFF2FE1 		.word	SPIWRData
+ 410              		.word	SPIWR_num_bytes
+ 411              	.LFE4:
+ 413 0414 00000000 		.comm	GPS_timeout,4,4
+ 414 0418 00000000 		.comm	SYSTEM_initialized,1,1
+ 415 041c 00000000 		.comm	SPIWRData,128,1
+ 416              		.comm	SPIRDData,128,1
+ 417              		.comm	CurrentTxIndex,4,4
+ 418              		.comm	CurrentRxIndex,4,4
+ 419              		.comm	SPIWR_num_bytes,4,4
+ 420              		.section	.debug_frame,"",%progbits
+ 421              	.Lframe0:
+ 422              		.4byte	.LECIE0-.LSCIE0
+ 423              	.LSCIE0:
+ 424              		.4byte	0xffffffff
+ 517              		.4byte	.LCFI0-.Ltext0
+DEFINED SYMBOLS
+                            *ABS*:00000000 ssp.c
+C:\Users\hanley6\AppData\Local\Temp/ccC4laaa.s:15     .bss:00000000 SSP_trans_cnt
+                             .bss:00000000 $d
+C:\Users\hanley6\AppData\Local\Temp/ccC4laaa.s:21     .data:00000000 data_sent_to_LL
+C:\Users\hanley6\AppData\Local\Temp/ccC4laaa.s:26     .data:00000001 SSP_receiption_complete
+C:\Users\hanley6\AppData\Local\Temp/ccC4laaa.s:31     .data:00000002 data_sent_to_HL
+C:\Users\hanley6\AppData\Local\Temp/ccC4laaa.s:37     .text:00000000 SSPHandler
+C:\Users\hanley6\AppData\Local\Temp/ccC4laaa.s:44     .text:00000000 $a
+C:\Users\hanley6\AppData\Local\Temp/ccC4laaa.s:198    .text:000001c8 $d
+                            *COM*:00000004 CurrentTxIndex
+                            *COM*:00000004 SPIWR_num_bytes
+                            *COM*:00000080 SPIWRData
+C:\Users\hanley6\AppData\Local\Temp/ccC4laaa.s:207    .text:000001d8 LL_write_init
+C:\Users\hanley6\AppData\Local\Temp/ccC4laaa.s:213    .text:000001d8 $a
+C:\Users\hanley6\AppData\Local\Temp/ccC4laaa.s:238    .text:00000214 $d
+C:\Users\hanley6\AppData\Local\Temp/ccC4laaa.s:244    .text:00000218 LL_write
+C:\Users\hanley6\AppData\Local\Temp/ccC4laaa.s:250    .text:00000218 $a
+C:\Users\hanley6\AppData\Local\Temp/ccC4laaa.s:413    .text:00000414 $d
+                            *COM*:00000004 GPS_timeout
+                            *COM*:00000001 SYSTEM_initialized
+                            *COM*:00000080 SPIRDData
+                            *COM*:00000004 CurrentRxIndex
+
+UNDEFINED SYMBOLS
+SSP_rx_handler_HL

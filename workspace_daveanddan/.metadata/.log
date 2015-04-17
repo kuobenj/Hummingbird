@@ -1,0 +1,47 @@
+!SESSION 2015-04-16 09:20:31.529 -----------------------------------------------
+eclipse.buildId=I20090611-1540
+java.version=1.6.0_11
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.cpp.product -product org.eclipse.epp.package.cpp.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.cpp.product -data C:\bkuo_ae483\workspace_daveanddan -product org.eclipse.epp.package.cpp.product
+
+!ENTRY org.eclipse.cdt.core 1 0 2015-04-16 09:21:42.015
+!MESSAGE Indexed 'AscTec_SDK_v3.0' (27 sources, 39 headers) in 0.69 sec: 2,087 declarations; 6,585 references; 19 unresolved inclusions; 1 syntax errors; 16 unresolved names (0.18%)
+
+!ENTRY com.zylin.embeddedcdt 4 150 2015-04-16 09:25:42.579
+!MESSAGE Failed command: monitor flash write 0 main.bin 0x0
+!STACK 0
+org.eclipse.cdt.debug.mi.core.MIException: Reply contains invalid hex digit 116
+	at org.eclipse.cdt.debug.mi.core.command.Command.throwMIException(Command.java:105)
+	at org.eclipse.cdt.debug.mi.core.command.Command.getMIInfo(Command.java:79)
+	at com.zylin.embeddedcdt.launch.Launch.executeGDBScript(Launch.java:480)
+	at com.zylin.embeddedcdt.launch.Launch.launch(Launch.java:202)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:853)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:703)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin.buildAndLaunch(DebugUIPlugin.java:866)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin$8.run(DebugUIPlugin.java:1069)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SUBENTRY 1 com.zylin.embeddedcdt 4 150 2015-04-16 09:25:42.579
+!MESSAGE Reply contains invalid hex digit 116
+!STACK 0
+org.eclipse.cdt.debug.mi.core.MIException: Reply contains invalid hex digit 116
+	at org.eclipse.cdt.debug.mi.core.command.Command.throwMIException(Command.java:105)
+	at org.eclipse.cdt.debug.mi.core.command.Command.getMIInfo(Command.java:79)
+	at com.zylin.embeddedcdt.launch.Launch.executeGDBScript(Launch.java:480)
+	at com.zylin.embeddedcdt.launch.Launch.launch(Launch.java:202)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:853)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:703)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin.buildAndLaunch(DebugUIPlugin.java:866)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin$8.run(DebugUIPlugin.java:1069)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SESSION 2015-04-17 09:08:18.989 -----------------------------------------------
+eclipse.buildId=I20090611-1540
+java.version=1.6.0_11
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.cpp.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.cpp.product
+
+!ENTRY org.eclipse.core.resources 2 10035 2015-04-17 09:08:22.047
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
