@@ -1,0 +1,1594 @@
+   1              		.file	"Utilites.c"
+   9              	.Ltext0:
+  10              		.global	__subsf3
+  11              		.global	__extendsfdf2
+  12              		.global	__adddf3
+  13              		.global	__truncdfsf2
+  14              		.global	__subdf3
+  15              		.align	2
+  16              		.global	angle_diff
+  18              	angle_diff:
+  19              	.LFB2:
+  20              		.file 1 "Utilites.c"
+   1:Utilites.c    **** #include "Utilites.h"
+   2:Utilites.c    **** #include "math.h"
+   3:Utilites.c    **** #include "stdio.h"
+   4:Utilites.c    **** 
+   5:Utilites.c    **** float angle_diff(float a1, float a2)
+   6:Utilites.c    **** {
+  21              	ion supports interworking.
+  22              		@ args = 0, pretend = 0, frame = 8
+  23              		@ frame_needed = 1, uses_anonymous_args = 0
+  24              		mov	ip, sp
+  25 0000 0DC0A0E1 	.LCFI0:
+  26              		stmfd	sp!, {r4, fp, ip, lr, pc}
+  27 0004 10D82DE9 	.LCFI1:
+  28              		sub	fp, ip, #4
+  29 0008 04B04CE2 	.LCFI2:
+  30              		sub	sp, sp, #8
+  31 000c 08D04DE2 	.LCFI3:
+  32              		str	r0, [fp, #-20]	@ float
+  33 0010 14000BE5 		str	r1, [fp, #-24]	@ float
+  34 0014 18100BE5 		.loc 1 7 0
+   7:Utilites.c    **** #include "Utilites.h"
+  35              	#-20]	@ float
+  36 0018 14001BE5 		ldr	r1, [fp, #-24]	@ float
+  37 001c 18101BE5 		bl	__subsf3
+  38 0020 FEFFFFEB 		mov	r3, r0
+  39 0024 0030A0E1 		mov	r0, r3
+  40 0028 0300A0E1 		bl	__extendsfdf2
+  41 002c FEFFFFEB 		mov	r3, r0
+  42 0030 0030A0E1 		mov	r4, r1
+  43 0034 0140A0E1 		mov	r0, r3
+  44 0038 0300A0E1 		mov	r1, r4
+  45 003c 0410A0E1 		adr	r2, .L3
+  46 0040 78208FE2 		ldmia	r2, {r2-r3}
+  47 0044 0C0092E8 		bl	__adddf3
+  48 0048 FEFFFFEB 		mov	r3, r0
+  49 004c 0030A0E1 		mov	r4, r1
+  50 0050 0140A0E1 		mov	r0, r3
+  51 0054 0300A0E1 		mov	r1, r4
+  52 0058 0410A0E1 		bl	__truncdfsf2
+  53 005c FEFFFFEB 		mov	r3, r0
+  54 0060 0030A0E1 		mov	r0, r3
+  55 0064 0300A0E1 		ldr	r1, .L3+16	@ float
+  56 0068 60109FE5 		bl	fmodf
+  57 006c FEFFFFEB 		mov	r3, r0
+  58 0070 0030A0E1 		mov	r0, r3
+  59 0074 0300A0E1 		bl	__extendsfdf2
+  60 0078 FEFFFFEB 		mov	r3, r0
+  61 007c 0030A0E1 		mov	r4, r1
+  62 0080 0140A0E1 		mov	r0, r3
+  63 0084 0300A0E1 		mov	r1, r4
+  64 0088 0410A0E1 		adr	r2, .L3+8
+  65 008c 34208FE2 		ldmia	r2, {r2-r3}
+  66 0090 0C0092E8 		bl	__subdf3
+  67 0094 FEFFFFEB 		mov	r3, r0
+  68 0098 0030A0E1 		mov	r4, r1
+  69 009c 0140A0E1 		mov	r0, r3
+  70 00a0 0300A0E1 		mov	r1, r4
+  71 00a4 0410A0E1 		bl	__truncdfsf2
+  72 00a8 FEFFFFEB 		mov	r3, r0
+  73 00ac 0030A0E1 		.loc 1 10 0
+   8:Utilites.c    **** #include "Utilites.h"
+   9:Utilites.c    **** #include "math.h"
+  10:Utilites.c    **** #include "stdio.h"
+  74              	 {r4, fp, sp, lr}
+  75 00b0 0300A0E1 		bx	lr
+  76 00b4 10D04BE2 	.L4:
+  77 00b8 10689DE8 		.align	2
+  78 00bc 1EFF2FE1 	.L3:
+  79              		.word	1076025724
+  80              		.word	2134057426
+  81              		.word	1074340347
+  82 00c0 7CD92240 		.word	1413754136
+  83 00c4 D221337F 		.word	1086918619
+  84 00c8 FB210940 	.LFE2:
+  86 00d0 DB0FC940 		.global	__addsf3
+  87              		.align	2
+  88              		.global	vector_add
+  90              	vector_add:
+  91              	.LFB3:
+  92              		.loc 1 13 0
+  93              		@ Function supports interworking.
+  94              		@ args = 0, pretend = 0, frame = 20
+  11:Utilites.c    **** #include "Utilites.h"
+  12:Utilites.c    **** #include "math.h"
+  13:Utilites.c    **** #include "stdio.h"
+  95              	uses_anonymous_args = 0
+  96              		mov	ip, sp
+  97              	.LCFI4:
+  98              		stmfd	sp!, {r4, fp, ip, lr, pc}
+  99 00d4 0DC0A0E1 	.LCFI5:
+ 100              		sub	fp, ip, #4
+ 101 00d8 10D82DE9 	.LCFI6:
+ 102              		sub	sp, sp, #20
+ 103 00dc 04B04CE2 	.LCFI7:
+ 104              		str	r0, [fp, #-24]
+ 105 00e0 14D04DE2 		str	r1, [fp, #-28]
+ 106              		str	r2, [fp, #-32]
+ 107 00e4 18000BE5 		str	r3, [fp, #-36]
+ 108 00e8 1C100BE5 		.loc 1 15 0
+ 109 00ec 20200BE5 		mov	r3, #0
+ 110 00f0 24300BE5 		str	r3, [fp, #-20]
+  14:Utilites.c    **** #include "Utilites.h"
+  15:Utilites.c    **** #include "math.h"
+ 111              	c 1 16 0
+ 112 00f4 0030A0E3 		ldr	r3, [fp, #-20]
+ 113 00f8 14300BE5 		mov	r3, r3, asl #2
+ 114 00fc 180000EA 		mov	r2, r3
+ 115              		ldr	r3, [fp, #-36]
+  16:Utilites.c    **** #include "Utilites.h"
+ 116              	r4, r2, r3
+ 117 0100 14301BE5 		ldr	r3, [fp, #-20]
+ 118 0104 0331A0E1 		mov	r3, r3, asl #2
+ 119 0108 0320A0E1 		mov	r2, r3
+ 120 010c 24301BE5 		ldr	r3, [fp, #-28]
+ 121 0110 034082E0 		add	r3, r2, r3
+ 122 0114 14301BE5 		ldr	r1, [r3, #0]	@ float
+ 123 0118 0331A0E1 		ldr	r3, [fp, #-20]
+ 124 011c 0320A0E1 		mov	r3, r3, asl #2
+ 125 0120 1C301BE5 		mov	r2, r3
+ 126 0124 033082E0 		ldr	r3, [fp, #-32]
+ 127 0128 001093E5 		add	r3, r2, r3
+ 128 012c 14301BE5 		ldr	r3, [r3, #0]	@ float
+ 129 0130 0331A0E1 		mov	r0, r1
+ 130 0134 0320A0E1 		mov	r1, r3
+ 131 0138 20301BE5 		bl	__addsf3
+ 132 013c 033082E0 		mov	r3, r0
+ 133 0140 003093E5 		str	r3, [r4, #0]	@ float
+ 134 0144 0100A0E1 		.loc 1 15 0
+ 135 0148 0310A0E1 		ldr	r3, [fp, #-20]
+ 136 014c FEFFFFEB 		add	r3, r3, #1
+ 137 0150 0030A0E1 		str	r3, [fp, #-20]
+ 138 0154 003084E5 	.L6:
+ 139              		ldr	r2, [fp, #-20]
+ 140 0158 14301BE5 		ldr	r3, [fp, #-24]
+ 141 015c 013083E2 		cmp	r2, r3
+ 142 0160 14300BE5 		blt	.L7
+ 143              		.loc 1 18 0
+ 144 0164 14201BE5 		sub	sp, fp, #16
+ 145 0168 18301BE5 		ldmfd	sp, {r4, fp, sp, lr}
+ 146 016c 030052E1 		bx	lr
+ 147 0170 E2FFFFBA 	.LFE3:
+  17:Utilites.c    **** #include "Utilites.h"
+  18:Utilites.c    **** #include "math.h"
+ 148              		.align	2
+ 149 0174 10D04BE2 		.global	matrix_add
+ 151 017c 1EFF2FE1 	matrix_add:
+ 152              	.LFB4:
+ 153              		.loc 1 22 0
+ 154              		@ Function supports interworking.
+ 155              		@ args = 4, pretend = 0, frame = 24
+ 156              		@ frame_needed = 1, uses_anonymous_args = 0
+ 157              		mov	ip, sp
+ 158              	.LCFI8:
+  19:Utilites.c    **** #include "Utilites.h"
+  20:Utilites.c    **** #include "math.h"
+  21:Utilites.c    **** #include "stdio.h"
+  22:Utilites.c    **** 
+ 159              	 {r4, fp, ip, lr, pc}
+ 160              	.LCFI9:
+ 161              		sub	fp, ip, #4
+ 162              	.LCFI10:
+ 163 0180 0DC0A0E1 		sub	sp, sp, #24
+ 164              	.LCFI11:
+ 165 0184 10D82DE9 		str	r0, [fp, #-28]
+ 166              		str	r1, [fp, #-32]
+ 167 0188 04B04CE2 		str	r2, [fp, #-36]
+ 168              		str	r3, [fp, #-40]
+ 169 018c 18D04DE2 		.loc 1 24 0
+ 170              		mov	r3, #0
+ 171 0190 1C000BE5 		str	r3, [fp, #-24]
+ 172 0194 20100BE5 		b	.L11
+ 173 0198 24200BE5 	.L12:
+ 174 019c 28300BE5 		.loc 1 25 0
+  23:Utilites.c    **** #include "Utilites.h"
+  24:Utilites.c    **** #include "math.h"
+ 175              		r3, [fp, #-20]
+ 176 01a0 0030A0E3 		b	.L13
+ 177 01a4 18300BE5 	.L14:
+ 178 01a8 2E0000EA 		.loc 1 26 0
+ 179              		ldr	r2, [fp, #-24]
+  25:Utilites.c    **** #include "Utilites.h"
+ 180              	r3, [fp, #-32]
+ 181 01ac 0030A0E3 		mul	r2, r3, r2
+ 182 01b0 14300BE5 		ldr	r3, [fp, #-20]
+ 183 01b4 240000EA 		add	r3, r2, r3
+ 184              		mov	r3, r3, asl #2
+  26:Utilites.c    **** #include "Utilites.h"
+ 185              	r2, r3
+ 186 01b8 18201BE5 		ldr	r3, [fp, #4]
+ 187 01bc 20301BE5 		add	r4, r2, r3
+ 188 01c0 930202E0 		ldr	r2, [fp, #-24]
+ 189 01c4 14301BE5 		ldr	r3, [fp, #-32]
+ 190 01c8 033082E0 		mul	r2, r3, r2
+ 191 01cc 0331A0E1 		ldr	r3, [fp, #-20]
+ 192 01d0 0320A0E1 		add	r3, r2, r3
+ 193 01d4 04309BE5 		mov	r3, r3, asl #2
+ 194 01d8 034082E0 		mov	r2, r3
+ 195 01dc 18201BE5 		ldr	r3, [fp, #-36]
+ 196 01e0 20301BE5 		add	r3, r2, r3
+ 197 01e4 930202E0 		ldr	r1, [r3, #0]	@ float
+ 198 01e8 14301BE5 		ldr	r2, [fp, #-24]
+ 199 01ec 033082E0 		ldr	r3, [fp, #-32]
+ 200 01f0 0331A0E1 		mul	r2, r3, r2
+ 201 01f4 0320A0E1 		ldr	r3, [fp, #-20]
+ 202 01f8 24301BE5 		add	r3, r2, r3
+ 203 01fc 033082E0 		mov	r3, r3, asl #2
+ 204 0200 001093E5 		mov	r2, r3
+ 205 0204 18201BE5 		ldr	r3, [fp, #-40]
+ 206 0208 20301BE5 		add	r3, r2, r3
+ 207 020c 930202E0 		ldr	r3, [r3, #0]	@ float
+ 208 0210 14301BE5 		mov	r0, r1
+ 209 0214 033082E0 		mov	r1, r3
+ 210 0218 0331A0E1 		bl	__addsf3
+ 211 021c 0320A0E1 		mov	r3, r0
+ 212 0220 28301BE5 		str	r3, [r4, #0]	@ float
+ 213 0224 033082E0 		.loc 1 25 0
+ 214 0228 003093E5 		ldr	r3, [fp, #-20]
+ 215 022c 0100A0E1 		add	r3, r3, #1
+ 216 0230 0310A0E1 		str	r3, [fp, #-20]
+ 217 0234 FEFFFFEB 	.L13:
+ 218 0238 0030A0E1 		ldr	r2, [fp, #-20]
+ 219 023c 003084E5 		ldr	r3, [fp, #-32]
+ 220              		cmp	r2, r3
+ 221 0240 14301BE5 		blt	.L14
+ 222 0244 013083E2 		.loc 1 24 0
+ 223 0248 14300BE5 		ldr	r3, [fp, #-24]
+ 224              		add	r3, r3, #1
+ 225 024c 14201BE5 		str	r3, [fp, #-24]
+ 226 0250 20301BE5 	.L11:
+ 227 0254 030052E1 		ldr	r2, [fp, #-24]
+ 228 0258 D6FFFFBA 		ldr	r3, [fp, #-28]
+ 229              		cmp	r2, r3
+ 230 025c 18301BE5 		blt	.L12
+ 231 0260 013083E2 		.loc 1 29 0
+ 232 0264 18300BE5 		sub	sp, fp, #16
+ 233              		ldmfd	sp, {r4, fp, sp, lr}
+ 234 0268 18201BE5 		bx	lr
+ 235 026c 1C301BE5 	.LFE4:
+ 237 0274 CCFFFFBA 		.global	__mulsf3
+  27:Utilites.c    **** #include "Utilites.h"
+  28:Utilites.c    **** #include "math.h"
+  29:Utilites.c    **** #include "stdio.h"
+ 238              	calar_mult, %function
+ 239 0278 10D04BE2 	matrix_scalar_mult:
+ 240 027c 10689DE8 	.LFB5:
+ 241 0280 1EFF2FE1 		.loc 1 33 0
+ 242              		@ Function supports interworking.
+ 243              		@ args = 4, pretend = 0, frame = 24
+ 244              		@ frame_needed = 1, uses_anonymous_args = 0
+ 245              		mov	ip, sp
+ 246              	.LCFI12:
+ 247              		stmfd	sp!, {r4, fp, ip, lr, pc}
+ 248              	.LCFI13:
+ 249              		sub	fp, ip, #4
+  30:Utilites.c    **** #include "Utilites.h"
+  31:Utilites.c    **** #include "math.h"
+  32:Utilites.c    **** #include "stdio.h"
+  33:Utilites.c    **** 
+ 250              	b	sp, sp, #24
+ 251              	.LCFI15:
+ 252              		str	r0, [fp, #-28]
+ 253              		str	r1, [fp, #-32]
+ 254 0284 0DC0A0E1 		str	r2, [fp, #-36]
+ 255              		str	r3, [fp, #-40]	@ float
+ 256 0288 10D82DE9 		.loc 1 35 0
+ 257              		mov	r3, #0
+ 258 028c 04B04CE2 		str	r3, [fp, #-24]
+ 259              		b	.L19
+ 260 0290 18D04DE2 	.L20:
+ 261              		.loc 1 36 0
+ 262 0294 1C000BE5 		mov	r3, #0
+ 263 0298 20100BE5 		str	r3, [fp, #-20]
+ 264 029c 24200BE5 		b	.L21
+ 265 02a0 28300BE5 	.L22:
+  34:Utilites.c    **** #include "Utilites.h"
+  35:Utilites.c    **** #include "math.h"
+ 266              	r	r2, [fp, #-24]
+ 267 02a4 0030A0E3 		ldr	r3, [fp, #-32]
+ 268 02a8 18300BE5 		mul	r2, r3, r2
+ 269 02ac 240000EA 		ldr	r3, [fp, #-20]
+ 270              		add	r3, r2, r3
+  36:Utilites.c    **** #include "Utilites.h"
+ 271              	r3, r3, asl #2
+ 272 02b0 0030A0E3 		mov	r2, r3
+ 273 02b4 14300BE5 		ldr	r3, [fp, #4]
+ 274 02b8 1A0000EA 		add	r4, r2, r3
+ 275              		ldr	r2, [fp, #-24]
+  37:Utilites.c    **** #include "Utilites.h"
+ 276              	r3, [fp, #-32]
+ 277 02bc 18201BE5 		mul	r2, r3, r2
+ 278 02c0 20301BE5 		ldr	r3, [fp, #-20]
+ 279 02c4 930202E0 		add	r3, r2, r3
+ 280 02c8 14301BE5 		mov	r3, r3, asl #2
+ 281 02cc 033082E0 		mov	r2, r3
+ 282 02d0 0331A0E1 		ldr	r3, [fp, #-36]
+ 283 02d4 0320A0E1 		add	r3, r2, r3
+ 284 02d8 04309BE5 		ldr	r3, [r3, #0]	@ float
+ 285 02dc 034082E0 		mov	r0, r3
+ 286 02e0 18201BE5 		ldr	r1, [fp, #-40]	@ float
+ 287 02e4 20301BE5 		bl	__mulsf3
+ 288 02e8 930202E0 		mov	r3, r0
+ 289 02ec 14301BE5 		str	r3, [r4, #0]	@ float
+ 290 02f0 033082E0 		.loc 1 36 0
+ 291 02f4 0331A0E1 		ldr	r3, [fp, #-20]
+ 292 02f8 0320A0E1 		add	r3, r3, #1
+ 293 02fc 24301BE5 		str	r3, [fp, #-20]
+ 294 0300 033082E0 	.L21:
+ 295 0304 003093E5 		ldr	r2, [fp, #-20]
+ 296 0308 0300A0E1 		ldr	r3, [fp, #-32]
+ 297 030c 28101BE5 		cmp	r2, r3
+ 298 0310 FEFFFFEB 		blt	.L22
+ 299 0314 0030A0E1 		.loc 1 35 0
+ 300 0318 003084E5 		ldr	r3, [fp, #-24]
+ 301              		add	r3, r3, #1
+ 302 031c 14301BE5 		str	r3, [fp, #-24]
+ 303 0320 013083E2 	.L19:
+ 304 0324 14300BE5 		ldr	r2, [fp, #-24]
+ 305              		ldr	r3, [fp, #-28]
+ 306 0328 14201BE5 		cmp	r2, r3
+ 307 032c 20301BE5 		blt	.L20
+ 308 0330 030052E1 		.loc 1 40 0
+ 309 0334 E0FFFFBA 		sub	sp, fp, #16
+ 310              		ldmfd	sp, {r4, fp, sp, lr}
+ 311 0338 18301BE5 		bx	lr
+ 312 033c 013083E2 	.LFE5:
+ 314              		.align	2
+ 315 0344 18201BE5 		.global	vector_scalar_mult
+ 317 034c 030052E1 	vector_scalar_mult:
+ 318 0350 D6FFFFBA 	.LFB6:
+  38:Utilites.c    **** #include "Utilites.h"
+  39:Utilites.c    **** #include "math.h"
+  40:Utilites.c    **** #include "stdio.h"
+ 319              	ing.
+ 320 0354 10D04BE2 		@ args = 0, pretend = 0, frame = 20
+ 321 0358 10689DE8 		@ frame_needed = 1, uses_anonymous_args = 0
+ 322 035c 1EFF2FE1 		mov	ip, sp
+ 323              	.LCFI16:
+ 324              		stmfd	sp!, {r4, fp, ip, lr, pc}
+ 325              	.LCFI17:
+ 326              		sub	fp, ip, #4
+ 327              	.LCFI18:
+ 328              		sub	sp, sp, #20
+ 329              	.LCFI19:
+  41:Utilites.c    **** #include "Utilites.h"
+  42:Utilites.c    **** #include "math.h"
+  43:Utilites.c    **** #include "stdio.h"
+ 330              	p, #-24]
+ 331              		str	r1, [fp, #-28]
+ 332              		str	r2, [fp, #-32]	@ float
+ 333              		str	r3, [fp, #-36]
+ 334 0360 0DC0A0E1 		.loc 1 45 0
+ 335              		mov	r3, #0
+ 336 0364 10D82DE9 		str	r3, [fp, #-20]
+ 337              		b	.L27
+ 338 0368 04B04CE2 	.L28:
+ 339              		.loc 1 46 0
+ 340 036c 14D04DE2 		ldr	r3, [fp, #-20]
+ 341              		mov	r3, r3, asl #2
+ 342 0370 18000BE5 		mov	r2, r3
+ 343 0374 1C100BE5 		ldr	r3, [fp, #-36]
+ 344 0378 20200BE5 		add	r4, r2, r3
+ 345 037c 24300BE5 		ldr	r3, [fp, #-20]
+  44:Utilites.c    **** #include "Utilites.h"
+  45:Utilites.c    **** #include "math.h"
+ 346              	 #2
+ 347 0380 0030A0E3 		mov	r2, r3
+ 348 0384 14300BE5 		ldr	r3, [fp, #-28]
+ 349 0388 120000EA 		add	r3, r2, r3
+ 350              		ldr	r3, [r3, #0]	@ float
+  46:Utilites.c    **** #include "Utilites.h"
+ 351              	r0, r3
+ 352 038c 14301BE5 		ldr	r1, [fp, #-32]	@ float
+ 353 0390 0331A0E1 		bl	__mulsf3
+ 354 0394 0320A0E1 		mov	r3, r0
+ 355 0398 24301BE5 		str	r3, [r4, #0]	@ float
+ 356 039c 034082E0 		.loc 1 45 0
+ 357 03a0 14301BE5 		ldr	r3, [fp, #-20]
+ 358 03a4 0331A0E1 		add	r3, r3, #1
+ 359 03a8 0320A0E1 		str	r3, [fp, #-20]
+ 360 03ac 1C301BE5 	.L27:
+ 361 03b0 033082E0 		ldr	r2, [fp, #-20]
+ 362 03b4 003093E5 		ldr	r3, [fp, #-24]
+ 363 03b8 0300A0E1 		cmp	r2, r3
+ 364 03bc 20101BE5 		blt	.L28
+ 365 03c0 FEFFFFEB 		.loc 1 48 0
+ 366 03c4 0030A0E1 		sub	sp, fp, #16
+ 367 03c8 003084E5 		ldmfd	sp, {r4, fp, sp, lr}
+ 368              		bx	lr
+ 369 03cc 14301BE5 	.LFE6:
+ 371 03d4 14300BE5 		.align	2
+ 372              		.global	matrix_transpose
+ 374 03dc 18301BE5 	matrix_transpose:
+ 375 03e0 030052E1 	.LFB7:
+ 376 03e4 E8FFFFBA 		.loc 1 52 0
+  47:Utilites.c    **** #include "Utilites.h"
+  48:Utilites.c    **** #include "math.h"
+ 377              	working.
+ 378 03e8 10D04BE2 		@ args = 0, pretend = 0, frame = 24
+ 379 03ec 10689DE8 		@ frame_needed = 1, uses_anonymous_args = 0
+ 380 03f0 1EFF2FE1 		mov	ip, sp
+ 381              	.LCFI20:
+ 382              		stmfd	sp!, {fp, ip, lr, pc}
+ 383              	.LCFI21:
+ 384              		sub	fp, ip, #4
+ 385              	.LCFI22:
+ 386              		sub	sp, sp, #24
+ 387              	.LCFI23:
+  49:Utilites.c    **** #include "Utilites.h"
+  50:Utilites.c    **** #include "math.h"
+  51:Utilites.c    **** #include "stdio.h"
+  52:Utilites.c    **** 
+ 388              	p, #-24]
+ 389              		str	r1, [fp, #-28]
+ 390              		str	r2, [fp, #-32]
+ 391              		str	r3, [fp, #-36]
+ 392 03f4 0DC0A0E1 		.loc 1 54 0
+ 393              		mov	r3, #0
+ 394 03f8 00D82DE9 		str	r3, [fp, #-20]
+ 395              		b	.L32
+ 396 03fc 04B04CE2 	.L33:
+ 397              		.loc 1 55 0
+ 398 0400 18D04DE2 		mov	r3, #0
+ 399              		str	r3, [fp, #-16]
+ 400 0404 18000BE5 		b	.L34
+ 401 0408 1C100BE5 	.L35:
+ 402 040c 20200BE5 		.loc 1 56 0
+ 403 0410 24300BE5 		ldr	r2, [fp, #-16]
+  53:Utilites.c    **** #include "Utilites.h"
+  54:Utilites.c    **** #include "math.h"
+ 404              	24]
+ 405 0414 0030A0E3 		mul	r2, r3, r2
+ 406 0418 14300BE5 		ldr	r3, [fp, #-20]
+ 407 041c 200000EA 		add	r3, r2, r3
+ 408              		mov	r3, r3, asl #2
+  55:Utilites.c    **** #include "Utilites.h"
+ 409              	r2, r3
+ 410 0420 0030A0E3 		ldr	r3, [fp, #-36]
+ 411 0424 10300BE5 		add	r1, r2, r3
+ 412 0428 160000EA 		ldr	r2, [fp, #-20]
+ 413              		ldr	r3, [fp, #-28]
+  56:Utilites.c    **** #include "Utilites.h"
+ 414              	r2, r3, r2
+ 415 042c 10201BE5 		ldr	r3, [fp, #-16]
+ 416 0430 18301BE5 		add	r3, r2, r3
+ 417 0434 930202E0 		mov	r3, r3, asl #2
+ 418 0438 14301BE5 		mov	r2, r3
+ 419 043c 033082E0 		ldr	r3, [fp, #-32]
+ 420 0440 0331A0E1 		add	r3, r2, r3
+ 421 0444 0320A0E1 		ldr	r3, [r3, #0]	@ float
+ 422 0448 24301BE5 		str	r3, [r1, #0]	@ float
+ 423 044c 031082E0 		.loc 1 55 0
+ 424 0450 14201BE5 		ldr	r3, [fp, #-16]
+ 425 0454 1C301BE5 		add	r3, r3, #1
+ 426 0458 930202E0 		str	r3, [fp, #-16]
+ 427 045c 10301BE5 	.L34:
+ 428 0460 033082E0 		ldr	r2, [fp, #-16]
+ 429 0464 0331A0E1 		ldr	r3, [fp, #-28]
+ 430 0468 0320A0E1 		cmp	r2, r3
+ 431 046c 20301BE5 		blt	.L35
+ 432 0470 033082E0 		.loc 1 54 0
+ 433 0474 003093E5 		ldr	r3, [fp, #-20]
+ 434 0478 003081E5 		add	r3, r3, #1
+ 435              		str	r3, [fp, #-20]
+ 436 047c 10301BE5 	.L32:
+ 437 0480 013083E2 		ldr	r2, [fp, #-20]
+ 438 0484 10300BE5 		ldr	r3, [fp, #-24]
+ 439              		cmp	r2, r3
+ 440 0488 10201BE5 		blt	.L33
+ 441 048c 1C301BE5 		.loc 1 59 0
+ 442 0490 030052E1 		sub	sp, fp, #12
+ 443 0494 E4FFFFBA 		ldmfd	sp, {fp, sp, lr}
+ 444              		bx	lr
+ 445 0498 14301BE5 	.LFE7:
+ 447 04a0 14300BE5 		.align	2
+ 448              		.global	matrix_multiply
+ 450 04a8 18301BE5 	matrix_multiply:
+ 451 04ac 030052E1 	.LFB8:
+ 452 04b0 DAFFFFBA 		.loc 1 63 0
+  57:Utilites.c    **** #include "Utilites.h"
+  58:Utilites.c    **** #include "math.h"
+  59:Utilites.c    **** #include "stdio.h"
+ 453              	rgs = 8, pretend = 0, frame = 28
+ 454 04b4 0CD04BE2 		@ frame_needed = 1, uses_anonymous_args = 0
+ 455 04b8 00689DE8 		mov	ip, sp
+ 456 04bc 1EFF2FE1 	.LCFI24:
+ 457              		stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+ 458              	.LCFI25:
+ 459              		sub	fp, ip, #4
+ 460              	.LCFI26:
+ 461              		sub	sp, sp, #28
+ 462              	.LCFI27:
+ 463              		str	r0, [fp, #-36]
+  60:Utilites.c    **** #include "Utilites.h"
+  61:Utilites.c    **** #include "math.h"
+  62:Utilites.c    **** #include "stdio.h"
+  63:Utilites.c    **** 
+ 464              	p, #-40]
+ 465              		str	r2, [fp, #-44]
+ 466              		str	r3, [fp, #-48]
+ 467              		.loc 1 65 0
+ 468 04c0 0DC0A0E1 		mov	r3, #0
+ 469              		str	r3, [fp, #-32]
+ 470 04c4 30D82DE9 		b	.L40
+ 471              	.L41:
+ 472 04c8 04B04CE2 		.loc 1 66 0
+ 473              		mov	r3, #0
+ 474 04cc 1CD04DE2 		str	r3, [fp, #-28]
+ 475              		b	.L42
+ 476 04d0 24000BE5 	.L43:
+ 477 04d4 28100BE5 		.loc 1 67 0
+ 478 04d8 2C200BE5 		ldr	r2, [fp, #-32]
+ 479 04dc 30300BE5 		ldr	r3, [fp, #-44]
+  64:Utilites.c    **** #include "Utilites.h"
+  65:Utilites.c    **** #include "math.h"
+ 480              		ldr	r3, [fp, #-28]
+ 481 04e0 0030A0E3 		add	r3, r2, r3
+ 482 04e4 20300BE5 		mov	r3, r3, asl #2
+ 483 04e8 510000EA 		mov	r2, r3
+ 484              		ldr	r3, [fp, #8]
+  66:Utilites.c    **** #include "Utilites.h"
+ 485              	r2, r2, r3
+ 486 04ec 0030A0E3 		ldr	r3, .L50	@ float
+ 487 04f0 1C300BE5 		str	r3, [r2, #0]	@ float
+ 488 04f4 470000EA 		.loc 1 68 0
+ 489              		mov	r3, #0
+  67:Utilites.c    **** #include "Utilites.h"
+ 490              	r3, [fp, #-24]
+ 491 04f8 20201BE5 		b	.L44
+ 492 04fc 2C301BE5 	.L45:
+ 493 0500 930202E0 		.loc 1 69 0
+ 494 0504 1C301BE5 		ldr	r2, [fp, #-32]
+ 495 0508 033082E0 		ldr	r3, [fp, #-44]
+ 496 050c 0331A0E1 		mul	r2, r3, r2
+ 497 0510 0320A0E1 		ldr	r3, [fp, #-28]
+ 498 0514 08309BE5 		add	r3, r2, r3
+ 499 0518 032082E0 		mov	r3, r3, asl #2
+ 500 051c 2C319FE5 		mov	r2, r3
+ 501 0520 003082E5 		ldr	r3, [fp, #8]
+  68:Utilites.c    **** #include "Utilites.h"
+ 502              	 r3
+ 503 0524 0030A0E3 		ldr	r2, [fp, #-32]
+ 504 0528 18300BE5 		ldr	r3, [fp, #-44]
+ 505 052c 320000EA 		mul	r2, r3, r2
+ 506              		ldr	r3, [fp, #-28]
+  69:Utilites.c    **** #include "Utilites.h"
+ 507              	r3, r2, r3
+ 508 0530 20201BE5 		mov	r3, r3, asl #2
+ 509 0534 2C301BE5 		mov	r2, r3
+ 510 0538 930202E0 		ldr	r3, [fp, #8]
+ 511 053c 1C301BE5 		add	r3, r2, r3
+ 512 0540 033082E0 		ldr	r5, [r3, #0]	@ float
+ 513 0544 0331A0E1 		ldr	r2, [fp, #-32]
+ 514 0548 0320A0E1 		ldr	r3, [fp, #-40]
+ 515 054c 08309BE5 		mul	r2, r3, r2
+ 516 0550 034082E0 		ldr	r3, [fp, #-24]
+ 517 0554 20201BE5 		add	r3, r2, r3
+ 518 0558 2C301BE5 		mov	r3, r3, asl #2
+ 519 055c 930202E0 		mov	r2, r3
+ 520 0560 1C301BE5 		ldr	r3, [fp, #-48]
+ 521 0564 033082E0 		add	r3, r2, r3
+ 522 0568 0331A0E1 		ldr	r1, [r3, #0]	@ float
+ 523 056c 0320A0E1 		ldr	r2, [fp, #-24]
+ 524 0570 08309BE5 		ldr	r3, [fp, #-44]
+ 525 0574 033082E0 		mul	r2, r3, r2
+ 526 0578 005093E5 		ldr	r3, [fp, #-28]
+ 527 057c 20201BE5 		add	r3, r2, r3
+ 528 0580 28301BE5 		mov	r3, r3, asl #2
+ 529 0584 930202E0 		mov	r2, r3
+ 530 0588 18301BE5 		ldr	r3, [fp, #4]
+ 531 058c 033082E0 		add	r3, r2, r3
+ 532 0590 0331A0E1 		ldr	r3, [r3, #0]	@ float
+ 533 0594 0320A0E1 		mov	r0, r1
+ 534 0598 30301BE5 		mov	r1, r3
+ 535 059c 033082E0 		bl	__mulsf3
+ 536 05a0 001093E5 		mov	r3, r0
+ 537 05a4 18201BE5 		mov	r0, r5
+ 538 05a8 2C301BE5 		mov	r1, r3
+ 539 05ac 930202E0 		bl	__addsf3
+ 540 05b0 1C301BE5 		mov	r3, r0
+ 541 05b4 033082E0 		str	r3, [r4, #0]	@ float
+ 542 05b8 0331A0E1 		.loc 1 68 0
+ 543 05bc 0320A0E1 		ldr	r3, [fp, #-24]
+ 544 05c0 04309BE5 		add	r3, r3, #1
+ 545 05c4 033082E0 		str	r3, [fp, #-24]
+ 546 05c8 003093E5 	.L44:
+ 547 05cc 0100A0E1 		ldr	r2, [fp, #-24]
+ 548 05d0 0310A0E1 		ldr	r3, [fp, #-40]
+ 549 05d4 FEFFFFEB 		cmp	r2, r3
+ 550 05d8 0030A0E1 		blt	.L45
+ 551 05dc 0500A0E1 		.loc 1 66 0
+ 552 05e0 0310A0E1 		ldr	r3, [fp, #-28]
+ 553 05e4 FEFFFFEB 		add	r3, r3, #1
+ 554 05e8 0030A0E1 		str	r3, [fp, #-28]
+ 555 05ec 003084E5 	.L42:
+ 556              		ldr	r2, [fp, #-28]
+ 557 05f0 18301BE5 		ldr	r3, [fp, #-44]
+ 558 05f4 013083E2 		cmp	r2, r3
+ 559 05f8 18300BE5 		blt	.L43
+ 560              		.loc 1 65 0
+ 561 05fc 18201BE5 		ldr	r3, [fp, #-32]
+ 562 0600 28301BE5 		add	r3, r3, #1
+ 563 0604 030052E1 		str	r3, [fp, #-32]
+ 564 0608 C8FFFFBA 	.L40:
+ 565              		ldr	r2, [fp, #-32]
+ 566 060c 1C301BE5 		ldr	r3, [fp, #-36]
+ 567 0610 013083E2 		cmp	r2, r3
+ 568 0614 1C300BE5 		blt	.L41
+ 569              		.loc 1 73 0
+ 570 0618 1C201BE5 		sub	sp, fp, #20
+ 571 061c 2C301BE5 		ldmfd	sp, {r4, r5, fp, sp, lr}
+ 572 0620 030052E1 		bx	lr
+ 573 0624 B3FFFFBA 	.L51:
+ 574              		.align	2
+ 575 0628 20301BE5 	.L50:
+ 576 062c 013083E2 		.word	0
+ 577 0630 20300BE5 	.LFE8:
+ 579 0634 20201BE5 		.align	2
+ 580 0638 24301BE5 		.global	vector_multiply
+ 582 0640 A9FFFFBA 	vector_multiply:
+  70:Utilites.c    **** #include "Utilites.h"
+  71:Utilites.c    **** #include "math.h"
+  72:Utilites.c    **** #include "stdio.h"
+  73:Utilites.c    **** 
+ 583              	= 0, frame = 24
+ 584 0644 14D04BE2 		@ frame_needed = 1, uses_anonymous_args = 0
+ 585 0648 30689DE8 		mov	ip, sp
+ 586 064c 1EFF2FE1 	.LCFI28:
+ 587              		stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+ 588              	.LCFI29:
+ 589              		sub	fp, ip, #4
+ 590 0650 00000000 	.LCFI30:
+ 591              		sub	sp, sp, #24
+ 592              	.LCFI31:
+ 593              		str	r0, [fp, #-32]
+ 594              		str	r1, [fp, #-36]
+ 595              		str	r2, [fp, #-40]
+ 596              		str	r3, [fp, #-44]
+ 597              		.loc 1 79 0
+  74:Utilites.c    **** #include "Utilites.h"
+  75:Utilites.c    **** #include "math.h"
+  76:Utilites.c    **** #include "stdio.h"
+  77:Utilites.c    **** 
+ 598              	r	r3, [fp, #-28]
+ 599              		b	.L53
+ 600              	.L54:
+ 601              		.loc 1 80 0
+ 602 0654 0DC0A0E1 		ldr	r3, [fp, #-28]
+ 603              		mov	r3, r3, asl #2
+ 604 0658 30D82DE9 		mov	r2, r3
+ 605              		ldr	r3, [fp, #4]
+ 606 065c 04B04CE2 		add	r2, r2, r3
+ 607              		ldr	r3, .L60	@ float
+ 608 0660 18D04DE2 		str	r3, [r2, #0]	@ float
+ 609              		.loc 1 81 0
+ 610 0664 20000BE5 		mov	r3, #0
+ 611 0668 24100BE5 		str	r3, [fp, #-24]
+ 612 066c 28200BE5 		b	.L55
+ 613 0670 2C300BE5 	.L56:
+  78:Utilites.c    **** #include "Utilites.h"
+  79:Utilites.c    **** #include "math.h"
+ 614              	r	r3, [fp, #-28]
+ 615 0674 0030A0E3 		mov	r3, r3, asl #2
+ 616 0678 1C300BE5 		mov	r2, r3
+ 617 067c 370000EA 		ldr	r3, [fp, #4]
+ 618              		add	r4, r2, r3
+  80:Utilites.c    **** #include "Utilites.h"
+ 619              	r3, [fp, #-28]
+ 620 0680 1C301BE5 		mov	r3, r3, asl #2
+ 621 0684 0331A0E1 		mov	r2, r3
+ 622 0688 0320A0E1 		ldr	r3, [fp, #4]
+ 623 068c 04309BE5 		add	r3, r2, r3
+ 624 0690 032082E0 		ldr	r5, [r3, #0]	@ float
+ 625 0694 E0309FE5 		ldr	r2, [fp, #-28]
+ 626 0698 003082E5 		ldr	r3, [fp, #-36]
+  81:Utilites.c    **** #include "Utilites.h"
+ 627              	 r3, r2
+ 628 069c 0030A0E3 		ldr	r3, [fp, #-24]
+ 629 06a0 18300BE5 		add	r3, r2, r3
+ 630 06a4 260000EA 		mov	r3, r3, asl #2
+ 631              		mov	r2, r3
+  82:Utilites.c    **** #include "Utilites.h"
+ 632              	r3, [fp, #-40]
+ 633 06a8 1C301BE5 		add	r3, r2, r3
+ 634 06ac 0331A0E1 		ldr	r1, [r3, #0]	@ float
+ 635 06b0 0320A0E1 		ldr	r3, [fp, #-24]
+ 636 06b4 04309BE5 		mov	r3, r3, asl #2
+ 637 06b8 034082E0 		mov	r2, r3
+ 638 06bc 1C301BE5 		ldr	r3, [fp, #-44]
+ 639 06c0 0331A0E1 		add	r3, r2, r3
+ 640 06c4 0320A0E1 		ldr	r3, [r3, #0]	@ float
+ 641 06c8 04309BE5 		mov	r0, r1
+ 642 06cc 033082E0 		mov	r1, r3
+ 643 06d0 005093E5 		bl	__mulsf3
+ 644 06d4 1C201BE5 		mov	r3, r0
+ 645 06d8 24301BE5 		mov	r0, r5
+ 646 06dc 930202E0 		mov	r1, r3
+ 647 06e0 18301BE5 		bl	__addsf3
+ 648 06e4 033082E0 		mov	r3, r0
+ 649 06e8 0331A0E1 		str	r3, [r4, #0]	@ float
+ 650 06ec 0320A0E1 		.loc 1 81 0
+ 651 06f0 28301BE5 		ldr	r3, [fp, #-24]
+ 652 06f4 033082E0 		add	r3, r3, #1
+ 653 06f8 001093E5 		str	r3, [fp, #-24]
+ 654 06fc 18301BE5 	.L55:
+ 655 0700 0331A0E1 		ldr	r2, [fp, #-24]
+ 656 0704 0320A0E1 		ldr	r3, [fp, #-36]
+ 657 0708 2C301BE5 		cmp	r2, r3
+ 658 070c 033082E0 		blt	.L56
+ 659 0710 003093E5 		.loc 1 79 0
+ 660 0714 0100A0E1 		ldr	r3, [fp, #-28]
+ 661 0718 0310A0E1 		add	r3, r3, #1
+ 662 071c FEFFFFEB 		str	r3, [fp, #-28]
+ 663 0720 0030A0E1 	.L53:
+ 664 0724 0500A0E1 		ldr	r2, [fp, #-28]
+ 665 0728 0310A0E1 		ldr	r3, [fp, #-32]
+ 666 072c FEFFFFEB 		cmp	r2, r3
+ 667 0730 0030A0E1 		blt	.L54
+ 668 0734 003084E5 		.loc 1 85 0
+ 669              		sub	sp, fp, #20
+ 670 0738 18301BE5 		ldmfd	sp, {r4, r5, fp, sp, lr}
+ 671 073c 013083E2 		bx	lr
+ 672 0740 18300BE5 	.L61:
+ 673              		.align	2
+ 674 0744 18201BE5 	.L60:
+ 675 0748 24301BE5 		.word	0
+ 676 074c 030052E1 	.LFE9:
+ 678              		.global	__floatsidf
+ 679 0754 1C301BE5 		.global	__muldf3
+ 680 0758 013083E2 		.align	2
+ 681 075c 1C300BE5 		.global	determinant
+ 683 0760 1C201BE5 	determinant:
+ 684 0764 20301BE5 	.LFB10:
+ 685 0768 030052E1 		.loc 1 89 0
+ 686 076c C3FFFFBA 		@ Function supports interworking.
+  83:Utilites.c    **** #include "Utilites.h"
+  84:Utilites.c    **** #include "math.h"
+  85:Utilites.c    **** #include "stdio.h"
+ 687              	1, uses_anonymous_args = 0
+ 688 0770 14D04BE2 		mov	ip, sp
+ 689 0774 30689DE8 	.LCFI32:
+ 690 0778 1EFF2FE1 		stmfd	sp!, {r4, r5, r6, r7, r8, fp, ip, lr, pc}
+ 691              	.LCFI33:
+ 692              		sub	fp, ip, #4
+ 693              	.LCFI34:
+ 694 077c 00000000 		sub	sp, sp, #48
+ 695              	.LCFI35:
+ 696              		str	r0, [fp, #-64]
+ 697              		str	r1, [fp, #-68]
+ 698              		.loc 1 89 0
+ 699              		mov	r3, sp
+ 700              		str	r3, [fp, #-72]
+ 701              		.loc 1 90 0
+ 702              		mov	r3, #0
+ 703              		str	r3, [fp, #-40]
+  86:Utilites.c    **** #include "Utilites.h"
+  87:Utilites.c    **** #include "math.h"
+  88:Utilites.c    **** #include "stdio.h"
+  89:Utilites.c    **** 
+ 704              		r3, [fp, #-68]
+ 705              		sub	r2, r3, #1
+ 706              		ldr	r3, [fp, #-68]
+ 707              		sub	r3, r3, #1
+ 708 0780 0DC0A0E1 		mul	r3, r2, r3
+ 709              		mov	r3, r3, asl #2
+ 710 0784 F0D92DE9 		add	r3, r3, #3
+ 711              		add	r3, r3, #3
+ 712 0788 04B04CE2 		mov	r3, r3, lsr #2
+ 713              		mov	r3, r3, asl #2
+ 714 078c 30D04DE2 		rsb	sp, r3, sp
+ 715              		str	sp, [fp, #-80]
+ 716 0790 40000BE5 		ldr	r2, [fp, #-80]
+ 717 0794 44100BE5 		add	r3, r2, #3
+ 718              		mov	r3, r3, lsr #2
+ 719 0798 0D30A0E1 		mov	r3, r3, asl #2
+ 720 079c 48300BE5 		str	r3, [fp, #-80]
+  90:Utilites.c    **** #include "Utilites.h"
+ 721              	0]
+ 722 07a0 0030A0E3 		str	r3, [fp, #-60]
+ 723 07a4 28300BE5 		ldr	r3, .L80	@ float
+  91:Utilites.c    **** #include "Utilites.h"
+ 724              	r	r3, [fp, #-36]	@ float
+ 725 07a8 44301BE5 		.loc 1 92 0
+ 726 07ac 012043E2 		ldr	r3, [fp, #-68]
+ 727 07b0 44301BE5 		cmp	r3, #1
+ 728 07b4 013043E2 		bne	.L63
+ 729 07b8 920303E0 		ldr	r3, [fp, #-64]
+ 730 07bc 0331A0E1 		ldr	r3, [r3, #0]	@ float
+ 731 07c0 033083E2 		str	r3, [fp, #-76]	@ float
+ 732 07c4 033083E2 		b	.L65
+ 733 07c8 2331A0E1 	.L63:
+ 734 07cc 0331A0E1 		.loc 1 93 0
+ 735 07d0 0DD063E0 		ldr	r3, [fp, #-68]
+ 736 07d4 50D00BE5 		cmp	r3, #2
+ 737 07d8 50201BE5 		bne	.L66
+ 738 07dc 033082E2 		ldr	r3, [fp, #-64]
+ 739 07e0 2331A0E1 		ldr	r2, [r3, #0]	@ float
+ 740 07e4 0331A0E1 		ldr	r3, [fp, #-64]
+ 741 07e8 50300BE5 		add	r3, r3, #12
+ 742 07ec 50301BE5 		ldr	r3, [r3, #0]	@ float
+ 743 07f0 3C300BE5 		mov	r0, r2
+ 744 07f4 B4329FE5 		mov	r1, r3
+ 745 07f8 24300BE5 		bl	__mulsf3
+  92:Utilites.c    **** #include "Utilites.h"
+ 746              	3
+ 747 07fc 44301BE5 		ldr	r3, [fp, #-64]
+ 748 0800 010053E3 		add	r3, r3, #4
+ 749 0804 0300001A 		ldr	r2, [r3, #0]	@ float
+ 750 0808 40301BE5 		ldr	r3, [fp, #-64]
+ 751 080c 003093E5 		add	r3, r3, #8
+ 752 0810 4C300BE5 		ldr	r3, [r3, #0]	@ float
+ 753 0814 9F0000EA 		mov	r0, r2
+ 754              		mov	r1, r3
+  93:Utilites.c    **** #include "Utilites.h"
+ 755              	sf3
+ 756 0818 44301BE5 		mov	r3, r0
+ 757 081c 020053E3 		mov	r0, r4
+ 758 0820 1900001A 		mov	r1, r3
+ 759 0824 40301BE5 		bl	__subsf3
+ 760 0828 002093E5 		mov	r3, r0
+ 761 082c 40301BE5 		str	r3, [fp, #-76]	@ float
+ 762 0830 0C3083E2 		b	.L65
+ 763 0834 003093E5 	.L66:
+ 764 0838 0200A0E1 		.loc 1 95 0
+ 765 083c 0310A0E1 		mov	r3, #0
+ 766 0840 FEFFFFEB 		str	r3, [fp, #-40]
+ 767 0844 0030A0E1 		b	.L68
+ 768 0848 0340A0E1 	.L69:
+ 769 084c 40301BE5 		.loc 1 97 0
+ 770 0850 043083E2 		mov	r3, #0
+ 771 0854 002093E5 		str	r3, [fp, #-48]
+ 772 0858 40301BE5 		.loc 1 98 0
+ 773 085c 083083E2 		mov	r3, #1
+ 774 0860 003093E5 		str	r3, [fp, #-56]
+ 775 0864 0200A0E1 		b	.L70
+ 776 0868 0310A0E1 	.L71:
+ 777 086c FEFFFFEB 		.loc 1 100 0
+ 778 0870 0030A0E1 		mov	r3, #0
+ 779 0874 0400A0E1 		str	r3, [fp, #-44]
+ 780 0878 0310A0E1 		.loc 1 101 0
+ 781 087c FEFFFFEB 		mov	r3, #0
+ 782 0880 0030A0E1 		str	r3, [fp, #-52]
+ 783 0884 4C300BE5 		b	.L72
+ 784 0888 820000EA 	.L73:
+ 785              		.loc 1 103 0
+  94:Utilites.c    **** #include "Utilites.h"
+  95:Utilites.c    **** #include "math.h"
+ 786              	p, #-40]
+ 787 088c 0030A0E3 		cmp	r2, r3
+ 788 0890 28300BE5 		beq	.L74
+ 789 0894 790000EA 		.loc 1 105 0
+ 790              		ldr	r3, [fp, #-68]
+  96:Utilites.c    **** #include "Utilites.h"
+  97:Utilites.c    **** #include "math.h"
+ 791              	r2, r3, #1
+ 792 0898 0030A0E3 		ldr	r3, [fp, #-48]
+ 793 089c 30300BE5 		mul	r2, r3, r2
+  98:Utilites.c    **** #include "Utilites.h"
+ 794              	r	r3, [fp, #-44]
+ 795 08a0 0130A0E3 		add	r1, r2, r3
+ 796 08a4 38300BE5 		ldr	r2, [fp, #-56]
+ 797 08a8 2A0000EA 		ldr	r3, [fp, #-68]
+ 798              		mul	r2, r3, r2
+  99:Utilites.c    **** #include "Utilites.h"
+ 100:Utilites.c    **** #include "math.h"
+ 799              	r3, [fp, #-52]
+ 800 08ac 0030A0E3 		add	r3, r2, r3
+ 801 08b0 2C300BE5 		mov	r3, r3, asl #2
+ 101:Utilites.c    **** #include "Utilites.h"
+ 802              	v	r2, r3
+ 803 08b4 0030A0E3 		ldr	r3, [fp, #-64]
+ 804 08b8 34300BE5 		add	r3, r2, r3
+ 805 08bc 1B0000EA 		ldr	r2, [r3, #0]	@ float
+ 806              		ldr	r3, [fp, #-60]
+ 102:Utilites.c    **** #include "Utilites.h"
+ 103:Utilites.c    **** #include "math.h"
+ 807              	r2, [r3, r1, asl #2]	@ float
+ 808 08c0 34201BE5 		.loc 1 106 0
+ 809 08c4 28301BE5 		ldr	r3, [fp, #-44]
+ 810 08c8 030052E1 		add	r3, r3, #1
+ 811 08cc 1400000A 		str	r3, [fp, #-44]
+ 104:Utilites.c    **** #include "Utilites.h"
+ 105:Utilites.c    **** #include "math.h"
+ 812              	
+ 813 08d0 44301BE5 		.loc 1 101 0
+ 814 08d4 012043E2 		ldr	r3, [fp, #-52]
+ 815 08d8 30301BE5 		add	r3, r3, #1
+ 816 08dc 930202E0 		str	r3, [fp, #-52]
+ 817 08e0 2C301BE5 	.L72:
+ 818 08e4 031082E0 		ldr	r2, [fp, #-52]
+ 819 08e8 38201BE5 		ldr	r3, [fp, #-68]
+ 820 08ec 44301BE5 		cmp	r2, r3
+ 821 08f0 930202E0 		blt	.L73
+ 822 08f4 34301BE5 		.loc 1 109 0
+ 823 08f8 033082E0 		ldr	r3, [fp, #-48]
+ 824 08fc 0331A0E1 		add	r3, r3, #1
+ 825 0900 0320A0E1 		str	r3, [fp, #-48]
+ 826 0904 40301BE5 		.loc 1 98 0
+ 827 0908 033082E0 		ldr	r3, [fp, #-56]
+ 828 090c 002093E5 		add	r3, r3, #1
+ 829 0910 3C301BE5 		str	r3, [fp, #-56]
+ 830 0914 012183E7 	.L70:
+ 106:Utilites.c    **** #include "Utilites.h"
+ 831              	]
+ 832 0918 2C301BE5 		ldr	r3, [fp, #-68]
+ 833 091c 013083E2 		cmp	r2, r3
+ 834 0920 2C300BE5 		blt	.L71
+ 835              		.loc 1 111 0
+ 836              		ldr	r0, [fp, #-36]	@ float
+ 837 0924 34301BE5 		bl	__extendsfdf2
+ 838 0928 013083E2 		mov	r7, r0
+ 839 092c 34300BE5 		mov	r8, r1
+ 840              		ldr	r0, [fp, #-40]
+ 841 0930 34201BE5 		bl	__floatsidf
+ 842 0934 44301BE5 		mov	r3, r0
+ 843 0938 030052E1 		mov	r4, r1
+ 844 093c DFFFFFBA 		mov	r0, #-1090519040
+ 107:Utilites.c    **** #include "Utilites.h"
+ 108:Utilites.c    **** #include "math.h"
+ 109:Utilites.c    **** #include "stdio.h"
+ 845              	15728640
+ 846 0940 30301BE5 		mov	r1, #0
+ 847 0944 013083E2 		mov	r2, r3
+ 848 0948 30300BE5 		mov	r3, r4
+ 849              		bl	pow
+ 850 094c 38301BE5 		mov	r3, r0
+ 851 0950 013083E2 		mov	r4, r1
+ 852 0954 38300BE5 		mov	r5, r3
+ 853              		mov	r6, r4
+ 854 0958 38201BE5 		ldr	r3, [fp, #-40]
+ 855 095c 44301BE5 		mov	r3, r3, asl #2
+ 856 0960 030052E1 		mov	r2, r3
+ 857 0964 D0FFFFBA 		ldr	r3, [fp, #-64]
+ 110:Utilites.c    **** #include "Utilites.h"
+ 111:Utilites.c    **** #include "math.h"
+ 858              	r3
+ 859 0968 24001BE5 		ldr	r3, [r3, #0]	@ float
+ 860 096c FEFFFFEB 		mov	r0, r3
+ 861 0970 0070A0E1 		bl	__extendsfdf2
+ 862 0974 0180A0E1 		mov	r3, r0
+ 863 0978 28001BE5 		mov	r4, r1
+ 864 097c FEFFFFEB 		mov	r0, r5
+ 865 0980 0030A0E1 		mov	r1, r6
+ 866 0984 0140A0E1 		mov	r2, r3
+ 867 0988 BF04A0E3 		mov	r3, r4
+ 868 098c 0F0680E2 		bl	__muldf3
+ 869 0990 0010A0E3 		mov	r3, r0
+ 870 0994 0320A0E1 		mov	r4, r1
+ 871 0998 0430A0E1 		mov	r5, r3
+ 872 099c FEFFFFEB 		mov	r6, r4
+ 873 09a0 0030A0E1 		ldr	r2, [fp, #-60]
+ 874 09a4 0140A0E1 		ldr	r3, [fp, #-68]
+ 875 09a8 0350A0E1 		sub	r3, r3, #1
+ 876 09ac 0460A0E1 		mov	r0, r2
+ 877 09b0 28301BE5 		mov	r1, r3
+ 878 09b4 0331A0E1 		bl	determinant
+ 879 09b8 0320A0E1 		mov	r3, r0
+ 880 09bc 40301BE5 		mov	r0, r3
+ 881 09c0 033082E0 		bl	__extendsfdf2
+ 882 09c4 003093E5 		mov	r3, r0
+ 883 09c8 0300A0E1 		mov	r4, r1
+ 884 09cc FEFFFFEB 		mov	r0, r5
+ 885 09d0 0030A0E1 		mov	r1, r6
+ 886 09d4 0140A0E1 		mov	r2, r3
+ 887 09d8 0500A0E1 		mov	r3, r4
+ 888 09dc 0610A0E1 		bl	__muldf3
+ 889 09e0 0320A0E1 		mov	r3, r0
+ 890 09e4 0430A0E1 		mov	r4, r1
+ 891 09e8 FEFFFFEB 		mov	r0, r7
+ 892 09ec 0030A0E1 		mov	r1, r8
+ 893 09f0 0140A0E1 		mov	r2, r3
+ 894 09f4 0350A0E1 		mov	r3, r4
+ 895 09f8 0460A0E1 		bl	__adddf3
+ 896 09fc 3C201BE5 		mov	r3, r0
+ 897 0a00 44301BE5 		mov	r4, r1
+ 898 0a04 013043E2 		mov	r0, r3
+ 899 0a08 0200A0E1 		mov	r1, r4
+ 900 0a0c 0310A0E1 		bl	__truncdfsf2
+ 901 0a10 FEFFFFEB 		mov	r3, r0
+ 902 0a14 0030A0E1 		str	r3, [fp, #-36]	@ float
+ 903 0a18 0300A0E1 		.loc 1 95 0
+ 904 0a1c FEFFFFEB 		ldr	r3, [fp, #-40]
+ 905 0a20 0030A0E1 		add	r3, r3, #1
+ 906 0a24 0140A0E1 		str	r3, [fp, #-40]
+ 907 0a28 0500A0E1 	.L68:
+ 908 0a2c 0610A0E1 		ldr	r2, [fp, #-40]
+ 909 0a30 0320A0E1 		ldr	r3, [fp, #-68]
+ 910 0a34 0430A0E1 		cmp	r2, r3
+ 911 0a38 FEFFFFEB 		blt	.L69
+ 912 0a3c 0030A0E1 		.loc 1 113 0
+ 913 0a40 0140A0E1 		ldr	r2, [fp, #-36]	@ float
+ 914 0a44 0700A0E1 		str	r2, [fp, #-76]	@ float
+ 915 0a48 0810A0E1 	.L65:
+ 916 0a4c 0320A0E1 		ldr	sp, [fp, #-72]
+ 917 0a50 0430A0E1 		ldr	r3, [fp, #-76]	@ float
+ 918 0a54 FEFFFFEB 		.loc 1 114 0
+ 919 0a58 0030A0E1 		mov	r0, r3
+ 920 0a5c 0140A0E1 		sub	sp, fp, #32
+ 921 0a60 0300A0E1 		ldmfd	sp, {r4, r5, r6, r7, r8, fp, sp, lr}
+ 922 0a64 0410A0E1 		bx	lr
+ 923 0a68 FEFFFFEB 	.L81:
+ 924 0a6c 0030A0E1 		.align	2
+ 925 0a70 24300BE5 	.L80:
+ 926              		.word	0
+ 927 0a74 28301BE5 	.LFE10:
+ 929 0a7c 28300BE5 		.align	2
+ 930              		.global	vector_copy
+ 932 0a84 44301BE5 	vector_copy:
+ 933 0a88 030052E1 	.LFB11:
+ 934 0a8c 81FFFFBA 		.loc 1 118 0
+ 112:Utilites.c    **** #include "Utilites.h"
+ 113:Utilites.c    **** #include "math.h"
+ 935              	ame_needed = 1, uses_anonymous_args = 0
+ 936 0a90 24201BE5 		mov	ip, sp
+ 937 0a94 4C200BE5 	.LCFI36:
+ 938              		stmfd	sp!, {fp, ip, lr, pc}
+ 939 0a98 48D01BE5 	.LCFI37:
+ 940 0a9c 4C301BE5 		sub	fp, ip, #4
+ 114:Utilites.c    **** #include "Utilites.h"
+ 941              	8:
+ 942 0aa0 0300A0E1 		sub	sp, sp, #16
+ 943 0aa4 20D04BE2 	.LCFI39:
+ 944 0aa8 F0699DE8 		str	r0, [fp, #-20]
+ 945 0aac 1EFF2FE1 		str	r1, [fp, #-24]
+ 946              		str	r2, [fp, #-28]
+ 947              		.loc 1 120 0
+ 948              		mov	r3, #0
+ 949 0ab0 00000000 		str	r3, [fp, #-16]
+ 950              		b	.L83
+ 951              	.L84:
+ 952              		.loc 1 121 0
+ 953              		ldr	r3, [fp, #-16]
+ 954              		mov	r3, r3, asl #2
+ 955              		mov	r2, r3
+ 956              		ldr	r3, [fp, #-28]
+ 115:Utilites.c    **** #include "Utilites.h"
+ 116:Utilites.c    **** #include "math.h"
+ 117:Utilites.c    **** #include "stdio.h"
+ 118:Utilites.c    **** 
+ 957              		ldr	r3, [fp, #-16]
+ 958              		mov	r3, r3, asl #2
+ 959              		mov	r2, r3
+ 960              		ldr	r3, [fp, #-24]
+ 961 0ab4 0DC0A0E1 		add	r3, r2, r3
+ 962              		ldr	r3, [r3, #0]	@ float
+ 963 0ab8 00D82DE9 		str	r3, [r1, #0]	@ float
+ 964              		.loc 1 120 0
+ 965 0abc 04B04CE2 		ldr	r3, [fp, #-16]
+ 966              		add	r3, r3, #1
+ 967 0ac0 10D04DE2 		str	r3, [fp, #-16]
+ 968              	.L83:
+ 969 0ac4 14000BE5 		ldr	r2, [fp, #-16]
+ 970 0ac8 18100BE5 		ldr	r3, [fp, #-20]
+ 971 0acc 1C200BE5 		cmp	r2, r3
+ 119:Utilites.c    **** #include "Utilites.h"
+ 120:Utilites.c    **** #include "math.h"
+ 972              	 1 123 0
+ 973 0ad0 0030A0E3 		sub	sp, fp, #12
+ 974 0ad4 10300BE5 		ldmfd	sp, {fp, sp, lr}
+ 975 0ad8 0E0000EA 		bx	lr
+ 976              	.LFE11:
+ 121:Utilites.c    **** #include "Utilites.h"
+ 977              	e	vector_copy, .-vector_copy
+ 978 0adc 10301BE5 		.align	2
+ 979 0ae0 0331A0E1 		.global	make_identity
+ 981 0ae8 1C301BE5 	make_identity:
+ 982 0aec 031082E0 	.LFB12:
+ 983 0af0 10301BE5 		.loc 1 126 0
+ 984 0af4 0331A0E1 		@ Function supports interworking.
+ 985 0af8 0320A0E1 		@ args = 0, pretend = 0, frame = 16
+ 986 0afc 18301BE5 		@ frame_needed = 1, uses_anonymous_args = 0
+ 987 0b00 033082E0 		mov	ip, sp
+ 988 0b04 003093E5 	.LCFI40:
+ 989 0b08 003081E5 		stmfd	sp!, {fp, ip, lr, pc}
+ 990              	.LCFI41:
+ 991 0b0c 10301BE5 		sub	fp, ip, #4
+ 992 0b10 013083E2 	.LCFI42:
+ 993 0b14 10300BE5 		sub	sp, sp, #16
+ 994              	.LCFI43:
+ 995 0b18 10201BE5 		str	r0, [fp, #-24]
+ 996 0b1c 14301BE5 		str	r1, [fp, #-28]
+ 997 0b20 030052E1 		.loc 1 128 0
+ 998 0b24 ECFFFFBA 		mov	r3, #0
+ 122:Utilites.c    **** #include "Utilites.h"
+ 123:Utilites.c    **** #include "math.h"
+ 999              		.L88
+ 1000 0b28 0CD04BE2 	.L89:
+ 1001 0b2c 00689DE8 		.loc 1 129 0
+ 1002 0b30 1EFF2FE1 		mov	r3, #0
+ 1003              		str	r3, [fp, #-16]
+ 1004              		b	.L90
+ 1005              	.L91:
+ 1006              		.loc 1 130 0
+ 1007              		ldr	r2, [fp, #-20]
+ 1008              		ldr	r3, [fp, #-24]
+ 1009              		mul	r2, r3, r2
+ 124:Utilites.c    **** #include "Utilites.h"
+ 125:Utilites.c    **** #include "math.h"
+ 126:Utilites.c    **** #include "stdio.h"
+ 1010              	p, #-16]
+ 1011              		add	r3, r2, r3
+ 1012              		mov	r3, r3, asl #2
+ 1013              		mov	r2, r3
+ 1014 0b34 0DC0A0E1 		ldr	r3, [fp, #-28]
+ 1015              		add	r2, r2, r3
+ 1016 0b38 00D82DE9 		ldr	r3, .L97	@ float
+ 1017              		str	r3, [r2, #0]	@ float
+ 1018 0b3c 04B04CE2 		.loc 1 131 0
+ 1019              		ldr	r2, [fp, #-20]
+ 1020 0b40 10D04DE2 		ldr	r3, [fp, #-16]
+ 1021              		cmp	r2, r3
+ 1022 0b44 18000BE5 		bne	.L92
+ 1023 0b48 1C100BE5 		.loc 1 132 0
+ 127:Utilites.c    **** #include "Utilites.h"
+ 128:Utilites.c    **** #include "math.h"
+ 1024              	#-20]
+ 1025 0b4c 0030A0E3 		ldr	r3, [fp, #-24]
+ 1026 0b50 14300BE5 		mul	r2, r3, r2
+ 1027 0b54 260000EA 		ldr	r3, [fp, #-16]
+ 1028              		add	r3, r2, r3
+ 129:Utilites.c    **** #include "Utilites.h"
+ 1029              	r3, r3, asl #2
+ 1030 0b58 0030A0E3 		mov	r2, r3
+ 1031 0b5c 10300BE5 		ldr	r3, [fp, #-28]
+ 1032 0b60 1C0000EA 		add	r2, r2, r3
+ 1033              		ldr	r3, .L97+4	@ float
+ 130:Utilites.c    **** #include "Utilites.h"
+ 1034              	r3, [r2, #0]	@ float
+ 1035 0b64 14201BE5 	.L92:
+ 1036 0b68 18301BE5 		.loc 1 129 0
+ 1037 0b6c 930202E0 		ldr	r3, [fp, #-16]
+ 1038 0b70 10301BE5 		add	r3, r3, #1
+ 1039 0b74 033082E0 		str	r3, [fp, #-16]
+ 1040 0b78 0331A0E1 	.L90:
+ 1041 0b7c 0320A0E1 		ldr	r2, [fp, #-16]
+ 1042 0b80 1C301BE5 		ldr	r3, [fp, #-24]
+ 1043 0b84 032082E0 		cmp	r2, r3
+ 1044 0b88 80309FE5 		blt	.L91
+ 1045 0b8c 003082E5 		.loc 1 128 0
+ 131:Utilites.c    **** #include "Utilites.h"
+ 1046              	, #-20]
+ 1047 0b90 14201BE5 		add	r3, r3, #1
+ 1048 0b94 10301BE5 		str	r3, [fp, #-20]
+ 1049 0b98 030052E1 	.L88:
+ 1050 0b9c 0A00001A 		ldr	r2, [fp, #-20]
+ 132:Utilites.c    **** #include "Utilites.h"
+ 1051              	r3, [fp, #-24]
+ 1052 0ba0 14201BE5 		cmp	r2, r3
+ 1053 0ba4 18301BE5 		blt	.L89
+ 1054 0ba8 930202E0 		.loc 1 136 0
+ 1055 0bac 10301BE5 		sub	sp, fp, #12
+ 1056 0bb0 033082E0 		ldmfd	sp, {fp, sp, lr}
+ 1057 0bb4 0331A0E1 		bx	lr
+ 1058 0bb8 0320A0E1 	.L98:
+ 1059 0bbc 1C301BE5 		.align	2
+ 1060 0bc0 032082E0 	.L97:
+ 1061 0bc4 48309FE5 		.word	0
+ 1062 0bc8 003082E5 		.word	1065353216
+ 1063              	.LFE12:
+ 1065 0bcc 10301BE5 		.global	__floatsisf
+ 1066 0bd0 013083E2 		.align	2
+ 1067 0bd4 10300BE5 		.global	cofactors
+ 1069 0bd8 10201BE5 	cofactors:
+ 1070 0bdc 18301BE5 	.LFB13:
+ 1071 0be0 030052E1 		.loc 1 139 0
+ 1072 0be4 DEFFFFBA 		@ Function supports interworking.
+ 1073              		@ args = 0, pretend = 0, frame = 48
+ 1074 0be8 14301BE5 		@ frame_needed = 1, uses_anonymous_args = 0
+ 1075 0bec 013083E2 		mov	ip, sp
+ 1076 0bf0 14300BE5 	.LCFI44:
+ 1077              		stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+ 1078 0bf4 14201BE5 	.LCFI45:
+ 1079 0bf8 18301BE5 		sub	fp, ip, #4
+ 1080 0bfc 030052E1 	.LCFI46:
+ 1081 0c00 D4FFFFBA 		sub	sp, sp, #48
+ 133:Utilites.c    **** #include "Utilites.h"
+ 134:Utilites.c    **** #include "math.h"
+ 135:Utilites.c    **** #include "stdio.h"
+ 136:Utilites.c    **** 
+ 1082              	tr	r1, [fp, #-56]
+ 1083 0c04 0CD04BE2 		str	r2, [fp, #-60]
+ 1084 0c08 00689DE8 		.loc 1 139 0
+ 1085 0c0c 1EFF2FE1 		mov	r3, sp
+ 1086              		str	r3, [fp, #-64]
+ 1087              		.loc 1 140 0
+ 1088              		ldr	r3, [fp, #-60]
+ 1089 0c10 00000000 		sub	r2, r3, #1
+ 1090 0c14 0000803F 		ldr	r3, [fp, #-60]
+ 1091              		sub	r3, r3, #1
+ 1092              		mul	r3, r2, r3
+ 1093              		mov	r3, r3, asl #2
+ 1094              		add	r3, r3, #3
+ 1095              		add	r3, r3, #3
+ 1096              		mov	r3, r3, lsr #2
+ 1097              		mov	r3, r3, asl #2
+ 1098              		rsb	sp, r3, sp
+ 137:Utilites.c    **** #include "Utilites.h"
+ 138:Utilites.c    **** #include "math.h"
+ 139:Utilites.c    **** #include "stdio.h"
+ 1099              	8]
+ 1100              		ldr	r2, [fp, #-68]
+ 1101              		add	r3, r2, #3
+ 1102              		mov	r3, r3, lsr #2
+ 1103 0c18 0DC0A0E1 		mov	r3, r3, asl #2
+ 1104              		str	r3, [fp, #-68]
+ 1105 0c1c 30D82DE9 		ldr	r3, [fp, #-68]
+ 1106              		str	r3, [fp, #-48]
+ 1107 0c20 04B04CE2 		.loc 1 142 0
+ 1108              		ldr	r3, [fp, #-60]
+ 1109 0c24 30D04DE2 		cmp	r3, #1
+ 1110              		bne	.L100
+ 1111 0c28 34000BE5 		.loc 1 143 0
+ 1112 0c2c 38100BE5 		ldr	r2, [fp, #-56]
+ 1113 0c30 3C200BE5 		ldr	r3, .L120	@ float
+ 1114              		str	r3, [r2, #0]	@ float
+ 1115 0c34 0D30A0E1 		b	.L102
+ 1116 0c38 40300BE5 	.L100:
+ 140:Utilites.c    **** #include "Utilites.h"
+ 1117              		r3, #0
+ 1118 0c3c 3C301BE5 		str	r3, [fp, #-40]
+ 1119 0c40 012043E2 		b	.L103
+ 1120 0c44 3C301BE5 	.L104:
+ 1121 0c48 013043E2 		.loc 1 147 0
+ 1122 0c4c 920303E0 		mov	r3, #0
+ 1123 0c50 0331A0E1 		str	r3, [fp, #-44]
+ 1124 0c54 033083E2 		b	.L105
+ 1125 0c58 033083E2 	.L106:
+ 1126 0c5c 2331A0E1 		.loc 1 148 0
+ 1127 0c60 0331A0E1 		mov	r3, #0
+ 1128 0c64 0DD063E0 		str	r3, [fp, #-28]
+ 1129 0c68 44D00BE5 		.loc 1 149 0
+ 1130 0c6c 44201BE5 		mov	r3, #0
+ 1131 0c70 033082E2 		str	r3, [fp, #-36]
+ 1132 0c74 2331A0E1 		b	.L107
+ 1133 0c78 0331A0E1 	.L108:
+ 1134 0c7c 44300BE5 		.loc 1 150 0
+ 1135 0c80 44301BE5 		mov	r3, #0
+ 1136 0c84 30300BE5 		str	r3, [fp, #-24]
+ 141:Utilites.c    **** #include "Utilites.h"
+ 142:Utilites.c    **** #include "math.h"
+ 1137              	3, #0
+ 1138 0c88 3C301BE5 		str	r3, [fp, #-32]
+ 1139 0c8c 010053E3 		b	.L109
+ 1140 0c90 0300001A 	.L110:
+ 143:Utilites.c    **** #include "Utilites.h"
+ 1141              	c 1 152 0
+ 1142 0c94 38201BE5 		ldr	r2, [fp, #-36]
+ 1143 0c98 D4319FE5 		ldr	r3, [fp, #-40]
+ 1144 0c9c 003082E5 		cmp	r2, r3
+ 1145 0ca0 6F0000EA 		beq	.L111
+ 1146              		ldr	r2, [fp, #-32]
+ 144:Utilites.c    **** #include "Utilites.h"
+ 145:Utilites.c    **** #include "math.h"
+ 146:Utilites.c    **** #include "stdio.h"
+ 1147              	3, [fp, #-44]
+ 1148 0ca4 0030A0E3 		cmp	r2, r3
+ 1149 0ca8 28300BE5 		beq	.L111
+ 1150 0cac 680000EA 		.loc 1 153 0
+ 1151              		ldr	r3, [fp, #-60]
+ 147:Utilites.c    **** #include "Utilites.h"
+ 1152              	r2, r3, #1
+ 1153 0cb0 0030A0E3 		ldr	r3, [fp, #-28]
+ 1154 0cb4 2C300BE5 		mul	r2, r3, r2
+ 1155 0cb8 5E0000EA 		ldr	r3, [fp, #-24]
+ 1156              		add	r1, r2, r3
+ 148:Utilites.c    **** #include "Utilites.h"
+ 1157              	r2, [fp, #-36]
+ 1158 0cbc 0030A0E3 		ldr	r3, [fp, #-60]
+ 1159 0cc0 1C300BE5 		mul	r2, r3, r2
+ 149:Utilites.c    **** #include "Utilites.h"
+ 1160              	r	r3, [fp, #-32]
+ 1161 0cc4 0030A0E3 		add	r3, r2, r3
+ 1162 0cc8 24300BE5 		mov	r3, r3, asl #2
+ 1163 0ccc 320000EA 		mov	r2, r3
+ 1164              		ldr	r3, [fp, #-52]
+ 150:Utilites.c    **** #include "Utilites.h"
+ 1165              	r3, r2, r3
+ 1166 0cd0 0030A0E3 		ldr	r2, [r3, #0]	@ float
+ 1167 0cd4 18300BE5 		ldr	r3, [fp, #-48]
+ 151:Utilites.c    **** #include "Utilites.h"
+ 1168              	r	r2, [r3, r1, asl #2]	@ float
+ 1169 0cd8 0030A0E3 		.loc 1 154 0
+ 1170 0cdc 20300BE5 		ldr	r3, [fp, #-24]
+ 1171 0ce0 1F0000EA 		add	r3, r3, #1
+ 1172              		str	r3, [fp, #-24]
+ 152:Utilites.c    **** #include "Utilites.h"
+ 1173              	:
+ 1174 0ce4 24201BE5 		.loc 1 151 0
+ 1175 0ce8 28301BE5 		ldr	r3, [fp, #-32]
+ 1176 0cec 030052E1 		add	r3, r3, #1
+ 1177 0cf0 1800000A 		str	r3, [fp, #-32]
+ 1178 0cf4 20201BE5 	.L109:
+ 1179 0cf8 2C301BE5 		ldr	r2, [fp, #-32]
+ 1180 0cfc 030052E1 		ldr	r3, [fp, #-60]
+ 1181 0d00 1400000A 		cmp	r2, r3
+ 153:Utilites.c    **** #include "Utilites.h"
+ 1182              	0
+ 1183 0d04 3C301BE5 		.loc 1 157 0
+ 1184 0d08 012043E2 		ldr	r2, [fp, #-36]
+ 1185 0d0c 1C301BE5 		ldr	r3, [fp, #-40]
+ 1186 0d10 930202E0 		cmp	r2, r3
+ 1187 0d14 18301BE5 		beq	.L115
+ 1188 0d18 031082E0 		.loc 1 158 0
+ 1189 0d1c 24201BE5 		ldr	r3, [fp, #-28]
+ 1190 0d20 3C301BE5 		add	r3, r3, #1
+ 1191 0d24 930202E0 		str	r3, [fp, #-28]
+ 1192 0d28 20301BE5 	.L115:
+ 1193 0d2c 033082E0 		.loc 1 149 0
+ 1194 0d30 0331A0E1 		ldr	r3, [fp, #-36]
+ 1195 0d34 0320A0E1 		add	r3, r3, #1
+ 1196 0d38 34301BE5 		str	r3, [fp, #-36]
+ 1197 0d3c 033082E0 	.L107:
+ 1198 0d40 002093E5 		ldr	r2, [fp, #-36]
+ 1199 0d44 30301BE5 		ldr	r3, [fp, #-60]
+ 1200 0d48 012183E7 		cmp	r2, r3
+ 154:Utilites.c    **** #include "Utilites.h"
+ 1201              	161 0
+ 1202 0d4c 18301BE5 		ldr	r2, [fp, #-40]
+ 1203 0d50 013083E2 		ldr	r3, [fp, #-60]
+ 1204 0d54 18300BE5 		mul	r2, r3, r2
+ 1205              		ldr	r3, [fp, #-44]
+ 1206              		add	r3, r2, r3
+ 1207 0d58 20301BE5 		mov	r3, r3, asl #2
+ 1208 0d5c 013083E2 		mov	r2, r3
+ 1209 0d60 20300BE5 		ldr	r3, [fp, #-56]
+ 1210              		add	r5, r2, r3
+ 1211 0d64 20201BE5 		ldr	r2, [fp, #-40]
+ 1212 0d68 3C301BE5 		ldr	r3, [fp, #-44]
+ 1213 0d6c 030052E1 		add	r3, r2, r3
+ 1214 0d70 DBFFFFBA 		mov	r0, r3
+ 155:Utilites.c    **** #include "Utilites.h"
+ 156:Utilites.c    **** #include "math.h"
+ 157:Utilites.c    **** #include "stdio.h"
+ 1215              	f
+ 1216 0d74 24201BE5 		mov	r3, r0
+ 1217 0d78 28301BE5 		ldr	r0, .L120+4	@ float
+ 1218 0d7c 030052E1 		mov	r1, r3
+ 1219 0d80 0200000A 		bl	powf
+ 158:Utilites.c    **** #include "Utilites.h"
+ 1220              	r3, r0
+ 1221 0d84 1C301BE5 		mov	r4, r3
+ 1222 0d88 013083E2 		ldr	r2, [fp, #-48]
+ 1223 0d8c 1C300BE5 		ldr	r3, [fp, #-60]
+ 1224              		sub	r3, r3, #1
+ 1225              		mov	r0, r2
+ 1226 0d90 24301BE5 		mov	r1, r3
+ 1227 0d94 013083E2 		bl	determinant
+ 1228 0d98 24300BE5 		mov	r3, r0
+ 1229              		mov	r0, r4
+ 1230 0d9c 24201BE5 		mov	r1, r3
+ 1231 0da0 3C301BE5 		bl	__mulsf3
+ 1232 0da4 030052E1 		mov	r3, r0
+ 1233 0da8 C8FFFFBA 		str	r3, [r5, #0]	@ float
+ 159:Utilites.c    **** #include "Utilites.h"
+ 160:Utilites.c    **** #include "math.h"
+ 161:Utilites.c    **** #include "stdio.h"
+ 1234              		ldr	r3, [fp, #-44]
+ 1235 0dac 28201BE5 		add	r3, r3, #1
+ 1236 0db0 3C301BE5 		str	r3, [fp, #-44]
+ 1237 0db4 930202E0 	.L105:
+ 1238 0db8 2C301BE5 		ldr	r2, [fp, #-44]
+ 1239 0dbc 033082E0 		ldr	r3, [fp, #-60]
+ 1240 0dc0 0331A0E1 		cmp	r2, r3
+ 1241 0dc4 0320A0E1 		blt	.L106
+ 1242 0dc8 38301BE5 		.loc 1 146 0
+ 1243 0dcc 035082E0 		ldr	r3, [fp, #-40]
+ 1244 0dd0 28201BE5 		add	r3, r3, #1
+ 1245 0dd4 2C301BE5 		str	r3, [fp, #-40]
+ 1246 0dd8 033082E0 	.L103:
+ 1247 0ddc 0300A0E1 		ldr	r2, [fp, #-40]
+ 1248 0de0 FEFFFFEB 		ldr	r3, [fp, #-60]
+ 1249 0de4 0030A0E1 		cmp	r2, r3
+ 1250 0de8 88009FE5 		blt	.L104
+ 1251 0dec 0310A0E1 	.L102:
+ 1252 0df0 FEFFFFEB 		ldr	sp, [fp, #-64]
+ 1253 0df4 0030A0E1 		.loc 1 165 0
+ 1254 0df8 0340A0E1 		sub	sp, fp, #20
+ 1255 0dfc 30201BE5 		ldmfd	sp, {r4, r5, fp, sp, lr}
+ 1256 0e00 3C301BE5 		bx	lr
+ 1257 0e04 013043E2 	.L121:
+ 1258 0e08 0200A0E1 		.align	2
+ 1259 0e0c 0310A0E1 	.L120:
+ 1260 0e10 FEFFFFEB 		.word	1065353216
+ 1261 0e14 0030A0E1 		.word	-1082130432
+ 1262 0e18 0400A0E1 	.LFE13:
+ 1264 0e20 FEFFFFEB 		.global	__divsf3
+ 1265 0e24 0030A0E1 		.align	2
+ 1266 0e28 003085E5 		.global	inverse
+ 1268 0e2c 2C301BE5 	inverse:
+ 1269 0e30 013083E2 	.LFB14:
+ 1270 0e34 2C300BE5 		.loc 1 168 0
+ 1271              		@ Function supports interworking.
+ 1272 0e38 2C201BE5 		@ args = 0, pretend = 0, frame = 32
+ 1273 0e3c 3C301BE5 		@ frame_needed = 1, uses_anonymous_args = 0
+ 1274 0e40 030052E1 		mov	ip, sp
+ 1275 0e44 9CFFFFBA 	.LCFI48:
+ 1276              		stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+ 1277 0e48 28301BE5 	.LCFI49:
+ 1278 0e4c 013083E2 		sub	fp, ip, #4
+ 1279 0e50 28300BE5 	.LCFI50:
+ 1280              		sub	sp, sp, #36
+ 1281 0e54 28201BE5 	.LCFI51:
+ 1282 0e58 3C301BE5 		str	r0, [fp, #-36]
+ 1283 0e5c 030052E1 		str	r1, [fp, #-40]
+ 1284 0e60 92FFFFBA 		str	r2, [fp, #-44]
+ 1285              		.loc 1 168 0
+ 1286 0e64 40D01BE5 		mov	r3, sp
+ 162:Utilites.c    **** #include "Utilites.h"
+ 163:Utilites.c    **** #include "math.h"
+ 164:Utilites.c    **** #include "stdio.h"
+ 165:Utilites.c    **** 
+ 1287              	, [fp, #-36]
+ 1288 0e68 14D04BE2 		mul	r3, r2, r3
+ 1289 0e6c 30689DE8 		mov	r3, r3, asl #2
+ 1290 0e70 1EFF2FE1 		add	r3, r3, #3
+ 1291              		add	r3, r3, #3
+ 1292              		mov	r3, r3, lsr #2
+ 1293              		mov	r3, r3, asl #2
+ 1294 0e74 0000803F 		rsb	sp, r3, sp
+ 1295 0e78 000080BF 		add	r2, sp, #4
+ 1296              		str	r2, [fp, #-52]
+ 1297              		ldr	r2, [fp, #-52]
+ 1298              		add	r3, r2, #3
+ 1299              		mov	r3, r3, lsr #2
+ 1300              		mov	r3, r3, asl #2
+ 1301              		str	r3, [fp, #-52]
+ 1302              		ldr	r3, [fp, #-52]
+ 1303              		str	r3, [fp, #-32]
+ 166:Utilites.c    **** #include "Utilites.h"
+ 167:Utilites.c    **** #include "math.h"
+ 168:Utilites.c    **** #include "stdio.h"
+ 1304              	6]
+ 1305              		ldr	r3, [fp, #-36]
+ 1306              		mul	r3, r2, r3
+ 1307              		mov	r3, r3, asl #2
+ 1308 0e7c 0DC0A0E1 		add	r3, r3, #3
+ 1309              		add	r3, r3, #3
+ 1310 0e80 30D82DE9 		mov	r3, r3, lsr #2
+ 1311              		mov	r3, r3, asl #2
+ 1312 0e84 04B04CE2 		rsb	sp, r3, sp
+ 1313              		add	r2, sp, #4
+ 1314 0e88 24D04DE2 		str	r2, [fp, #-48]
+ 1315              		ldr	r2, [fp, #-48]
+ 1316 0e8c 24000BE5 		add	r3, r2, #3
+ 1317 0e90 28100BE5 		mov	r3, r3, lsr #2
+ 1318 0e94 2C200BE5 		mov	r3, r3, asl #2
+ 1319              		str	r3, [fp, #-48]
+ 1320 0e98 0D30A0E1 		ldr	r3, [fp, #-48]
+ 1321 0e9c 0350A0E1 		str	r3, [fp, #-28]
+ 169:Utilites.c    **** #include "Utilites.h"
+ 1322              		r3, [fp, #-28]
+ 1323 0ea0 24201BE5 		ldr	r0, [fp, #-40]
+ 1324 0ea4 24301BE5 		mov	r1, r3
+ 1325 0ea8 920303E0 		ldr	r2, [fp, #-36]
+ 1326 0eac 0331A0E1 		bl	cofactors
+ 1327 0eb0 033083E2 		.loc 1 171 0
+ 1328 0eb4 033083E2 		ldr	r3, [fp, #-28]
+ 1329 0eb8 2331A0E1 		ldr	ip, [fp, #-32]
+ 1330 0ebc 0331A0E1 		ldr	r0, [fp, #-36]
+ 1331 0ec0 0DD063E0 		ldr	r1, [fp, #-36]
+ 1332 0ec4 04208DE2 		mov	r2, r3
+ 1333 0ec8 34200BE5 		mov	r3, ip
+ 1334 0ecc 34201BE5 		bl	matrix_transpose
+ 1335 0ed0 033082E2 		.loc 1 173 0
+ 1336 0ed4 2331A0E1 		ldr	r0, [fp, #-40]
+ 1337 0ed8 0331A0E1 		ldr	r1, [fp, #-36]
+ 1338 0edc 34300BE5 		bl	determinant
+ 1339 0ee0 34301BE5 		mov	r3, r0
+ 1340 0ee4 20300BE5 		str	r3, [fp, #-24]	@ float
+ 1341 0ee8 24201BE5 		.loc 1 174 0
+ 1342 0eec 24301BE5 		ldr	r4, [fp, #-32]
+ 1343 0ef0 920303E0 		ldr	r0, .L124	@ float
+ 1344 0ef4 0331A0E1 		ldr	r1, [fp, #-24]	@ float
+ 1345 0ef8 033083E2 		bl	__divsf3
+ 1346 0efc 033083E2 		mov	r3, r0
+ 1347 0f00 2331A0E1 		mov	ip, r3
+ 1348 0f04 0331A0E1 		ldr	r3, [fp, #-44]
+ 1349 0f08 0DD063E0 		str	r3, [sp, #0]
+ 1350 0f0c 04208DE2 		ldr	r0, [fp, #-36]
+ 1351 0f10 30200BE5 		ldr	r1, [fp, #-36]
+ 1352 0f14 30201BE5 		mov	r2, r4
+ 1353 0f18 033082E2 		mov	r3, ip
+ 1354 0f1c 2331A0E1 		bl	matrix_scalar_mult
+ 1355 0f20 0331A0E1 		mov	sp, r5
+ 1356 0f24 30300BE5 		.loc 1 175 0
+ 1357 0f28 30301BE5 		sub	sp, fp, #20
+ 1358 0f2c 1C300BE5 		ldmfd	sp, {r4, r5, fp, sp, lr}
+ 170:Utilites.c    **** #include "Utilites.h"
+ 1359              		1065353216
+ 1360 0f30 1C301BE5 	.LFE14:
+ 1362 0f38 0310A0E1 		.section	.debug_frame,"",%progbits
+ 1363 0f3c 24201BE5 	.Lframe0:
+ 1364 0f40 FEFFFFEB 		.4byte	.LECIE0-.LSCIE0
+ 171:Utilites.c    **** #include "Utilites.h"
+ 1365              	0:
+ 1366 0f44 1C301BE5 		.4byte	0xffffffff
+ 1367 0f48 20C01BE5 		.byte	0x1
+ 1368 0f4c 24001BE5 		.ascii	"\000"
+ 1369 0f50 24101BE5 		.uleb128 0x1
+ 1370 0f54 0320A0E1 		.sleb128 -4
+ 1371 0f58 0C30A0E1 		.byte	0xe
+ 1372 0f5c FEFFFFEB 		.byte	0xc
+ 172:Utilites.c    **** #include "Utilites.h"
+ 173:Utilites.c    **** #include "math.h"
+ 1373              	8 0xd
+ 1374 0f60 28001BE5 		.uleb128 0x0
+ 1375 0f64 24101BE5 		.align	2
+ 1376 0f68 FEFFFFEB 	.LECIE0:
+ 1377 0f6c 0030A0E1 	.LSFDE0:
+ 1378 0f70 18300BE5 		.4byte	.LEFDE0-.LASFDE0
+ 174:Utilites.c    **** #include "Utilites.h"
+ 1379              	E0:
+ 1380 0f74 20401BE5 		.4byte	.Lframe0
+ 1381 0f78 38009FE5 		.4byte	.LFB2
+ 1382 0f7c 18101BE5 		.4byte	.LFE2-.LFB2
+ 1383 0f80 FEFFFFEB 		.byte	0x4
+ 1384 0f84 0030A0E1 		.4byte	.LCFI0-.LFB2
+ 1385 0f88 03C0A0E1 		.byte	0xd
+ 1386 0f8c 2C301BE5 		.uleb128 0xc
+ 1387 0f90 00308DE5 		.byte	0x4
+ 1388 0f94 24001BE5 		.4byte	.LCFI1-.LCFI0
+ 1389 0f98 24101BE5 		.byte	0x8e
+ 1390 0f9c 0420A0E1 		.uleb128 0x2
+ 1391 0fa0 0C30A0E1 		.byte	0x8d
+ 1392 0fa4 FEFFFFEB 		.uleb128 0x3
+ 1393 0fa8 05D0A0E1 		.byte	0x8b
+ 175:Utilites.c    **** #include "Utilites.h"
+ 1394              	.byte	0x84
+ 1395 0fac 14D04BE2 		.uleb128 0x5
+ 1396 0fb0 30689DE8 		.byte	0x4
+ 1397 0fb4 1EFF2FE1 		.4byte	.LCFI2-.LCFI1
+ 1398              		.byte	0xc
+ 1399              		.uleb128 0xb
+ 1400              		.uleb128 0x4
+ 1401 0fb8 0000803F 		.align	2
+ 1402              	.LEFDE0:
+ 1403              	.LSFDE2:
+ 1781              		.byte	0x5c
+DEFINED SYMBOLS
+                            *ABS*:00000000 Utilites.c
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:18     .text:00000000 angle_diff
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:25     .text:00000000 $a
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:82     .text:000000c0 $d
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:93     .text:000000d4 vector_add
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:99     .text:000000d4 $a
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:157    .text:00000180 matrix_add
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:248    .text:00000284 matrix_scalar_mult
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:328    .text:00000360 vector_scalar_mult
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:386    .text:000003f4 matrix_transpose
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:462    .text:000004c0 matrix_multiply
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:590    .text:00000650 $d
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:596    .text:00000654 vector_multiply
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:602    .text:00000654 $a
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:694    .text:0000077c $d
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:702    .text:00000780 determinant
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:708    .text:00000780 $a
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:949    .text:00000ab0 $d
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:955    .text:00000ab4 vector_copy
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:961    .text:00000ab4 $a
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:1008   .text:00000b34 make_identity
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:1089   .text:00000c10 $d
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:1097   .text:00000c18 cofactors
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:1103   .text:00000c18 $a
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:1294   .text:00000e74 $d
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:1302   .text:00000e7c inverse
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:1308   .text:00000e7c $a
+C:\Users\bkuo\AppData\Local\Temp/ccQnfaaa.s:1401   .text:00000fb8 $d
+
+UNDEFINED SYMBOLS
+__subsf3
+__extendsfdf2
+__adddf3
+__truncdfsf2
+__subdf3
+fmodf
+__addsf3
+__mulsf3
+__floatsidf
+__muldf3
+pow
+__floatsisf
+powf
+__divsf3

@@ -1,0 +1,26 @@
+what,kind,bundleId,bundleVersion,description,time
+opened,editor,org.eclipse.cdt.ui,5.1.0.200906161748,"org.eclipse.cdt.ui.editor.CEditor",1429890570407
+activated,editor,org.eclipse.cdt.ui,5.1.0.200906161748,"org.eclipse.cdt.ui.editor.CEditor",1429890570437
+started,bundle,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui",1429890596346
+started,bundle,org.eclipse.ui.externaltools,3.2.0.v20090504,"org.eclipse.ui.externaltools",1429890596347
+started,bundle,org.eclipse.cdt.debug.core,6.0.0.200906161748,"org.eclipse.cdt.debug.core",1429890596437
+started,bundle,org.eclipse.cdt.debug.ui,6.0.0.200906161748,"org.eclipse.cdt.debug.ui",1429890596439
+deactivated,workbench,org.eclipse.ui.workbench,3.5.0.I20090603-2000,"",1429890599860
+activated,workbench,org.eclipse.ui.workbench,3.5.0.I20090603-2000,"",1429890606999
+executed,command,org.eclipse.ui.externaltools,3.2.0.v20090504,"org.eclipse.ui.externalTools.commands.OpenExternalToolsConfigurations",1429890607010
+started,bundle,org.eclipse.cdt.make.core,6.0.0.200906161748,"org.eclipse.cdt.make.core",1429890607048
+started,bundle,org.eclipse.cdt.debug.mi.ui,6.0.0.200906161748,"org.eclipse.cdt.debug.mi.ui",1429890607704
+started,bundle,org.eclipse.cdt.debug.mi.core,6.0.0.200906161748,"org.eclipse.cdt.debug.mi.core",1429890607710
+deactivated,workbench,org.eclipse.ui.workbench,3.5.0.I20090603-2000,"",1429890617833
+started,bundle,com.zylin.embeddedcdt,4.9.1,"com.zylin.embeddedcdt",1429890621274
+started,bundle,org.eclipse.cdt.launch,6.0.0.200906161748,"org.eclipse.cdt.launch",1429890621277
+activated,workbench,org.eclipse.ui.workbench,3.5.0.I20090603-2000,"",1429890622391
+error,log,,,"Failed command: monitor flash write 0 main.bin 0x0",1429890630736
+deactivated,workbench,org.eclipse.ui.workbench,3.5.0.I20090603-2000,"",1429890637731
+activated,workbench,org.eclipse.ui.workbench,3.5.0.I20090603-2000,"",1429890640749
+opened,view,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.DebugView",1429890640886
+opened,view,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.VariableView",1429890640931
+activated,perspective,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.DebugPerspective",1429890640961
+opened,view,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.BreakpointView",1429890641073
+opened,view,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.MemoryView",1429890641105
+opened,view,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.RegisterView",1429890641122

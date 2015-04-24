@@ -1,0 +1,1 @@
+diff -rq folder-1 folder-2

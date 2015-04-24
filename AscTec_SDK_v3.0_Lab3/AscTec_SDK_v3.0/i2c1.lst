@@ -1,0 +1,1999 @@
+   1              		.file	"i2c1.c"
+   9              	.Ltext0:
+  10              		.global	I2C1MasterState
+  11              		.bss
+  12              		.align	2
+  15              	I2C1MasterState:
+  16 0000 00000000 		.space	4
+  17              		.global	I2C1Count
+  18              		.align	2
+  21              	I2C1Count:
+  22 0004 00000000 		.space	4
+  23              		.global	WrIndex1
+  24              		.align	2
+  27              	WrIndex1:
+  28 0008 00000000 		.space	4
+  29              		.global	lastI2c1Error
+  32              	lastI2c1Error:
+  33 000c 00       		.space	1
+  34              		.text
+  35              		.align	2
+  36              		.global	I2C1MasterHandler
+  38              	I2C1MasterHandler:
+  39              	.LFB2:
+  40              		.file 1 "i2c1.c"
+   1:i2c1.c        **** /*****************************************************************************
+   2:i2c1.c        ****  *   i2c.c:  I2C C file for Philips LPC214x Family Microprocessors
+   3:i2c1.c        ****  *
+   4:i2c1.c        ****  *   Copyright(C) 2006, Philips Semiconductor
+   5:i2c1.c        ****  *   All rights reserved.
+   6:i2c1.c        ****  *
+   7:i2c1.c        ****  *   History
+   8:i2c1.c        ****  *   2005.10.01  ver 1.00    Prelimnary version, first Release
+   9:i2c1.c        ****  *
+  10:i2c1.c        **** *****************************************************************************/
+  11:i2c1.c        **** #include "LPC214x.h"                        /* LPC21xx definitions */
+  12:i2c1.c        **** #include "type.h"
+  13:i2c1.c        **** #include "irq.h"
+  14:i2c1.c        **** #include "i2c1.h"
+  15:i2c1.c        **** #include "main.h"
+  16:i2c1.c        **** #include "LL_HL_comm.h"
+  17:i2c1.c        **** #include "gpsmath.h"
+  18:i2c1.c        **** #include "system.h"
+  19:i2c1.c        **** #ifndef FALCON
+  20:i2c1.c        **** 
+  21:i2c1.c        **** DWORD I2C1MasterState = I2C_IDLE;
+  22:i2c1.c        **** 
+  23:i2c1.c        **** BYTE I2C1MasterBuffer[BUFSIZE];
+  24:i2c1.c        **** DWORD I2C1Count = 0;
+  25:i2c1.c        **** DWORD I2C1WriteLength;
+  26:i2c1.c        **** 
+  27:i2c1.c        **** DWORD WrIndex1 = 0;
+  28:i2c1.c        **** 
+  29:i2c1.c        **** unsigned char lastI2c1Error=I2C_ERROR_NONE;
+  30:i2c1.c        **** 
+  31:i2c1.c        **** /*
+  32:i2c1.c        **** From device to device, the I2C communication protocol may vary,
+  33:i2c1.c        **** in the example below, the protocol uses repeated start to read data from or
+  34:i2c1.c        **** write to the device:
+  35:i2c1.c        **** For master read: the sequence is: STA,Addr(W),offset,RE-STA,Addr(w),data...STO
+  36:i2c1.c        **** for master write: the sequence is: STA,Addr(W),length,RE-STA,Addr(r),data...STO
+  37:i2c1.c        **** Thus, in state 8, the address is always WRITE. in state 10, the address could
+  38:i2c1.c        **** be READ or WRITE depending on the I2CCmd.
+  39:i2c1.c        **** */
+  40:i2c1.c        **** 
+  41:i2c1.c        **** /*****************************************************************************
+  42:i2c1.c        **** ** Function name:		I2C0MasterHandler
+  43:i2c1.c        **** **
+  44:i2c1.c        **** ** Descriptions:		I2C0 interrupt handler, deal with master mode
+  45:i2c1.c        **** **				only.
+  46:i2c1.c        **** **
+  47:i2c1.c        **** ** parameters:			None
+  48:i2c1.c        **** ** Returned value:		None
+  49:i2c1.c        **** **
+  50:i2c1.c        **** *****************************************************************************/
+  51:i2c1.c        **** 
+  52:i2c1.c        **** void I2C1MasterHandler (void) __irq
+  53:i2c1.c        **** {
+  41              	orking.
+  42              		@ args = 0, pretend = 0, frame = 4
+  43              		@ frame_needed = 1, uses_anonymous_args = 0
+  44              		mov	ip, sp
+  45 0000 0DC0A0E1 	.LCFI0:
+  46              		stmfd	sp!, {fp, ip, lr, pc}
+  47 0004 00D82DE9 	.LCFI1:
+  48              		sub	fp, ip, #4
+  49 0008 04B04CE2 	.LCFI2:
+  50              		sub	sp, sp, #4
+  51 000c 04D04DE2 	.LCFI3:
+  52              		.loc 1 57 0
+  54:i2c1.c        ****     BYTE StatValue;
+  55:i2c1.c        **** 
+  56:i2c1.c        ****     /* this handler deals with master read and master write only */
+  57:i2c1.c        ****     StatValue = I21STAT;
+  53              	36870908
+  54 0010 4E32A0E3 		add	r3, r3, #376832
+  55 0014 173983E2 		ldr	r3, [r3, #0]
+  56 0018 003093E5 		strb	r3, [fp, #-13]
+  57 001c 0D304BE5 		.loc 1 60 0
+  58:i2c1.c        **** 
+  59:i2c1.c        ****     IENABLE;
+  60:i2c1.c        ****     switch ( StatValue )
+  58              		r3, [fp, #-13]	@ zero_extendqisi2
+  59 0020 0D305BE5 		sub	r3, r3, #8
+  60 0024 083043E2 		cmp	r3, #40
+  61 0028 280053E3 		ldrls	pc, [pc, r3, asl #2]
+  62 002c 03F19F97 		b	.L2
+  63 0030 9E0000EA 		.p2align 2
+  64              	.L8:
+  65              		.word	.L3
+  66 0034 D8000000 		.word	.L2
+  67 0038 B0020000 		.word	.L2
+  68 003c B0020000 		.word	.L2
+  69 0040 B0020000 		.word	.L2
+  70 0044 B0020000 		.word	.L2
+  71 0048 B0020000 		.word	.L2
+  72 004c B0020000 		.word	.L2
+  73 0050 B0020000 		.word	.L2
+  74 0054 B0020000 		.word	.L2
+  75 0058 B0020000 		.word	.L2
+  76 005c B0020000 		.word	.L2
+  77 0060 B0020000 		.word	.L2
+  78 0064 B0020000 		.word	.L2
+  79 0068 B0020000 		.word	.L2
+  80 006c B0020000 		.word	.L2
+  81 0070 B0020000 		.word	.L4
+  82 0074 10010000 		.word	.L2
+  83 0078 B0020000 		.word	.L2
+  84 007c B0020000 		.word	.L2
+  85 0080 B0020000 		.word	.L2
+  86 0084 B0020000 		.word	.L2
+  87 0088 B0020000 		.word	.L2
+  88 008c B0020000 		.word	.L2
+  89 0090 B0020000 		.word	.L5
+  90 0094 5C020000 		.word	.L2
+  91 0098 B0020000 		.word	.L2
+  92 009c B0020000 		.word	.L2
+  93 00a0 B0020000 		.word	.L2
+  94 00a4 B0020000 		.word	.L2
+  95 00a8 B0020000 		.word	.L2
+  96 00ac B0020000 		.word	.L2
+  97 00b0 B0020000 		.word	.L6
+  98 00b4 6C010000 		.word	.L2
+  99 00b8 B0020000 		.word	.L2
+ 100 00bc B0020000 		.word	.L2
+ 101 00c0 B0020000 		.word	.L2
+ 102 00c4 B0020000 		.word	.L2
+ 103 00c8 B0020000 		.word	.L2
+ 104 00cc B0020000 		.word	.L2
+ 105 00d0 B0020000 		.word	.L7
+ 106 00d4 1C020000 	.L3:
+ 107              		.loc 1 63 0
+  61:i2c1.c        ****     {
+  62:i2c1.c        **** 	case 0x08:			/* A Start condition is issued. */
+  63:i2c1.c        **** 	I21DAT = I2C1MasterBuffer[0];
+ 108              	 .L16
+ 109 00d8 8E22A0E3 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 110 00dc 172982E2 		str	r3, [r2, #0]
+ 111 00e0 F8319FE5 		.loc 1 64 0
+ 112 00e4 0030D3E5 		mov	r3, #-536870912
+ 113 00e8 003082E5 		add	r3, r3, #376832
+  64:i2c1.c        **** 	I21CONCLR = (I2CONCLR_SIC | I2CONCLR_STAC);
+ 114              	3, r3, #24
+ 115 00ec 0E32A0E3 		mov	r2, #40
+ 116 00f0 173983E2 		str	r2, [r3, #0]
+ 117 00f4 183083E2 		.loc 1 65 0
+ 118 00f8 2820A0E3 		ldr	r2, .L16+4
+ 119 00fc 002083E5 		mov	r3, #1
+  65:i2c1.c        **** 	I2C1MasterState = I2C_STARTED;
+ 120              	3, [r2, #0]
+ 121 0100 DC219FE5 		.loc 1 66 0
+ 122 0104 0130A0E3 		b	.L9
+ 123 0108 003082E5 	.L4:
+  66:i2c1.c        **** 	break;
+ 124              	c 1 70 0
+ 125 010c 6C0000EA 		ldr	r3, .L16+4
+ 126              		ldr	r3, [r3, #0]
+  67:i2c1.c        **** 
+  68:i2c1.c        **** 
+  69:i2c1.c        **** 	case 0x18:			/* Regardless, it's a ACK */
+  70:i2c1.c        **** 	if ( I2C1MasterState == I2C_STARTED )
+ 127              	p	r3, #1
+ 128 0110 CC319FE5 		bne	.L10
+ 129 0114 003093E5 		.loc 1 72 0
+ 130 0118 010053E3 		mov	r2, #-536870904
+ 131 011c 0C00001A 		add	r2, r2, #376832
+  71:i2c1.c        **** 	{
+  72:i2c1.c        **** 	    I21DAT = I2C1MasterBuffer[1];
+ 132              	r3, .L16
+ 133 0120 8E22A0E3 		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 134 0124 172982E2 		str	r3, [r2, #0]
+ 135 0128 B0319FE5 		.loc 1 73 0
+ 136 012c 0130D3E5 		ldr	r3, .L16+8
+ 137 0130 003082E5 		ldr	r3, [r3, #0]
+  73:i2c1.c        **** 	    WrIndex1++;
+ 138              	2, r3, #1
+ 139 0134 AC319FE5 		ldr	r3, .L16+8
+ 140 0138 003093E5 		str	r2, [r3, #0]
+ 141 013c 012083E2 		.loc 1 74 0
+ 142 0140 A0319FE5 		ldr	r2, .L16+4
+ 143 0144 002083E5 		mov	r3, #4
+  74:i2c1.c        **** 	    I2C1MasterState = DATA_ACK;
+ 144              	3, [r2, #0]
+ 145 0148 94219FE5 	.L10:
+ 146 014c 0430A0E3 		.loc 1 76 0
+ 147 0150 003082E5 		mov	r3, #-536870912
+ 148              		add	r3, r3, #376832
+  75:i2c1.c        **** 	}
+  76:i2c1.c        **** 	I21CONCLR = I2CONCLR_SIC;
+ 149              	r3, r3, #24
+ 150 0154 0E32A0E3 		mov	r2, #8
+ 151 0158 173983E2 		str	r2, [r3, #0]
+ 152 015c 183083E2 		.loc 1 77 0
+ 153 0160 0820A0E3 		b	.L9
+ 154 0164 002083E5 	.L6:
+  77:i2c1.c        **** 	break;
+ 155              	1 80 0
+ 156 0168 550000EA 		ldr	r3, .L16+8
+ 157              		ldr	r2, [r3, #0]
+  78:i2c1.c        **** 
+  79:i2c1.c        **** 	case 0x28:	/* Data byte has been transmitted, regardless ACK or NACK */
+  80:i2c1.c        **** 	if ( WrIndex1 < I2C1WriteLength )
+ 158              	r	r3, .L16+12
+ 159 016c 74319FE5 		ldr	r3, [r3, #0]
+ 160 0170 002093E5 		cmp	r2, r3
+ 161 0174 70319FE5 		bcs	.L12
+ 162 0178 003093E5 		.loc 1 82 0
+ 163 017c 030052E1 		mov	r2, #-536870904
+ 164 0180 1000002A 		add	r2, r2, #376832
+  81:i2c1.c        **** 	{
+  82:i2c1.c        **** 	    I21DAT = I2C1MasterBuffer[1+WrIndex1]; /* this should be the last one */
+ 165              	, .L16+8
+ 166 0184 8E22A0E3 		ldr	r3, [r3, #0]
+ 167 0188 172982E2 		add	r1, r3, #1
+ 168 018c 54319FE5 		ldr	r3, .L16
+ 169 0190 003093E5 		ldrb	r3, [r3, r1]	@ zero_extendqisi2
+ 170 0194 011083E2 		str	r3, [r2, #0]
+ 171 0198 40319FE5 		.loc 1 83 0
+ 172 019c 0130D3E7 		ldr	r3, .L16+8
+ 173 01a0 003082E5 		ldr	r3, [r3, #0]
+  83:i2c1.c        **** 	    WrIndex1++;
+ 174              	r3, #1
+ 175 01a4 3C319FE5 		ldr	r3, .L16+8
+ 176 01a8 003093E5 		str	r2, [r3, #0]
+ 177 01ac 012083E2 		.loc 1 84 0
+ 178 01b0 30319FE5 		ldr	r2, .L16+4
+ 179 01b4 002083E5 		mov	r3, #4
+  84:i2c1.c        **** 	    I2C1MasterState = DATA_ACK;
+ 180              	3, [r2, #0]
+ 181 01b8 24219FE5 		b	.L14
+ 182 01bc 0430A0E3 	.L12:
+ 183 01c0 003082E5 		.loc 1 89 0
+ 184 01c4 0B0000EA 		ldr	r2, .L16+4
+ 185              		mov	r3, #7
+  85:i2c1.c        **** 
+  86:i2c1.c        **** 	}
+  87:i2c1.c        **** 	else
+  88:i2c1.c        **** 	{
+  89:i2c1.c        **** 		I2C1MasterState = DATA_WRITE_DONE;
+ 186              	3, [r2, #0]
+ 187 01c8 14219FE5 		.loc 1 91 0
+ 188 01cc 0730A0E3 		mov	r3, #-536870912
+ 189 01d0 003082E5 		add	r3, r3, #376832
+  90:i2c1.c        **** 		  	//I2C Stop
+  91:i2c1.c        **** 		I21CONSET = I2CONSET_STO;      /* Set Stop flag */
+ 190              		r2, #16
+ 191 01d4 0E32A0E3 		str	r2, [r3, #0]
+ 192 01d8 173983E2 		.loc 1 92 0
+ 193 01dc 1020A0E3 		mov	r3, #-536870912
+ 194 01e0 002083E5 		add	r3, r3, #376832
+  92:i2c1.c        **** 		I21CONCLR = I2CONCLR_SIC;  /* Clear SI flag */
+ 195              	r3, r3, #24
+ 196 01e4 0E32A0E3 		mov	r2, #8
+ 197 01e8 173983E2 		str	r2, [r3, #0]
+ 198 01ec 183083E2 	.L14:
+ 199 01f0 0820A0E3 		.loc 1 94 0
+ 200 01f4 002083E5 		mov	r3, #-536870912
+ 201              		add	r3, r3, #376832
+  93:i2c1.c        **** 	}
+  94:i2c1.c        **** 	I21CONCLR = I2CONCLR_SIC;
+ 202              	, r3, #24
+ 203 01f8 0E32A0E3 		mov	r2, #8
+ 204 01fc 173983E2 		str	r2, [r3, #0]
+ 205 0200 183083E2 		.loc 1 95 0
+ 206 0204 0820A0E3 		ldr	r2, .L16+16
+ 207 0208 002083E5 		mov	r3, #0
+  95:i2c1.c        **** 	lastI2c1Error=I2C_ERROR_NONE;
+ 208              	r3, [r2, #0]
+ 209 020c DC209FE5 		.loc 1 97 0
+ 210 0210 0030A0E3 		b	.L9
+ 211 0214 0030C2E5 	.L7:
+  96:i2c1.c        **** 
+  97:i2c1.c        **** 	break;
+ 212              	c 1 100 0
+ 213 0218 290000EA 		ldr	r2, .L16+4
+ 214              		mov	r3, #5
+  98:i2c1.c        **** 
+  99:i2c1.c        **** 	case 0x30: //data has been transmited but NACK was received
+ 100:i2c1.c        **** 		I2C1MasterState = DATA_NACK;
+ 215              	r	r3, [r2, #0]
+ 216 021c C0209FE5 		.loc 1 102 0
+ 217 0220 0530A0E3 		mov	r3, #-536870912
+ 218 0224 003082E5 		add	r3, r3, #376832
+ 101:i2c1.c        **** 		  	//I2C Stop
+ 102:i2c1.c        **** 		I21CONSET = I2CONSET_STO;      /* Set Stop flag */
+ 219              		r2, #16
+ 220 0228 0E32A0E3 		str	r2, [r3, #0]
+ 221 022c 173983E2 		.loc 1 103 0
+ 222 0230 1020A0E3 		mov	r3, #-536870912
+ 223 0234 002083E5 		add	r3, r3, #376832
+ 103:i2c1.c        **** 		I21CONCLR = I2CONCLR_SIC;  /* Clear SI flag */
+ 224              	r3, r3, #24
+ 225 0238 0E32A0E3 		mov	r2, #8
+ 226 023c 173983E2 		str	r2, [r3, #0]
+ 227 0240 183083E2 		.loc 1 104 0
+ 228 0244 0820A0E3 		ldr	r2, .L16+16
+ 229 0248 002083E5 		mov	r3, #2
+ 104:i2c1.c        **** 		lastI2c1Error=I2C_ERROR_NACKAFTERWRITE;
+ 230              	r3, [r2, #0]
+ 231 024c 9C209FE5 		.loc 1 105 0
+ 232 0250 0230A0E3 		b	.L9
+ 233 0254 0030C2E5 	.L5:
+ 105:i2c1.c        **** 	break;
+ 234              	c 1 108 0
+ 235 0258 190000EA 		mov	r3, #-536870912
+ 236              		add	r3, r3, #376832
+ 106:i2c1.c        **** 
+ 107:i2c1.c        **** 	case 0x20: //NACK received, receiver not found
+ 108:i2c1.c        **** 				I21CONCLR = I2CONCLR_SIC;
+ 237              	d	r3, r3, #24
+ 238 025c 0E32A0E3 		mov	r2, #8
+ 239 0260 173983E2 		str	r2, [r3, #0]
+ 240 0264 183083E2 		.loc 1 109 0
+ 241 0268 0820A0E3 		ldr	r2, .L16+4
+ 242 026c 002083E5 		mov	r3, #5
+ 109:i2c1.c        **** 				I2C1MasterState = DATA_NACK;
+ 243              	3, [r2, #0]
+ 244 0270 6C209FE5 		.loc 1 111 0
+ 245 0274 0530A0E3 		mov	r3, #-536870912
+ 246 0278 003082E5 		add	r3, r3, #376832
+ 110:i2c1.c        **** 				//I2C Stop
+ 111:i2c1.c        **** 				I21CONSET = I2CONSET_STO;      /* Set Stop flag */
+ 247              		r2, #16
+ 248 027c 0E32A0E3 		str	r2, [r3, #0]
+ 249 0280 173983E2 		.loc 1 112 0
+ 250 0284 1020A0E3 		mov	r3, #-536870912
+ 251 0288 002083E5 		add	r3, r3, #376832
+ 112:i2c1.c        **** 				I21CONCLR = I2CONCLR_SIC;  /* Clear SI flag */
+ 252              	r3, r3, #24
+ 253 028c 0E32A0E3 		mov	r2, #8
+ 254 0290 173983E2 		str	r2, [r3, #0]
+ 255 0294 183083E2 		.loc 1 113 0
+ 256 0298 0820A0E3 		ldr	r2, .L16+16
+ 257 029c 002083E5 		mov	r3, #1
+ 113:i2c1.c        **** 				lastI2c1Error=I2C_ERROR_NACKAFTERSTART;
+ 258              	r3, [r2, #0]
+ 259 02a0 48209FE5 		.loc 1 114 0
+ 260 02a4 0130A0E3 		b	.L9
+ 261 02a8 0030C2E5 	.L2:
+ 114:i2c1.c        **** 	break;
+ 262              	c 1 119 0
+ 263 02ac 040000EA 		mov	r3, #-536870912
+ 264              		add	r3, r3, #376832
+ 115:i2c1.c        **** 
+ 116:i2c1.c        **** 
+ 117:i2c1.c        **** 
+ 118:i2c1.c        **** 	default:
+ 119:i2c1.c        **** 	I21CONCLR = I2CONCLR_SIC;
+ 265              	d	r3, r3, #24
+ 266 02b0 0E32A0E3 		mov	r2, #8
+ 267 02b4 173983E2 		str	r2, [r3, #0]
+ 268 02b8 183083E2 	.L9:
+ 269 02bc 0820A0E3 		.loc 1 124 0
+ 270 02c0 002083E5 		mov	r3, #0
+ 271              		sub	r3, r3, #4048
+ 120:i2c1.c        **** 	break;
+ 121:i2c1.c        ****     }
+ 122:i2c1.c        **** 
+ 123:i2c1.c        ****     IDISABLE;
+ 124:i2c1.c        ****     VICVectAddr = 0;		/* Acknowledge Interrupt */
+ 272              	, #0
+ 273 02c4 0030A0E3 		str	r2, [r3, #0]
+ 274 02c8 FD3E43E2 		.loc 1 126 0
+ 275 02cc 0020A0E3 		sub	sp, fp, #12
+ 276 02d0 002083E5 		ldmfd	sp, {fp, sp, lr}
+ 125:i2c1.c        **** 
+ 126:i2c1.c        **** }
+ 277              	r
+ 278 02d4 0CD04BE2 	.L17:
+ 279 02d8 00689DE8 		.align	2
+ 280 02dc 1EFF2FE1 	.L16:
+ 281              		.word	I2C1MasterBuffer
+ 282              		.word	I2C1MasterState
+ 283              		.word	WrIndex1
+ 284 02e0 00000000 		.word	I2C1WriteLength
+ 285 02e4 00000000 		.word	lastI2c1Error
+ 286 02e8 00000000 	.LFE2:
+ 288 02f0 00000000 		.bss
+ 289              	ceCnt.1589:
+ 290              		.space	1
+ 291              	mincCnt.1588:
+ 292              		.space	1
+ 293 000d 00       	mfsCnt.1587:
+ 294              		.space	1
+ 295 000e 00       		.align	1
+ 296              	cnt.1586:
+ 297 000f 00       		.space	2
+ 298              		.text
+ 299              		.align	2
+ 300 0010 0000     		.global	fireFlyLedHandler
+ 302              	fireFlyLedHandler:
+ 303              	.LFB3:
+ 304              		.loc 1 129 0
+ 305              		@ Function supports interworking.
+ 306              		@ args = 0, pretend = 0, frame = 12
+ 127:i2c1.c        **** 
+ 128:i2c1.c        **** void fireFlyLedHandler(void) 	//called with 100Hz
+ 129:i2c1.c        **** {
+ 307              	ymous_args = 0
+ 308              		mov	ip, sp
+ 309              	.LCFI4:
+ 310              		stmfd	sp!, {fp, ip, lr, pc}
+ 311 02f4 0DC0A0E1 	.LCFI5:
+ 312              		sub	fp, ip, #4
+ 313 02f8 00D82DE9 	.LCFI6:
+ 314              		sub	sp, sp, #12
+ 315 02fc 04B04CE2 	.LCFI7:
+ 316              		.loc 1 137 0
+ 317 0300 0CD04DE2 		mov	r3, #0
+ 318              		strh	r3, [fp, #-18]	@ movhi
+ 130:i2c1.c        **** 	unsigned char r,g,b;
+ 131:i2c1.c        **** 	unsigned short errorFlags;
+ 132:i2c1.c        **** 	static unsigned short cnt=0;
+ 133:i2c1.c        **** 	static unsigned char mfsCnt=0;
+ 134:i2c1.c        **** 	static unsigned char mincCnt=0;
+ 135:i2c1.c        **** 	static unsigned char ceCnt=0;
+ 136:i2c1.c        **** 
+ 137:i2c1.c        **** 	errorFlags=0;
+ 319              	0
+ 320 0304 0030A0E3 		ldr	r3, .L149
+ 321 0308 B2314BE1 		ldrh	r3, [r3, #82]
+ 138:i2c1.c        **** 
+ 139:i2c1.c        **** 
+ 140:i2c1.c        **** 	if (LL_1khz_attitude_data.flightMode&FM_CALIBRATION_ERROR_GYROS)
+ 322              	v	r3, r3, asl #16
+ 323 030c F43A9FE5 		mov	r3, r3, lsr #16
+ 324 0310 B235D3E1 		and	r3, r3, #512
+ 325 0314 0338A0E1 		cmp	r3, #0
+ 326 0318 2338A0E1 		beq	.L19
+ 327 031c 023C03E2 		.loc 1 142 0
+ 328 0320 000053E3 		ldrh	r3, [fp, #-18]	@ movhi
+ 329 0324 0200000A 		orr	r3, r3, #2
+ 141:i2c1.c        **** 	{
+ 142:i2c1.c        **** 		errorFlags|=0x02;
+ 330              	, [fp, #-18]	@ movhi
+ 331 0328 B2315BE1 	.L19:
+ 332 032c 023083E3 		.loc 1 145 0
+ 333 0330 B2314BE1 		ldr	r3, .L149
+ 334              		ldrh	r3, [r3, #82]
+ 143:i2c1.c        **** 	}
+ 144:i2c1.c        **** 
+ 145:i2c1.c        **** 	if (LL_1khz_attitude_data.flightMode&FM_CALIBRATION_ERROR_ACC)
+ 335              	r3, r3, asl #16
+ 336 0334 CC3A9FE5 		mov	r3, r3, lsr #16
+ 337 0338 B235D3E1 		and	r3, r3, #1024
+ 338 033c 0338A0E1 		cmp	r3, #0
+ 339 0340 2338A0E1 		beq	.L21
+ 340 0344 013B03E2 		.loc 1 147 0
+ 341 0348 000053E3 		ldrh	r3, [fp, #-18]	@ movhi
+ 342 034c 0200000A 		orr	r3, r3, #4
+ 146:i2c1.c        **** 	{
+ 147:i2c1.c        **** 		errorFlags|=0x04;
+ 343              	, [fp, #-18]	@ movhi
+ 344 0350 B2315BE1 	.L21:
+ 345 0354 043083E3 		.loc 1 150 0
+ 346 0358 B2314BE1 		ldr	r3, .L149
+ 347              		ldrh	r3, [r3, #82]
+ 148:i2c1.c        **** 	}
+ 149:i2c1.c        **** 
+ 150:i2c1.c        **** 	if ((LL_1khz_attitude_data.flightMode&FM_COMPASS_FAILURE) && (ceCnt<5))
+ 348              	r3, r3, asl #16
+ 349 035c A43A9FE5 		mov	r3, r3, lsr #16
+ 350 0360 B235D3E1 		and	r3, r3, #16
+ 351 0364 0338A0E1 		cmp	r3, #0
+ 352 0368 2338A0E1 		beq	.L23
+ 353 036c 103003E2 		ldr	r3, .L149+4
+ 354 0370 000053E3 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 355 0374 0600000A 		cmp	r3, #4
+ 356 0378 8C3A9FE5 		bhi	.L23
+ 357 037c 0030D3E5 		.loc 1 152 0
+ 358 0380 040053E3 		ldrh	r3, [fp, #-18]	@ movhi
+ 359 0384 0200008A 		orr	r3, r3, #8
+ 151:i2c1.c        **** 	{
+ 152:i2c1.c        **** 		errorFlags|=0x08;
+ 360              	p, #-18]	@ movhi
+ 361 0388 B2315BE1 	.L23:
+ 362 038c 083083E3 		.loc 1 155 0
+ 363 0390 B2314BE1 		ldr	r3, .L149
+ 364              		ldrh	r3, [r3, #82]
+ 153:i2c1.c        **** 	}
+ 154:i2c1.c        **** 
+ 155:i2c1.c        **** 	if ((LL_1khz_attitude_data.flightMode&FM_MAG_INCLINATION_ERROR) && (mincCnt<5) && ((LL_1khz_attitu
+ 365              	r3, r3, asl #16
+ 366 0394 6C3A9FE5 		mov	r3, r3, asr #16
+ 367 0398 B235D3E1 		cmp	r3, #0
+ 368 039c 0338A0E1 		bge	.L26
+ 369 03a0 4338A0E1 		ldr	r3, .L149+8
+ 370 03a4 000053E3 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 371 03a8 0D0000AA 		cmp	r3, #4
+ 372 03ac 5C3A9FE5 		bhi	.L26
+ 373 03b0 0030D3E5 		ldr	r3, .L149
+ 374 03b4 040053E3 		ldrh	r3, [r3, #82]
+ 375 03b8 0900008A 		mov	r3, r3, asl #16
+ 376 03bc 443A9FE5 		mov	r3, r3, lsr #16
+ 377 03c0 B235D3E1 		and	r3, r3, #16
+ 378 03c4 0338A0E1 		cmp	r3, #0
+ 379 03c8 2338A0E1 		bne	.L26
+ 380 03cc 103003E2 		.loc 1 157 0
+ 381 03d0 000053E3 		ldrh	r3, [fp, #-18]	@ movhi
+ 382 03d4 0200001A 		orr	r3, r3, #16
+ 156:i2c1.c        **** 	{
+ 157:i2c1.c        **** 		errorFlags|=0x10;
+ 383              	8]	@ movhi
+ 384 03d8 B2315BE1 	.L26:
+ 385 03dc 103083E3 		.loc 1 160 0
+ 386 03e0 B2314BE1 		ldr	r3, .L149
+ 387              		ldrh	r3, [r3, #82]
+ 158:i2c1.c        **** 	}
+ 159:i2c1.c        **** 
+ 160:i2c1.c        **** 	if ((LL_1khz_attitude_data.flightMode&FM_MAG_FIELD_STRENGTH_ERROR) && (mfsCnt<5) && ((LL_1khz_atti
+ 388              	r3, r3, asl #16
+ 389 03e4 1C3A9FE5 		mov	r3, r3, lsr #16
+ 390 03e8 B235D3E1 		and	r3, r3, #16384
+ 391 03ec 0338A0E1 		cmp	r3, #0
+ 392 03f0 2338A0E1 		beq	.L30
+ 393 03f4 013903E2 		ldr	r3, .L149+12
+ 394 03f8 000053E3 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 395 03fc 0D00000A 		cmp	r3, #4
+ 396 0400 0C3A9FE5 		bhi	.L30
+ 397 0404 0030D3E5 		ldr	r3, .L149
+ 398 0408 040053E3 		ldrh	r3, [r3, #82]
+ 399 040c 0900008A 		mov	r3, r3, asl #16
+ 400 0410 F0399FE5 		mov	r3, r3, lsr #16
+ 401 0414 B235D3E1 		and	r3, r3, #16
+ 402 0418 0338A0E1 		cmp	r3, #0
+ 403 041c 2338A0E1 		bne	.L30
+ 404 0420 103003E2 		.loc 1 162 0
+ 405 0424 000053E3 		ldrh	r3, [fp, #-18]	@ movhi
+ 406 0428 0200001A 		orr	r3, r3, #32
+ 161:i2c1.c        **** 	{
+ 162:i2c1.c        **** 		errorFlags|=0x20;
+ 407              	]	@ movhi
+ 408 042c B2315BE1 	.L30:
+ 409 0430 203083E3 		.loc 1 165 0
+ 410 0434 B2314BE1 		ldr	r3, .L149+16
+ 411              		ldrh	r3, [r3, #0]
+ 163:i2c1.c        **** 	}
+ 164:i2c1.c        **** 
+ 165:i2c1.c        **** 	cnt++;
+ 412              	r3, r3, #1
+ 413 0438 D8399FE5 		mov	r3, r3, asl #16
+ 414 043c B030D3E1 		mov	r2, r3, lsr #16
+ 415 0440 013083E2 		ldr	r3, .L149+16
+ 416 0444 0338A0E1 		strh	r2, [r3, #0]	@ movhi
+ 417 0448 2328A0E1 		.loc 1 166 0
+ 418 044c C4399FE5 		ldr	r3, .L149+16
+ 419 0450 B020C3E1 		ldrh	r3, [r3, #0]
+ 166:i2c1.c        **** 	if (cnt==200)
+ 420              	 #200
+ 421 0454 BC399FE5 		bne	.L34
+ 422 0458 B030D3E1 		.loc 1 167 0
+ 423 045c C80053E3 		ldr	r3, .L149+16
+ 424 0460 0200001A 		mov	r2, #0
+ 167:i2c1.c        **** 		cnt=0;
+ 425              		r2, [r3, #0]	@ movhi
+ 426 0464 AC399FE5 	.L34:
+ 427 0468 0020A0E3 		.loc 1 168 0
+ 428 046c B020C3E1 		ldr	r3, .L149+20
+ 429              		ldrb	r3, [r3, #0]
+ 168:i2c1.c        **** 	if(!SYSTEM_initialized)
+ 430              	r3, r3, #255
+ 431 0470 A4399FE5 		cmp	r3, #0
+ 432 0474 0030D3E5 		bne	.L36
+ 433 0478 FF3003E2 		.loc 1 170 0
+ 434 047c 000053E3 		ldrh	r3, [fp, #-18]	@ movhi
+ 435 0480 0900001A 		orr	r3, r3, #1
+ 169:i2c1.c        **** 		{
+ 170:i2c1.c        **** 			errorFlags|=0x01;
+ 436              	r3, [fp, #-18]	@ movhi
+ 437 0484 B2315BE1 		.loc 1 171 0
+ 438 0488 013083E3 		mov	r3, #0
+ 439 048c B2314BE1 		strb	r3, [fp, #-21]
+ 171:i2c1.c        **** 			r=0;
+ 440              	c 1 172 0
+ 441 0490 0030A0E3 		mov	r3, #0
+ 442 0494 15304BE5 		strb	r3, [fp, #-20]
+ 172:i2c1.c        **** 			g=0;
+ 443              	oc 1 173 0
+ 444 0498 0030A0E3 		mvn	r3, #0
+ 445 049c 14304BE5 		strb	r3, [fp, #-19]
+ 173:i2c1.c        **** 			b=255;
+ 446              	.L38
+ 447 04a0 0030E0E3 	.L36:
+ 448 04a4 13304BE5 		.loc 1 175 0
+ 449 04a8 800000EA 		ldr	r3, .L149+24
+ 450              		ldr	r3, [r3, #40]
+ 174:i2c1.c        **** 		}
+ 175:i2c1.c        **** 	else if (((GPS_Data.status&0xFF)==3) && (HL_Status.battery_voltage_1>11000))
+ 451              	r3, r3, #255
+ 452 04ac 6C399FE5 		cmp	r3, #3
+ 453 04b0 283093E5 		bne	.L39
+ 454 04b4 FF3003E2 		ldr	r3, .L149+28
+ 455 04b8 030053E3 		ldrh	r3, [r3, #0]
+ 456 04bc 0E00001A 		mov	r3, r3, asl #16
+ 457 04c0 5C399FE5 		mov	r2, r3, asr #16
+ 458 04c4 B030D3E1 		mov	r3, #10944
+ 459 04c8 0338A0E1 		add	r3, r3, #56
+ 460 04cc 4328A0E1 		cmp	r2, r3
+ 461 04d0 AB3DA0E3 		ble	.L39
+ 462 04d4 383083E2 		.loc 1 177 0
+ 463 04d8 030052E1 		mov	r3, #0
+ 464 04dc 060000DA 		strb	r3, [fp, #-21]
+ 176:i2c1.c        ****     {
+ 177:i2c1.c        ****     	r=0;
+ 465              		mvn	r3, #0
+ 466 04e0 0030A0E3 		strb	r3, [fp, #-20]
+ 467 04e4 15304BE5 		.loc 1 179 0
+ 178:i2c1.c        ****     	g=255;
+ 468              	v	r3, #0
+ 469 04e8 0030E0E3 		strb	r3, [fp, #-19]
+ 470 04ec 14304BE5 		.loc 1 175 0
+ 179:i2c1.c        ****     	b=0;
+ 471              	.L38
+ 472 04f0 0030A0E3 	.L39:
+ 473 04f4 13304BE5 		.loc 1 180 0
+ 474              		ldr	r3, .L149+28
+ 475 04f8 6C0000EA 		ldrh	r3, [r3, #0]
+ 476              		mov	r3, r3, asl #16
+ 180:i2c1.c        ****     }else if (HL_Status.battery_voltage_1<11000)
+ 477              	2, r3, asr #16
+ 478 04fc 20399FE5 		mov	r3, #10944
+ 479 0500 B030D3E1 		add	r3, r3, #55
+ 480 0504 0338A0E1 		cmp	r2, r3
+ 481 0508 4328A0E1 		bgt	.L42
+ 482 050c AB3DA0E3 	.LBB2:
+ 483 0510 373083E2 		.loc 1 182 0
+ 484 0514 030052E1 		ldr	r3, .L149+28
+ 485 0518 590000CA 		ldrh	r3, [r3, #0]
+ 486              		mov	r3, r3, asl #16
+ 181:i2c1.c        ****     {
+ 182:i2c1.c        ****     	unsigned int dim=11000-HL_Status.battery_voltage_1;
+ 487              	3, asr #16
+ 488 051c 00399FE5 		rsb	r3, r3, #10944
+ 489 0520 B030D3E1 		add	r3, r3, #56
+ 490 0524 0338A0E1 		str	r3, [fp, #-16]
+ 491 0528 4338A0E1 		.loc 1 184 0
+ 492 052c AB3D63E2 		ldr	r3, [fp, #-16]
+ 493 0530 383083E2 		cmp	r3, #1000
+ 494 0534 10300BE5 		bls	.L44
+ 183:i2c1.c        **** 
+ 184:i2c1.c        ****     	if (dim>1000)
+ 495              	185 0
+ 496 0538 10301BE5 		mov	r3, #1000
+ 497 053c FA0F53E3 		str	r3, [fp, #-16]
+ 498 0540 0100009A 	.L44:
+ 185:i2c1.c        ****     		dim=1000;
+ 499              	c 1 188 0
+ 500 0544 FA3FA0E3 		ldr	r3, .L149+24
+ 501 0548 10300BE5 		ldr	r3, [r3, #40]
+ 502              		and	r3, r3, #255
+ 186:i2c1.c        **** 
+ 187:i2c1.c        **** 
+ 188:i2c1.c        ****     	if ((GPS_Data.status&0xFF)!=3)
+ 503              		r3, #3
+ 504 054c CC389FE5 		beq	.L46
+ 505 0550 283093E5 		.loc 1 190 0
+ 506 0554 FF3003E2 		ldr	r2, [fp, #-16]
+ 507 0558 030053E3 		ldr	r3, .L149+32
+ 508 055c 1800000A 		umull	r1, r3, r2, r3
+ 189:i2c1.c        ****     	{
+ 190:i2c1.c        ****         	dim/=6;
+ 509              	3, r3, lsr #2
+ 510 0560 10201BE5 		str	r3, [fp, #-16]
+ 511 0564 BC389FE5 		.loc 1 191 0
+ 512 0568 921383E0 		ldr	r3, [fp, #-16]
+ 513 056c 2331A0E1 		add	r3, r3, #10
+ 514 0570 10300BE5 		str	r3, [fp, #-16]
+ 191:i2c1.c        ****         	dim+=10;
+ 515              	1 192 0
+ 516 0574 10301BE5 		ldr	r3, [fp, #-16]
+ 517 0578 0A3083E2 		cmp	r3, #165
+ 518 057c 10300BE5 		bls	.L48
+ 192:i2c1.c        ****         	if (dim>165)
+ 519              	c 1 193 0
+ 520 0580 10301BE5 		mov	r3, #165
+ 521 0584 A50053E3 		str	r3, [fp, #-16]
+ 522 0588 0100009A 	.L48:
+ 193:i2c1.c        ****         		dim=165;
+ 523              	c 1 194 0
+ 524 058c A530A0E3 		mvn	r3, #0
+ 525 0590 10300BE5 		strb	r3, [fp, #-21]
+ 526              		.loc 1 195 0
+ 194:i2c1.c        ****     		r=255;
+ 527              		r3, [fp, #-16]
+ 528 0594 0030E0E3 		and	r3, r3, #255
+ 529 0598 15304BE5 		rsb	r3, r3, #-16777216
+ 195:i2c1.c        ****     		g=165-dim;
+ 530              	d	r3, r3, #16711680
+ 531 059c 10301BE5 		add	r3, r3, #65280
+ 532 05a0 FF3003E2 		add	r3, r3, #165
+ 533 05a4 FF3463E2 		strb	r3, [fp, #-20]
+ 534 05a8 FF3883E2 		.loc 1 196 0
+ 535 05ac FF3C83E2 		mov	r3, #0
+ 536 05b0 A53083E2 		strb	r3, [fp, #-19]
+ 537 05b4 14304BE5 		b	.L50
+ 196:i2c1.c        ****     		b=0;
+ 538              	loc 1 199 0
+ 539 05b8 0030A0E3 		ldr	r3, [fp, #-16]
+ 540 05bc 13304BE5 		mov	r3, r3, lsr #2
+ 541 05c0 120000EA 		str	r3, [fp, #-16]
+ 542              		.loc 1 200 0
+ 197:i2c1.c        ****     	}else
+ 198:i2c1.c        ****     	{
+ 199:i2c1.c        ****         	dim/=4;
+ 543              	r3, [fp, #-16]
+ 544 05c4 10301BE5 		add	r3, r3, #5
+ 545 05c8 2331A0E1 		str	r3, [fp, #-16]
+ 546 05cc 10300BE5 		.loc 1 201 0
+ 200:i2c1.c        ****         	dim+=5;
+ 547              		r3, [fp, #-16]
+ 548 05d0 10301BE5 		cmp	r3, #255
+ 549 05d4 053083E2 		bls	.L51
+ 550 05d8 10300BE5 		.loc 1 202 0
+ 201:i2c1.c        ****         	if (dim>255)
+ 551              		r3, #255
+ 552 05dc 10301BE5 		str	r3, [fp, #-16]
+ 553 05e0 FF0053E3 	.L51:
+ 554 05e4 0100009A 		.loc 1 203 0
+ 202:i2c1.c        ****         		dim=255;
+ 555              		r3, [fp, #-16]
+ 556 05e8 FF30A0E3 		strb	r3, [fp, #-21]
+ 557 05ec 10300BE5 		.loc 1 204 0
+ 558              		ldr	r3, [fp, #-16]
+ 203:i2c1.c        ****     		r=dim;
+ 559              		r3, r3, #255
+ 560 05f0 10301BE5 		mvn	r3, r3
+ 561 05f4 15304BE5 		strb	r3, [fp, #-20]
+ 204:i2c1.c        ****     		g=255-dim;
+ 562              	oc 1 205 0
+ 563 05f8 10301BE5 		mov	r3, #0
+ 564 05fc FF3003E2 		strb	r3, [fp, #-19]
+ 565 0600 0330E0E1 	.L50:
+ 566 0604 14304BE5 		.loc 1 207 0
+ 205:i2c1.c        ****     		b=0;
+ 567              	r3, .L149+28
+ 568 0608 0030A0E3 		ldrh	r3, [r3, #0]
+ 569 060c 13304BE5 		mov	r3, r3, asl #16
+ 570              		mov	r2, r3, asr #16
+ 206:i2c1.c        ****     	}
+ 207:i2c1.c        ****     	if(HL_Status.battery_voltage_1<10300) //blink LED @ very low voltage
+ 571              		r3, #10240
+ 572 0610 0C389FE5 		add	r3, r3, #59
+ 573 0614 B030D3E1 		cmp	r2, r3
+ 574 0618 0338A0E1 		bgt	.L38
+ 575 061c 4328A0E1 		.loc 1 209 0
+ 576 0620 0A3BA0E3 		ldr	r3, .L149+16
+ 577 0624 3B3083E2 		ldrh	r1, [r3, #0]
+ 578 0628 030052E1 		ldr	r3, .L149+36
+ 579 062c 1F0000CA 		umull	r2, r3, r1, r3
+ 208:i2c1.c        ****     	{
+ 209:i2c1.c        ****     		if((cnt%20)<10) {r=0;g=0;b=0;};
+ 580              	r3, lsr #4
+ 581 0630 E0379FE5 		mov	r3, r2
+ 582 0634 B010D3E1 		mov	r3, r3, asl #2
+ 583 0638 EC379FE5 		add	r3, r3, r2
+ 584 063c 912383E0 		mov	r3, r3, asl #2
+ 585 0640 2322A0E1 		rsb	r3, r3, r1
+ 586 0644 0230A0E1 		mov	r3, r3, asl #16
+ 587 0648 0331A0E1 		mov	r3, r3, lsr #16
+ 588 064c 023083E0 		cmp	r3, #9
+ 589 0650 0331A0E1 		bhi	.L38
+ 590 0654 013063E0 		mov	r3, #0
+ 591 0658 0338A0E1 		strb	r3, [fp, #-21]
+ 592 065c 2338A0E1 		mov	r3, #0
+ 593 0660 090053E3 		strb	r3, [fp, #-20]
+ 594 0664 1100008A 		mov	r3, #0
+ 595 0668 0030A0E3 		strb	r3, [fp, #-19]
+ 596 066c 15304BE5 		b	.L38
+ 597 0670 0030A0E3 	.L42:
+ 598 0674 14304BE5 	.LBE2:
+ 599 0678 0030A0E3 		.loc 1 211 0
+ 600 067c 13304BE5 		ldr	r3, .L149+24
+ 601 0680 0A0000EA 		ldr	r3, [r3, #40]
+ 602              		and	r3, r3, #255
+ 603              		cmp	r3, #3
+ 210:i2c1.c        ****     	}
+ 211:i2c1.c        ****     }else if ((GPS_Data.status&0xFF)!=3)
+ 604              		mvn	r3, #0
+ 605 0684 94379FE5 		strb	r3, [fp, #-21]
+ 606 0688 283093E5 		.loc 1 214 0
+ 607 068c FF3003E2 		mvn	r3, #90
+ 608 0690 030053E3 		strb	r3, [fp, #-20]
+ 609 0694 0500000A 		.loc 1 215 0
+ 212:i2c1.c        ****     {
+ 213:i2c1.c        ****     	r=255;
+ 610              	3, #0
+ 611 0698 0030E0E3 		strb	r3, [fp, #-19]
+ 612 069c 15304BE5 	.L38:
+ 214:i2c1.c        ****     	g=165;
+ 613              	oc 1 218 0
+ 614 06a0 5A30E0E3 		ldr	r3, .L149+16
+ 615 06a4 14304BE5 		ldrh	r3, [r3, #0]
+ 215:i2c1.c        ****     	b=0;
+ 616              	p	r3, #100
+ 617 06a8 0030A0E3 		bhi	.L57
+ 618 06ac 13304BE5 		ldrh	r3, [fp, #-18]
+ 619              		cmp	r3, #0
+ 216:i2c1.c        ****     }
+ 217:i2c1.c        **** 
+ 218:i2c1.c        **** 	if ((cnt<=100) && (errorFlags))
+ 620              		.L57
+ 621 06b0 60379FE5 		.loc 1 220 0
+ 622 06b4 B030D3E1 		mov	r3, #0
+ 623 06b8 640053E3 		strb	r3, [fp, #-19]
+ 624 06bc 0800008A 		ldrb	r3, [fp, #-19]
+ 625 06c0 B2315BE1 		strb	r3, [fp, #-20]
+ 626 06c4 000053E3 		ldrb	r3, [fp, #-20]
+ 627 06c8 0500000A 		strb	r3, [fp, #-21]
+ 219:i2c1.c        **** 	{
+ 220:i2c1.c        **** 		r=g=b=0;
+ 628              	loc 1 223 0
+ 629 06cc 0030A0E3 		ldr	r3, .L149+16
+ 630 06d0 13304BE5 		ldrh	r3, [r3, #0]
+ 631 06d4 13305BE5 		cmp	r3, #100
+ 632 06d8 14304BE5 		bls	.L60
+ 633 06dc 14305BE5 		ldr	r3, .L149+16
+ 634 06e0 15304BE5 		ldrh	r3, [r3, #0]
+ 635              		cmp	r3, #199
+ 221:i2c1.c        **** 	}
+ 222:i2c1.c        **** 
+ 223:i2c1.c        **** 	if ((cnt>100) && (cnt<200) && (errorFlags)) //always signal errors for 1 second.
+ 636              	0
+ 637 06e4 2C379FE5 		ldrh	r3, [fp, #-18]
+ 638 06e8 B030D3E1 		cmp	r3, #0
+ 639 06ec 640053E3 		beq	.L60
+ 640 06f0 BA01009A 		.loc 1 226 0
+ 641 06f4 1C379FE5 		ldrh	r3, [fp, #-18]
+ 642 06f8 B030D3E1 		and	r3, r3, #2
+ 643 06fc C70053E3 		cmp	r3, #0
+ 644 0700 B601008A 		beq	.L64
+ 645 0704 B2315BE1 		.loc 1 228 0
+ 646 0708 000053E3 		ldr	r3, .L149+16
+ 647 070c B301000A 		ldrh	r3, [r3, #0]
+ 224:i2c1.c        **** 	{
+ 225:i2c1.c        **** 		//overwrite rgb with error signaling
+ 226:i2c1.c        **** 		if (errorFlags & 0x02) //gyros
+ 648              	4
+ 649 0710 B2315BE1 		bhi	.L66
+ 650 0714 023003E2 		.loc 1 229 0
+ 651 0718 000053E3 		mov	r3, #0
+ 652 071c 2700000A 		strb	r3, [fp, #-21]
+ 227:i2c1.c        **** 		{
+ 228:i2c1.c        **** 			if (cnt < 125) {
+ 653              	 1 230 0
+ 654 0720 F0369FE5 		mov	r3, #0
+ 655 0724 B030D3E1 		strb	r3, [fp, #-20]
+ 656 0728 7C0053E3 		.loc 1 231 0
+ 657 072c 0600008A 		mov	r3, #0
+ 229:i2c1.c        **** 				r = 0;
+ 658              		r3, [fp, #-19]
+ 659 0730 0030A0E3 		b	.L60
+ 660 0734 15304BE5 	.L66:
+ 230:i2c1.c        **** 				g = 0;
+ 661              	oc 1 232 0
+ 662 0738 0030A0E3 		ldr	r3, .L149+16
+ 663 073c 14304BE5 		ldrh	r3, [r3, #0]
+ 231:i2c1.c        **** 				b = 0;
+ 664              	p	r3, #149
+ 665 0740 0030A0E3 		bhi	.L69
+ 666 0744 13304BE5 		.loc 1 233 0
+ 667 0748 A40100EA 		mvn	r3, #0
+ 668              		strb	r3, [fp, #-21]
+ 232:i2c1.c        **** 			} else if (cnt < 150) {
+ 669              	 1 234 0
+ 670 074c C4369FE5 		mov	r3, #0
+ 671 0750 B030D3E1 		strb	r3, [fp, #-20]
+ 672 0754 950053E3 		.loc 1 235 0
+ 673 0758 0600008A 		mov	r3, #0
+ 233:i2c1.c        **** 				r = 255;
+ 674              		r3, [fp, #-19]
+ 675 075c 0030E0E3 		b	.L60
+ 676 0760 15304BE5 	.L69:
+ 234:i2c1.c        **** 				g = 0;
+ 677              	oc 1 237 0
+ 678 0764 0030A0E3 		ldr	r3, .L149+16
+ 679 0768 14304BE5 		ldrh	r3, [r3, #0]
+ 235:i2c1.c        **** 				b = 0;
+ 680              	p	r3, #174
+ 681 076c 0030A0E3 		bhi	.L71
+ 682 0770 13304BE5 		.loc 1 238 0
+ 683 0774 990100EA 		mov	r3, #0
+ 684              		strb	r3, [fp, #-21]
+ 236:i2c1.c        **** 
+ 237:i2c1.c        **** 			} else if (cnt < 175) {
+ 685              	 1 239 0
+ 686 0778 98369FE5 		mov	r3, #0
+ 687 077c B030D3E1 		strb	r3, [fp, #-20]
+ 688 0780 AE0053E3 		.loc 1 240 0
+ 689 0784 0600008A 		mov	r3, #0
+ 238:i2c1.c        **** 				r = 0;
+ 690              		r3, [fp, #-19]
+ 691 0788 0030A0E3 		b	.L60
+ 692 078c 15304BE5 	.L71:
+ 239:i2c1.c        **** 				g = 0;
+ 693              	oc 1 242 0
+ 694 0790 0030A0E3 		mvn	r3, #0
+ 695 0794 14304BE5 		strb	r3, [fp, #-21]
+ 240:i2c1.c        **** 				b = 0;
+ 696              	oc 1 243 0
+ 697 0798 0030A0E3 		mov	r3, #0
+ 698 079c 13304BE5 		strb	r3, [fp, #-20]
+ 699 07a0 8E0100EA 		.loc 1 244 0
+ 700              		mov	r3, #0
+ 241:i2c1.c        **** 			} else {
+ 242:i2c1.c        **** 				r = 255;
+ 701              		r3, [fp, #-19]
+ 702 07a4 0030E0E3 		b	.L60
+ 703 07a8 15304BE5 	.L64:
+ 243:i2c1.c        **** 				g = 0;
+ 704              	oc 1 246 0
+ 705 07ac 0030A0E3 		ldrh	r3, [fp, #-18]
+ 706 07b0 14304BE5 		and	r3, r3, #4
+ 244:i2c1.c        **** 				b = 0;
+ 707              	p	r3, #0
+ 708 07b4 0030A0E3 		beq	.L73
+ 709 07b8 13304BE5 		.loc 1 248 0
+ 710 07bc 870100EA 		ldr	r3, .L149+16
+ 711              		ldrh	r3, [r3, #0]
+ 245:i2c1.c        **** 			}
+ 246:i2c1.c        **** 		} else if (errorFlags & 0x04) {
+ 712              	r3, #124
+ 713 07c0 B2315BE1 		bhi	.L75
+ 714 07c4 043003E2 		.loc 1 249 0
+ 715 07c8 000053E3 		mvn	r3, #0
+ 716 07cc 3100000A 		strb	r3, [fp, #-21]
+ 247:i2c1.c        **** 			//blink 3x
+ 248:i2c1.c        **** 			if (cnt < 125) {
+ 717              	 1 250 0
+ 718 07d0 40369FE5 		mov	r3, #0
+ 719 07d4 B030D3E1 		strb	r3, [fp, #-20]
+ 720 07d8 7C0053E3 		.loc 1 251 0
+ 721 07dc 0500008A 		mov	r3, #0
+ 249:i2c1.c        **** 				r = 255;
+ 722              		r3, [fp, #-19]
+ 723 07e0 0030E0E3 	.L75:
+ 724 07e4 15304BE5 		.loc 1 253 0
+ 250:i2c1.c        **** 				g = 0;
+ 725              	r	r3, .L149+16
+ 726 07e8 0030A0E3 		ldrh	r3, [r3, #0]
+ 727 07ec 14304BE5 		cmp	r3, #139
+ 251:i2c1.c        **** 				b = 0;
+ 728              	i	.L77
+ 729 07f0 0030A0E3 		.loc 1 254 0
+ 730 07f4 13304BE5 		mov	r3, #0
+ 731              		strb	r3, [fp, #-21]
+ 252:i2c1.c        **** 			}
+ 253:i2c1.c        **** 			if (cnt < 140) {
+ 732              	c 1 255 0
+ 733 07f8 18369FE5 		mov	r3, #0
+ 734 07fc B030D3E1 		strb	r3, [fp, #-20]
+ 735 0800 8B0053E3 		.loc 1 256 0
+ 736 0804 0600008A 		mov	r3, #0
+ 254:i2c1.c        **** 				r = 0;
+ 737              		r3, [fp, #-19]
+ 738 0808 0030A0E3 		b	.L60
+ 739 080c 15304BE5 	.L77:
+ 255:i2c1.c        **** 				g = 0;
+ 740              	oc 1 258 0
+ 741 0810 0030A0E3 		ldr	r3, .L149+16
+ 742 0814 14304BE5 		ldrh	r3, [r3, #0]
+ 256:i2c1.c        **** 				b = 0;
+ 743              	p	r3, #174
+ 744 0818 0030A0E3 		bhi	.L80
+ 745 081c 13304BE5 		.loc 1 259 0
+ 746 0820 6E0100EA 		mvn	r3, #0
+ 747              		strb	r3, [fp, #-21]
+ 257:i2c1.c        **** 
+ 258:i2c1.c        **** 			} else if (cnt < 175) {
+ 748              	 1 260 0
+ 749 0824 EC359FE5 		mov	r3, #0
+ 750 0828 B030D3E1 		strb	r3, [fp, #-20]
+ 751 082c AE0053E3 		.loc 1 261 0
+ 752 0830 0600008A 		mov	r3, #0
+ 259:i2c1.c        **** 				r = 255;
+ 753              		r3, [fp, #-19]
+ 754 0834 0030E0E3 		b	.L60
+ 755 0838 15304BE5 	.L80:
+ 260:i2c1.c        **** 				g = 0;
+ 756              	oc 1 262 0
+ 757 083c 0030A0E3 		ldr	r3, .L149+16
+ 758 0840 14304BE5 		ldrh	r3, [r3, #0]
+ 261:i2c1.c        **** 				b = 0;
+ 759              	p	r3, #189
+ 760 0844 0030A0E3 		bhi	.L82
+ 761 0848 13304BE5 		.loc 1 263 0
+ 762 084c 630100EA 		mov	r3, #0
+ 763              		strb	r3, [fp, #-21]
+ 262:i2c1.c        **** 			} else if (cnt < 190) {
+ 764              	 1 264 0
+ 765 0850 C0359FE5 		mov	r3, #0
+ 766 0854 B030D3E1 		strb	r3, [fp, #-20]
+ 767 0858 BD0053E3 		.loc 1 265 0
+ 768 085c 0600008A 		mov	r3, #0
+ 263:i2c1.c        **** 				r = 0;
+ 769              		r3, [fp, #-19]
+ 770 0860 0030A0E3 		b	.L60
+ 771 0864 15304BE5 	.L82:
+ 264:i2c1.c        **** 				g = 0;
+ 772              	oc 1 267 0
+ 773 0868 0030A0E3 		mvn	r3, #0
+ 774 086c 14304BE5 		strb	r3, [fp, #-21]
+ 265:i2c1.c        **** 				b = 0;
+ 775              	oc 1 268 0
+ 776 0870 0030A0E3 		mov	r3, #0
+ 777 0874 13304BE5 		strb	r3, [fp, #-20]
+ 778 0878 580100EA 		.loc 1 269 0
+ 779              		mov	r3, #0
+ 266:i2c1.c        **** 			} else {
+ 267:i2c1.c        **** 				r = 255;
+ 780              		r3, [fp, #-19]
+ 781 087c 0030E0E3 		b	.L60
+ 782 0880 15304BE5 	.L73:
+ 268:i2c1.c        **** 				g = 0;
+ 783              	oc 1 271 0
+ 784 0884 0030A0E3 		ldrh	r3, [fp, #-18]
+ 785 0888 14304BE5 		and	r3, r3, #8
+ 269:i2c1.c        **** 				b = 0;
+ 786              	p	r3, #0
+ 787 088c 0030A0E3 		beq	.L84
+ 788 0890 13304BE5 		.loc 1 272 0
+ 789 0894 510100EA 		ldr	r3, .L149+4
+ 790              		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 270:i2c1.c        **** 			}
+ 271:i2c1.c        **** 		} else if (errorFlags & 0x08) {
+ 791              	r3, #4
+ 792 0898 B2315BE1 		bhi	.L86
+ 793 089c 083003E2 		ldr	r3, .L149+16
+ 794 08a0 000053E3 		ldrh	r3, [r3, #0]
+ 795 08a4 8200000A 		cmp	r3, #195
+ 272:i2c1.c        **** 			if ((ceCnt < 5) && (cnt == 195))
+ 796              	.L86
+ 797 08a8 5C359FE5 		.loc 1 273 0
+ 798 08ac 0030D3E5 		ldr	r3, .L149+4
+ 799 08b0 040053E3 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 800 08b4 0900008A 		add	r3, r3, #1
+ 801 08b8 58359FE5 		and	r3, r3, #255
+ 802 08bc B030D3E1 		ldr	r2, .L149+4
+ 803 08c0 C30053E3 		strb	r3, [r2, #0]
+ 804 08c4 0500001A 	.L86:
+ 273:i2c1.c        **** 				ceCnt++;
+ 805              	75 0
+ 806 08c8 3C359FE5 		ldr	r3, .L149+16
+ 807 08cc 0030D3E5 		ldrh	r3, [r3, #0]
+ 808 08d0 013083E2 		cmp	r3, #104
+ 809 08d4 FF3003E2 		bhi	.L89
+ 810 08d8 2C259FE5 		.loc 1 276 0
+ 811 08dc 0030C2E5 		mov	r3, #0
+ 812              		strb	r3, [fp, #-21]
+ 274:i2c1.c        **** 			//blink 5x
+ 275:i2c1.c        **** 			if (cnt < 105) {
+ 813              	277 0
+ 814 08e0 30359FE5 		mov	r3, #0
+ 815 08e4 B030D3E1 		strb	r3, [fp, #-20]
+ 816 08e8 680053E3 		.loc 1 278 0
+ 817 08ec 0600008A 		mov	r3, #0
+ 276:i2c1.c        **** 				r = 0;
+ 818              		r3, [fp, #-19]
+ 819 08f0 0030A0E3 		b	.L60
+ 820 08f4 15304BE5 	.L89:
+ 277:i2c1.c        **** 				g = 0;
+ 821              	oc 1 279 0
+ 822 08f8 0030A0E3 		ldr	r3, .L149+16
+ 823 08fc 14304BE5 		ldrh	r3, [r3, #0]
+ 278:i2c1.c        **** 				b = 0;
+ 824              	p	r3, #114
+ 825 0900 0030A0E3 		bhi	.L92
+ 826 0904 13304BE5 		.loc 1 280 0
+ 827 0908 340100EA 		mvn	r3, #0
+ 828              		strb	r3, [fp, #-21]
+ 279:i2c1.c        **** 			} else if (cnt < 115) {
+ 829              	 1 281 0
+ 830 090c 04359FE5 		mov	r3, #0
+ 831 0910 B030D3E1 		strb	r3, [fp, #-20]
+ 832 0914 720053E3 		.loc 1 282 0
+ 833 0918 0600008A 		mov	r3, #0
+ 280:i2c1.c        **** 				r = 255;
+ 834              		r3, [fp, #-19]
+ 835 091c 0030E0E3 		b	.L60
+ 836 0920 15304BE5 	.L92:
+ 281:i2c1.c        **** 				g = 0;
+ 837              	oc 1 283 0
+ 838 0924 0030A0E3 		ldr	r3, .L149+16
+ 839 0928 14304BE5 		ldrh	r3, [r3, #0]
+ 282:i2c1.c        **** 				b = 0;
+ 840              	p	r3, #124
+ 841 092c 0030A0E3 		bhi	.L94
+ 842 0930 13304BE5 		.loc 1 284 0
+ 843 0934 290100EA 		mov	r3, #0
+ 844              		strb	r3, [fp, #-21]
+ 283:i2c1.c        **** 			} else if (cnt < 125) {
+ 845              	 1 285 0
+ 846 0938 D8349FE5 		mov	r3, #0
+ 847 093c B030D3E1 		strb	r3, [fp, #-20]
+ 848 0940 7C0053E3 		.loc 1 286 0
+ 849 0944 0600008A 		mov	r3, #0
+ 284:i2c1.c        **** 				r = 0;
+ 850              		r3, [fp, #-19]
+ 851 0948 0030A0E3 		b	.L60
+ 852 094c 15304BE5 	.L94:
+ 285:i2c1.c        **** 				g = 0;
+ 853              	oc 1 287 0
+ 854 0950 0030A0E3 		ldr	r3, .L149+16
+ 855 0954 14304BE5 		ldrh	r3, [r3, #0]
+ 286:i2c1.c        **** 				b = 0;
+ 856              	p	r3, #134
+ 857 0958 0030A0E3 		bhi	.L96
+ 858 095c 13304BE5 		.loc 1 288 0
+ 859 0960 1E0100EA 		mvn	r3, #0
+ 860              		strb	r3, [fp, #-21]
+ 287:i2c1.c        **** 			} else if (cnt < 135) {
+ 861              	 1 289 0
+ 862 0964 AC349FE5 		mov	r3, #0
+ 863 0968 B030D3E1 		strb	r3, [fp, #-20]
+ 864 096c 860053E3 		.loc 1 290 0
+ 865 0970 0600008A 		mov	r3, #0
+ 288:i2c1.c        **** 				r = 255;
+ 866              		r3, [fp, #-19]
+ 867 0974 0030E0E3 		b	.L60
+ 868 0978 15304BE5 	.L96:
+ 289:i2c1.c        **** 				g = 0;
+ 869              	oc 1 291 0
+ 870 097c 0030A0E3 		ldr	r3, .L149+16
+ 871 0980 14304BE5 		ldrh	r3, [r3, #0]
+ 290:i2c1.c        **** 				b = 0;
+ 872              	p	r3, #144
+ 873 0984 0030A0E3 		bhi	.L98
+ 874 0988 13304BE5 		.loc 1 292 0
+ 875 098c 130100EA 		mov	r3, #0
+ 876              		strb	r3, [fp, #-21]
+ 291:i2c1.c        **** 			} else if (cnt < 145) {
+ 877              	 1 293 0
+ 878 0990 80349FE5 		mov	r3, #0
+ 879 0994 B030D3E1 		strb	r3, [fp, #-20]
+ 880 0998 900053E3 		.loc 1 294 0
+ 881 099c 0600008A 		mov	r3, #0
+ 292:i2c1.c        **** 				r = 0;
+ 882              		r3, [fp, #-19]
+ 883 09a0 0030A0E3 		b	.L60
+ 884 09a4 15304BE5 	.L98:
+ 293:i2c1.c        **** 				g = 0;
+ 885              	oc 1 295 0
+ 886 09a8 0030A0E3 		ldr	r3, .L149+16
+ 887 09ac 14304BE5 		ldrh	r3, [r3, #0]
+ 294:i2c1.c        **** 				b = 0;
+ 888              	p	r3, #154
+ 889 09b0 0030A0E3 		bhi	.L100
+ 890 09b4 13304BE5 		.loc 1 296 0
+ 891 09b8 080100EA 		mvn	r3, #0
+ 892              		strb	r3, [fp, #-21]
+ 295:i2c1.c        **** 			} else if (cnt < 155) {
+ 893              	 1 297 0
+ 894 09bc 54349FE5 		mov	r3, #0
+ 895 09c0 B030D3E1 		strb	r3, [fp, #-20]
+ 896 09c4 9A0053E3 		.loc 1 298 0
+ 897 09c8 0600008A 		mov	r3, #0
+ 296:i2c1.c        **** 				r = 255;
+ 898              		r3, [fp, #-19]
+ 899 09cc 0030E0E3 		b	.L60
+ 900 09d0 15304BE5 	.L100:
+ 297:i2c1.c        **** 				g = 0;
+ 901              	oc 1 299 0
+ 902 09d4 0030A0E3 		ldr	r3, .L149+16
+ 903 09d8 14304BE5 		ldrh	r3, [r3, #0]
+ 298:i2c1.c        **** 				b = 0;
+ 904              	p	r3, #164
+ 905 09dc 0030A0E3 		bhi	.L102
+ 906 09e0 13304BE5 		.loc 1 300 0
+ 907 09e4 FD0000EA 		mov	r3, #0
+ 908              		strb	r3, [fp, #-21]
+ 299:i2c1.c        **** 			} else if (cnt < 165) {
+ 909              	 1 301 0
+ 910 09e8 28349FE5 		mov	r3, #0
+ 911 09ec B030D3E1 		strb	r3, [fp, #-20]
+ 912 09f0 A40053E3 		.loc 1 302 0
+ 913 09f4 0600008A 		mov	r3, #0
+ 300:i2c1.c        **** 				r = 0;
+ 914              		r3, [fp, #-19]
+ 915 09f8 0030A0E3 		b	.L60
+ 916 09fc 15304BE5 	.L102:
+ 301:i2c1.c        **** 				g = 0;
+ 917              	oc 1 303 0
+ 918 0a00 0030A0E3 		ldr	r3, .L149+16
+ 919 0a04 14304BE5 		ldrh	r3, [r3, #0]
+ 302:i2c1.c        **** 				b = 0;
+ 920              	p	r3, #174
+ 921 0a08 0030A0E3 		bhi	.L104
+ 922 0a0c 13304BE5 		.loc 1 304 0
+ 923 0a10 F20000EA 		mvn	r3, #0
+ 924              		strb	r3, [fp, #-21]
+ 303:i2c1.c        **** 			} else if (cnt < 175) {
+ 925              	 1 305 0
+ 926 0a14 FC339FE5 		mov	r3, #0
+ 927 0a18 B030D3E1 		strb	r3, [fp, #-20]
+ 928 0a1c AE0053E3 		.loc 1 306 0
+ 929 0a20 0600008A 		mov	r3, #0
+ 304:i2c1.c        **** 				r = 255;
+ 930              		r3, [fp, #-19]
+ 931 0a24 0030E0E3 		b	.L60
+ 932 0a28 15304BE5 	.L104:
+ 305:i2c1.c        **** 				g = 0;
+ 933              	oc 1 307 0
+ 934 0a2c 0030A0E3 		ldr	r3, .L149+16
+ 935 0a30 14304BE5 		ldrh	r3, [r3, #0]
+ 306:i2c1.c        **** 				b = 0;
+ 936              	p	r3, #184
+ 937 0a34 0030A0E3 		bhi	.L106
+ 938 0a38 13304BE5 		.loc 1 308 0
+ 939 0a3c E70000EA 		mov	r3, #0
+ 940              		strb	r3, [fp, #-21]
+ 307:i2c1.c        **** 			} else if (cnt < 185) {
+ 941              	 1 309 0
+ 942 0a40 D0339FE5 		mov	r3, #0
+ 943 0a44 B030D3E1 		strb	r3, [fp, #-20]
+ 944 0a48 B80053E3 		.loc 1 310 0
+ 945 0a4c 0600008A 		mov	r3, #0
+ 308:i2c1.c        **** 				r = 0;
+ 946              		r3, [fp, #-19]
+ 947 0a50 0030A0E3 		b	.L60
+ 948 0a54 15304BE5 	.L106:
+ 309:i2c1.c        **** 				g = 0;
+ 949              	oc 1 311 0
+ 950 0a58 0030A0E3 		ldr	r3, .L149+16
+ 951 0a5c 14304BE5 		ldrh	r3, [r3, #0]
+ 310:i2c1.c        **** 				b = 0;
+ 952              	p	r3, #194
+ 953 0a60 0030A0E3 		bhi	.L108
+ 954 0a64 13304BE5 		.loc 1 312 0
+ 955 0a68 DC0000EA 		mvn	r3, #0
+ 956              		strb	r3, [fp, #-21]
+ 311:i2c1.c        **** 			} else if (cnt < 195) {
+ 957              	 1 313 0
+ 958 0a6c A4339FE5 		mov	r3, #0
+ 959 0a70 B030D3E1 		strb	r3, [fp, #-20]
+ 960 0a74 C20053E3 		.loc 1 314 0
+ 961 0a78 0600008A 		mov	r3, #0
+ 312:i2c1.c        **** 				r = 255;
+ 962              		r3, [fp, #-19]
+ 963 0a7c 0030E0E3 		b	.L60
+ 964 0a80 15304BE5 	.L108:
+ 313:i2c1.c        **** 				g = 0;
+ 965              	oc 1 316 0
+ 966 0a84 0030A0E3 		mov	r3, #0
+ 967 0a88 14304BE5 		strb	r3, [fp, #-21]
+ 314:i2c1.c        **** 				b = 0;
+ 968              	oc 1 317 0
+ 969 0a8c 0030A0E3 		mov	r3, #0
+ 970 0a90 13304BE5 		strb	r3, [fp, #-20]
+ 971 0a94 D10000EA 		.loc 1 318 0
+ 972              		mov	r3, #0
+ 315:i2c1.c        **** 			} else {
+ 316:i2c1.c        **** 				r = 0;
+ 973              		r3, [fp, #-19]
+ 974 0a98 0030A0E3 		b	.L60
+ 975 0a9c 15304BE5 	.L84:
+ 317:i2c1.c        **** 				g = 0;
+ 976              	oc 1 320 0
+ 977 0aa0 0030A0E3 		ldrh	r3, [fp, #-18]
+ 978 0aa4 14304BE5 		and	r3, r3, #16
+ 318:i2c1.c        **** 				b = 0;
+ 979              	p	r3, #0
+ 980 0aa8 0030A0E3 		beq	.L110
+ 981 0aac 13304BE5 		.loc 1 321 0
+ 982 0ab0 CA0000EA 		ldr	r3, .L149+8
+ 983              		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 319:i2c1.c        **** 			}
+ 320:i2c1.c        **** 		} else if (errorFlags & 0x10) {
+ 984              	r3, #4
+ 985 0ab4 B2315BE1 		bhi	.L112
+ 986 0ab8 103003E2 		ldr	r3, .L149+16
+ 987 0abc 000053E3 		ldrh	r3, [r3, #0]
+ 988 0ac0 6C00000A 		cmp	r3, #195
+ 321:i2c1.c        **** 			if ((mincCnt < 5) && (cnt == 195))
+ 989              	.L112
+ 990 0ac4 44339FE5 		.loc 1 322 0
+ 991 0ac8 0030D3E5 		ldr	r3, .L149+8
+ 992 0acc 040053E3 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 993 0ad0 0900008A 		add	r3, r3, #1
+ 994 0ad4 3C339FE5 		and	r3, r3, #255
+ 995 0ad8 B030D3E1 		ldr	r2, .L149+8
+ 996 0adc C30053E3 		strb	r3, [r2, #0]
+ 997 0ae0 0500001A 	.L112:
+ 322:i2c1.c        **** 				mincCnt++;
+ 998              	24 0
+ 999 0ae4 24339FE5 		ldr	r3, .L149+16
+ 1000 0ae8 0030D3E5 		ldrh	r3, [r3, #0]
+ 1001 0aec 013083E2 		cmp	r3, #104
+ 1002 0af0 FF3003E2 		bhi	.L115
+ 1003 0af4 14239FE5 		.loc 1 325 0
+ 1004 0af8 0030C2E5 		mov	r3, #0
+ 1005              		strb	r3, [fp, #-21]
+ 323:i2c1.c        **** 			//blink 4x
+ 324:i2c1.c        **** 			if (cnt < 105) {
+ 1006              	326 0
+ 1007 0afc 14339FE5 		mov	r3, #0
+ 1008 0b00 B030D3E1 		strb	r3, [fp, #-20]
+ 1009 0b04 680053E3 		.loc 1 327 0
+ 1010 0b08 0600008A 		mov	r3, #0
+ 325:i2c1.c        **** 				r = 0;
+ 1011              		r3, [fp, #-19]
+ 1012 0b0c 0030A0E3 		b	.L60
+ 1013 0b10 15304BE5 	.L115:
+ 326:i2c1.c        **** 				g = 0;
+ 1014              	oc 1 328 0
+ 1015 0b14 0030A0E3 		ldr	r3, .L149+16
+ 1016 0b18 14304BE5 		ldrh	r3, [r3, #0]
+ 327:i2c1.c        **** 				b = 0;
+ 1017              	p	r3, #114
+ 1018 0b1c 0030A0E3 		bhi	.L118
+ 1019 0b20 13304BE5 		.loc 1 329 0
+ 1020 0b24 AD0000EA 		mov	r3, #0
+ 1021              		strb	r3, [fp, #-21]
+ 328:i2c1.c        **** 			} else if (cnt < 115) {
+ 1022              	 1 330 0
+ 1023 0b28 E8329FE5 		mov	r3, #0
+ 1024 0b2c B030D3E1 		strb	r3, [fp, #-20]
+ 1025 0b30 720053E3 		.loc 1 331 0
+ 1026 0b34 0600008A 		mvn	r3, #0
+ 329:i2c1.c        **** 				r = 0;
+ 1027              		r3, [fp, #-19]
+ 1028 0b38 0030A0E3 		b	.L60
+ 1029 0b3c 15304BE5 	.L118:
+ 330:i2c1.c        **** 				g = 0;
+ 1030              	oc 1 332 0
+ 1031 0b40 0030A0E3 		ldr	r3, .L149+16
+ 1032 0b44 14304BE5 		ldrh	r3, [r3, #0]
+ 331:i2c1.c        **** 				b = 255;
+ 1033              	p	r3, #124
+ 1034 0b48 0030E0E3 		bhi	.L120
+ 1035 0b4c 13304BE5 		.loc 1 333 0
+ 1036 0b50 A20000EA 		mov	r3, #0
+ 1037              		strb	r3, [fp, #-21]
+ 332:i2c1.c        **** 			} else if (cnt < 125) {
+ 1038              	 1 334 0
+ 1039 0b54 BC329FE5 		mov	r3, #0
+ 1040 0b58 B030D3E1 		strb	r3, [fp, #-20]
+ 1041 0b5c 7C0053E3 		.loc 1 335 0
+ 1042 0b60 0600008A 		mov	r3, #0
+ 333:i2c1.c        **** 				r = 0;
+ 1043              		r3, [fp, #-19]
+ 1044 0b64 0030A0E3 		b	.L60
+ 1045 0b68 15304BE5 	.L120:
+ 334:i2c1.c        **** 				g = 0;
+ 1046              	oc 1 336 0
+ 1047 0b6c 0030A0E3 		ldr	r3, .L149+16
+ 1048 0b70 14304BE5 		ldrh	r3, [r3, #0]
+ 335:i2c1.c        **** 				b = 0;
+ 1049              	p	r3, #134
+ 1050 0b74 0030A0E3 		bhi	.L122
+ 1051 0b78 13304BE5 		.loc 1 337 0
+ 1052 0b7c 970000EA 		mov	r3, #0
+ 1053              		strb	r3, [fp, #-21]
+ 336:i2c1.c        **** 			} else if (cnt < 135) {
+ 1054              	 1 338 0
+ 1055 0b80 90329FE5 		mov	r3, #0
+ 1056 0b84 B030D3E1 		strb	r3, [fp, #-20]
+ 1057 0b88 860053E3 		.loc 1 339 0
+ 1058 0b8c 0600008A 		mvn	r3, #0
+ 337:i2c1.c        **** 				r = 0;
+ 1059              		r3, [fp, #-19]
+ 1060 0b90 0030A0E3 		b	.L60
+ 1061 0b94 15304BE5 	.L122:
+ 338:i2c1.c        **** 				g = 0;
+ 1062              	oc 1 340 0
+ 1063 0b98 0030A0E3 		ldr	r3, .L149+16
+ 1064 0b9c 14304BE5 		ldrh	r3, [r3, #0]
+ 339:i2c1.c        **** 				b = 255;
+ 1065              	p	r3, #144
+ 1066 0ba0 0030E0E3 		bhi	.L124
+ 1067 0ba4 13304BE5 		.loc 1 341 0
+ 1068 0ba8 8C0000EA 		mov	r3, #0
+ 1069              		strb	r3, [fp, #-21]
+ 340:i2c1.c        **** 			} else if (cnt < 145) {
+ 1070              	 1 342 0
+ 1071 0bac 64329FE5 		mov	r3, #0
+ 1072 0bb0 B030D3E1 		strb	r3, [fp, #-20]
+ 1073 0bb4 900053E3 		.loc 1 343 0
+ 1074 0bb8 0600008A 		mov	r3, #0
+ 341:i2c1.c        **** 				r = 0;
+ 1075              		r3, [fp, #-19]
+ 1076 0bbc 0030A0E3 		b	.L60
+ 1077 0bc0 15304BE5 	.L124:
+ 342:i2c1.c        **** 				g = 0;
+ 1078              	oc 1 344 0
+ 1079 0bc4 0030A0E3 		ldr	r3, .L149+16
+ 1080 0bc8 14304BE5 		ldrh	r3, [r3, #0]
+ 343:i2c1.c        **** 				b = 0;
+ 1081              	p	r3, #154
+ 1082 0bcc 0030A0E3 		bhi	.L126
+ 1083 0bd0 13304BE5 		.loc 1 345 0
+ 1084 0bd4 810000EA 		mov	r3, #0
+ 1085              		strb	r3, [fp, #-21]
+ 344:i2c1.c        **** 			} else if (cnt < 155) {
+ 1086              	 1 346 0
+ 1087 0bd8 38329FE5 		mov	r3, #0
+ 1088 0bdc B030D3E1 		strb	r3, [fp, #-20]
+ 1089 0be0 9A0053E3 		.loc 1 347 0
+ 1090 0be4 0600008A 		mvn	r3, #0
+ 345:i2c1.c        **** 				r = 0;
+ 1091              		r3, [fp, #-19]
+ 1092 0be8 0030A0E3 		b	.L60
+ 1093 0bec 15304BE5 	.L126:
+ 346:i2c1.c        **** 				g = 0;
+ 1094              	oc 1 348 0
+ 1095 0bf0 0030A0E3 		ldr	r3, .L149+16
+ 1096 0bf4 14304BE5 		ldrh	r3, [r3, #0]
+ 347:i2c1.c        **** 				b = 255;
+ 1097              	p	r3, #164
+ 1098 0bf8 0030E0E3 		bhi	.L128
+ 1099 0bfc 13304BE5 		.loc 1 349 0
+ 1100 0c00 760000EA 		mov	r3, #0
+ 1101              		strb	r3, [fp, #-21]
+ 348:i2c1.c        **** 			} else if (cnt < 165) {
+ 1102              	 1 350 0
+ 1103 0c04 0C329FE5 		mov	r3, #0
+ 1104 0c08 B030D3E1 		strb	r3, [fp, #-20]
+ 1105 0c0c A40053E3 		.loc 1 351 0
+ 1106 0c10 0600008A 		mov	r3, #0
+ 349:i2c1.c        **** 				r = 0;
+ 1107              		r3, [fp, #-19]
+ 1108 0c14 0030A0E3 		b	.L60
+ 1109 0c18 15304BE5 	.L128:
+ 350:i2c1.c        **** 				g = 0;
+ 1110              	oc 1 352 0
+ 1111 0c1c 0030A0E3 		ldr	r3, .L149+16
+ 1112 0c20 14304BE5 		ldrh	r3, [r3, #0]
+ 351:i2c1.c        **** 				b = 0;
+ 1113              	p	r3, #174
+ 1114 0c24 0030A0E3 		bhi	.L130
+ 1115 0c28 13304BE5 		.loc 1 353 0
+ 1116 0c2c 6B0000EA 		mov	r3, #0
+ 1117              		strb	r3, [fp, #-21]
+ 352:i2c1.c        **** 			} else if (cnt < 175) {
+ 1118              	 1 354 0
+ 1119 0c30 E0319FE5 		mov	r3, #0
+ 1120 0c34 B030D3E1 		strb	r3, [fp, #-20]
+ 1121 0c38 AE0053E3 		.loc 1 355 0
+ 1122 0c3c 0600008A 		mvn	r3, #0
+ 353:i2c1.c        **** 				r = 0;
+ 1123              		r3, [fp, #-19]
+ 1124 0c40 0030A0E3 		b	.L60
+ 1125 0c44 15304BE5 	.L130:
+ 354:i2c1.c        **** 				g = 0;
+ 1126              	oc 1 357 0
+ 1127 0c48 0030A0E3 		mov	r3, #0
+ 1128 0c4c 14304BE5 		strb	r3, [fp, #-21]
+ 355:i2c1.c        **** 				b = 255;
+ 1129              	oc 1 358 0
+ 1130 0c50 0030E0E3 		mov	r3, #0
+ 1131 0c54 13304BE5 		strb	r3, [fp, #-20]
+ 1132 0c58 600000EA 		.loc 1 359 0
+ 1133              		mov	r3, #0
+ 356:i2c1.c        **** 			} else {
+ 357:i2c1.c        **** 				r = 0;
+ 1134              		r3, [fp, #-19]
+ 1135 0c5c 0030A0E3 		b	.L60
+ 1136 0c60 15304BE5 	.L110:
+ 358:i2c1.c        **** 				g = 0;
+ 1137              	oc 1 361 0
+ 1138 0c64 0030A0E3 		ldrh	r3, [fp, #-18]
+ 1139 0c68 14304BE5 		and	r3, r3, #32
+ 359:i2c1.c        **** 				b = 0;
+ 1140              	p	r3, #0
+ 1141 0c6c 0030A0E3 		beq	.L60
+ 1142 0c70 13304BE5 		.loc 1 362 0
+ 1143 0c74 590000EA 		ldr	r3, .L149+12
+ 1144              		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 360:i2c1.c        **** 			}
+ 361:i2c1.c        **** 		} else if (errorFlags & 0x20) {
+ 1145              	r3, #4
+ 1146 0c78 B2315BE1 		bhi	.L133
+ 1147 0c7c 203003E2 		ldr	r3, .L149+16
+ 1148 0c80 000053E3 		ldrh	r3, [r3, #0]
+ 1149 0c84 5500000A 		cmp	r3, #195
+ 362:i2c1.c        **** 			if ((mfsCnt < 5) && (cnt == 195))
+ 1150              	.L133
+ 1151 0c88 84319FE5 		.loc 1 363 0
+ 1152 0c8c 0030D3E5 		ldr	r3, .L149+12
+ 1153 0c90 040053E3 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1154 0c94 0900008A 		add	r3, r3, #1
+ 1155 0c98 78319FE5 		and	r3, r3, #255
+ 1156 0c9c B030D3E1 		ldr	r2, .L149+12
+ 1157 0ca0 C30053E3 		strb	r3, [r2, #0]
+ 1158 0ca4 0500001A 	.L133:
+ 363:i2c1.c        **** 				mfsCnt++;
+ 1159              	65 0
+ 1160 0ca8 64319FE5 		ldr	r3, .L149+16
+ 1161 0cac 0030D3E5 		ldrh	r3, [r3, #0]
+ 1162 0cb0 013083E2 		cmp	r3, #104
+ 1163 0cb4 FF3003E2 		bhi	.L136
+ 1164 0cb8 54219FE5 		.loc 1 366 0
+ 1165 0cbc 0030C2E5 		mov	r3, #0
+ 1166              		strb	r3, [fp, #-21]
+ 364:i2c1.c        **** 			//blink 3x !
+ 365:i2c1.c        **** 			if (cnt < 105) {
+ 1167              	367 0
+ 1168 0cc0 50319FE5 		mov	r3, #0
+ 1169 0cc4 B030D3E1 		strb	r3, [fp, #-20]
+ 1170 0cc8 680053E3 		.loc 1 368 0
+ 1171 0ccc 0600008A 		mov	r3, #0
+ 366:i2c1.c        **** 				r = 0;
+ 1172              		r3, [fp, #-19]
+ 1173 0cd0 0030A0E3 		b	.L60
+ 1174 0cd4 15304BE5 	.L136:
+ 367:i2c1.c        **** 				g = 0;
+ 1175              	oc 1 369 0
+ 1176 0cd8 0030A0E3 		ldr	r3, .L149+16
+ 1177 0cdc 14304BE5 		ldrh	r3, [r3, #0]
+ 368:i2c1.c        **** 				b = 0;
+ 1178              	p	r3, #114
+ 1179 0ce0 0030A0E3 		bhi	.L138
+ 1180 0ce4 13304BE5 		.loc 1 370 0
+ 1181 0ce8 3C0000EA 		mov	r3, #0
+ 1182              		strb	r3, [fp, #-21]
+ 369:i2c1.c        **** 			} else if (cnt < 115) {
+ 1183              	 1 371 0
+ 1184 0cec 24319FE5 		mov	r3, #0
+ 1185 0cf0 B030D3E1 		strb	r3, [fp, #-20]
+ 1186 0cf4 720053E3 		.loc 1 372 0
+ 1187 0cf8 0600008A 		mvn	r3, #0
+ 370:i2c1.c        **** 				r = 0;
+ 1188              		r3, [fp, #-19]
+ 1189 0cfc 0030A0E3 		b	.L60
+ 1190 0d00 15304BE5 	.L138:
+ 371:i2c1.c        **** 				g = 0;
+ 1191              	oc 1 373 0
+ 1192 0d04 0030A0E3 		ldr	r3, .L149+16
+ 1193 0d08 14304BE5 		ldrh	r3, [r3, #0]
+ 372:i2c1.c        **** 				b = 255;
+ 1194              	p	r3, #124
+ 1195 0d0c 0030E0E3 		bhi	.L140
+ 1196 0d10 13304BE5 		.loc 1 374 0
+ 1197 0d14 310000EA 		mov	r3, #0
+ 1198              		strb	r3, [fp, #-21]
+ 373:i2c1.c        **** 			} else if (cnt < 125) {
+ 1199              	 1 375 0
+ 1200 0d18 F8309FE5 		mov	r3, #0
+ 1201 0d1c B030D3E1 		strb	r3, [fp, #-20]
+ 1202 0d20 7C0053E3 		.loc 1 376 0
+ 1203 0d24 0600008A 		mov	r3, #0
+ 374:i2c1.c        **** 				r = 0;
+ 1204              		r3, [fp, #-19]
+ 1205 0d28 0030A0E3 		b	.L60
+ 1206 0d2c 15304BE5 	.L140:
+ 375:i2c1.c        **** 				g = 0;
+ 1207              	oc 1 377 0
+ 1208 0d30 0030A0E3 		ldr	r3, .L149+16
+ 1209 0d34 14304BE5 		ldrh	r3, [r3, #0]
+ 376:i2c1.c        **** 				b = 0;
+ 1210              	p	r3, #134
+ 1211 0d38 0030A0E3 		bhi	.L142
+ 1212 0d3c 13304BE5 		.loc 1 378 0
+ 1213 0d40 260000EA 		mov	r3, #0
+ 1214              		strb	r3, [fp, #-21]
+ 377:i2c1.c        **** 			} else if (cnt < 135) {
+ 1215              	 1 379 0
+ 1216 0d44 CC309FE5 		mov	r3, #0
+ 1217 0d48 B030D3E1 		strb	r3, [fp, #-20]
+ 1218 0d4c 860053E3 		.loc 1 380 0
+ 1219 0d50 0600008A 		mvn	r3, #0
+ 378:i2c1.c        **** 				r = 0;
+ 1220              		r3, [fp, #-19]
+ 1221 0d54 0030A0E3 		b	.L60
+ 1222 0d58 15304BE5 	.L142:
+ 379:i2c1.c        **** 				g = 0;
+ 1223              	oc 1 381 0
+ 1224 0d5c 0030A0E3 		ldr	r3, .L149+16
+ 1225 0d60 14304BE5 		ldrh	r3, [r3, #0]
+ 380:i2c1.c        **** 				b = 255;
+ 1226              	p	r3, #144
+ 1227 0d64 0030E0E3 		bhi	.L144
+ 1228 0d68 13304BE5 		.loc 1 382 0
+ 1229 0d6c 1B0000EA 		mov	r3, #0
+ 1230              		strb	r3, [fp, #-21]
+ 381:i2c1.c        **** 			} else if (cnt < 145) {
+ 1231              	 1 383 0
+ 1232 0d70 A0309FE5 		mov	r3, #0
+ 1233 0d74 B030D3E1 		strb	r3, [fp, #-20]
+ 1234 0d78 900053E3 		.loc 1 384 0
+ 1235 0d7c 0600008A 		mov	r3, #0
+ 382:i2c1.c        **** 				r = 0;
+ 1236              		r3, [fp, #-19]
+ 1237 0d80 0030A0E3 		b	.L60
+ 1238 0d84 15304BE5 	.L144:
+ 383:i2c1.c        **** 				g = 0;
+ 1239              	oc 1 385 0
+ 1240 0d88 0030A0E3 		ldr	r3, .L149+16
+ 1241 0d8c 14304BE5 		ldrh	r3, [r3, #0]
+ 384:i2c1.c        **** 				b = 0;
+ 1242              	p	r3, #154
+ 1243 0d90 0030A0E3 		bhi	.L146
+ 1244 0d94 13304BE5 		.loc 1 386 0
+ 1245 0d98 100000EA 		mov	r3, #0
+ 1246              		strb	r3, [fp, #-21]
+ 385:i2c1.c        **** 			} else if (cnt < 155) {
+ 1247              	 1 387 0
+ 1248 0d9c 74309FE5 		mov	r3, #0
+ 1249 0da0 B030D3E1 		strb	r3, [fp, #-20]
+ 1250 0da4 9A0053E3 		.loc 1 388 0
+ 1251 0da8 0600008A 		mvn	r3, #0
+ 386:i2c1.c        **** 				r = 0;
+ 1252              		r3, [fp, #-19]
+ 1253 0dac 0030A0E3 		b	.L60
+ 1254 0db0 15304BE5 	.L146:
+ 387:i2c1.c        **** 				g = 0;
+ 1255              	oc 1 390 0
+ 1256 0db4 0030A0E3 		mov	r3, #0
+ 1257 0db8 14304BE5 		strb	r3, [fp, #-21]
+ 388:i2c1.c        **** 				b = 255;
+ 1258              	oc 1 391 0
+ 1259 0dbc 0030E0E3 		mov	r3, #0
+ 1260 0dc0 13304BE5 		strb	r3, [fp, #-20]
+ 1261 0dc4 050000EA 		.loc 1 392 0
+ 1262              		mov	r3, #0
+ 389:i2c1.c        **** 			} else {
+ 390:i2c1.c        **** 				r = 0;
+ 1263              		r3, [fp, #-19]
+ 1264 0dc8 0030A0E3 	.L60:
+ 1265 0dcc 15304BE5 		.loc 1 396 0
+ 391:i2c1.c        **** 				g = 0;
+ 1266              	rb	r3, [fp, #-21]	@ zero_extendqisi2
+ 1267 0dd0 0030A0E3 		ldrb	r2, [fp, #-20]	@ zero_extendqisi2
+ 1268 0dd4 14304BE5 		ldrb	ip, [fp, #-19]	@ zero_extendqisi2
+ 392:i2c1.c        **** 				b = 0;
+ 1269              	v	r0, r3
+ 1270 0dd8 0030A0E3 		mov	r1, r2
+ 1271 0ddc 13304BE5 		mov	r2, ip
+ 1272              		bl	I2C1_setRGBLed
+ 393:i2c1.c        **** 			}
+ 394:i2c1.c        **** 		}
+ 395:i2c1.c        **** 	}
+ 396:i2c1.c        **** 	I2C1_setRGBLed(r, g, b);
+ 1273              	c 1 397 0
+ 1274 0de0 15305BE5 		sub	sp, fp, #12
+ 1275 0de4 14205BE5 		ldmfd	sp, {fp, sp, lr}
+ 1276 0de8 13C05BE5 		bx	lr
+ 1277 0dec 0300A0E1 	.L150:
+ 1278 0df0 0210A0E1 		.align	2
+ 1279 0df4 0C20A0E1 	.L149:
+ 1280 0df8 FEFFFFEB 		.word	LL_1khz_attitude_data
+ 397:i2c1.c        **** }
+ 1281              	eCnt.1589
+ 1282 0dfc 0CD04BE2 		.word	mincCnt.1588
+ 1283 0e00 00689DE8 		.word	mfsCnt.1587
+ 1284 0e04 1EFF2FE1 		.word	cnt.1586
+ 1285              		.word	SYSTEM_initialized
+ 1286              		.word	GPS_Data
+ 1287              		.word	HL_Status
+ 1288 0e08 00000000 		.word	-1431655765
+ 1289 0e0c 0D000000 		.word	-858993459
+ 1290 0e10 0E000000 	.LFE3:
+ 1292 0e18 10000000 		.align	2
+ 1293 0e1c 00000000 		.global	I2C1_setRGBLed
+ 1295 0e24 00000000 	I2C1_setRGBLed:
+ 1296 0e28 ABAAAAAA 	.LFB4:
+ 1297 0e2c CDCCCCCC 		.loc 1 401 0
+ 1298              		@ Function supports interworking.
+ 1299              		@ args = 0, pretend = 0, frame = 16
+ 1300              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1301              		mov	ip, sp
+ 1302              	.LCFI8:
+ 1303              		stmfd	sp!, {fp, ip, lr, pc}
+ 1304              	.LCFI9:
+ 398:i2c1.c        **** 
+ 399:i2c1.c        **** 
+ 400:i2c1.c        **** char I2C1_setRGBLed(unsigned char r,unsigned char g,unsigned char b)
+ 401:i2c1.c        **** {
+ 1305              	
+ 1306              		sub	sp, sp, #16
+ 1307              	.LCFI11:
+ 1308              		mov	r3, r0
+ 1309 0e30 0DC0A0E1 		strb	r3, [fp, #-16]
+ 1310              		mov	r3, r1
+ 1311 0e34 00D82DE9 		strb	r3, [fp, #-20]
+ 1312              		mov	r3, r2
+ 1313 0e38 04B04CE2 		strb	r3, [fp, #-24]
+ 1314              		.loc 1 402 0
+ 1315 0e3c 10D04DE2 		ldr	r3, .L157
+ 1316              		ldr	r3, [r3, #0]
+ 1317 0e40 0030A0E1 		cmp	r3, #1
+ 1318 0e44 10304BE5 		beq	.L152
+ 1319 0e48 0130A0E1 		ldr	r3, .L157
+ 1320 0e4c 14304BE5 		ldr	r3, [r3, #0]
+ 1321 0e50 0230A0E1 		cmp	r3, #4
+ 1322 0e54 18304BE5 		bne	.L154
+ 402:i2c1.c        **** 	if ((I2C1MasterState == I2C_STARTED) || (I2C1MasterState == DATA_ACK))
+ 1323              	3 0
+ 1324 0e58 C4309FE5 		mov	r3, #5
+ 1325 0e5c 003093E5 		str	r3, [fp, #-28]
+ 1326 0e60 010053E3 		b	.L155
+ 1327 0e64 0300000A 	.L154:
+ 1328 0e68 B4309FE5 		.loc 1 404 0
+ 1329 0e6c 003093E5 		ldr	r2, .L157+4
+ 1330 0e70 040053E3 		mov	r3, #0
+ 1331 0e74 0200001A 		str	r3, [r2, #0]
+ 1332              		.loc 1 405 0
+ 403:i2c1.c        **** 			return I2C_ERROR_BUSBUSY;
+ 1333              	L157+8
+ 1334 0e78 0530A0E3 		mov	r3, #5
+ 1335 0e7c 1C300BE5 		str	r3, [r2, #0]
+ 1336 0e80 220000EA 		.loc 1 406 0
+ 1337              		ldr	r2, .L157+12
+ 404:i2c1.c        **** 	WrIndex1=0;
+ 1338              	r3, #48
+ 1339 0e84 9C209FE5 		strb	r3, [r2, #0]
+ 1340 0e88 0030A0E3 		.loc 1 407 0
+ 1341 0e8c 003082E5 		ldr	r2, .L157+12
+ 405:i2c1.c        **** 	I2C1WriteLength = 5;
+ 1342              	b	r3, [fp, #-16]
+ 1343 0e90 94209FE5 		strb	r3, [r2, #1]
+ 1344 0e94 0530A0E3 		.loc 1 408 0
+ 1345 0e98 003082E5 		ldr	r2, .L157+12
+ 406:i2c1.c        **** 	I2C1MasterBuffer[0] = 0x30;	//address
+ 1346              	b	r3, [fp, #-20]
+ 1347 0e9c 8C209FE5 		strb	r3, [r2, #2]
+ 1348 0ea0 3030A0E3 		.loc 1 409 0
+ 1349 0ea4 0030C2E5 		ldr	r2, .L157+12
+ 407:i2c1.c        ****     I2C1MasterBuffer[1] = r;
+ 1350              	b	r3, [fp, #-24]
+ 1351 0ea8 80209FE5 		strb	r3, [r2, #3]
+ 1352 0eac 10305BE5 		.loc 1 410 0
+ 1353 0eb0 0130C2E5 		ldrb	r2, [fp, #-16]
+ 408:i2c1.c        ****     I2C1MasterBuffer[2] = g;
+ 1354              	b	r3, [fp, #-20]
+ 1355 0eb4 74209FE5 		add	r3, r2, r3
+ 1356 0eb8 14305BE5 		and	r2, r3, #255
+ 1357 0ebc 0230C2E5 		ldrb	r3, [fp, #-24]
+ 409:i2c1.c        ****     I2C1MasterBuffer[3] = b;
+ 1358              		r3, r2, r3
+ 1359 0ec0 68209FE5 		and	r3, r3, #255
+ 1360 0ec4 18305BE5 		mvn	r3, r3
+ 1361 0ec8 0330C2E5 		and	r3, r3, #255
+ 410:i2c1.c        ****     I2C1MasterBuffer[4] = 255-(unsigned char)(r+g+b);
+ 1362              		r2, .L157+12
+ 1363 0ecc 10205BE5 		strb	r3, [r2, #4]
+ 1364 0ed0 14305BE5 		.loc 1 412 0
+ 1365 0ed4 033082E0 		ldr	r2, .L157
+ 1366 0ed8 FF2003E2 		mov	r3, #1
+ 1367 0edc 18305BE5 		str	r3, [r2, #0]
+ 1368 0ee0 033082E0 		.loc 1 413 0
+ 1369 0ee4 FF3003E2 		bl	I2C1Engine
+ 1370 0ee8 0330E0E1 		.loc 1 415 0
+ 1371 0eec FF3003E2 		mov	r3, #0
+ 1372 0ef0 38209FE5 		str	r3, [fp, #-28]
+ 1373 0ef4 0430C2E5 	.L155:
+ 411:i2c1.c        **** 
+ 412:i2c1.c        ****     I2C1MasterState = I2C_STARTED;
+ 1374              	, #-28]
+ 1375 0ef8 24209FE5 		.loc 1 416 0
+ 1376 0efc 0130A0E3 		mov	r0, r3
+ 1377 0f00 003082E5 		sub	sp, fp, #12
+ 413:i2c1.c        ****     I2C1Engine();
+ 1378              	fd	sp, {fp, sp, lr}
+ 1379 0f04 FEFFFFEB 		bx	lr
+ 414:i2c1.c        **** 
+ 415:i2c1.c        ****     return 0;
+ 1380              	158:
+ 1381 0f08 0030A0E3 		.align	2
+ 1382 0f0c 1C300BE5 	.L157:
+ 1383              		.word	I2C1MasterState
+ 1384 0f10 1C301BE5 		.word	WrIndex1
+ 416:i2c1.c        **** }
+ 1385              	d	I2C1WriteLength
+ 1386 0f14 0300A0E1 		.word	I2C1MasterBuffer
+ 1387 0f18 0CD04BE2 	.LFE4:
+ 1389 0f20 1EFF2FE1 		.align	2
+ 1390              		.global	I2C1Init
+ 1392              	I2C1Init:
+ 1393 0f24 00000000 	.LFB5:
+ 1394 0f28 00000000 		.loc 1 421 0
+ 1395 0f2c 00000000 		@ Function supports interworking.
+ 1396 0f30 00000000 		@ args = 0, pretend = 0, frame = 0
+ 1397              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1398              		mov	ip, sp
+ 1399              	.LCFI12:
+ 1400              		stmfd	sp!, {fp, ip, lr, pc}
+ 1401              	.LCFI13:
+ 1402              		sub	fp, ip, #4
+ 1403              	.LCFI14:
+ 417:i2c1.c        **** 
+ 418:i2c1.c        **** 
+ 419:i2c1.c        **** 
+ 420:i2c1.c        **** void I2C1Init(void)
+ 421:i2c1.c        **** {
+ 1404              	r3, #-536870912
+ 1405              		add	r3, r3, #376832
+ 1406              		add	r3, r3, #24
+ 1407              		mov	r2, #108
+ 1408 0f34 0DC0A0E1 		str	r2, [r3, #0]
+ 1409              		.loc 1 426 0
+ 1410 0f38 00D82DE9 		mov	r3, #-536870912
+ 1411              		add	r3, r3, #376832
+ 1412 0f3c 04B04CE2 		add	r3, r3, #20
+ 1413              		mov	r2, #512
+ 422:i2c1.c        ****     /*--- Clear flags ---*/
+ 423:i2c1.c        ****     I21CONCLR = I2CONCLR_AAC | I2CONCLR_SIC | I2CONCLR_STAC | I2CONCLR_I2ENC;
+ 1414              	r3, #0]
+ 1415 0f40 0E32A0E3 		.loc 1 427 0
+ 1416 0f44 173983E2 		mov	r3, #-536870912
+ 1417 0f48 183083E2 		add	r3, r3, #376832
+ 1418 0f4c 6C20A0E3 		add	r3, r3, #16
+ 1419 0f50 002083E5 		mov	r2, #512
+ 424:i2c1.c        **** 
+ 425:i2c1.c        ****     /*--- Reset registers ---*/
+ 426:i2c1.c        ****     I21SCLL   = I21SCLL_SCLL;
+ 1420              	2, [r3, #0]
+ 1421 0f54 0E32A0E3 		.loc 1 429 0
+ 1422 0f58 173983E2 		mov	r0, #19
+ 1423 0f5c 143083E2 		ldr	r1, .L161
+ 1424 0f60 022CA0E3 		bl	install_irq
+ 1425 0f64 002083E5 		.loc 1 430 0
+ 427:i2c1.c        ****     I21SCLH   = I21SCLH_SCLH;
+ 1426              	3, #-536870912
+ 1427 0f68 0E32A0E3 		add	r3, r3, #376832
+ 1428 0f6c 173983E2 		mov	r2, #64
+ 1429 0f70 103083E2 		str	r2, [r3, #0]
+ 1430 0f74 022CA0E3 		.loc 1 431 0
+ 1431 0f78 002083E5 		sub	sp, fp, #12
+ 428:i2c1.c        **** 
+ 429:i2c1.c        ****     install_irq( I2C1_INT, (void *) I2C1MasterHandler );
+ 1432              		sp, {fp, sp, lr}
+ 1433 0f7c 1300A0E3 		bx	lr
+ 1434 0f80 1C109FE5 	.L162:
+ 1435 0f84 FEFFFFEB 		.align	2
+ 430:i2c1.c        ****     I21CONSET = I2CONSET_I2EN;
+ 1436              	1:
+ 1437 0f88 0E32A0E3 		.word	I2C1MasterHandler
+ 1438 0f8c 173983E2 	.LFE5:
+ 1440 0f94 002083E5 		.align	2
+ 431:i2c1.c        **** }
+ 1441              	bal	I2C1Engine
+ 1443 0f9c 00689DE8 	I2C1Engine:
+ 1444 0fa0 1EFF2FE1 	.LFB6:
+ 1445              		.loc 1 434 0
+ 1446              		@ Function supports interworking.
+ 1447              		@ args = 0, pretend = 0, frame = 0
+ 1448 0fa4 00000000 		@ frame_needed = 1, uses_anonymous_args = 0
+ 1449              		mov	ip, sp
+ 1450              	.LCFI15:
+ 1451              		stmfd	sp!, {fp, ip, lr, pc}
+ 1452              	.LCFI16:
+ 1453              		sub	fp, ip, #4
+ 1454              	.LCFI17:
+ 1455              		.loc 1 435 0
+ 432:i2c1.c        **** 
+ 433:i2c1.c        **** unsigned int I2C1Engine( void )
+ 434:i2c1.c        **** {
+ 1456              	70912
+ 1457              		add	r3, r3, #376832
+ 1458              		mov	r2, #16
+ 1459              		str	r2, [r3, #0]
+ 1460 0fa8 0DC0A0E1 		.loc 1 436 0
+ 1461              		mov	r3, #-536870912
+ 1462 0fac 00D82DE9 		add	r3, r3, #376832
+ 1463              		add	r3, r3, #24
+ 1464 0fb0 04B04CE2 		mov	r2, #8
+ 1465              		str	r2, [r3, #0]
+ 435:i2c1.c        **** 	I21CONSET = I2CONSET_STO;      /* Set Stop flag */
+ 1466              	7 0
+ 1467 0fb4 0E32A0E3 		ldr	r2, .L165
+ 1468 0fb8 173983E2 		mov	r3, #0
+ 1469 0fbc 1020A0E3 		str	r3, [r2, #0]
+ 1470 0fc0 002083E5 		.loc 1 438 0
+ 436:i2c1.c        **** 	I21CONCLR = I2CONCLR_SIC;  /* Clear SI flag */
+ 1471              	r2, .L165+4
+ 1472 0fc4 0E32A0E3 		mov	r3, #0
+ 1473 0fc8 173983E2 		str	r3, [r2, #0]
+ 1474 0fcc 183083E2 		.loc 1 439 0
+ 1475 0fd0 0820A0E3 		mov	r3, #-536870912
+ 1476 0fd4 002083E5 		add	r3, r3, #376832
+ 437:i2c1.c        **** 	I2C1MasterState = I2C_IDLE;
+ 1477              	2, #32
+ 1478 0fd8 34209FE5 		str	r2, [r3, #0]
+ 1479 0fdc 0030A0E3 		.loc 1 440 0
+ 1480 0fe0 003082E5 		mov	r3, #1
+ 438:i2c1.c        ****     WrIndex1 = 0;
+ 1481              	c 1 441 0
+ 1482 0fe4 2C209FE5 		mov	r0, r3
+ 1483 0fe8 0030A0E3 		sub	sp, fp, #12
+ 1484 0fec 003082E5 		ldmfd	sp, {fp, sp, lr}
+ 439:i2c1.c        ****     I21CONSET = I2CONSET_STA;	/* Set Start flag */
+ 1485              	lr
+ 1486 0ff0 0E32A0E3 	.L166:
+ 1487 0ff4 173983E2 		.align	2
+ 1488 0ff8 2020A0E3 	.L165:
+ 1489 0ffc 002083E5 		.word	I2C1MasterState
+ 440:i2c1.c        ****     return ( TRUE );
+ 1490              	d	WrIndex1
+ 1491 1000 0130A0E3 	.LFE6:
+ 441:i2c1.c        **** }
+ 1492              	size	I2C1Engine, .-I2C1Engine
+ 1493 1004 0300A0E1 		.align	2
+ 1494 1008 0CD04BE2 		.global	I2C1State
+ 1496 1010 1EFF2FE1 	I2C1State:
+ 1497              	.LFB7:
+ 1498              		.loc 1 444 0
+ 1499              		@ Function supports interworking.
+ 1500 1014 00000000 		@ args = 0, pretend = 0, frame = 0
+ 1501 1018 00000000 		@ frame_needed = 1, uses_anonymous_args = 0
+ 1502              		mov	ip, sp
+ 1503              	.LCFI18:
+ 1504              		stmfd	sp!, {fp, ip, lr, pc}
+ 1505              	.LCFI19:
+ 1506              		sub	fp, ip, #4
+ 1507              	.LCFI20:
+ 1508              		.loc 1 445 0
+ 442:i2c1.c        **** 
+ 443:i2c1.c        **** unsigned char I2C1State(void)
+ 444:i2c1.c        **** {
+ 1509              	dr	r3, [r3, #0]
+ 1510              		and	r3, r3, #255
+ 1511              		.loc 1 446 0
+ 1512              		mov	r0, r3
+ 1513 101c 0DC0A0E1 		sub	sp, fp, #12
+ 1514              		ldmfd	sp, {fp, sp, lr}
+ 1515 1020 00D82DE9 		bx	lr
+ 1516              	.L170:
+ 1517 1024 04B04CE2 		.align	2
+ 1518              	.L169:
+ 445:i2c1.c        **** 	return I2C1MasterState;
+ 1519              	1MasterState
+ 1520 1028 14309FE5 	.LFE7:
+ 1522 1030 FF3003E2 		.comm	GPS_timeout,4,4
+ 446:i2c1.c        **** }
+ 1523              	mm	SYSTEM_initialized,1,1
+ 1524 1034 0300A0E1 		.comm	I2C1MasterBuffer,32,1
+ 1525 1038 0CD04BE2 		.comm	I2C1WriteLength,4,4
+ 1526 103c 00689DE8 		.section	.debug_frame,"",%progbits
+ 1527 1040 1EFF2FE1 	.Lframe0:
+ 1528              		.4byte	.LECIE0-.LSCIE0
+ 1529              	.LSCIE0:
+ 1530              		.4byte	0xffffffff
+ 1531 1044 00000000 		.byte	0x1
+ 1532              		.ascii	"\000"
+ 1533              		.uleb128 0x1
+ 1534              		.sleb128 -4
+ 1535              		.byte	0xe
+ 1536              		.byte	0xc
+ 1537              		.uleb128 0xd
+ 1709              		.4byte	.LCFI2-.Ltext0
+DEFINED SYMBOLS
+                            *ABS*:00000000 i2c1.c
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:15     .bss:00000000 I2C1MasterState
+                             .bss:00000000 $d
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:21     .bss:00000004 I2C1Count
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:27     .bss:00000008 WrIndex1
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:32     .bss:0000000c lastI2c1Error
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:38     .text:00000000 I2C1MasterHandler
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:45     .text:00000000 $a
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:66     .text:00000034 $d
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:109    .text:000000d8 $a
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:284    .text:000002e0 $d
+                            *COM*:00000020 I2C1MasterBuffer
+                            *COM*:00000004 I2C1WriteLength
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:292    .bss:0000000d ceCnt.1589
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:294    .bss:0000000e mincCnt.1588
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:296    .bss:0000000f mfsCnt.1587
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:299    .bss:00000010 cnt.1586
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:305    .text:000002f4 fireFlyLedHandler
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:311    .text:000002f4 $a
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:1303   .text:00000e30 I2C1_setRGBLed
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:1288   .text:00000e08 $d
+                            *COM*:00000001 SYSTEM_initialized
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:1309   .text:00000e30 $a
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:1454   .text:00000fa8 I2C1Engine
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:1393   .text:00000f24 $d
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:1402   .text:00000f34 I2C1Init
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:1408   .text:00000f34 $a
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:1448   .text:00000fa4 $d
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:1460   .text:00000fa8 $a
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:1500   .text:00001014 $d
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:1507   .text:0000101c I2C1State
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:1513   .text:0000101c $a
+C:\Users\bkuo\AppData\Local\Temp/ccyibaaa.s:1531   .text:00001044 $d
+                            *COM*:00000004 GPS_timeout
+
+UNDEFINED SYMBOLS
+LL_1khz_attitude_data
+GPS_Data
+HL_Status
+install_irq

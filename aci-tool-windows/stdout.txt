@@ -1,2 +1,4 @@
 Variable Table Length: 4313152
-max_number_of_requested_variables: 4
+max_number_of_requested_variables: 7
+max_number_of_requested_variables: 7
+max_number_of_requested_variables: 7

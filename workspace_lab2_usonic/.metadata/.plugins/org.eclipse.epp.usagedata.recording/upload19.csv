@@ -1,0 +1,26 @@
+what,kind,bundleId,bundleVersion,description,time
+opened,view,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.ModuleView",1429890641141
+activated,view,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.VariableView",1429890645476
+deactivated,workbench,org.eclipse.ui.workbench,3.5.0.I20090603-2000,"",1429890649556
+activated,workbench,org.eclipse.ui.workbench,3.5.0.I20090603-2000,"",1429890656631
+activated,view,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.DebugView",1429890659374
+executed,command,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.commands.Resume",1429890659488
+opened,editor,org.eclipse.cdt.ui,5.1.0.200906161748,"org.eclipse.cdt.ui.editor.CEditor",1429890662196
+executed,command,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.commands.Resume",1429890664367
+deactivated,workbench,org.eclipse.ui.workbench,3.5.0.I20090603-2000,"",1429890667593
+activated,workbench,org.eclipse.ui.workbench,3.5.0.I20090603-2000,"",1429890702610
+deactivated,workbench,org.eclipse.ui.workbench,3.5.0.I20090603-2000,"",1429890704442
+activated,workbench,org.eclipse.ui.workbench,3.5.0.I20090603-2000,"",1429890759245
+opened,editor,org.eclipse.cdt.debug.ui,6.0.0.200906161748,"org.eclipse.cdt.debug.ui.SourceNotFoundEditor",1429890759901
+closed,editor,org.eclipse.cdt.ui,5.1.0.200906161748,"org.eclipse.cdt.ui.editor.CEditor",1429890759916
+executed,command,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.commands.Resume",1429890767276
+deactivated,workbench,org.eclipse.ui.workbench,3.5.0.I20090603-2000,"",1429890769741
+activated,workbench,org.eclipse.ui.workbench,3.5.0.I20090603-2000,"",1429890780845
+executed,command,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.commands.Terminate",1429890788301
+error,log,,,"Inferior terminated",1429890788324
+closed,view,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.MemoryView",1429890792981
+closed,view,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.RegisterView",1429890792984
+closed,view,org.eclipse.debug.ui,3.5.0.v20090603,"org.eclipse.debug.ui.ModuleView",1429890792986
+activated,perspective,org.eclipse.cdt.ui,5.1.0.200906161748,"org.eclipse.cdt.ui.CPerspective",1429890792997
+activated,editor,org.eclipse.cdt.debug.ui,6.0.0.200906161748,"org.eclipse.cdt.debug.ui.SourceNotFoundEditor",1429890793000
+activated,editor,org.eclipse.cdt.ui,5.1.0.200906161748,"org.eclipse.cdt.ui.editor.CEditor",1429890797175
