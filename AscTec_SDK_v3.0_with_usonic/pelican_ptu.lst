@@ -1,0 +1,1127 @@
+   1              		.file	"pelican_ptu.c"
+   9              	.Ltext0:
+  10              		.global	PTU_cam_angle_roll_offset
+  11              		.bss
+  12              		.align	2
+  15              	PTU_cam_angle_roll_offset:
+  16 0000 00000000 		.space	4
+  17              		.global	PTU_cam_angle_pitch_offset
+  18              		.align	2
+  21              	PTU_cam_angle_pitch_offset:
+  22 0004 00000000 		.space	4
+  23              		.global	PTU_enable_plain_ch7_to_servo
+  26              	PTU_enable_plain_ch7_to_servo:
+  27 0008 00       		.space	1
+  28              		.text
+  29              		.align	2
+  30              		.global	PTU_init
+  32              	PTU_init:
+  33              	.LFB2:
+  34              		.file 1 "pelican_ptu.c"
+   1:pelican_ptu.c **** /*
+   2:pelican_ptu.c **** 
+   3:pelican_ptu.c **** Copyright (c) 2011, Ascending Technologies GmbH
+   4:pelican_ptu.c **** All rights reserved.
+   5:pelican_ptu.c **** 
+   6:pelican_ptu.c **** Redistribution and use in source and binary forms, with or without
+   7:pelican_ptu.c **** modification, are permitted provided that the following conditions are met:
+   8:pelican_ptu.c **** 
+   9:pelican_ptu.c ****  * Redistributions of source code must retain the above copyright notice,
+  10:pelican_ptu.c ****    this list of conditions and the following disclaimer.
+  11:pelican_ptu.c ****  * Redistributions in binary form must reproduce the above copyright
+  12:pelican_ptu.c ****    notice, this list of conditions and the following disclaimer in the
+  13:pelican_ptu.c ****    documentation and/or other materials provided with the distribution.
+  14:pelican_ptu.c **** 
+  15:pelican_ptu.c **** THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND ANY
+  16:pelican_ptu.c **** EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  17:pelican_ptu.c **** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  18:pelican_ptu.c **** DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR ANY
+  19:pelican_ptu.c **** DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  20:pelican_ptu.c **** (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  21:pelican_ptu.c **** SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  22:pelican_ptu.c **** CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+  23:pelican_ptu.c **** LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+  24:pelican_ptu.c **** OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+  25:pelican_ptu.c **** DAMAGE.
+  26:pelican_ptu.c **** 
+  27:pelican_ptu.c ****  */
+  28:pelican_ptu.c **** 
+  29:pelican_ptu.c **** /*
+  30:pelican_ptu.c **** *	Camera Pan Tilt Unit (PTU) control
+  31:pelican_ptu.c **** */
+  32:pelican_ptu.c **** 
+  33:pelican_ptu.c **** #include "main.h"
+  34:pelican_ptu.c **** #include "system.h"
+  35:pelican_ptu.c **** #include "pelican_ptu.h"
+  36:pelican_ptu.c **** #include "system.h"
+  37:pelican_ptu.c **** #include "LPC214x.h"
+  38:pelican_ptu.c **** #include "LL_HL_comm.h"
+  39:pelican_ptu.c **** #include "sdk.h"
+  40:pelican_ptu.c **** 
+  41:pelican_ptu.c **** struct CAMERA_PTU CAMERA_ptu;
+  42:pelican_ptu.c **** struct CAMERA_COMMANDS CAMERA_Commands;
+  43:pelican_ptu.c **** 
+  44:pelican_ptu.c **** int PTU_cam_angle_roll_offset=0;
+  45:pelican_ptu.c **** int PTU_cam_angle_pitch_offset=0;
+  46:pelican_ptu.c **** 
+  47:pelican_ptu.c **** unsigned char PTU_enable_plain_ch7_to_servo=0; // channel 7 is mapped plain to 1-2ms servo output
+  48:pelican_ptu.c **** 
+  49:pelican_ptu.c **** void PTU_init(void)
+  50:pelican_ptu.c **** {
+  35              	interworking.
+  36              		@ args = 0, pretend = 0, frame = 0
+  37              		@ frame_needed = 1, uses_anonymous_args = 0
+  38              		mov	ip, sp
+  39 0000 0DC0A0E1 	.LCFI0:
+  40              		stmfd	sp!, {fp, ip, lr, pc}
+  41 0004 00D82DE9 	.LCFI1:
+  42              		sub	fp, ip, #4
+  43 0008 04B04CE2 	.LCFI2:
+  44              		.loc 1 56 0
+  51:pelican_ptu.c **** #ifdef HUMMINGBIRD_ROLL_SERVO
+  52:pelican_ptu.c **** #ifndef HUMMINGBIRD_ROLL_SERVO_ON_SSEL0
+  53:pelican_ptu.c **** 	PINSEL0&=~0x01;
+  54:pelican_ptu.c **** 	PINSEL0|=0x02;
+  55:pelican_ptu.c **** #else
+  56:pelican_ptu.c **** 	PINSEL0|=0x8000;
+  45              	-536870912
+  46 000c 0E22A0E3 		add	r2, r2, #180224
+  47 0010 0B2982E2 		mov	r3, #-536870912
+  48 0014 0E32A0E3 		add	r3, r3, #180224
+  49 0018 0B3983E2 		ldr	r3, [r3, #0]
+  50 001c 003093E5 		orr	r3, r3, #32768
+  51 0020 023983E3 		str	r3, [r2, #0]
+  52 0024 003082E5 		.loc 1 57 0
+  57:pelican_ptu.c **** 	PINSEL0&=~0x4000;
+  53              	 #-536870912
+  54 0028 0E22A0E3 		add	r2, r2, #180224
+  55 002c 0B2982E2 		mov	r3, #-536870912
+  56 0030 0E32A0E3 		add	r3, r3, #180224
+  57 0034 0B3983E2 		ldr	r3, [r3, #0]
+  58 0038 003093E5 		bic	r3, r3, #16384
+  59 003c 0139C3E3 		str	r3, [r2, #0]
+  60 0040 003082E5 		.loc 1 63 0
+  58:pelican_ptu.c **** #endif
+  59:pelican_ptu.c **** #endif
+  60:pelican_ptu.c **** 
+  61:pelican_ptu.c **** #ifdef PELICAN_PTU
+  62:pelican_ptu.c **** 
+  63:pelican_ptu.c ****     CAMERA_ptu.servo_pitch_offset=61500;
+  61              	 .L6
+  62 0044 CC209FE5 		mov	r3, #61440
+  63 0048 0F3AA0E3 		add	r3, r3, #60
+  64 004c 3C3083E2 		str	r3, [r2, #4]
+  65 0050 043082E5 		.loc 1 64 0
+  64:pelican_ptu.c **** 	CAMERA_ptu.servo_pitch_scale=54853;
+  66              	r2, .L6
+  67 0054 BC209FE5 		mov	r3, #54784
+  68 0058 D63CA0E3 		add	r3, r3, #69
+  69 005c 453083E2 		str	r3, [r2, #12]
+  70 0060 0C3082E5 		.loc 1 65 0
+  65:pelican_ptu.c **** 	CAMERA_ptu.servo_pitch_min=46000;
+  71              	r2, .L6
+  72 0064 AC209FE5 		mov	r3, #45824
+  73 0068 B33CA0E3 		add	r3, r3, #176
+  74 006c B03083E2 		str	r3, [r2, #16]
+  75 0070 103082E5 		.loc 1 66 0
+  66:pelican_ptu.c **** 	CAMERA_ptu.servo_pitch_max=128000;
+  76              	r2, .L6
+  77 0074 9C209FE5 		mov	r3, #128000
+  78 0078 7D3BA0E3 		str	r3, [r2, #20]
+  79 007c 143082E5 		.loc 1 68 0
+  67:pelican_ptu.c **** 
+  68:pelican_ptu.c **** 	if(PTU_cam_option_4_version!=2)
+  80              		r3, .L6+4
+  81 0080 94309FE5 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+  82 0084 0030D3E5 		cmp	r3, #2
+  83 0088 020053E3 		beq	.L2
+  84 008c 0F00000A 		.loc 1 70 0
+  69:pelican_ptu.c **** 	{
+  70:pelican_ptu.c **** 		CAMERA_ptu.servo_roll_offset=82000;//74000;
+  85              	r2, .L6
+  86 0090 80209FE5 		mov	r3, #81920
+  87 0094 0539A0E3 		add	r3, r3, #80
+  88 0098 503083E2 		str	r3, [r2, #0]
+  89 009c 003082E5 		.loc 1 71 0
+  71:pelican_ptu.c **** 		CAMERA_ptu.servo_roll_scale=220000;	//=90° 110000
+  90              	r2, .L6
+  91 00a0 70209FE5 		mov	r3, #219136
+  92 00a4 D63BA0E3 		add	r3, r3, #864
+  93 00a8 363E83E2 		str	r3, [r2, #8]
+  94 00ac 083082E5 		.loc 1 72 0
+  72:pelican_ptu.c **** 		CAMERA_ptu.servo_roll_min=46000;//53900;
+  95              	r2, .L6
+  96 00b0 60209FE5 		mov	r3, #45824
+  97 00b4 B33CA0E3 		add	r3, r3, #176
+  98 00b8 B03083E2 		str	r3, [r2, #24]
+  99 00bc 183082E5 		.loc 1 73 0
+  73:pelican_ptu.c **** 		CAMERA_ptu.servo_roll_max=128000;//94500;
+ 100              	r2, .L6
+ 101 00c0 50209FE5 		mov	r3, #128000
+ 102 00c4 7D3BA0E3 		str	r3, [r2, #28]
+ 103 00c8 1C3082E5 		b	.L5
+ 104 00cc 0E0000EA 	.L2:
+ 105              		.loc 1 77 0
+  74:pelican_ptu.c **** 	}
+  75:pelican_ptu.c **** 	else
+  76:pelican_ptu.c **** 	{
+  77:pelican_ptu.c **** 		CAMERA_ptu.servo_roll_offset=82000;//74000;
+ 106              	2, .L6
+ 107 00d0 40209FE5 		mov	r3, #81920
+ 108 00d4 0539A0E3 		add	r3, r3, #80
+ 109 00d8 503083E2 		str	r3, [r2, #0]
+ 110 00dc 003082E5 		.loc 1 78 0
+  78:pelican_ptu.c **** 		CAMERA_ptu.servo_roll_scale=115000;	//=90° 110000
+ 111              	r2, .L6
+ 112 00e0 30209FE5 		mov	r3, #114688
+ 113 00e4 0739A0E3 		add	r3, r3, #312
+ 114 00e8 4E3F83E2 		str	r3, [r2, #8]
+ 115 00ec 083082E5 		.loc 1 79 0
+  79:pelican_ptu.c **** 		CAMERA_ptu.servo_roll_min=46000;//53900;
+ 116              	r2, .L6
+ 117 00f0 20209FE5 		mov	r3, #45824
+ 118 00f4 B33CA0E3 		add	r3, r3, #176
+ 119 00f8 B03083E2 		str	r3, [r2, #24]
+ 120 00fc 183082E5 		.loc 1 80 0
+  80:pelican_ptu.c **** 		CAMERA_ptu.servo_roll_max=128000;//94500;
+ 121              	r2, .L6
+ 122 0100 10209FE5 		mov	r3, #128000
+ 123 0104 7D3BA0E3 		str	r3, [r2, #28]
+ 124 0108 1C3082E5 	.L5:
+ 125              		.loc 1 83 0
+  81:pelican_ptu.c **** 	}
+  82:pelican_ptu.c **** #endif
+  83:pelican_ptu.c **** }
+ 126              	sp, fp, #12
+ 127 010c 0CD04BE2 		ldmfd	sp, {fp, sp, lr}
+ 128 0110 00689DE8 		bx	lr
+ 129 0114 1EFF2FE1 	.L7:
+ 130              		.align	2
+ 131              	.L6:
+ 132              		.word	CAMERA_ptu
+ 133 0118 00000000 		.word	PTU_cam_option_4_version
+ 134 011c 00000000 	.LFE2:
+ 136              		.bss
+ 137              		.align	2
+ 138 0009 000000   	cam_angle_pitch.1626:
+ 139              		.space	4
+ 140 000c 00000000 		.align	2
+ 141              	ptu_cnt.1622:
+ 142              		.space	4
+ 143 0010 00000000 		.text
+ 144              		.align	2
+ 145              		.global	PTU_update
+ 147              	PTU_update:
+ 148              	.LFB3:
+ 149              		.loc 1 87 0
+  84:pelican_ptu.c **** 
+  85:pelican_ptu.c **** 
+  86:pelican_ptu.c **** void PTU_update(void)
+  87:pelican_ptu.c **** {
+ 150              	erworking.
+ 151              		@ args = 0, pretend = 0, frame = 12
+ 152              		@ frame_needed = 1, uses_anonymous_args = 0
+ 153              		mov	ip, sp
+ 154 0120 0DC0A0E1 	.LCFI3:
+ 155              		stmfd	sp!, {fp, ip, lr, pc}
+ 156 0124 00D82DE9 	.LCFI4:
+ 157              		sub	fp, ip, #4
+ 158 0128 04B04CE2 	.LCFI5:
+ 159              		sub	sp, sp, #12
+ 160 012c 0CD04DE2 	.LCFI6:
+ 161              		.loc 1 89 0
+  88:pelican_ptu.c **** 	static int ptu_cnt=0;
+  89:pelican_ptu.c **** 	if(++ptu_cnt>9)	//generate 100Hz
+ 162              	0
+ 163 0130 C8329FE5 		ldr	r3, [r3, #0]
+ 164 0134 003093E5 		add	r2, r3, #1
+ 165 0138 012083E2 		ldr	r3, .L20
+ 166 013c BC329FE5 		str	r2, [r3, #0]
+ 167 0140 002083E5 		ldr	r3, .L20
+ 168 0144 B4329FE5 		ldr	r3, [r3, #0]
+ 169 0148 003093E5 		cmp	r3, #9
+ 170 014c 090053E3 		ble	.L19
+ 171 0150 A70000DA 	.LBB2:
+ 172              		.loc 1 91 0
+  90:pelican_ptu.c **** 	{
+  91:pelican_ptu.c **** 		ptu_cnt=0;
+ 173              	20
+ 174 0154 A4229FE5 		mov	r3, #0
+ 175 0158 0030A0E3 		str	r3, [r2, #0]
+ 176 015c 003082E5 		.loc 1 93 0
+  92:pelican_ptu.c **** 
+  93:pelican_ptu.c **** 		if (PTU_enable_plain_ch7_to_servo)
+ 177              		r3, .L20+4
+ 178 0160 9C329FE5 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 179 0164 0030D3E5 		cmp	r3, #0
+ 180 0168 000053E3 		beq	.L11
+ 181 016c 2500000A 	.LBB3:
+ 182              		.loc 1 97 0
+  94:pelican_ptu.c **** 		{
+  95:pelican_ptu.c **** 			int value;
+  96:pelican_ptu.c **** 
+  97:pelican_ptu.c **** 			value= 88473+(((int)RO_RC_Data.channel[4]-2048)*29491)/2048;
+ 183              	3, .L20+8
+ 184 0170 90329FE5 		ldrh	r3, [r3, #8]
+ 185 0174 B830D3E1 		mov	r2, r3
+ 186 0178 0320A0E1 		mov	r3, r2
+ 187 017c 0230A0E1 		mov	r3, r3, asl #5
+ 188 0180 8332A0E1 		add	r3, r3, r2
+ 189 0184 023083E0 		mov	r3, r3, asl #3
+ 190 0188 8331A0E1 		rsb	r3, r2, r3
+ 191 018c 033062E0 		mov	r3, r3, asl #2
+ 192 0190 0331A0E1 		add	r3, r3, r2
+ 193 0194 023083E0 		mov	r3, r3, asl #2
+ 194 0198 0331A0E1 		add	r3, r3, r2
+ 195 019c 023083E0 		mov	r2, r3, asl #3
+ 196 01a0 8321A0E1 		rsb	r3, r3, r2
+ 197 01a4 023063E0 		add	r3, r3, #-67108864
+ 198 01a8 3F3383E2 		add	r3, r3, #6684672
+ 199 01ac 663883E2 		add	r3, r3, #26624
+ 200 01b0 1A3B83E2 		mov	r2, r3
+ 201 01b4 0320A0E1 		add	r3, r2, #2032
+ 202 01b8 7F3E82E2 		add	r3, r3, #15
+ 203 01bc 0F3083E2 		cmp	r2, #0
+ 204 01c0 000052E3 		movlt	r2, r3
+ 205 01c4 0320A0B1 		mov	r3, r2, asr #11
+ 206 01c8 C235A0E1 		add	r3, r3, #88064
+ 207 01cc 563B83E2 		add	r3, r3, #408
+ 208 01d0 663F83E2 		add	r3, r3, #1
+ 209 01d4 013083E2 		str	r3, [fp, #-16]
+ 210 01d8 10300BE5 		.loc 1 99 0
+  98:pelican_ptu.c **** 
+  99:pelican_ptu.c **** 		    PWMMR5 = value;
+ 211              	, r3, #81920
+ 212 01dc 0E32A0E3 		add	r3, r3, #68
+ 213 01e0 053983E2 		ldr	r2, [fp, #-16]
+ 214 01e4 443083E2 		str	r2, [r3, #0]
+ 215 01e8 10201BE5 		.loc 1 100 0
+ 216 01ec 002083E5 		mov	r3, #-536870912
+ 100:pelican_ptu.c **** 			PWMLER = LER5_EN|LER1_EN|LER2_EN;
+ 217              	3, r3, #81920
+ 218 01f0 0E32A0E3 		add	r3, r3, #80
+ 219 01f4 053983E2 		mov	r2, #38
+ 220 01f8 503083E2 		str	r2, [r3, #0]
+ 221 01fc 2620A0E3 		.loc 1 102 0
+ 222 0200 002083E5 		b	.L19
+ 101:pelican_ptu.c **** 
+ 102:pelican_ptu.c **** 			return;
+ 223              	.LBE3:
+ 224 0204 7A0000EA 		.loc 1 106 0
+ 225              		bl	PTU_update_middle_positions_by_stick
+ 226              		.loc 1 113 0
+ 103:pelican_ptu.c **** 		}
+ 104:pelican_ptu.c ****     	int angle_pitch, angle_roll;
+ 105:pelican_ptu.c **** 
+ 106:pelican_ptu.c ****     	PTU_update_middle_positions_by_stick();
+ 227              		r3, .L20+12
+ 228 0208 FEFFFFEB 		ldr	r1, [r3, #0]
+ 107:pelican_ptu.c **** 
+ 108:pelican_ptu.c **** #ifdef CAMMOUNT_XCONFIG	//rotate pitch/roll tiltcompensation for 45°
+ 109:pelican_ptu.c **** #ifndef CAM_FACING_FRONT_RIGHT
+ 110:pelican_ptu.c ****     angle_pitch=IMU_CalcData.angle_nick*707/1000+IMU_CalcData.angle_roll*707/1000;
+ 111:pelican_ptu.c ****     angle_roll=IMU_CalcData.angle_roll*707/1000-IMU_CalcData.angle_nick*707/1000;
+ 112:pelican_ptu.c **** #else
+ 113:pelican_ptu.c ****     angle_roll=IMU_CalcData.angle_nick*707/1000+IMU_CalcData.angle_roll*707/1000;
+ 229              	ov	r3, r1
+ 230 020c F8319FE5 		mov	r3, r3, asl #2
+ 231 0210 001093E5 		add	r3, r3, r1
+ 232 0214 0130A0E1 		mov	r2, r3, asl #2
+ 233 0218 0331A0E1 		add	r3, r3, r2
+ 234 021c 013083E0 		mov	r3, r3, asl #2
+ 235 0220 0321A0E1 		add	r3, r3, r1
+ 236 0224 023083E0 		mov	r2, r3, asl #3
+ 237 0228 0331A0E1 		rsb	r1, r3, r2
+ 238 022c 013083E0 		ldr	r3, .L20+16
+ 239 0230 8321A0E1 		smull	r2, r3, r1, r3
+ 240 0234 021063E0 		mov	r2, r3, asr #6
+ 241 0238 D0319FE5 		mov	r3, r1, asr #31
+ 242 023c 9123C3E0 		rsb	r0, r3, r2
+ 243 0240 4323A0E1 		ldr	r3, .L20+12
+ 244 0244 C13FA0E1 		ldr	r1, [r3, #4]
+ 245 0248 020063E0 		mov	r3, r1
+ 246 024c B8319FE5 		mov	r3, r3, asl #2
+ 247 0250 041093E5 		add	r3, r3, r1
+ 248 0254 0130A0E1 		mov	r2, r3, asl #2
+ 249 0258 0331A0E1 		add	r3, r3, r2
+ 250 025c 013083E0 		mov	r3, r3, asl #2
+ 251 0260 0321A0E1 		add	r3, r3, r1
+ 252 0264 023083E0 		mov	r2, r3, asl #3
+ 253 0268 0331A0E1 		rsb	r1, r3, r2
+ 254 026c 013083E0 		ldr	r3, .L20+16
+ 255 0270 8321A0E1 		smull	r2, r3, r1, r3
+ 256 0274 021063E0 		mov	r2, r3, asr #6
+ 257 0278 90319FE5 		mov	r3, r1, asr #31
+ 258 027c 9123C3E0 		rsb	r3, r3, r2
+ 259 0280 4323A0E1 		add	r3, r0, r3
+ 260 0284 C13FA0E1 		str	r3, [fp, #-20]
+ 261 0288 023063E0 		.loc 1 114 0
+ 262 028c 033080E0 		ldr	r3, .L20+12
+ 263 0290 14300BE5 		ldr	r2, [r3, #4]
+ 114:pelican_ptu.c ****     angle_pitch=-IMU_CalcData.angle_roll*707/1000+IMU_CalcData.angle_nick*707/1000;
+ 264              	sb	r3, r2, r3
+ 265 0294 70319FE5 		mov	r3, r3, asl #2
+ 266 0298 042093E5 		add	r3, r3, r2
+ 267 029c 0230A0E1 		mov	r3, r3, asl #2
+ 268 02a0 033BA0E1 		add	r3, r3, r2
+ 269 02a4 033062E0 		mov	r3, r3, asl #4
+ 270 02a8 0331A0E1 		rsb	r3, r2, r3
+ 271 02ac 023083E0 		mov	r3, r3, asl #2
+ 272 02b0 0331A0E1 		add	r1, r3, r2
+ 273 02b4 023083E0 		ldr	r3, .L20+16
+ 274 02b8 0332A0E1 		smull	r2, r3, r1, r3
+ 275 02bc 033062E0 		mov	r2, r3, asr #6
+ 276 02c0 0331A0E1 		mov	r3, r1, asr #31
+ 277 02c4 021083E0 		rsb	r0, r3, r2
+ 278 02c8 40319FE5 		ldr	r3, .L20+12
+ 279 02cc 9123C3E0 		ldr	r1, [r3, #0]
+ 280 02d0 4323A0E1 		mov	r3, r1
+ 281 02d4 C13FA0E1 		mov	r3, r3, asl #2
+ 282 02d8 020063E0 		add	r3, r3, r1
+ 283 02dc 28319FE5 		mov	r2, r3, asl #2
+ 284 02e0 001093E5 		add	r3, r3, r2
+ 285 02e4 0130A0E1 		mov	r3, r3, asl #2
+ 286 02e8 0331A0E1 		add	r3, r3, r1
+ 287 02ec 013083E0 		mov	r2, r3, asl #3
+ 288 02f0 0321A0E1 		rsb	r1, r3, r2
+ 289 02f4 023083E0 		ldr	r3, .L20+16
+ 290 02f8 0331A0E1 		smull	r2, r3, r1, r3
+ 291 02fc 013083E0 		mov	r2, r3, asr #6
+ 292 0300 8321A0E1 		mov	r3, r1, asr #31
+ 293 0304 021063E0 		rsb	r3, r3, r2
+ 294 0308 00319FE5 		add	r3, r0, r3
+ 295 030c 9123C3E0 		str	r3, [fp, #-24]
+ 296 0310 4323A0E1 		.loc 1 127 0
+ 297 0314 C13FA0E1 		ldr	r3, .L20+20
+ 298 0318 023063E0 		ldr	r2, [r3, #4]
+ 299 031c 033080E0 		ldr	r3, .L20+24
+ 300 0320 18300BE5 		str	r2, [r3, #0]
+ 115:pelican_ptu.c **** #endif
+ 116:pelican_ptu.c **** #else
+ 117:pelican_ptu.c ****     angle_pitch=IMU_CalcData.angle_nick;
+ 118:pelican_ptu.c ****     angle_roll=IMU_CalcData.angle_roll;
+ 119:pelican_ptu.c **** #endif
+ 120:pelican_ptu.c **** 		static int cam_angle_pitch=0;
+ 121:pelican_ptu.c **** #ifdef SET_CAMERA_ANGLE_INCREMENTAL
+ 122:pelican_ptu.c **** 		if(LL_1khz_attitude_data.RC_data[4]>192) cam_angle_pitch+=200;
+ 123:pelican_ptu.c **** 		else if(LL_1khz_attitude_data.RC_data[4]<64) cam_angle_pitch-=200;
+ 124:pelican_ptu.c **** 		if(cam_angle_pitch>55000) cam_angle_pitch=55000;
+ 125:pelican_ptu.c **** 		if(cam_angle_pitch<-55000) cam_angle_pitch=-55000;
+ 126:pelican_ptu.c **** #else
+ 127:pelican_ptu.c **** 		cam_angle_pitch=CAMERA_Commands.desired_angle_pitch;
+ 301              	2, [r3, #0]
+ 302 0324 E8309FE5 		mvn	r3, #89088
+ 303 0328 042093E5 		sub	r3, r3, #908
+ 304 032c E4309FE5 		sub	r3, r3, #3
+ 305 0330 002083E5 		cmp	r2, r3
+ 128:pelican_ptu.c **** 		if(cam_angle_pitch<-90000) cam_angle_pitch=-90000;
+ 306              	.L13
+ 307 0334 DC309FE5 		ldr	r2, .L20+24
+ 308 0338 002093E5 		mvn	r3, #89088
+ 309 033c 573BE0E3 		sub	r3, r3, #908
+ 310 0340 E33F43E2 		sub	r3, r3, #3
+ 311 0344 033043E2 		str	r3, [r2, #0]
+ 312 0348 030052E1 		b	.L15
+ 313 034c 050000AA 	.L13:
+ 314 0350 C0209FE5 		.loc 1 129 0
+ 315 0354 573BE0E3 		ldr	r3, .L20+24
+ 316 0358 E33F43E2 		ldr	r3, [r3, #0]
+ 317 035c 033043E2 		cmp	r3, #0
+ 318 0360 003082E5 		ble	.L15
+ 319 0364 060000EA 		ldr	r2, .L20+24
+ 320              		mov	r3, #0
+ 129:pelican_ptu.c **** 		else if(cam_angle_pitch>0) cam_angle_pitch=0;
+ 321              	0]
+ 322 0368 A8309FE5 	.L15:
+ 323 036c 003093E5 		.loc 1 131 0
+ 324 0370 000053E3 		ldr	r3, .L20+20
+ 325 0374 020000DA 		ldrh	r3, [r3, #0]
+ 326 0378 98209FE5 		and	r3, r3, #2
+ 327 037c 0030A0E3 		cmp	r3, #0
+ 328 0380 003082E5 		beq	.L17
+ 329              		.loc 1 133 0
+ 130:pelican_ptu.c **** #endif
+ 131:pelican_ptu.c **** 		if(CAMERA_Commands.status&0x02)	//no tilt compensation
+ 330              	.L20+24
+ 331 0384 88309FE5 		ldr	r3, [r3, #0]
+ 332 0388 B030D3E1 		mov	r0, r3
+ 333 038c 023003E2 		bl	SERVO_pitch_move
+ 334 0390 000053E3 		.loc 1 134 0
+ 335 0394 0900000A 		ldr	r3, .L20+20
+ 132:pelican_ptu.c **** 		{
+ 133:pelican_ptu.c **** 			SERVO_pitch_move((CAMERA_OFFSET_HUMMINGBIRD_PITCH+cam_angle_pitch)*HUMMINGBIRD_SERVO_DIRECTION_P
+ 336              	3, [r3, #8]
+ 337 0398 78309FE5 		rsb	r3, r3, #0
+ 338 039c 003093E5 		mov	r0, r3
+ 339 03a0 0300A0E1 		bl	SERVO_roll_move
+ 340 03a4 FEFFFFEB 		b	.L19
+ 134:pelican_ptu.c **** 			SERVO_roll_move((CAMERA_OFFSET_HUMMINGBIRD_ROLL+CAMERA_Commands.desired_angle_roll)*HUMMINGBIRD_
+ 341              	
+ 342 03a8 64309FE5 		.loc 1 138 0
+ 343 03ac 083093E5 		ldr	r3, .L20+24
+ 344 03b0 003063E2 		ldr	r2, [r3, #0]
+ 345 03b4 0300A0E1 		ldr	r3, [fp, #-24]
+ 346 03b8 FEFFFFEB 		add	r3, r2, r3
+ 347 03bc 0C0000EA 		mov	r0, r3
+ 348              		bl	SERVO_pitch_move
+ 135:pelican_ptu.c **** 		}
+ 136:pelican_ptu.c **** 		else
+ 137:pelican_ptu.c **** 		{
+ 138:pelican_ptu.c **** 			SERVO_pitch_move((CAMERA_OFFSET_HUMMINGBIRD_PITCH+cam_angle_pitch+angle_pitch)*HUMMINGBIRD_SERVO
+ 349              	 139 0
+ 350 03c0 50309FE5 		ldr	r3, .L20+20
+ 351 03c4 002093E5 		ldr	r2, [r3, #8]
+ 352 03c8 18301BE5 		ldr	r3, [fp, #-20]
+ 353 03cc 033082E0 		add	r3, r2, r3
+ 354 03d0 0300A0E1 		rsb	r3, r3, #0
+ 355 03d4 FEFFFFEB 		mov	r0, r3
+ 139:pelican_ptu.c **** 			SERVO_roll_move((CAMERA_OFFSET_HUMMINGBIRD_ROLL+CAMERA_Commands.desired_angle_roll+angle_roll)*H
+ 356              	VO_roll_move
+ 357 03d8 34309FE5 	.L19:
+ 358 03dc 082093E5 	.LBE2:
+ 359 03e0 14301BE5 		.loc 1 142 0
+ 360 03e4 033082E0 		sub	sp, fp, #12
+ 361 03e8 003063E2 		ldmfd	sp, {fp, sp, lr}
+ 362 03ec 0300A0E1 		bx	lr
+ 363 03f0 FEFFFFEB 	.L21:
+ 364              		.align	2
+ 365              	.L20:
+ 140:pelican_ptu.c **** 		}
+ 141:pelican_ptu.c **** 	}
+ 142:pelican_ptu.c **** }
+ 366              	_cnt.1622
+ 367 03f4 0CD04BE2 		.word	PTU_enable_plain_ch7_to_servo
+ 368 03f8 00689DE8 		.word	RO_RC_Data
+ 369 03fc 1EFF2FE1 		.word	IMU_CalcData
+ 370              		.word	274877907
+ 371              		.word	CAMERA_Commands
+ 372              		.word	cam_angle_pitch.1626
+ 373 0400 10000000 	.LFE3:
+ 375 0408 00000000 		.align	2
+ 376 040c 00000000 		.global	SERVO_pitch_move
+ 378 0414 00000000 	SERVO_pitch_move:
+ 379 0418 0C000000 	.LFB4:
+ 380              		.loc 1 146 0
+ 381              		@ Function supports interworking.
+ 382              		@ args = 0, pretend = 0, frame = 8
+ 383              		@ frame_needed = 1, uses_anonymous_args = 0
+ 384              		mov	ip, sp
+ 385              	.LCFI7:
+ 386              		stmfd	sp!, {fp, ip, lr, pc}
+ 143:pelican_ptu.c **** 
+ 144:pelican_ptu.c **** 
+ 145:pelican_ptu.c **** void SERVO_pitch_move (int angle)
+ 146:pelican_ptu.c **** {
+ 387              	#4
+ 388              	.LCFI9:
+ 389              		sub	sp, sp, #8
+ 390              	.LCFI10:
+ 391 041c 0DC0A0E1 		str	r0, [fp, #-20]
+ 392              		.loc 1 148 0
+ 393 0420 00D82DE9 		ldr	r3, .L28
+ 394              		ldr	r0, [r3, #4]
+ 395 0424 04B04CE2 		ldr	r1, [fp, #-20]
+ 396              		ldr	r3, .L28+4
+ 397 0428 08D04DE2 		smull	r2, r3, r1, r3
+ 398              		mov	r2, r3, asr #2
+ 399 042c 14000BE5 		mov	r3, r1, asr #31
+ 147:pelican_ptu.c ****     unsigned int value;
+ 148:pelican_ptu.c ****     value=CAMERA_ptu.servo_pitch_offset+(angle/10)*CAMERA_ptu.servo_pitch_scale/9000;	//9000
+ 400              	r2
+ 401 0430 C0309FE5 		ldr	r3, .L28
+ 402 0434 040093E5 		ldr	r3, [r3, #12]
+ 403 0438 14101BE5 		mul	r1, r3, r2
+ 404 043c B8309FE5 		ldr	r3, .L28+8
+ 405 0440 9123C3E0 		smull	r2, r3, r1, r3
+ 406 0444 4321A0E1 		mov	r2, r3, asr #12
+ 407 0448 C13FA0E1 		mov	r3, r1, asr #31
+ 408 044c 022063E0 		rsb	r3, r3, r2
+ 409 0450 A0309FE5 		add	r3, r0, r3
+ 410 0454 0C3093E5 		str	r3, [fp, #-16]
+ 411 0458 930201E0 		.loc 1 150 0
+ 412 045c 9C309FE5 		ldr	r3, .L28
+ 413 0460 9123C3E0 		ldr	r3, [r3, #20]
+ 414 0464 4326A0E1 		mov	r2, r3
+ 415 0468 C13FA0E1 		ldr	r3, [fp, #-16]
+ 416 046c 023063E0 		cmp	r2, r3
+ 417 0470 033080E0 		bcs	.L23
+ 418 0474 10300BE5 		ldr	r3, .L28
+ 149:pelican_ptu.c **** 
+ 150:pelican_ptu.c ****     if(value>CAMERA_ptu.servo_pitch_max) value=CAMERA_ptu.servo_pitch_max;
+ 419              		str	r3, [fp, #-16]
+ 420 0478 78309FE5 		b	.L25
+ 421 047c 143093E5 	.L23:
+ 422 0480 0320A0E1 		.loc 1 151 0
+ 423 0484 10301BE5 		ldr	r3, .L28
+ 424 0488 030052E1 		ldr	r3, [r3, #16]
+ 425 048c 0300002A 		mov	r2, r3
+ 426 0490 60309FE5 		ldr	r3, [fp, #-16]
+ 427 0494 143093E5 		cmp	r2, r3
+ 428 0498 10300BE5 		bls	.L25
+ 429 049c 080000EA 		ldr	r3, .L28
+ 430              		ldr	r3, [r3, #16]
+ 151:pelican_ptu.c ****     else if(value<CAMERA_ptu.servo_pitch_min) value=CAMERA_ptu.servo_pitch_min;
+ 431              	, #-16]
+ 432 04a0 50309FE5 	.L25:
+ 433 04a4 103093E5 		.loc 1 153 0
+ 434 04a8 0320A0E1 		mov	r3, #-536870912
+ 435 04ac 10301BE5 		add	r3, r3, #81920
+ 436 04b0 030052E1 		add	r3, r3, #68
+ 437 04b4 0200009A 		ldr	r2, [fp, #-16]
+ 438 04b8 38309FE5 		str	r2, [r3, #0]
+ 439 04bc 103093E5 		.loc 1 154 0
+ 440 04c0 10300BE5 		mov	r3, #-536870912
+ 441              		add	r3, r3, #81920
+ 152:pelican_ptu.c **** 
+ 153:pelican_ptu.c ****     PWMMR5 = value;
+ 442              	, #80
+ 443 04c4 0E32A0E3 		mov	r2, #38
+ 444 04c8 053983E2 		str	r2, [r3, #0]
+ 445 04cc 443083E2 		.loc 1 155 0
+ 446 04d0 10201BE5 		sub	sp, fp, #12
+ 447 04d4 002083E5 		ldmfd	sp, {fp, sp, lr}
+ 154:pelican_ptu.c ****     PWMLER = LER5_EN|LER1_EN|LER2_EN;
+ 448              	
+ 449 04d8 0E32A0E3 	.L29:
+ 450 04dc 053983E2 		.align	2
+ 451 04e0 503083E2 	.L28:
+ 452 04e4 2620A0E3 		.word	CAMERA_ptu
+ 453 04e8 002083E5 		.word	1717986919
+ 155:pelican_ptu.c **** }
+ 454              	d	1954687339
+ 455 04ec 0CD04BE2 	.LFE4:
+ 457 04f4 1EFF2FE1 		.align	2
+ 458              		.global	SERVO_roll_move
+ 460              	SERVO_roll_move:
+ 461 04f8 00000000 	.LFB5:
+ 462 04fc 67666666 		.loc 1 158 0
+ 463 0500 6B298274 		@ Function supports interworking.
+ 464              		@ args = 0, pretend = 0, frame = 8
+ 465              		@ frame_needed = 1, uses_anonymous_args = 0
+ 466              		mov	ip, sp
+ 467              	.LCFI11:
+ 468              		stmfd	sp!, {fp, ip, lr, pc}
+ 469              	.LCFI12:
+ 470              		sub	fp, ip, #4
+ 156:pelican_ptu.c **** 
+ 157:pelican_ptu.c **** void SERVO_roll_move (int angle)
+ 158:pelican_ptu.c **** {
+ 471              	 sp, #8
+ 472              	.LCFI14:
+ 473              		str	r0, [fp, #-20]
+ 474              		.loc 1 160 0
+ 475 0504 0DC0A0E1 		ldr	r3, .L36
+ 476              		ldr	r0, [r3, #0]
+ 477 0508 00D82DE9 		ldr	r1, [fp, #-20]
+ 478              		ldr	r3, .L36+4
+ 479 050c 04B04CE2 		smull	r2, r3, r1, r3
+ 480              		mov	r2, r3, asr #2
+ 481 0510 08D04DE2 		mov	r3, r1, asr #31
+ 482              		rsb	r2, r3, r2
+ 483 0514 14000BE5 		ldr	r3, .L36
+ 159:pelican_ptu.c ****     int value;
+ 160:pelican_ptu.c ****     value=CAMERA_ptu.servo_roll_offset+(angle/10)*CAMERA_ptu.servo_roll_scale/9000;	//9000
+ 484              	 #8]
+ 485 0518 B8309FE5 		mul	r1, r3, r2
+ 486 051c 000093E5 		ldr	r3, .L36+8
+ 487 0520 14101BE5 		smull	r2, r3, r1, r3
+ 488 0524 B0309FE5 		mov	r2, r3, asr #12
+ 489 0528 9123C3E0 		mov	r3, r1, asr #31
+ 490 052c 4321A0E1 		rsb	r3, r3, r2
+ 491 0530 C13FA0E1 		add	r3, r0, r3
+ 492 0534 022063E0 		str	r3, [fp, #-16]
+ 493 0538 98309FE5 		.loc 1 162 0
+ 494 053c 083093E5 		ldr	r3, .L36
+ 495 0540 930201E0 		ldr	r2, [r3, #28]
+ 496 0544 94309FE5 		ldr	r3, [fp, #-16]
+ 497 0548 9123C3E0 		cmp	r2, r3
+ 498 054c 4326A0E1 		bge	.L31
+ 499 0550 C13FA0E1 		ldr	r3, .L36
+ 500 0554 023063E0 		ldr	r3, [r3, #28]
+ 501 0558 033080E0 		str	r3, [fp, #-16]
+ 502 055c 10300BE5 		b	.L33
+ 161:pelican_ptu.c **** 
+ 162:pelican_ptu.c ****     if(value>CAMERA_ptu.servo_roll_max) value=CAMERA_ptu.servo_roll_max;
+ 503              	
+ 504 0560 70309FE5 		ldr	r3, .L36
+ 505 0564 1C2093E5 		ldr	r2, [r3, #24]
+ 506 0568 10301BE5 		ldr	r3, [fp, #-16]
+ 507 056c 030052E1 		cmp	r2, r3
+ 508 0570 030000AA 		ble	.L33
+ 509 0574 5C309FE5 		ldr	r3, .L36
+ 510 0578 1C3093E5 		ldr	r3, [r3, #24]
+ 511 057c 10300BE5 		str	r3, [fp, #-16]
+ 512 0580 070000EA 	.L33:
+ 513              		.loc 1 166 0
+ 163:pelican_ptu.c ****     else if(value<CAMERA_ptu.servo_roll_min) value=CAMERA_ptu.servo_roll_min;
+ 514              	-536870912
+ 515 0584 4C309FE5 		add	r3, r3, #81920
+ 516 0588 182093E5 		add	r3, r3, #32
+ 517 058c 10301BE5 		ldr	r2, [fp, #-16]
+ 518 0590 030052E1 		str	r2, [r3, #0]
+ 519 0594 020000DA 		.loc 1 170 0
+ 520 0598 38309FE5 		mov	r3, #-536870912
+ 521 059c 183093E5 		add	r3, r3, #81920
+ 522 05a0 10300BE5 		add	r3, r3, #80
+ 523              		mov	r2, #38
+ 164:pelican_ptu.c **** 
+ 165:pelican_ptu.c **** #ifdef HUMMINGBIRD_ROLL_SERVO_ON_SSEL0
+ 166:pelican_ptu.c ****     PWMMR2 = value;
+ 524              	r3, #0]
+ 525 05a4 0E32A0E3 		.loc 1 171 0
+ 526 05a8 053983E2 		sub	sp, fp, #12
+ 527 05ac 203083E2 		ldmfd	sp, {fp, sp, lr}
+ 528 05b0 10201BE5 		bx	lr
+ 529 05b4 002083E5 	.L37:
+ 167:pelican_ptu.c **** #else
+ 168:pelican_ptu.c ****     PWMMR1 = value;
+ 169:pelican_ptu.c **** #endif
+ 170:pelican_ptu.c ****     PWMLER = LER5_EN|LER1_EN|LER2_EN;
+ 530              	n	2
+ 531 05b8 0E32A0E3 	.L36:
+ 532 05bc 053983E2 		.word	CAMERA_ptu
+ 533 05c0 503083E2 		.word	1717986919
+ 534 05c4 2620A0E3 		.word	1954687339
+ 535 05c8 002083E5 	.LFE5:
+ 171:pelican_ptu.c **** }
+ 536              		SERVO_roll_move, .-SERVO_roll_move
+ 537 05cc 0CD04BE2 		.bss
+ 538 05d0 00689DE8 		.align	2
+ 539 05d4 1EFF2FE1 	reset_timeout_pitch.1730:
+ 540              		.space	4
+ 541              	pitch_offset_changed.1729:
+ 542              		.space	1
+ 543 05d8 00000000 		.align	2
+ 544 05dc 67666666 	reset_timeout_roll.1725:
+ 545 05e0 6B298274 		.space	4
+ 546              	roll_offset_changed.1724:
+ 547              		.space	1
+ 548              		.text
+ 549              		.align	2
+ 550              		.global	PTU_update_middle_positions_by_stick
+ 552              	PTU_update_middle_positions_by_stick:
+ 553 0018 00       	.LFB6:
+ 554 0019 000000   		.loc 1 174 0
+ 555              		@ Function supports interworking.
+ 556 001c 00000000 		@ args = 0, pretend = 0, frame = 8
+ 557              		@ frame_needed = 1, uses_anonymous_args = 0
+ 558 0020 00       		mov	ip, sp
+ 559 0021 000000   	.LCFI15:
+ 560              		stmfd	sp!, {fp, ip, lr, pc}
+ 561              	.LCFI16:
+ 562              		sub	fp, ip, #4
+ 563              	.LCFI17:
+ 564              		sub	sp, sp, #8
+ 172:pelican_ptu.c **** 
+ 173:pelican_ptu.c **** void PTU_update_middle_positions_by_stick(void)
+ 174:pelican_ptu.c **** {
+ 565              	3, #0
+ 566              		str	r3, [fp, #-20]
+ 567              		.loc 1 180 0
+ 568              		ldr	r3, .L76
+ 569 05e4 0DC0A0E1 		ldrh	r3, [r3, #90]
+ 570              		mov	r3, r3, asl #16
+ 571 05e8 00D82DE9 		mov	r3, r3, lsr #16
+ 572              		and	r3, r3, #1
+ 573 05ec 04B04CE2 		cmp	r3, #0
+ 574              		bne	.L39
+ 575 05f0 08D04DE2 		.loc 1 182 0
+ 576              		ldr	r3, .L76+4
+ 175:pelican_ptu.c **** 	#define THRESHOLD 10
+ 176:pelican_ptu.c **** 	//set roll offset
+ 177:pelican_ptu.c **** 	int roll_offset_inc=0;
+ 577              	, #0]
+ 578 05f4 0030A0E3 		cmp	r3, #0
+ 579 05f8 14300BE5 		beq	.L41
+ 178:pelican_ptu.c **** 	static unsigned char roll_offset_changed=0;
+ 179:pelican_ptu.c **** 	static int reset_timeout_roll=0;
+ 180:pelican_ptu.c **** 	if(!(LL_1khz_attitude_data.status2&0x01)) //flying?
+ 580              	oc 1 184 0
+ 581 05fc 04339FE5 		ldr	r3, .L76+4
+ 582 0600 BA35D3E1 		ldr	r3, [r3, #0]
+ 583 0604 0338A0E1 		sub	r2, r3, #1
+ 584 0608 2338A0E1 		ldr	r3, .L76+4
+ 585 060c 013003E2 		str	r2, [r3, #0]
+ 586 0610 000053E3 		b	.L39
+ 587 0614 5700001A 	.L41:
+ 181:pelican_ptu.c **** 	{
+ 182:pelican_ptu.c **** 		if(reset_timeout_roll)
+ 588              	188 0
+ 589 0618 EC329FE5 		ldr	r3, .L76
+ 590 061c 003093E5 		ldrb	r3, [r3, #16]	@ zero_extendqisi2
+ 591 0620 000053E3 		cmp	r3, #240
+ 592 0624 0500000A 		bls	.L43
+ 183:pelican_ptu.c **** 		{
+ 184:pelican_ptu.c **** 			reset_timeout_roll--;
+ 593              	 1 191 0
+ 594 0628 DC329FE5 		ldr	r3, .L76
+ 595 062c 003093E5 		ldrb	r3, [r3, #15]	@ zero_extendqisi2
+ 596 0630 012043E2 		cmp	r3, #138
+ 597 0634 D0329FE5 		bls	.L45
+ 598 0638 002083E5 		ldr	r3, .L76
+ 599 063c 4D0000EA 		ldrb	r3, [r3, #15]	@ zero_extendqisi2
+ 600              		sub	r2, r3, #138
+ 185:pelican_ptu.c **** 		}
+ 186:pelican_ptu.c **** 		else
+ 187:pelican_ptu.c **** 		{
+ 188:pelican_ptu.c **** 			if(LL_1khz_attitude_data.RC_data[2]>240)	//pitch stick at maximum
+ 601              	 .L76+8
+ 602 0640 C0329FE5 		smull	r0, r1, r3, r2
+ 603 0644 1030D3E5 		mov	r3, r2, asr #31
+ 604 0648 F00053E3 		rsb	r3, r3, r1
+ 605 064c 4000009A 		str	r3, [fp, #-20]
+ 189:pelican_ptu.c **** 			{
+ 190:pelican_ptu.c **** 				//use roll-stick to change roll servo offset
+ 191:pelican_ptu.c **** 				if(LL_1khz_attitude_data.RC_data[1]>128+THRESHOLD) roll_offset_inc=(LL_1khz_attitude_data.RC_da
+ 606              	47
+ 607 0650 B0329FE5 	.L45:
+ 608 0654 0F30D3E5 		.loc 1 192 0
+ 609 0658 8A0053E3 		ldr	r3, .L76
+ 610 065c 0800009A 		ldrb	r3, [r3, #15]	@ zero_extendqisi2
+ 611 0660 A0329FE5 		cmp	r3, #117
+ 612 0664 0F30D3E5 		bhi	.L48
+ 613 0668 8A2043E2 		ldr	r3, .L76
+ 614 066c 9C329FE5 		ldrb	r3, [r3, #15]	@ zero_extendqisi2
+ 615 0670 9302C1E0 		sub	r2, r3, #118
+ 616 0674 C23FA0E1 		ldr	r3, .L76+8
+ 617 0678 013063E0 		smull	r0, r1, r3, r2
+ 618 067c 14300BE5 		mov	r3, r2, asr #31
+ 619 0680 0E0000EA 		rsb	r3, r3, r1
+ 620              		str	r3, [fp, #-20]
+ 192:pelican_ptu.c **** 				else if(LL_1khz_attitude_data.RC_data[1]<128-THRESHOLD) roll_offset_inc=(LL_1khz_attitude_data.
+ 621              	.loc 1 193 0
+ 622 0684 7C329FE5 		mov	r3, #0
+ 623 0688 0F30D3E5 		str	r3, [fp, #-20]
+ 624 068c 750053E3 	.L47:
+ 625 0690 0800008A 		.loc 1 195 0
+ 626 0694 6C329FE5 		ldr	r3, .L76+12
+ 627 0698 0F30D3E5 		ldr	r2, [r3, #0]
+ 628 069c 762043E2 		ldr	r3, [fp, #-20]
+ 629 06a0 68329FE5 		add	r2, r2, r3
+ 630 06a4 9302C1E0 		ldr	r3, .L76+12
+ 631 06a8 C23FA0E1 		str	r2, [r3, #0]
+ 632 06ac 013063E0 		.loc 1 196 0
+ 633 06b0 14300BE5 		ldr	r3, .L76+12
+ 634 06b4 010000EA 		ldr	r2, [r3, #0]
+ 635              		mov	r3, #19968
+ 193:pelican_ptu.c **** 				else roll_offset_inc=0;
+ 636              	2
+ 637 06b8 0030A0E3 		cmp	r2, r3
+ 638 06bc 14300BE5 		ble	.L50
+ 639              		.loc 1 197 0
+ 194:pelican_ptu.c **** 
+ 195:pelican_ptu.c **** 				PTU_cam_angle_roll_offset+=roll_offset_inc;//(LL_1khz_attitude_data.RC_data[3]-128)*5;
+ 640              		r2, .L76+12
+ 641 06c0 4C329FE5 		mov	r3, #0
+ 642 06c4 002093E5 		str	r3, [r2, #0]
+ 643 06c8 14301BE5 		.loc 1 198 0
+ 644 06cc 032082E0 		ldr	r2, .L76+4
+ 645 06d0 3C329FE5 		mov	r3, #1000
+ 646 06d4 002083E5 		str	r3, [r2, #0]
+ 196:pelican_ptu.c **** 				if (PTU_cam_angle_roll_offset>20000){
+ 647              	.loc 1 200 0
+ 648 06d8 34329FE5 		ldr	r3, .L76+12
+ 649 06dc 002093E5 		ldr	r2, [r3, #0]
+ 650 06e0 4E3CA0E3 		mvn	r3, #19968
+ 651 06e4 203083E2 		sub	r3, r3, #31
+ 652 06e8 030052E1 		cmp	r2, r3
+ 653 06ec 050000DA 		bge	.L52
+ 197:pelican_ptu.c **** 					PTU_cam_angle_roll_offset=0;
+ 654              	 201 0
+ 655 06f0 1C229FE5 		ldr	r2, .L76+12
+ 656 06f4 0030A0E3 		mov	r3, #0
+ 657 06f8 003082E5 		str	r3, [r2, #0]
+ 198:pelican_ptu.c **** 					reset_timeout_roll=1000;
+ 658              	c 1 202 0
+ 659 06fc 08229FE5 		ldr	r2, .L76+4
+ 660 0700 FA3FA0E3 		mov	r3, #1000
+ 661 0704 003082E5 		str	r3, [r2, #0]
+ 662              	.L52:
+ 199:pelican_ptu.c **** 				}
+ 200:pelican_ptu.c **** 				if (PTU_cam_angle_roll_offset<-20000){
+ 663              	 1 204 0
+ 664 0708 04329FE5 		ldr	r3, [fp, #-20]
+ 665 070c 002093E5 		cmp	r3, #0
+ 666 0710 4E3CE0E3 		beq	.L39
+ 667 0714 1F3043E2 		ldr	r3, .L76+16
+ 668 0718 030052E1 		mov	r2, #1
+ 669 071c 050000AA 		strb	r2, [r3, #0]
+ 201:pelican_ptu.c **** 					PTU_cam_angle_roll_offset=0;
+ 670              	
+ 671 0720 EC219FE5 	.L43:
+ 672 0724 0030A0E3 		.loc 1 207 0
+ 673 0728 003082E5 		ldr	r3, .L76+16
+ 202:pelican_ptu.c **** 					reset_timeout_roll=1000;
+ 674              	rb	r3, [r3, #0]	@ zero_extendqisi2
+ 675 072c D8219FE5 		cmp	r3, #0
+ 676 0730 FA3FA0E3 		beq	.L39
+ 677 0734 003082E5 		.loc 1 209 0
+ 678              		ldr	r3, .L76+16
+ 203:pelican_ptu.c **** 				}
+ 204:pelican_ptu.c **** 				if(roll_offset_inc) roll_offset_changed=1;
+ 679              	r2, #0
+ 680 0738 14301BE5 		strb	r2, [r3, #0]
+ 681 073c 000053E3 		.loc 1 211 0
+ 682 0740 0C00000A 		bl	lpc_aci_SavePara
+ 683 0744 CC319FE5 		.loc 1 212 0
+ 684 0748 0120A0E3 		bl	lpc_aci_WriteParatoFlash
+ 685 074c 0020C3E5 	.L39:
+ 686 0750 080000EA 		.loc 1 220 0
+ 687              		mov	r3, #0
+ 205:pelican_ptu.c **** 			}else
+ 206:pelican_ptu.c **** 			{
+ 207:pelican_ptu.c **** 				if (roll_offset_changed)
+ 688              	[fp, #-16]
+ 689 0754 BC319FE5 		.loc 1 223 0
+ 690 0758 0030D3E5 		ldr	r3, .L76
+ 691 075c 000053E3 		ldrh	r3, [r3, #90]
+ 692 0760 0400000A 		mov	r3, r3, asl #16
+ 208:pelican_ptu.c **** 				{
+ 209:pelican_ptu.c **** 					roll_offset_changed=0;
+ 693              	r3, r3, lsr #16
+ 694 0764 AC319FE5 		and	r3, r3, #1
+ 695 0768 0020A0E3 		cmp	r3, #0
+ 696 076c 0020C3E5 		bne	.L75
+ 210:pelican_ptu.c **** 
+ 211:pelican_ptu.c **** 					lpc_aci_SavePara();
+ 697              	c 1 225 0
+ 698 0770 FEFFFFEB 		ldr	r3, .L76+20
+ 212:pelican_ptu.c **** 					lpc_aci_WriteParatoFlash();
+ 699              	dr	r3, [r3, #0]
+ 700 0774 FEFFFFEB 		cmp	r3, #0
+ 701              		beq	.L59
+ 213:pelican_ptu.c **** 
+ 214:pelican_ptu.c **** 				}
+ 215:pelican_ptu.c **** 			}
+ 216:pelican_ptu.c **** 		}
+ 217:pelican_ptu.c **** 	}
+ 218:pelican_ptu.c **** 
+ 219:pelican_ptu.c **** 	//set pitch offset
+ 220:pelican_ptu.c **** 	int pitch_offset_inc=0;
+ 702              	oc 1 227 0
+ 703 0778 0030A0E3 		ldr	r3, .L76+20
+ 704 077c 10300BE5 		ldr	r3, [r3, #0]
+ 221:pelican_ptu.c **** 	static unsigned char pitch_offset_changed=0;
+ 222:pelican_ptu.c **** 	static int reset_timeout_pitch;
+ 223:pelican_ptu.c **** 	if(!(LL_1khz_attitude_data.status2&0x01)) //flying?
+ 705              	b	r2, r3, #1
+ 706 0780 80319FE5 		ldr	r3, .L76+20
+ 707 0784 BA35D3E1 		str	r2, [r3, #0]
+ 708 0788 0338A0E1 		b	.L75
+ 709 078c 2338A0E1 	.L59:
+ 710 0790 013003E2 		.loc 1 231 0
+ 711 0794 000053E3 		ldr	r3, .L76
+ 712 0798 5700001A 		ldrb	r3, [r3, #16]	@ zero_extendqisi2
+ 224:pelican_ptu.c **** 	{
+ 225:pelican_ptu.c **** 		if(reset_timeout_pitch)
+ 713              	 #240
+ 714 079c 78319FE5 		bls	.L61
+ 715 07a0 003093E5 		.loc 1 234 0
+ 716 07a4 000053E3 		ldr	r3, .L76
+ 717 07a8 0500000A 		ldrb	r3, [r3, #14]	@ zero_extendqisi2
+ 226:pelican_ptu.c **** 		{
+ 227:pelican_ptu.c **** 			reset_timeout_pitch--;
+ 718              	r3, #138
+ 719 07ac 68319FE5 		bls	.L63
+ 720 07b0 003093E5 		ldr	r3, .L76
+ 721 07b4 012043E2 		ldrb	r3, [r3, #14]	@ zero_extendqisi2
+ 722 07b8 5C319FE5 		sub	r3, r3, #138
+ 723 07bc 002083E5 		add	r2, r3, #3
+ 724 07c0 4D0000EA 		cmp	r3, #0
+ 725              		movlt	r3, r2
+ 228:pelican_ptu.c **** 		}
+ 229:pelican_ptu.c **** 		else
+ 230:pelican_ptu.c **** 		{
+ 231:pelican_ptu.c **** 			if(LL_1khz_attitude_data.RC_data[2]>240)	//pitch stick at maximum
+ 726              	 r3, asr #2
+ 727 07c4 3C319FE5 		str	r3, [fp, #-16]
+ 728 07c8 1030D3E5 		b	.L65
+ 729 07cc F00053E3 	.L63:
+ 730 07d0 4000009A 		.loc 1 235 0
+ 232:pelican_ptu.c **** 			{
+ 233:pelican_ptu.c **** 				//use pitch-stick to change pitch servo offset
+ 234:pelican_ptu.c **** 				if(LL_1khz_attitude_data.RC_data[0]>128+THRESHOLD) pitch_offset_inc=(LL_1khz_attitude_data.RC_d
+ 731              	r3, .L76
+ 732 07d4 2C319FE5 		ldrb	r3, [r3, #14]	@ zero_extendqisi2
+ 733 07d8 0E30D3E5 		cmp	r3, #117
+ 734 07dc 8A0053E3 		bhi	.L66
+ 735 07e0 0800009A 		ldr	r3, .L76
+ 736 07e4 1C319FE5 		ldrb	r3, [r3, #14]	@ zero_extendqisi2
+ 737 07e8 0E30D3E5 		sub	r3, r3, #118
+ 738 07ec 8A3043E2 		add	r2, r3, #3
+ 739 07f0 032083E2 		cmp	r3, #0
+ 740 07f4 000053E3 		movlt	r3, r2
+ 741 07f8 0230A0B1 		mov	r3, r3, asr #2
+ 742 07fc 4331A0E1 		str	r3, [fp, #-16]
+ 743 0800 10300BE5 		b	.L65
+ 744 0804 0E0000EA 	.L66:
+ 745              		.loc 1 236 0
+ 235:pelican_ptu.c **** 				else if(LL_1khz_attitude_data.RC_data[0]<128-THRESHOLD) pitch_offset_inc=(LL_1khz_attitude_data
+ 746              	r	r3, [fp, #-16]
+ 747 0808 F8309FE5 	.L65:
+ 748 080c 0E30D3E5 		.loc 1 238 0
+ 749 0810 750053E3 		ldr	r3, .L76+24
+ 750 0814 0800008A 		ldr	r2, [r3, #0]
+ 751 0818 E8309FE5 		ldr	r3, [fp, #-16]
+ 752 081c 0E30D3E5 		add	r2, r2, r3
+ 753 0820 763043E2 		ldr	r3, .L76+24
+ 754 0824 032083E2 		str	r2, [r3, #0]
+ 755 0828 000053E3 		.loc 1 239 0
+ 756 082c 0230A0B1 		ldr	r3, .L76+24
+ 757 0830 4331A0E1 		ldr	r2, [r3, #0]
+ 758 0834 10300BE5 		mov	r3, #19968
+ 759 0838 010000EA 		add	r3, r3, #32
+ 760              		cmp	r2, r3
+ 236:pelican_ptu.c **** 				else pitch_offset_inc=0;
+ 761              	 1 240 0
+ 762 083c 0030A0E3 		ldr	r2, .L76+24
+ 763 0840 10300BE5 		mov	r3, #0
+ 764              		str	r3, [r2, #0]
+ 237:pelican_ptu.c **** 
+ 238:pelican_ptu.c **** 				PTU_cam_angle_pitch_offset+=pitch_offset_inc;//(LL_1khz_attitude_data.RC_data[3]-128)*5;
+ 765              	c 1 241 0
+ 766 0844 D4309FE5 		ldr	r2, .L76+20
+ 767 0848 002093E5 		mov	r3, #1000
+ 768 084c 10301BE5 		str	r3, [r2, #0]
+ 769 0850 032082E0 	.L68:
+ 770 0854 C4309FE5 		.loc 1 243 0
+ 771 0858 002083E5 		ldr	r3, .L76+24
+ 239:pelican_ptu.c **** 				if (PTU_cam_angle_pitch_offset>20000){
+ 772              	, [r3, #0]
+ 773 085c BC309FE5 		mvn	r3, #19968
+ 774 0860 002093E5 		sub	r3, r3, #31
+ 775 0864 4E3CA0E3 		cmp	r2, r3
+ 776 0868 203083E2 		bge	.L70
+ 777 086c 030052E1 		.loc 1 244 0
+ 778 0870 050000DA 		ldr	r2, .L76+24
+ 240:pelican_ptu.c **** 					PTU_cam_angle_pitch_offset=0;
+ 779              	, #0
+ 780 0874 A4209FE5 		str	r3, [r2, #0]
+ 781 0878 0030A0E3 		.loc 1 245 0
+ 782 087c 003082E5 		ldr	r2, .L76+20
+ 241:pelican_ptu.c **** 					reset_timeout_pitch=1000;
+ 783              		r3, #1000
+ 784 0880 94209FE5 		str	r3, [r2, #0]
+ 785 0884 FA3FA0E3 	.L70:
+ 786 0888 003082E5 		.loc 1 247 0
+ 787              		ldr	r3, [fp, #-16]
+ 242:pelican_ptu.c **** 				}
+ 243:pelican_ptu.c **** 				if (PTU_cam_angle_pitch_offset<-20000){
+ 788              	r3, #0
+ 789 088c 8C309FE5 		beq	.L75
+ 790 0890 002093E5 		ldr	r3, .L76+28
+ 791 0894 4E3CE0E3 		mov	r2, #1
+ 792 0898 1F3043E2 		strb	r2, [r3, #0]
+ 793 089c 030052E1 		b	.L75
+ 794 08a0 050000AA 	.L61:
+ 244:pelican_ptu.c **** 					PTU_cam_angle_pitch_offset=0;
+ 795              	 250 0
+ 796 08a4 74209FE5 		ldr	r3, .L76+28
+ 797 08a8 0030A0E3 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 798 08ac 003082E5 		cmp	r3, #0
+ 245:pelican_ptu.c **** 					reset_timeout_pitch=1000;
+ 799              		.L75
+ 800 08b0 64209FE5 		.loc 1 252 0
+ 801 08b4 FA3FA0E3 		ldr	r3, .L76+28
+ 802 08b8 003082E5 		mov	r2, #0
+ 803              		strb	r2, [r3, #0]
+ 246:pelican_ptu.c **** 				}
+ 247:pelican_ptu.c **** 				if(pitch_offset_inc) pitch_offset_changed=1;
+ 804              	 1 254 0
+ 805 08bc 10301BE5 		bl	lpc_aci_SavePara
+ 806 08c0 000053E3 		.loc 1 255 0
+ 807 08c4 0C00000A 		bl	lpc_aci_WriteParatoFlash
+ 808 08c8 54309FE5 	.L75:
+ 809 08cc 0120A0E3 		.loc 1 261 0
+ 810 08d0 0020C3E5 		sub	sp, fp, #12
+ 811 08d4 080000EA 		ldmfd	sp, {fp, sp, lr}
+ 812              		bx	lr
+ 248:pelican_ptu.c **** 			}else
+ 249:pelican_ptu.c **** 			{
+ 250:pelican_ptu.c **** 				if (pitch_offset_changed)
+ 813              	lign	2
+ 814 08d8 44309FE5 	.L76:
+ 815 08dc 0030D3E5 		.word	LL_1khz_attitude_data
+ 816 08e0 000053E3 		.word	reset_timeout_roll.1725
+ 817 08e4 0400000A 		.word	715827883
+ 251:pelican_ptu.c **** 				{
+ 252:pelican_ptu.c **** 					pitch_offset_changed=0;
+ 818              	d	PTU_cam_angle_roll_offset
+ 819 08e8 34309FE5 		.word	roll_offset_changed.1724
+ 820 08ec 0020A0E3 		.word	reset_timeout_pitch.1730
+ 821 08f0 0020C3E5 		.word	PTU_cam_angle_pitch_offset
+ 253:pelican_ptu.c **** 
+ 254:pelican_ptu.c **** 					lpc_aci_SavePara();
+ 822              	rd	pitch_offset_changed.1729
+ 823 08f4 FEFFFFEB 	.LFE6:
+ 255:pelican_ptu.c **** 					lpc_aci_WriteParatoFlash();
+ 824              	size	PTU_update_middle_positions_by_stick, .-PTU_update_middle_positions_by_stick
+ 825 08f8 FEFFFFEB 		.comm	GPS_timeout,4,4
+ 826              		.comm	SYSTEM_initialized,1,1
+ 256:pelican_ptu.c **** 
+ 257:pelican_ptu.c **** 				}
+ 258:pelican_ptu.c **** 			}
+ 259:pelican_ptu.c **** 		}
+ 260:pelican_ptu.c **** 	}
+ 261:pelican_ptu.c **** }
+ 827              	omm	CAMERA_ptu,32,4
+ 828 08fc 0CD04BE2 		.comm	CAMERA_Commands,12,4
+ 829 0900 00689DE8 		.section	.debug_frame,"",%progbits
+ 830 0904 1EFF2FE1 	.Lframe0:
+ 831              		.4byte	.LECIE0-.LSCIE0
+ 832              	.LSCIE0:
+ 833              		.4byte	0xffffffff
+ 834 0908 00000000 		.byte	0x1
+ 835 090c 1C000000 		.ascii	"\000"
+ 836 0910 ABAAAA2A 		.uleb128 0x1
+ 837 0914 00000000 		.sleb128 -4
+ 838 0918 20000000 		.byte	0xe
+ 839 091c 14000000 		.byte	0xc
+ 840 0920 00000000 		.uleb128 0xd
+ 841 0924 18000000 		.uleb128 0x0
+ 842              		.align	2
+ 843              	.LECIE0:
+ 844              	.LSFDE0:
+ 845              		.4byte	.LEFDE0-.LASFDE0
+ 846              	.LASFDE0:
+ 847              		.4byte	.Lframe0
+ 993              	.LLST1:
+DEFINED SYMBOLS
+                            *ABS*:00000000 pelican_ptu.c
+C:\Users\d-block\AppData\Local\Temp/cc2hcaaa.s:15     .bss:00000000 PTU_cam_angle_roll_offset
+                             .bss:00000000 $d
+C:\Users\d-block\AppData\Local\Temp/cc2hcaaa.s:21     .bss:00000004 PTU_cam_angle_pitch_offset
+C:\Users\d-block\AppData\Local\Temp/cc2hcaaa.s:26     .bss:00000008 PTU_enable_plain_ch7_to_servo
+C:\Users\d-block\AppData\Local\Temp/cc2hcaaa.s:32     .text:00000000 PTU_init
+C:\Users\d-block\AppData\Local\Temp/cc2hcaaa.s:39     .text:00000000 $a
+C:\Users\d-block\AppData\Local\Temp/cc2hcaaa.s:133    .text:00000118 $d
+                            *COM*:00000020 CAMERA_ptu
+C:\Users\d-block\AppData\Local\Temp/cc2hcaaa.s:139    .bss:0000000c cam_angle_pitch.1626
+C:\Users\d-block\AppData\Local\Temp/cc2hcaaa.s:142    .bss:00000010 ptu_cnt.1622
+C:\Users\d-block\AppData\Local\Temp/cc2hcaaa.s:148    .text:00000120 PTU_update
+C:\Users\d-block\AppData\Local\Temp/cc2hcaaa.s:154    .text:00000120 $a
+C:\Users\d-block\AppData\Local\Temp/cc2hcaaa.s:563    .text:000005e4 PTU_update_middle_positions_by_stick
+C:\Users\d-block\AppData\Local\Temp/cc2hcaaa.s:385    .text:0000041c SERVO_pitch_move
+C:\Users\d-block\AppData\Local\Temp/cc2hcaaa.s:469    .text:00000504 SERVO_roll_move
+C:\Users\d-block\AppData\Local\Temp/cc2hcaaa.s:373    .text:00000400 $d
+                            *COM*:0000000c CAMERA_Commands
+C:\Users\d-block\AppData\Local\Temp/cc2hcaaa.s:391    .text:0000041c $a
+C:\Users\d-block\AppData\Local\Temp/cc2hcaaa.s:461    .text:000004f8 $d
+C:\Users\d-block\AppData\Local\Temp/cc2hcaaa.s:475    .text:00000504 $a
+C:\Users\d-block\AppData\Local\Temp/cc2hcaaa.s:543    .text:000005d8 $d
+C:\Users\d-block\AppData\Local\Temp/cc2hcaaa.s:550    .bss:00000014 reset_timeout_pitch.1730
+C:\Users\d-block\AppData\Local\Temp/cc2hcaaa.s:552    .bss:00000018 pitch_offset_changed.1729
+C:\Users\d-block\AppData\Local\Temp/cc2hcaaa.s:555    .bss:0000001c reset_timeout_roll.1725
+C:\Users\d-block\AppData\Local\Temp/cc2hcaaa.s:557    .bss:00000020 roll_offset_changed.1724
+C:\Users\d-block\AppData\Local\Temp/cc2hcaaa.s:569    .text:000005e4 $a
+C:\Users\d-block\AppData\Local\Temp/cc2hcaaa.s:834    .text:00000908 $d
+                            *COM*:00000004 GPS_timeout
+                            *COM*:00000001 SYSTEM_initialized
+
+UNDEFINED SYMBOLS
+PTU_cam_option_4_version
+RO_RC_Data
+IMU_CalcData
+lpc_aci_SavePara
+lpc_aci_WriteParatoFlash
+LL_1khz_attitude_data

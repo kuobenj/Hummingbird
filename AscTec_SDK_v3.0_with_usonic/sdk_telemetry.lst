@@ -1,0 +1,1283 @@
+   1              		.file	"sdk_telemetry.c"
+   9              	.Ltext0:
+  10              		.section	.rodata.str1.4,"aMS",%progbits,1
+  11 0047 00       		.align	2
+  12              	.LC0:
+  13 0048 3C2D5761 		.ascii	"<-Waypoint Test  EmergencyMode->\000"
+  13      79706F69 
+  13      6E742054 
+  13      65737420 
+  13      20456D65 
+  14 0069 000000   		.align	2
+  15              	.LC1:
+  16 006c 41736354 		.ascii	"AscTec JetiTest  EmergencyMode->\000"
+  16      6563204A 
+  16      65746954 
+  16      65737420 
+  16      20456D65 
+  17 008d 000000   		.align	2
+  18              	.LC2:
+  19 0090 43757272 		.ascii	"Current EmMode<>Direct Landing\000"
+  19      656E7420 
+  19      456D4D6F 
+  19      64653C3E 
+  19      44697265 
+  20 00af 00       		.align	2
+  21              	.LC3:
+  22 00b0 43757272 		.ascii	"Current EmMode<>Wait&Land\000"
+  22      656E7420 
+  22      456D4D6F 
+  22      64653C3E 
+  22      57616974 
+  23 00ca 0000     		.align	2
+  24              	.LC4:
+  25 00cc 43757272 		.ascii	"Current EmMode<>Come Home High\000"
+  25      656E7420 
+  25      456D4D6F 
+  25      64653C3E 
+  25      436F6D65 
+  26 00eb 00       		.align	2
+  27              	.LC5:
+  28 00ec 43757272 		.ascii	"Current EmMode<>Come Home \000"
+  28      656E7420 
+  28      456D4D6F 
+  28      64653C3E 
+  28      436F6D65 
+  29 0107 00       		.align	2
+  30              	.LC6:
+  31 0108 456D4D6F 		.ascii	"EmMode v=Set  <>Direct Landing\000"
+  31      64652076 
+  31      3D536574 
+  31      20203C3E 
+  31      44697265 
+  32 0127 00       		.align	2
+  33              	.LC7:
+  34 0128 456D4D6F 		.ascii	"EmMode v=Set  <>Wait&Land\000"
+  34      64652076 
+  34      3D536574 
+  34      20203C3E 
+  34      57616974 
+  35 0142 0000     		.align	2
+  36              	.LC8:
+  37 0144 456D4D6F 		.ascii	"EmMode v=Set  <>Come Home     \000"
+  37      64652076 
+  37      3D536574 
+  37      20203C3E 
+  37      436F6D65 
+  38 0163 00       		.align	2
+  39              	.LC9:
+  40 0164 456D4D6F 		.ascii	"EmMode v=Set  <>Come Home High\000"
+  40      64652076 
+  40      3D536574 
+  40      20203C3E 
+  40      436F6D65 
+  41 0183 00       		.align	2
+  42              	.LC10:
+  43 0184 57502041 		.ascii	"WP Act. v=Stop <>WP# %2i Dist: %2im\000"
+  43      63742E20 
+  43      763D5374 
+  43      6F70203C 
+  43      3E575023 
+  44              		.text
+  45              		.align	2
+  46              		.global	SDK_jetiAscTecExampleUpdateDisplay
+  48              	SDK_jetiAscTecExampleUpdateDisplay:
+  49              	.LFB2:
+  50              		.file 1 "sdk_telemetry.c"
+   1:sdk_telemetry.c **** #include "main.h"
+   2:sdk_telemetry.c **** #include "sdk.h"
+   3:sdk_telemetry.c **** #include "LL_HL_comm.h"
+   4:sdk_telemetry.c **** #include "jetiTelemetry.h"
+   5:sdk_telemetry.c **** #include "sdk_telemetry.h"
+   6:sdk_telemetry.c **** #include "gpsmath.h"
+   7:sdk_telemetry.c **** #include "system.h"
+   8:sdk_telemetry.c **** #include <string.h>
+   9:sdk_telemetry.c **** 
+  10:sdk_telemetry.c **** 
+  11:sdk_telemetry.c **** void SDK_jetiAscTecExampleUpdateDisplay(unsigned char state) {
+  51              	 args = 0, pretend = 0, frame = 32
+  52              		@ frame_needed = 0, uses_anonymous_args = 0
+  53              	.LVL0:
+  54              		stmfd	sp!, {r4, lr}
+  55              	.LCFI0:
+  56 0000 10402DE9 		and	r0, r0, #255
+  57              		sub	sp, sp, #32
+  58 0004 FF0000E2 	.LCFI1:
+  59 0008 20D04DE2 		.loc 1 13 0
+  60              		cmp	r0, #6
+  12:sdk_telemetry.c **** 	char text[31];
+  13:sdk_telemetry.c **** 	switch (state) {
+  61              	 [pc, r0, asl #2]
+  62 000c 060050E3 		b	.L19
+  63 0010 00F19F97 		.p2align 2
+  64 0014 100000EA 	.L10:
+  65              		.word	.L3
+  66              		.word	.L4
+  67 0018 68000000 		.word	.L5
+  68 001c 34000000 		.word	.L6
+  69 0020 E4000000 		.word	.L7
+  70 0024 D8000000 		.word	.L8
+  71 0028 CC000000 		.word	.L9
+  72 002c C0000000 	.L4:
+  73 0030 84000000 		.loc 1 24 0
+  74              		ldr	r3, .L24
+  14:sdk_telemetry.c **** 	//				Line	   11111111111111112222222222222222
+  15:sdk_telemetry.c **** 	case 0:
+  16:sdk_telemetry.c **** #ifndef MATLAB
+  17:sdk_telemetry.c **** 		if (RO_ALL_Data.flying)
+  18:sdk_telemetry.c **** 			jetiSetTextDisplay("<-Waypoint Test  EmergencyMode->");
+  19:sdk_telemetry.c **** 		else
+  20:sdk_telemetry.c **** #endif
+  21:sdk_telemetry.c **** 			jetiSetTextDisplay("AscTec JetiTest  EmergencyMode->");
+  22:sdk_telemetry.c **** 		break;
+  23:sdk_telemetry.c **** 	case 1:
+  24:sdk_telemetry.c **** 		if (emergencyMode == EM_SAVE)
+  75              	 #0]	@ zero_extendqisi2
+  76 0034 E4309FE5 		cmp	r3, #1
+  77 0038 0030D3E5 		beq	.L21
+  78 003c 010053E3 		.loc 1 26 0
+  79 0040 3000000A 		cmp	r3, #2
+  25:sdk_telemetry.c **** 			jetiSetTextDisplay("Current EmMode<>Direct Landing");
+  26:sdk_telemetry.c **** 		else if (emergencyMode == EM_SAVE_EXTENDED_WAITING_TIME)
+  80              	.L22
+  81 0044 020053E3 		.loc 1 28 0
+  82 0048 3100000A 		cmp	r3, #8
+  27:sdk_telemetry.c **** 			jetiSetTextDisplay("Current EmMode<>Wait&Land");
+  28:sdk_telemetry.c **** 		else if (emergencyMode == EM_RETURN_AT_MISSION_SUMMIT)
+  83              	q	.L23
+  84 004c 080053E3 		.loc 1 31 0
+  85 0050 2900000A 		ldr	r0, .L24+4
+  29:sdk_telemetry.c **** 			jetiSetTextDisplay("Current EmMode<>Come Home High");
+  30:sdk_telemetry.c **** 		else
+  31:sdk_telemetry.c **** 			jetiSetTextDisplay("Current EmMode<>Come Home ");
+  86              	L1:
+  87 0054 C8009FE5 		bl	jetiSetTextDisplay
+  88              	.LVL2:
+  89 0058 FEFFFFEB 	.L19:
+  90              		.loc 1 50 0
+  91              		add	sp, sp, #32
+  32:sdk_telemetry.c **** 		break;
+  33:sdk_telemetry.c **** 	case 2:
+  34:sdk_telemetry.c **** 		jetiSetTextDisplay("EmMode v=Set  <>Direct Landing");
+  35:sdk_telemetry.c **** 		break;
+  36:sdk_telemetry.c **** 	case 3:
+  37:sdk_telemetry.c **** 		jetiSetTextDisplay("EmMode v=Set  <>Wait&Land");
+  38:sdk_telemetry.c **** 		break;
+  39:sdk_telemetry.c **** 	case 4:
+  40:sdk_telemetry.c **** 		jetiSetTextDisplay("EmMode v=Set  <>Come Home     ");
+  41:sdk_telemetry.c **** 		break;
+  42:sdk_telemetry.c **** 	case 5:
+  43:sdk_telemetry.c **** 		jetiSetTextDisplay("EmMode v=Set  <>Come Home High");
+  44:sdk_telemetry.c **** 		break;
+  45:sdk_telemetry.c **** 	case 6:
+  46:sdk_telemetry.c **** 		sprintf(&text,"WP Act. v=Stop <>WP# %2i Dist: %2im",wpExampleWpNr,wpCtrlDistToWp/10);
+  47:sdk_telemetry.c **** 		jetiSetTextDisplay((unsigned char *)&text);
+  48:sdk_telemetry.c **** 		break;
+  49:sdk_telemetry.c **** 	}
+  50:sdk_telemetry.c **** }
+  92              		sp!, {r4, lr}
+  93 005c 20D08DE2 		bx	lr
+  94 0060 1040BDE8 	.L3:
+  95 0064 1EFF2FE1 		.loc 1 17 0
+  96              		ldr	r3, .L24+8
+  97              		ldrb	r2, [r3, #2]	@ zero_extendqisi2
+  98 0068 B8309FE5 		cmp	r2, #0
+  99 006c 0220D3E5 		beq	.L11
+ 100 0070 000052E3 		.loc 1 18 0
+ 101 0074 1D00000A 		ldr	r0, .L24+12
+ 102              	.LVL3:
+ 103 0078 AC009FE5 		bl	jetiSetTextDisplay
+ 104              		b	.L19
+ 105 007c FEFFFFEB 	.LVL4:
+ 106 0080 F5FFFFEA 	.L9:
+ 107              		.loc 1 46 0
+ 108              		ldr	r3, .L24+16
+ 109              		ldr	r2, .L24+20
+ 110 0084 A4309FE5 		ldrh	r1, [r3, #0]
+ 111 0088 A4209FE5 		umull	r0, r3, r2, r1
+ 112 008c B010D3E1 	.LVL5:
+ 113 0090 920183E0 		ldr	r1, .L24+24
+ 114              		add	r4, sp, #1
+ 115 0094 9C109FE5 		mov	r3, r3, asl #13
+ 116 0098 01408DE2 		ldrb	r2, [r1, #0]	@ zero_extendqisi2
+ 117 009c 8336A0E1 		mov	r3, r3, lsr #16
+ 118 00a0 0020D1E5 		mov	r0, r4
+ 119 00a4 2338A0E1 		ldr	r1, .L24+28
+ 120 00a8 0400A0E1 		bl	sprintf
+ 121 00ac 88109FE5 		.loc 1 47 0
+ 122 00b0 FEFFFFEB 		mov	r0, r4
+ 123              		bl	jetiSetTextDisplay
+ 124 00b4 0400A0E1 		b	.L19
+ 125 00b8 FEFFFFEB 	.LVL6:
+ 126 00bc E6FFFFEA 	.L8:
+ 127              		.loc 1 43 0
+ 128              		ldr	r0, .L24+32
+ 129              	.LVL7:
+ 130 00c0 78009FE5 		bl	jetiSetTextDisplay
+ 131              		b	.L19
+ 132 00c4 FEFFFFEB 	.LVL8:
+ 133 00c8 E3FFFFEA 	.L7:
+ 134              		.loc 1 40 0
+ 135              		ldr	r0, .L24+36
+ 136              	.LVL9:
+ 137 00cc 70009FE5 		bl	jetiSetTextDisplay
+ 138              		b	.L19
+ 139 00d0 FEFFFFEB 	.LVL10:
+ 140 00d4 E0FFFFEA 	.L6:
+ 141              		.loc 1 37 0
+ 142              		ldr	r0, .L24+40
+ 143              	.LVL11:
+ 144 00d8 68009FE5 		bl	jetiSetTextDisplay
+ 145              		b	.L19
+ 146 00dc FEFFFFEB 	.LVL12:
+ 147 00e0 DDFFFFEA 	.L5:
+ 148              		.loc 1 34 0
+ 149              		ldr	r0, .L24+44
+ 150              	.LVL13:
+ 151 00e4 60009FE5 		bl	jetiSetTextDisplay
+ 152              		b	.L19
+ 153 00e8 FEFFFFEB 	.LVL14:
+ 154 00ec DAFFFFEA 	.L11:
+ 155              		.loc 1 21 0
+ 156              		ldr	r0, .L24+48
+ 157              	.LVL15:
+ 158 00f0 58009FE5 		bl	jetiSetTextDisplay
+ 159              		b	.L19
+ 160 00f4 FEFFFFEB 	.LVL16:
+ 161 00f8 D7FFFFEA 	.L23:
+ 162              		.loc 1 29 0
+ 163              		ldr	r0, .L24+52
+ 164              	.LVL17:
+ 165 00fc 50009FE5 		bl	jetiSetTextDisplay
+ 166              		b	.L19
+ 167 0100 FEFFFFEB 	.LVL18:
+ 168 0104 D4FFFFEA 	.L21:
+ 169              		.loc 1 25 0
+ 170              		ldr	r0, .L24+56
+ 171              	.LVL19:
+ 172 0108 48009FE5 		bl	jetiSetTextDisplay
+ 173              		b	.L19
+ 174 010c FEFFFFEB 	.LVL20:
+ 175 0110 D1FFFFEA 	.L22:
+ 176              		.loc 1 27 0
+ 177              		ldr	r0, .L24+60
+ 178              	.LVL21:
+ 179 0114 40009FE5 		bl	jetiSetTextDisplay
+ 180              		b	.L19
+ 181 0118 FEFFFFEB 	.L25:
+ 182 011c CEFFFFEA 		.align	2
+ 183              	.L24:
+ 184              		.word	emergencyMode
+ 185              		.word	.LC5
+ 186 0120 00000000 		.word	RO_ALL_Data
+ 187 0124 EC000000 		.word	.LC0
+ 188 0128 00000000 		.word	wpCtrlDistToWp
+ 189 012c 48000000 		.word	-858993459
+ 190 0130 00000000 		.word	wpExampleWpNr
+ 191 0134 CDCCCCCC 		.word	.LC10
+ 192 0138 00000000 		.word	.LC9
+ 193 013c 84010000 		.word	.LC8
+ 194 0140 64010000 		.word	.LC7
+ 195 0144 44010000 		.word	.LC6
+ 196 0148 28010000 		.word	.LC1
+ 197 014c 08010000 		.word	.LC4
+ 198 0150 6C000000 		.word	.LC2
+ 199 0154 CC000000 		.word	.LC3
+ 200 0158 90000000 	.LFE2:
+ 202              		.section	.rodata.str1.4
+ 203              		.align	2
+ 204              	.LC11:
+ 205              		.ascii	"AscTec SDK\000"
+ 206              		.align	2
+ 207 01a8 41736354 	.LC12:
+ 207      65632053 
+ 207      444B00
+ 208 01b3 00       		.ascii	"AscTec Example  ->more Infos\000"
+ 209              		.align	2
+ 210 01b4 41736354 	.LC13:
+ 210      65632045 
+ 210      78616D70 
+ 210      6C652020 
+ 210      2D3E6D6F 
+ 211 01d1 000000   		.ascii	"Pitch\000"
+ 212              		.align	2
+ 213 01d4 50697463 	.LC14:
+ 213      6800
+ 214 01da 0000     		.ascii	"\260\000"
+ 215              		.align	2
+ 216 01dc B000     	.LC15:
+ 217 01de 0000     		.ascii	"Roll\000"
+ 218              		.align	2
+ 219 01e0 526F6C6C 	.LC16:
+ 219      00
+ 220 01e5 000000   		.ascii	"Yaw\000"
+ 221              		.align	2
+ 222 01e8 59617700 	.LC17:
+ 223              		.ascii	"Height\000"
+ 224              		.align	2
+ 225 01ec 48656967 	.LC18:
+ 225      687400
+ 226 01f3 00       		.ascii	"m\000"
+ 227              		.align	2
+ 228 01f4 6D00     	.LC19:
+ 229 01f6 0000     		.ascii	"FlightMode\000"
+ 230              		.subsection	-1
+ 231 01f8 466C6967 		.align	2
+ 231      68744D6F 
+ 231      646500
+ 232 0203 00       	.LC20:
+ 233              		.ascii	"\000"
+ 234              		.align	2
+ 235 0000 00       	.LC21:
+ 236 0001 000000   		.ascii	"Speed\000"
+ 237              		.align	2
+ 238 0004 53706565 	.LC22:
+ 238      6400
+ 239 000a 0000     		.ascii	"m/s\000"
+ 240              		.align	2
+ 241 000c 6D2F7300 	.LC23:
+ 242              		.ascii	"GPS\000"
+ 243              		.align	2
+ 244 0010 47505300 	.LC24:
+ 245              		.ascii	"%\000"
+ 246              		.align	2
+ 247 0014 2500     	.LC25:
+ 248 0016 0000     		.ascii	"BAT\000"
+ 249              		.align	2
+ 250 0018 42415400 	.LC26:
+ 251              		.ascii	"V\000"
+ 252              		.align	2
+ 253 001c 5600     	.LC27:
+ 254 001e 0000     		.ascii	"CPU Time\000"
+ 255              		.align	2
+ 256 0020 43505520 	.LC28:
+ 256      54696D65 
+ 256      00
+ 257 0029 000000   		.ascii	"us\000"
+ 258              		.align	2
+ 259 002c 757300   	.LC29:
+ 260 002f 00       		.ascii	"Lat\000"
+ 261              		.align	2
+ 262 0030 4C617400 	.LC30:
+ 263              		.ascii	"Lon\000"
+ 264              		.align	2
+ 265 0034 4C6F6E00 	.LC31:
+ 266              		.ascii	"LatRem\000"
+ 267              		.align	2
+ 268 0038 4C617452 	.LC32:
+ 268      656D00
+ 269 003f 00       		.ascii	"LonRem\000"
+ 270              		.text
+ 271 0040 4C6F6E52 		.align	2
+ 271      656D00
+ 272              		.global	SDK_jetiAscTecExampleInit
+ 274              	SDK_jetiAscTecExampleInit:
+ 275              	.LFB4:
+ 276              		.loc 1 181 0
+ 277              		@ Function supports interworking.
+  51:sdk_telemetry.c **** 
+  52:sdk_telemetry.c **** void SDK_jetiAscTecExampleKeyChange(unsigned char key) {
+  53:sdk_telemetry.c **** 	static unsigned char displayState = 0;
+  54:sdk_telemetry.c **** 
+  55:sdk_telemetry.c **** 	switch (displayState) {
+  56:sdk_telemetry.c **** 	case 0:
+  57:sdk_telemetry.c **** 		switch (key) {
+  58:sdk_telemetry.c **** 		case JETI_KEY_UP:
+  59:sdk_telemetry.c **** 			break;
+  60:sdk_telemetry.c **** 		case JETI_KEY_DOWN:
+  61:sdk_telemetry.c **** 			break;
+  62:sdk_telemetry.c **** 		case JETI_KEY_LEFT:
+  63:sdk_telemetry.c **** 			if (RO_ALL_Data.flying)
+  64:sdk_telemetry.c **** 			{
+  65:sdk_telemetry.c **** 				wpExampleActive=1;
+  66:sdk_telemetry.c **** 				displayState=6;
+  67:sdk_telemetry.c **** 			}
+  68:sdk_telemetry.c **** 			break;
+  69:sdk_telemetry.c **** 		case JETI_KEY_RIGHT:
+  70:sdk_telemetry.c **** 			displayState++;
+  71:sdk_telemetry.c **** 			break;
+  72:sdk_telemetry.c **** 		}
+  73:sdk_telemetry.c **** 		break;
+  74:sdk_telemetry.c **** 
+  75:sdk_telemetry.c **** 	case 1:
+  76:sdk_telemetry.c **** 		switch (key) {
+  77:sdk_telemetry.c **** 		case JETI_KEY_UP:
+  78:sdk_telemetry.c **** 			break;
+  79:sdk_telemetry.c **** 		case JETI_KEY_DOWN:
+  80:sdk_telemetry.c **** 			break;
+  81:sdk_telemetry.c **** 		case JETI_KEY_LEFT:
+  82:sdk_telemetry.c **** 			displayState = 0;
+  83:sdk_telemetry.c **** 			break;
+  84:sdk_telemetry.c **** 		case JETI_KEY_RIGHT:
+  85:sdk_telemetry.c **** 			displayState++;
+  86:sdk_telemetry.c **** 			break;
+  87:sdk_telemetry.c **** 		}
+  88:sdk_telemetry.c **** 		break;
+  89:sdk_telemetry.c **** 
+  90:sdk_telemetry.c **** 	case 2:
+  91:sdk_telemetry.c **** 		switch (key) {
+  92:sdk_telemetry.c **** 		case JETI_KEY_UP:
+  93:sdk_telemetry.c **** 			break;
+  94:sdk_telemetry.c **** 		case JETI_KEY_DOWN:
+  95:sdk_telemetry.c **** 			SDK_SetEmergencyMode(EM_SAVE);
+  96:sdk_telemetry.c **** 			displayState = 0;
+  97:sdk_telemetry.c **** 			break;
+  98:sdk_telemetry.c **** 		case JETI_KEY_LEFT:
+  99:sdk_telemetry.c **** 			displayState = 5;
+ 100:sdk_telemetry.c **** 			break;
+ 101:sdk_telemetry.c **** 		case JETI_KEY_RIGHT:
+ 102:sdk_telemetry.c **** 			displayState++;
+ 103:sdk_telemetry.c **** 			break;
+ 104:sdk_telemetry.c **** 		}
+ 105:sdk_telemetry.c **** 		break;
+ 106:sdk_telemetry.c **** 
+ 107:sdk_telemetry.c **** 	case 3:
+ 108:sdk_telemetry.c **** 		switch (key) {
+ 109:sdk_telemetry.c **** 		case JETI_KEY_UP:
+ 110:sdk_telemetry.c **** 			break;
+ 111:sdk_telemetry.c **** 		case JETI_KEY_DOWN:
+ 112:sdk_telemetry.c **** 			SDK_SetEmergencyMode(EM_SAVE_EXTENDED_WAITING_TIME);
+ 113:sdk_telemetry.c **** 			displayState = 0;
+ 114:sdk_telemetry.c **** 			break;
+ 115:sdk_telemetry.c **** 		case JETI_KEY_LEFT:
+ 116:sdk_telemetry.c **** 			displayState--;
+ 117:sdk_telemetry.c **** 			break;
+ 118:sdk_telemetry.c **** 		case JETI_KEY_RIGHT:
+ 119:sdk_telemetry.c **** 			displayState++;
+ 120:sdk_telemetry.c **** 			break;
+ 121:sdk_telemetry.c **** 		}
+ 122:sdk_telemetry.c **** 		break;
+ 123:sdk_telemetry.c **** 	case 4:
+ 124:sdk_telemetry.c **** 		switch (key) {
+ 125:sdk_telemetry.c **** 		case JETI_KEY_UP:
+ 126:sdk_telemetry.c **** 			break;
+ 127:sdk_telemetry.c **** 		case JETI_KEY_DOWN:
+ 128:sdk_telemetry.c **** 			SDK_SetEmergencyMode(EM_RETURN_AT_PREDEFINED_HEIGHT);
+ 129:sdk_telemetry.c **** 			displayState = 0;
+ 130:sdk_telemetry.c **** 			break;
+ 131:sdk_telemetry.c **** 		case JETI_KEY_LEFT:
+ 132:sdk_telemetry.c **** 			displayState--;
+ 133:sdk_telemetry.c **** 			break;
+ 134:sdk_telemetry.c **** 		case JETI_KEY_RIGHT:
+ 135:sdk_telemetry.c **** 			displayState++;
+ 136:sdk_telemetry.c **** 			break;
+ 137:sdk_telemetry.c **** 		}
+ 138:sdk_telemetry.c **** 		break;
+ 139:sdk_telemetry.c **** 
+ 140:sdk_telemetry.c **** 	case 5:
+ 141:sdk_telemetry.c **** 		switch (key) {
+ 142:sdk_telemetry.c **** 		case JETI_KEY_UP:
+ 143:sdk_telemetry.c **** 			break;
+ 144:sdk_telemetry.c **** 		case JETI_KEY_DOWN:
+ 145:sdk_telemetry.c **** 			SDK_SetEmergencyMode(EM_RETURN_AT_MISSION_SUMMIT);
+ 146:sdk_telemetry.c **** 			displayState = 0;
+ 147:sdk_telemetry.c **** 			break;
+ 148:sdk_telemetry.c **** 		case JETI_KEY_LEFT:
+ 149:sdk_telemetry.c **** 			displayState--;
+ 150:sdk_telemetry.c **** 			break;
+ 151:sdk_telemetry.c **** 		case JETI_KEY_RIGHT:
+ 152:sdk_telemetry.c **** 			displayState = 2;
+ 153:sdk_telemetry.c **** 			break;
+ 154:sdk_telemetry.c **** 		}
+ 155:sdk_telemetry.c **** 		break;
+ 156:sdk_telemetry.c **** 
+ 157:sdk_telemetry.c **** 
+ 158:sdk_telemetry.c **** 	case 6:
+ 159:sdk_telemetry.c **** 		//switch back when waypoint example is finished
+ 160:sdk_telemetry.c **** 		if (wpExampleActive==0)
+ 161:sdk_telemetry.c **** 			displayState = 0;
+ 162:sdk_telemetry.c **** 
+ 163:sdk_telemetry.c **** 		switch (key) {
+ 164:sdk_telemetry.c **** 		case JETI_KEY_UP:
+ 165:sdk_telemetry.c **** 			break;
+ 166:sdk_telemetry.c **** 		case JETI_KEY_DOWN:
+ 167:sdk_telemetry.c **** 			displayState = 0;
+ 168:sdk_telemetry.c **** 			wpExampleActive=0;
+ 169:sdk_telemetry.c **** 			break;
+ 170:sdk_telemetry.c **** 		case JETI_KEY_LEFT:
+ 171:sdk_telemetry.c **** 			break;
+ 172:sdk_telemetry.c **** 		case JETI_KEY_RIGHT:
+ 173:sdk_telemetry.c **** 			break;
+ 174:sdk_telemetry.c **** 		}
+ 175:sdk_telemetry.c **** 		break;
+ 176:sdk_telemetry.c **** 	}
+ 177:sdk_telemetry.c **** 
+ 178:sdk_telemetry.c **** 	SDK_jetiAscTecExampleUpdateDisplay(displayState);
+ 179:sdk_telemetry.c **** }
+ 180:sdk_telemetry.c **** 
+ 181:sdk_telemetry.c **** void SDK_jetiAscTecExampleInit(void) {
+ 278              	jetiSetDeviceName
+ 279              		.loc 1 183 0
+ 280              		ldr	r0, .L28+8
+ 281              		bl	jetiSetTextDisplay
+ 282 0160 10402DE9 		.loc 1 184 0
+ 283              		mov	r2, r4
+ 182:sdk_telemetry.c **** 	jetiSetDeviceName("AscTec SDK");
+ 284              	1, .L28+12
+ 285 0164 D0019FE5 		mov	r0, #0
+ 183:sdk_telemetry.c **** 	jetiSetTextDisplay("AscTec Example  ->more Infos");
+ 184:sdk_telemetry.c **** 	jetiInitValue(0, "Pitch", "°");
+ 286              	l	jetiInitValue
+ 287 0168 D0419FE5 		.loc 1 185 0
+ 288              		mov	r1, #2
+ 289 016c FEFFFFEB 		mov	r0, #0
+ 290              		bl	jetiSetDecimalPoint
+ 291 0170 CC019FE5 		.loc 1 186 0
+ 292 0174 FEFFFFEB 		mov	r2, r4
+ 293              		ldr	r1, .L28+16
+ 294 0178 0420A0E1 		mov	r0, #1
+ 295 017c C4119FE5 		bl	jetiInitValue
+ 296 0180 0000A0E3 		.loc 1 187 0
+ 297 0184 FEFFFFEB 		mov	r1, #2
+ 185:sdk_telemetry.c **** 	jetiSetDecimalPoint(0, 2);
+ 298              		bl	jetiSetDecimalPoint
+ 299 0188 0210A0E3 		.loc 1 188 0
+ 300 018c 0000A0E3 		mov	r2, r4
+ 301 0190 FEFFFFEB 		ldr	r1, .L28+20
+ 186:sdk_telemetry.c **** 	jetiInitValue(1, "Roll", "°");
+ 302              		r0, #2
+ 303 0194 0420A0E1 		bl	jetiInitValue
+ 304 0198 AC119FE5 		.loc 1 189 0
+ 305 019c 0100A0E3 		mov	r0, #2
+ 306 01a0 FEFFFFEB 		mov	r1, r0
+ 187:sdk_telemetry.c **** 	jetiSetDecimalPoint(1, 2);
+ 307              	etiSetDecimalPoint
+ 308 01a4 0210A0E3 		.loc 1 192 0
+ 309 01a8 0100A0E3 		ldr	r4, .L28+24
+ 310 01ac FEFFFFEB 		.loc 1 190 0
+ 188:sdk_telemetry.c **** 	jetiInitValue(2, "Yaw", "°");
+ 311              		r2, .L28+28
+ 312 01b0 0420A0E1 		ldr	r1, .L28+32
+ 313 01b4 94119FE5 		mov	r0, #3
+ 314 01b8 0200A0E3 		bl	jetiInitValue
+ 315 01bc FEFFFFEB 		.loc 1 191 0
+ 189:sdk_telemetry.c **** 	jetiSetDecimalPoint(2, 2);
+ 316              	r1, #2
+ 317 01c0 0200A0E3 		mov	r0, #3
+ 318 01c4 0010A0E1 		bl	jetiSetDecimalPoint
+ 319 01c8 FEFFFFEB 		.loc 1 192 0
+ 190:sdk_telemetry.c **** 	jetiInitValue(3, "Height", "m");
+ 191:sdk_telemetry.c **** 	jetiSetDecimalPoint(3, 2);
+ 192:sdk_telemetry.c **** 	jetiInitValue(4, "FlightMode", "");
+ 320              		r2, r4
+ 321 01cc 80419FE5 		ldr	r1, .L28+36
+ 322              		mov	r0, #4
+ 323 01d0 80219FE5 		bl	jetiInitValue
+ 324 01d4 80119FE5 		.loc 1 193 0
+ 325 01d8 0300A0E3 		ldr	r2, .L28+40
+ 326 01dc FEFFFFEB 		ldr	r1, .L28+44
+ 327              		mov	r0, #5
+ 328 01e0 0210A0E3 		bl	jetiInitValue
+ 329 01e4 0300A0E3 		.loc 1 194 0
+ 330 01e8 FEFFFFEB 		mov	r1, #1
+ 331              		mov	r0, #5
+ 332 01ec 0420A0E1 		bl	jetiSetDecimalPoint
+ 333 01f0 68119FE5 		.loc 1 195 0
+ 334 01f4 0400A0E3 		ldr	r1, .L28+48
+ 335 01f8 FEFFFFEB 		ldr	r2, .L28+52
+ 193:sdk_telemetry.c **** 	jetiInitValue(5, "Speed", "m/s");
+ 336              	jetiInitValue
+ 337 01fc 60219FE5 		.loc 1 196 0
+ 338 0200 60119FE5 		ldr	r2, .L28+56
+ 339 0204 0500A0E3 		ldr	r1, .L28+60
+ 340 0208 FEFFFFEB 		mov	r0, #7
+ 194:sdk_telemetry.c **** 	jetiSetDecimalPoint(5, 1);
+ 341              	etiInitValue
+ 342 020c 0110A0E3 		.loc 1 197 0
+ 343 0210 0500A0E3 		mov	r1, #2
+ 344 0214 FEFFFFEB 		mov	r0, #7
+ 195:sdk_telemetry.c **** 	jetiInitValue(6, "GPS", "%");
+ 345              	jetiSetDecimalPoint
+ 346 0218 4C119FE5 		.loc 1 198 0
+ 347 021c 4C219FE5 		ldr	r1, .L28+64
+ 348 0220 0600A0E3 		ldr	r2, .L28+68
+ 349 0224 FEFFFFEB 		mov	r0, #8
+ 196:sdk_telemetry.c **** 	jetiInitValue(7, "BAT", "V");
+ 350              	etiInitValue
+ 351 0228 44219FE5 		.loc 1 199 0
+ 352 022c 44119FE5 		mov	r2, r4
+ 353 0230 0700A0E3 		ldr	r1, .L28+72
+ 354 0234 FEFFFFEB 		mov	r0, #9
+ 197:sdk_telemetry.c **** 	jetiSetDecimalPoint(7, 2);
+ 355              	etiInitValue
+ 356 0238 0210A0E3 		.loc 1 200 0
+ 357 023c 0700A0E3 		mov	r2, r4
+ 358 0240 FEFFFFEB 		ldr	r1, .L28+76
+ 198:sdk_telemetry.c **** 	jetiInitValue(8, "CPU Time", "us"); //TODO Einheit checken!
+ 359              		r0, #10
+ 360 0244 30119FE5 		bl	jetiInitValue
+ 361 0248 30219FE5 		.loc 1 201 0
+ 362 024c 0800A0E3 		mov	r2, r4
+ 363 0250 FEFFFFEB 		ldr	r1, .L28+80
+ 199:sdk_telemetry.c **** 	jetiInitValue(9, "Lat", "");
+ 364              	r0, #11
+ 365 0254 0420A0E1 		bl	jetiInitValue
+ 366 0258 24119FE5 		.loc 1 202 0
+ 367 025c 0900A0E3 		mov	r2, r4
+ 368 0260 FEFFFFEB 		ldr	r1, .L28+84
+ 200:sdk_telemetry.c **** 	jetiInitValue(10, "Lon", "");
+ 369              	r0, #12
+ 370 0264 0420A0E1 		bl	jetiInitValue
+ 371 0268 18119FE5 		.loc 1 203 0
+ 372 026c 0A00A0E3 		mov	r0, #0
+ 373 0270 FEFFFFEB 		mov	r1, r0
+ 201:sdk_telemetry.c **** 	jetiInitValue(11, "LatRem", "");
+ 374              	etiSetValue14B
+ 375 0274 0420A0E1 		.loc 1 204 0
+ 376 0278 0C119FE5 		mov	r1, #0
+ 377 027c 0B00A0E3 		mov	r0, #1
+ 378 0280 FEFFFFEB 		bl	jetiSetValue14B
+ 202:sdk_telemetry.c **** 	jetiInitValue(12, "LonRem", "");
+ 379              	 1 205 0
+ 380 0284 0420A0E1 		mov	r1, #0
+ 381 0288 00119FE5 		mov	r0, #2
+ 382 028c 0C00A0E3 		bl	jetiSetValue22B
+ 383 0290 FEFFFFEB 		.loc 1 206 0
+ 203:sdk_telemetry.c **** 	jetiSetValue14B(0, 0);
+ 384              	r1, #0
+ 385 0294 0000A0E3 		mov	r0, #3
+ 386 0298 0010A0E1 		bl	jetiSetValue22B
+ 387 029c FEFFFFEB 		.loc 1 207 0
+ 204:sdk_telemetry.c **** 	jetiSetValue14B(1, 0);
+ 388              		r1, #0
+ 389 02a0 0010A0E3 		mov	r0, #4
+ 390 02a4 0100A0E3 		bl	jetiSetValue6B
+ 391 02a8 FEFFFFEB 		.loc 1 208 0
+ 205:sdk_telemetry.c **** 	jetiSetValue22B(2, 0);
+ 392              		r1, #0
+ 393 02ac 0010A0E3 		mov	r0, #5
+ 394 02b0 0200A0E3 		bl	jetiSetValue14B
+ 395 02b4 FEFFFFEB 		.loc 1 209 0
+ 206:sdk_telemetry.c **** 	jetiSetValue22B(3, 0);
+ 396              		r1, #0
+ 397 02b8 0010A0E3 		mov	r0, #6
+ 398 02bc 0300A0E3 		bl	jetiSetValue14B
+ 399 02c0 FEFFFFEB 		.loc 1 210 0
+ 207:sdk_telemetry.c **** 	jetiSetValue6B(4, 0);
+ 400              		r1, #0
+ 401 02c4 0010A0E3 		mov	r0, #7
+ 402 02c8 0400A0E3 		bl	jetiSetValue22B
+ 403 02cc FEFFFFEB 		.loc 1 211 0
+ 208:sdk_telemetry.c **** 	jetiSetValue14B(5, 0);
+ 404              		r1, #0
+ 405 02d0 0010A0E3 		mov	r0, #8
+ 406 02d4 0500A0E3 		bl	jetiSetValue14B
+ 407 02d8 FEFFFFEB 		.loc 1 212 0
+ 209:sdk_telemetry.c **** 	jetiSetValue14B(6, 0);
+ 408              		r1, #0
+ 409 02dc 0010A0E3 		mov	r0, #9
+ 410 02e0 0600A0E3 		bl	jetiSetValue14B
+ 411 02e4 FEFFFFEB 		.loc 1 213 0
+ 210:sdk_telemetry.c **** 	jetiSetValue22B(7, 0);
+ 412              		r1, #0
+ 413 02e8 0010A0E3 		mov	r0, #10
+ 414 02ec 0700A0E3 		bl	jetiSetValue14B
+ 415 02f0 FEFFFFEB 		.loc 1 214 0
+ 211:sdk_telemetry.c **** 	jetiSetValue14B(8, 0);
+ 416              		r1, #0
+ 417 02f4 0010A0E3 		mov	r0, #11
+ 418 02f8 0800A0E3 		bl	jetiSetValue22B
+ 419 02fc FEFFFFEB 		.loc 1 215 0
+ 212:sdk_telemetry.c **** 	jetiSetValue14B(9, 0);
+ 420              		r1, #0
+ 421 0300 0010A0E3 		mov	r0, #12
+ 422 0304 0900A0E3 		bl	jetiSetValue22B
+ 423 0308 FEFFFFEB 		.loc 1 217 0
+ 213:sdk_telemetry.c **** 	jetiSetValue14B(10, 0);
+ 424              		r0, #0
+ 425 030c 0010A0E3 		.loc 1 218 0
+ 426 0310 0A00A0E3 		ldmfd	sp!, {r4, lr}
+ 427 0314 FEFFFFEB 		.loc 1 217 0
+ 214:sdk_telemetry.c **** 	jetiSetValue22B(11, 0);
+ 428              	DK_jetiAscTecExampleUpdateDisplay
+ 429 0318 0010A0E3 	.L29:
+ 430 031c 0B00A0E3 		.align	2
+ 431 0320 FEFFFFEB 	.L28:
+ 215:sdk_telemetry.c **** 	jetiSetValue22B(12, 0);
+ 432              	rd	.LC11
+ 433 0324 0010A0E3 		.word	.LC14
+ 434 0328 0C00A0E3 		.word	.LC12
+ 435 032c FEFFFFEB 		.word	.LC13
+ 216:sdk_telemetry.c **** 
+ 217:sdk_telemetry.c **** 	SDK_jetiAscTecExampleUpdateDisplay(0);
+ 436              	rd	.LC15
+ 437 0330 0000A0E3 		.word	.LC16
+ 218:sdk_telemetry.c **** }
+ 438              	word	.LC20
+ 439 0334 1040BDE8 		.word	.LC18
+ 440              		.word	.LC17
+ 441 0338 FEFFFFEA 		.word	.LC19
+ 442              		.word	.LC22
+ 443              		.word	.LC21
+ 444              		.word	.LC23
+ 445 033c A8010000 		.word	.LC24
+ 446 0340 DC010000 		.word	.LC26
+ 447 0344 B4010000 		.word	.LC25
+ 448 0348 D4010000 		.word	.LC27
+ 449 034c E0010000 		.word	.LC28
+ 450 0350 E8010000 		.word	.LC29
+ 451 0354 00000000 		.word	.LC30
+ 452 0358 F4010000 		.word	.LC31
+ 453 035c EC010000 		.word	.LC32
+ 454 0360 F8010000 	.LFE4:
+ 456 0368 04000000 		.align	2
+ 457 036c 10000000 		.global	SDK_jetiAscTecExampleKeyChange
+ 459 0374 1C000000 	SDK_jetiAscTecExampleKeyChange:
+ 460 0378 18000000 	.LFB3:
+ 461 037c 20000000 		.loc 1 52 0
+ 462 0380 2C000000 		@ Function supports interworking.
+ 463 0384 30000000 		@ args = 0, pretend = 0, frame = 0
+ 464 0388 34000000 		@ frame_needed = 0, uses_anonymous_args = 0
+ 465 038c 38000000 	.LVL22:
+ 466 0390 40000000 		stmfd	sp!, {r4, lr}
+ 467              	.LCFI3:
+ 468              		.loc 1 55 0
+ 469              		ldr	r4, .L63
+ 470              		ldrb	r3, [r4, #0]	@ zero_extendqisi2
+ 471              		.loc 1 52 0
+ 472              		and	r0, r0, #255
+ 473              		.loc 1 55 0
+ 474              		cmp	r3, #6
+ 475              		ldrls	pc, [pc, r3, asl #2]
+ 476              		b	.L31
+ 477              		.p2align 2
+ 478              	.L39:
+ 479 0394 10402DE9 		.word	.L32
+ 480              		.word	.L33
+ 481              		.word	.L34
+ 482 0398 84419FE5 		.word	.L35
+ 483 039c 0030D4E5 		.word	.L36
+ 484              		.word	.L37
+ 485 03a0 FF0000E2 		.word	.L38
+ 486              	.L40:
+ 487 03a4 060053E3 		.loc 1 63 0
+ 488 03a8 03F19F97 		ldr	r3, .L63+4
+ 489 03ac 0F0000EA 		ldrb	r2, [r3, #2]	@ zero_extendqisi2
+ 490              		cmp	r2, #0
+ 491              		beq	.L31
+ 492 03b0 FC030000 		.loc 1 65 0
+ 493 03b4 A4040000 		ldr	r2, .L63+8
+ 494 03b8 80040000 		mov	r3, #1
+ 495 03bc C0040000 		.loc 1 66 0
+ 496 03c0 5C040000 		mov	r1, #6
+ 497 03c4 38040000 		.loc 1 65 0
+ 498 03c8 14040000 		strb	r3, [r2, #0]
+ 499              		.loc 1 66 0
+ 500              		strb	r1, [r4, #0]
+ 501 03cc 54319FE5 	.L31:
+ 502 03d0 0220D3E5 		.loc 1 178 0
+ 503 03d4 000052E3 		ldrb	r0, [r4, #0]	@ zero_extendqisi2
+ 504 03d8 0400000A 	.LVL23:
+ 505              		.loc 1 179 0
+ 506 03dc 48219FE5 		ldmfd	sp!, {r4, lr}
+ 507 03e0 0130A0E3 		.loc 1 178 0
+ 508              		b	SDK_jetiAscTecExampleUpdateDisplay
+ 509 03e4 0610A0E3 	.LVL24:
+ 510              	.L32:
+ 511 03e8 0030C2E5 		.loc 1 57 0
+ 512              		cmp	r0, #7
+ 513 03ec 0010C4E5 		beq	.L40
+ 514              		cmp	r0, #14
+ 515              		.loc 1 70 0
+ 516 03f0 0000D4E5 		moveq	r3, #1
+ 517              		streqb	r3, [r4, #0]
+ 518              		b	.L31
+ 519 03f4 1040BDE8 	.L38:
+ 520              		.loc 1 160 0
+ 521 03f8 FEFFFFEA 		ldr	r2, .L63+8
+ 522              		ldrb	r3, [r2, #0]	@ zero_extendqisi2
+ 523              		cmp	r3, #0
+ 524              		.loc 1 161 0
+ 525 03fc 070050E3 		streqb	r3, [r4, #0]
+ 526 0400 F1FFFF0A 		.loc 1 163 0
+ 527 0404 0E0050E3 		cmp	r0, #11
+ 528              		.loc 1 167 0
+ 529 0408 0130A003 		moveq	r3, #0
+ 530 040c 0030C405 		.loc 1 168 0
+ 531 0410 F6FFFFEA 		streqb	r3, [r2, #0]
+ 532              		.loc 1 167 0
+ 533              		streqb	r3, [r4, #0]
+ 534 0414 10219FE5 		b	.L31
+ 535 0418 0030D2E5 	.L37:
+ 536 041c 000053E3 		.loc 1 141 0
+ 537              		cmp	r0, #11
+ 538 0420 0030C405 		beq	.L55
+ 539              		cmp	r0, #14
+ 540 0424 0B0050E3 		beq	.L56
+ 541              		cmp	r0, #7
+ 542 0428 0030A003 		bne	.L31
+ 543              	.L54:
+ 544 042c 0030C205 		.loc 1 149 0
+ 545              		mov	r3, #4
+ 546 0430 0030C405 		strb	r3, [r4, #0]
+ 547 0434 EDFFFFEA 		b	.L31
+ 548              	.L36:
+ 549              		.loc 1 124 0
+ 550 0438 0B0050E3 		cmp	r0, #11
+ 551 043c 2600000A 		beq	.L52
+ 552 0440 0E0050E3 		cmp	r0, #14
+ 553 0444 1A00000A 		beq	.L53
+ 554 0448 070050E3 		cmp	r0, #7
+ 555 044c E7FFFF1A 		bne	.L31
+ 556              	.L51:
+ 557              		.loc 1 132 0
+ 558 0450 0430A0E3 		mov	r3, #3
+ 559 0454 0030C4E5 		strb	r3, [r4, #0]
+ 560 0458 E4FFFFEA 		b	.L31
+ 561              	.L34:
+ 562              		.loc 1 91 0
+ 563 045c 0B0050E3 		cmp	r0, #11
+ 564 0460 2A00000A 		beq	.L46
+ 565 0464 0E0050E3 		cmp	r0, #14
+ 566 0468 0A00000A 		beq	.L51
+ 567 046c 070050E3 		cmp	r0, #7
+ 568 0470 DEFFFF1A 		bne	.L31
+ 569              	.L53:
+ 570              		.loc 1 135 0
+ 571 0474 0330A0E3 		mov	r3, #5
+ 572 0478 0030C4E5 		strb	r3, [r4, #0]
+ 573 047c DBFFFFEA 		b	.L31
+ 574              	.L33:
+ 575              		.loc 1 76 0
+ 576 0480 0B0050E3 		cmp	r0, #7
+ 577 0484 1E00000A 		beq	.L62
+ 578 0488 0E0050E3 		cmp	r0, #14
+ 579 048c F8FFFF0A 		bne	.L31
+ 580 0490 070050E3 	.L56:
+ 581 0494 D5FFFF1A 		.loc 1 152 0
+ 582              		mov	r3, #2
+ 583              		strb	r3, [r4, #0]
+ 584 0498 0530A0E3 		b	.L31
+ 585 049c 0030C4E5 	.L35:
+ 586 04a0 D2FFFFEA 		.loc 1 108 0
+ 587              		cmp	r0, #11
+ 588              		beq	.L49
+ 589 04a4 070050E3 		cmp	r0, #14
+ 590 04a8 0D00000A 		beq	.L54
+ 591 04ac 0E0050E3 		cmp	r0, #7
+ 592 04b0 CEFFFF1A 		bne	.L31
+ 593              		b	.L56
+ 594              	.L55:
+ 595 04b4 0230A0E3 		.loc 1 145 0
+ 596 04b8 0030C4E5 		mov	r0, #8
+ 597 04bc CBFFFFEA 	.LVL25:
+ 598              		bl	SDK_SetEmergencyMode
+ 599              	.LVL26:
+ 600 04c0 0B0050E3 	.L62:
+ 601 04c4 0900000A 		.loc 1 146 0
+ 602 04c8 0E0050E3 		mov	r3, #0
+ 603 04cc DFFFFF0A 		strb	r3, [r4, #0]
+ 604 04d0 070050E3 		b	.L31
+ 605 04d4 C5FFFF1A 	.L49:
+ 606 04d8 F5FFFFEA 		.loc 1 112 0
+ 607              		mov	r0, #2
+ 608              	.LVL27:
+ 609 04dc 0800A0E3 		bl	SDK_SetEmergencyMode
+ 610              		.loc 1 113 0
+ 611 04e0 FEFFFFEB 		mov	r3, #0
+ 612              		strb	r3, [r4, #0]
+ 613              		b	.L31
+ 614              	.LVL28:
+ 615 04e4 0030A0E3 	.L46:
+ 616 04e8 0030C4E5 		.loc 1 95 0
+ 617 04ec BFFFFFEA 		mov	r0, #1
+ 618              	.LVL29:
+ 619              		bl	SDK_SetEmergencyMode
+ 620 04f0 0200A0E3 		b	.L62
+ 621              	.LVL30:
+ 622 04f4 FEFFFFEB 	.L52:
+ 623              		.loc 1 128 0
+ 624 04f8 0030A0E3 		mov	r0, #4
+ 625 04fc 0030C4E5 	.LVL31:
+ 626 0500 BAFFFFEA 		bl	SDK_SetEmergencyMode
+ 627              		.loc 1 129 0
+ 628              		mov	r3, #0
+ 629              		strb	r3, [r4, #0]
+ 630 0504 0100A0E3 		b	.L31
+ 631              	.L64:
+ 632 0508 FEFFFFEB 		.align	2
+ 633 050c F4FFFFEA 	.L63:
+ 634              		.word	displayState.1974
+ 635              		.word	RO_ALL_Data
+ 636              		.word	wpExampleActive
+ 637 0510 0400A0E3 	.LFE3:
+ 639 0514 FEFFFFEB 		.align	2
+ 640              		.global	SDK_jetiAscTecExampleRun
+ 642 051c 0030C4E5 	SDK_jetiAscTecExampleRun:
+ 643 0520 B2FFFFEA 	.LFB5:
+ 644              		.loc 1 220 0
+ 645              		@ Function supports interworking.
+ 646              		@ args = 0, pretend = 0, frame = 0
+ 647 0524 02000000 		@ frame_needed = 0, uses_anonymous_args = 0
+ 648 0528 00000000 		stmfd	sp!, {r4, r5, r6, r7, lr}
+ 649 052c 00000000 	.LCFI4:
+ 650              		.loc 1 228 0
+ 651              		ldr	r2, .L89
+ 652              		ldrb	r3, [r2, #0]	@ zero_extendqisi2
+ 653              		cmp	r3, #0
+ 654              		beq	.L86
+ 655              	.L66:
+ 656              		.loc 1 233 0
+ 219:sdk_telemetry.c **** 
+ 220:sdk_telemetry.c **** void SDK_jetiAscTecExampleRun(void) {
+ 657              	5, .L89+8
+ 658              		ldr	r1, [r7, #60]
+ 659              		smull	r0, r3, r5, r1
+ 660              		.loc 1 239 0
+ 661 0530 F0402DE9 		ldr	r6, .L89+12
+ 662              		.loc 1 236 0
+ 221:sdk_telemetry.c **** 	int speed;
+ 222:sdk_telemetry.c **** 	int gps_quality;
+ 223:sdk_telemetry.c **** 	unsigned char key;
+ 224:sdk_telemetry.c **** 	static unsigned char first = 0;
+ 225:sdk_telemetry.c **** 	//counter for updating the jeti display regularly
+ 226:sdk_telemetry.c **** 	static unsigned char jetiDisplayUpdateCnt=0;
+ 227:sdk_telemetry.c **** 
+ 228:sdk_telemetry.c **** 	if (!first) {
+ 663              	1, r1, asr #31
+ 664 0534 88229FE5 		rsb	r1, r1, r3, asr #2
+ 665 0538 0030D2E5 		mov	r0, #3
+ 666 053c 000053E3 		bl	jetiSetValue22B
+ 667 0540 9700000A 		.loc 1 239 0
+ 668              		ldr	r4, .L89+16
+ 229:sdk_telemetry.c **** 		first = 1;
+ 230:sdk_telemetry.c **** 		SDK_jetiAscTecExampleInit();
+ 231:sdk_telemetry.c **** 	}
+ 232:sdk_telemetry.c **** 
+ 233:sdk_telemetry.c **** 	jetiSetValue14B(0, LL_1khz_attitude_data.angle_pitch);
+ 669              	1, [r6, #0]
+ 670 0544 7C729FE5 		smull	r2, r3, r4, r1
+ 671 0548 0000A0E3 		mov	r1, r1, asr #31
+ 672 054c F210D7E1 		rsb	r1, r1, r3, asr #22
+ 673 0550 FEFFFFEB 		mov	r0, #9
+ 234:sdk_telemetry.c **** 	jetiSetValue14B(1, LL_1khz_attitude_data.angle_roll);
+ 674              	etiSetValue14B
+ 675 0554 F410D7E1 		.loc 1 240 0
+ 676 0558 0100A0E3 		ldr	r1, [r6, #4]
+ 677 055c FEFFFFEB 		smull	r0, r3, r4, r1
+ 235:sdk_telemetry.c **** 	jetiSetValue22B(2, LL_1khz_attitude_data.angle_yaw);
+ 678              		r1, r1, asr #31
+ 679 0560 B610D7E1 		rsb	r1, r1, r3, asr #22
+ 680 0564 0200A0E3 		mov	r0, #10
+ 681 0568 FEFFFFEB 		bl	jetiSetValue14B
+ 236:sdk_telemetry.c **** 	jetiSetValue22B(3, LL_1khz_attitude_data.height / 10);
+ 682              	c 1 241 0
+ 683 056c 58529FE5 		ldr	r2, [r6, #0]
+ 684 0570 3C1097E5 		smull	r1, r3, r5, r2
+ 685 0574 9501C3E0 		ldr	r4, .L89+20
+ 237:sdk_telemetry.c **** 
+ 238:sdk_telemetry.c **** 
+ 239:sdk_telemetry.c **** 	jetiSetValue14B(9, GPS_Data.latitude/10000000);
+ 686              		r2, r2, asr #31
+ 687 0578 50629FE5 		rsb	r2, r2, r3, asr #2
+ 688              		smull	r3, r0, r4, r2
+ 689 057c C11FA0E1 		mov	r1, r2, asr #31
+ 690 0580 431161E0 		rsb	r1, r1, r0, asr #18
+ 691 0584 0300A0E3 		rsb	r3, r1, r1, asl #5
+ 692 0588 FEFFFFEB 		rsb	r3, r3, r3, asl #6
+ 693              		add	r1, r1, r3, asl #3
+ 694 058c 40429FE5 		sub	r1, r2, r1, asl #6
+ 695 0590 001096E5 		mov	r0, #11
+ 696 0594 9421C3E0 		bl	jetiSetValue22B
+ 697 0598 C11FA0E1 		.loc 1 242 0
+ 698 059c 431B61E0 		ldr	r2, [r6, #4]
+ 699 05a0 0900A0E3 		smull	r0, r3, r5, r2
+ 700 05a4 FEFFFFEB 		mov	r2, r2, asr #31
+ 240:sdk_telemetry.c **** 	jetiSetValue14B(10, GPS_Data.longitude/10000000);
+ 701              	, asr #2
+ 702 05a8 041096E5 		smull	r1, r0, r4, r2
+ 703 05ac 9401C3E0 		mov	r1, r2, asr #31
+ 704 05b0 C11FA0E1 		rsb	r1, r1, r0, asr #18
+ 705 05b4 431B61E0 		rsb	r3, r1, r1, asl #5
+ 706 05b8 0A00A0E3 		rsb	r3, r3, r3, asl #6
+ 707 05bc FEFFFFEB 		add	r1, r1, r3, asl #3
+ 241:sdk_telemetry.c **** 	jetiSetValue22B(11, (GPS_Data.latitude/10)%1000000);
+ 708              	, r2, r1, asl #6
+ 709 05c0 002096E5 		mov	r0, #12
+ 710 05c4 9512C3E0 		bl	jetiSetValue22B
+ 711 05c8 08429FE5 		.loc 1 244 0
+ 712 05cc C22FA0E1 		ldrh	r2, [r7, #82]
+ 713 05d0 432162E0 		tst	r2, #4
+ 714 05d4 9432C0E0 		beq	.L68
+ 715 05d8 C21FA0E1 		ldrb	r3, [r6, #40]	@ zero_extendqisi2
+ 716 05dc 401961E0 		cmp	r3, #3
+ 717 05e0 813261E0 		beq	.L87
+ 718 05e4 033363E0 	.L68:
+ 719 05e8 831181E0 		.loc 1 246 0
+ 720 05ec 011342E0 		ands	r1, r2, #2
+ 721 05f0 0B00A0E3 		beq	.L72
+ 722 05f4 FEFFFFEB 		.loc 1 247 0
+ 242:sdk_telemetry.c **** 	jetiSetValue22B(12, (GPS_Data.longitude/10)%1000000);
+ 723              	v	r0, #4
+ 724 05f8 042096E5 		bl	jetiSetValue6B
+ 725 05fc 9502C3E0 	.L71:
+ 726 0600 C22FA0E1 		.loc 1 251 0
+ 727 0604 432162E0 		ldr	r3, [r6, #16]
+ 728 0608 9412C0E0 		mul	r1, r3, r3
+ 729 060c C21FA0E1 		ldr	r2, [r6, #12]
+ 730 0610 401961E0 		mla	r0, r2, r2, r1
+ 731 0614 813261E0 		bl	fast_sqrt
+ 732 0618 033363E0 		.loc 1 254 0
+ 733 061c 831181E0 		ldr	r3, .L89+24
+ 734 0620 011342E0 	.LVL32:
+ 735 0624 0C00A0E3 		smull	r2, r1, r3, r0
+ 736 0628 FEFFFFEB 		mov	r0, r0, asr #31
+ 243:sdk_telemetry.c **** 
+ 244:sdk_telemetry.c **** 	if ((LL_1khz_attitude_data.flightMode & FM_POS) && ((GPS_Data.status & 0xFF) == 3))
+ 737              	1, r0, r1, asr #5
+ 738 062c B225D7E1 		mov	r0, #5
+ 739 0630 040012E3 		bl	jetiSetValue14B
+ 740 0634 0200000A 		.loc 1 256 0
+ 741 0638 2830D6E5 		ldrb	r3, [r6, #40]	@ zero_extendqisi2
+ 742 063c 030053E3 		cmp	r3, #3
+ 743 0640 5B00000A 		.loc 1 251 0
+ 744              		ldr	r2, .L89+12
+ 245:sdk_telemetry.c **** 		jetiSetValue6B(4, 2);
+ 246:sdk_telemetry.c **** 	else if (LL_1khz_attitude_data.flightMode & FM_HEIGHT)
+ 745              	256 0
+ 746 0644 021012E2 		beq	.L88
+ 747 0648 3D00000A 	.L74:
+ 247:sdk_telemetry.c **** 		jetiSetValue6B(4, 1);
+ 748              	oc 1 261 0
+ 749 064c 0110A0E3 		mov	r1, #0
+ 750 0650 0400A0E3 	.LVL34:
+ 751 0654 FEFFFFEB 	.L78:
+ 752              		.loc 1 264 0
+ 248:sdk_telemetry.c **** 	else
+ 249:sdk_telemetry.c **** 		jetiSetValue6B(4, 0);
+ 250:sdk_telemetry.c **** 
+ 251:sdk_telemetry.c **** 	speed = fast_sqrt(GPS_Data.speed_x * GPS_Data.speed_x + GPS_Data.speed_y
+ 753              	r0, #6
+ 754 0658 103096E5 		bl	jetiSetValue14B
+ 755 065c 930301E0 	.LVL35:
+ 756 0660 0C2096E5 		.loc 1 265 0
+ 757 0664 921220E0 		ldrsh	r1, [r7, #78]
+ 758 0668 FEFFFFEB 		ldr	r3, .L89+8
+ 252:sdk_telemetry.c **** 			* GPS_Data.speed_y);
+ 253:sdk_telemetry.c **** 	speed /= 100;
+ 254:sdk_telemetry.c **** 	jetiSetValue14B(5, speed);
+ 759              		r0, r2, r3, r1
+ 760 066c 68319FE5 		mov	r1, r1, asr #31
+ 761              		rsb	r1, r1, r2, asr #2
+ 762 0670 9320C1E0 		mov	r1, r1, asl #16
+ 763 0674 C00FA0E1 		mov	r1, r1, asr #16
+ 764              		mov	r0, #7
+ 765 0678 C11260E0 		bl	jetiSetValue22B
+ 766 067c 0500A0E3 		.loc 1 266 0
+ 767 0680 FEFFFFEB 		ldrh	r3, [r7, #78]
+ 255:sdk_telemetry.c **** 
+ 256:sdk_telemetry.c **** 	if (((GPS_Data.status & 0xFF) != 3) || (GPS_Data.numSV < 3)
+ 768              	r3, #4992
+ 769 0684 2830D6E5 		sub	r3, r3, #9
+ 770 0688 030053E3 		mov	r2, #5440
+ 771              		add	r2, r2, #58
+ 772 068c 3C219FE5 		mov	r3, r3, asl #16
+ 773              		cmp	r2, r3, lsr #16
+ 774 0690 2E00000A 		bcc	.L80
+ 775              		.loc 1 268 0
+ 257:sdk_telemetry.c **** 			|| (GPS_Data.horizontal_accuracy > 10000))
+ 258:sdk_telemetry.c **** 		gps_quality = 0;
+ 259:sdk_telemetry.c **** 	else
+ 260:sdk_telemetry.c **** 		gps_quality = 100 - ((GPS_Data.horizontal_accuracy - 1500) / 85);
+ 261:sdk_telemetry.c **** 	if (gps_quality > 100)
+ 776              	 #0
+ 777 0694 0010A0E3 		mov	r0, #85
+ 778              		bl	jetiSetAlarm
+ 779              	.L82:
+ 262:sdk_telemetry.c **** 		gps_quality = 100;
+ 263:sdk_telemetry.c **** 
+ 264:sdk_telemetry.c **** 	jetiSetValue14B(6, gps_quality);
+ 780              	c 1 272 0
+ 781 0698 0600A0E3 		ldr	r3, .L89+28
+ 782 069c FEFFFFEB 		mov	r0, #8
+ 783              		ldrsh	r1, [r3, #18]
+ 265:sdk_telemetry.c **** 	jetiSetValue22B(7, LL_1khz_attitude_data.battery_voltage1 / 10);
+ 784              	jetiSetValue14B
+ 785 06a0 FE14D7E1 		.loc 1 274 0
+ 786 06a4 20319FE5 		bl	jetiCheckForKeyChange
+ 787 06a8 9301C2E0 		.loc 1 275 0
+ 788 06ac C11FA0E1 		ldr	r4, .L89+32
+ 789 06b0 421161E0 		ldrb	r2, [r4, #0]	@ zero_extendqisi2
+ 790 06b4 0118A0E1 		add	r2, r2, #1
+ 791 06b8 4118A0E1 		.loc 1 276 0
+ 792 06bc 0700A0E3 		subs	r3, r0, #0
+ 793 06c0 FEFFFFEB 		movne	r3, #1
+ 266:sdk_telemetry.c **** 	if ((LL_1khz_attitude_data.battery_voltage1 < 10500)
+ 794              	5 0
+ 795 06c4 BE34D7E1 		and	r2, r2, #255
+ 796 06c8 4E3D43E2 		.loc 1 276 0
+ 797 06cc 093043E2 		cmp	r2, #20
+ 798 06d0 552DA0E3 		orreq	r3, r3, #1
+ 799 06d4 3A2082E2 		cmp	r3, #0
+ 800 06d8 0338A0E1 		.loc 1 275 0
+ 801 06dc 230852E1 		strb	r2, [r4, #0]
+ 802 06e0 2B00003A 		.loc 1 276 0
+ 267:sdk_telemetry.c **** 			&& (LL_1khz_attitude_data.battery_voltage1 > 5000))
+ 268:sdk_telemetry.c **** 		jetiSetAlarm('U', 0);
+ 803              	
+ 804 06e4 0010A0E3 		.loc 1 278 0
+ 805 06e8 5500A0E3 		bl	SDK_jetiAscTecExampleKeyChange
+ 806 06ec FEFFFFEB 		.loc 1 279 0
+ 807              		mov	r3, #0
+ 269:sdk_telemetry.c **** 	else
+ 270:sdk_telemetry.c **** 		jetiSetAlarm(0, 0);
+ 271:sdk_telemetry.c **** 
+ 272:sdk_telemetry.c **** 	jetiSetValue14B(8, HL_Status.cpu_load);
+ 808              	b	r3, [r4, #0]
+ 809 06f0 E8309FE5 	.L85:
+ 810 06f4 0800A0E3 		.loc 1 281 0
+ 811 06f8 F211D3E1 		ldmfd	sp!, {r4, r5, r6, r7, lr}
+ 812 06fc FEFFFFEB 		bx	lr
+ 273:sdk_telemetry.c **** 
+ 274:sdk_telemetry.c **** 	key=jetiCheckForKeyChange();
+ 813              	
+ 814 0700 FEFFFFEB 		.loc 1 249 0
+ 275:sdk_telemetry.c **** 	jetiDisplayUpdateCnt++;
+ 815              	mov	r0, #4
+ 816 0704 D8409FE5 		bl	jetiSetValue6B
+ 817 0708 0020D4E5 		b	.L71
+ 818 070c 012082E2 	.L88:
+ 276:sdk_telemetry.c **** 	if ((jetiDisplayUpdateCnt==20) || (key))
+ 819              	c 1 256 0
+ 820 0710 003050E2 		ldr	r3, [r2, #36]
+ 821 0714 0130A013 		cmp	r3, #2
+ 822              		bls	.L74
+ 823 0718 FF2002E2 		ldr	r2, [r2, #24]
+ 824              		mov	r3, #9984
+ 825 071c 140052E3 		add	r3, r3, #16
+ 826 0720 01308303 		cmp	r2, r3
+ 827 0724 000053E3 		bhi	.L74
+ 828              		.loc 1 260 0
+ 829 0728 0020C4E5 		sub	r3, r2, #1488
+ 830              		ldr	r1, .L89+36
+ 831 072c 0200000A 		sub	r3, r3, #12
+ 277:sdk_telemetry.c **** 	{
+ 278:sdk_telemetry.c **** 		SDK_jetiAscTecExampleKeyChange(key);
+ 832              	, r1, r3
+ 833 0730 FEFFFFEB 		mov	r2, r2, lsr #6
+ 279:sdk_telemetry.c **** 		jetiDisplayUpdateCnt=0;
+ 834              	sb	r1, r2, #100
+ 835 0734 0030A0E3 	.LVL36:
+ 836 0738 0030C4E5 		.loc 1 261 0
+ 837              		cmp	r1, #100
+ 280:sdk_telemetry.c **** 	}
+ 281:sdk_telemetry.c **** }
+ 838              	gt	r1, #100
+ 839 073c F040BDE8 		b	.L78
+ 840 0740 1EFF2FE1 	.LVL37:
+ 841              	.L80:
+ 842              		.loc 1 270 0
+ 843 0744 0400A0E3 		mov	r0, #0
+ 844 0748 FEFFFFEB 		mov	r1, r0
+ 845 074c C1FFFFEA 		bl	jetiSetAlarm
+ 846              		b	.L82
+ 847              	.L86:
+ 848 0750 243092E5 		.loc 1 229 0
+ 849 0754 020053E3 		add	r3, r3, #1
+ 850 0758 CDFFFF9A 		strb	r3, [r2, #0]
+ 851 075c 182092E5 		.loc 1 230 0
+ 852 0760 273CA0E3 		bl	SDK_jetiAscTecExampleInit
+ 853 0764 103083E2 		b	.L66
+ 854 0768 030052E1 	.L87:
+ 855 076c C8FFFF8A 		.loc 1 245 0
+ 856              		mov	r1, #2
+ 857 0770 5D3E42E2 		mov	r0, #4
+ 858 0774 6C109FE5 		bl	jetiSetValue6B
+ 859 0778 0C3043E2 		b	.L71
+ 860 077c 910382E0 	.L90:
+ 861 0780 2223A0E1 		.align	2
+ 862 0784 641062E2 	.L89:
+ 863              		.word	first.2042
+ 864              		.word	LL_1khz_attitude_data
+ 865 0788 640051E3 		.word	1717986919
+ 866 078c 6410A0C3 		.word	GPS_Data
+ 867 0790 C0FFFFEA 		.word	1801439851
+ 868              		.word	1125899907
+ 869              		.word	1374389535
+ 870              		.word	HL_Status
+ 871 0794 0000A0E3 		.word	jetiDisplayUpdateCnt.2043
+ 872 0798 0010A0E1 		.word	-1061109567
+ 873 079c FEFFFFEB 	.LFE5:
+ 875              		.bss
+ 876              	jetiDisplayUpdateCnt.2043:
+ 877 07a4 013083E2 		.space	1
+ 878 07a8 0030C2E5 	first.2042:
+ 879              		.space	1
+ 880 07ac FEFFFFEB 	displayState.1974:
+ 881 07b0 63FFFFEA 		.space	1
+ 882              		.comm	GPS_timeout,4,4
+ 883              		.comm	SYSTEM_initialized,1,1
+ 884 07b4 0210A0E3 		.section	.debug_frame,"",%progbits
+ 885 07b8 0400A0E3 	.Lframe0:
+ 886 07bc FEFFFFEB 		.4byte	.LECIE0-.LSCIE0
+ 887 07c0 A4FFFFEA 	.LSCIE0:
+ 888              		.4byte	0xffffffff
+ 889              		.byte	0x1
+ 890              		.ascii	"\000"
+ 891 07c4 01000000 		.uleb128 0x1
+ 892 07c8 00000000 		.sleb128 -4
+ 893 07cc 67666666 		.byte	0xe
+ 894 07d0 00000000 		.byte	0xc
+ 895 07d4 6BCA5F6B 		.uleb128 0xd
+ 896 07d8 83DE1B43 		.uleb128 0x0
+ 897 07dc 1F85EB51 		.align	2
+ 898 07e0 00000000 	.LECIE0:
+ 899 07e4 00000000 	.LSFDE0:
+ 900 07e8 C1C0C0C0 		.4byte	.LEFDE0-.LASFDE0
+ 901              	.LASFDE0:
+ 902              		.4byte	.Lframe0
+ 903              		.4byte	.LFB2
+ 904              		.4byte	.LFE2-.LFB2
+ 905 0000 00       		.byte	0x4
+ 906              		.4byte	.LCFI0-.LFB2
+ 907 0001 00       		.byte	0xe
+ 908              		.uleb128 0x8
+ 909 0002 00       		.byte	0x4
+ 910              		.4byte	.LCFI1-.LCFI0
+ 911              		.byte	0xe
+ 1007              		.byte	0x50
+DEFINED SYMBOLS
+                            *ABS*:00000000 sdk_telemetry.c
+C:\Users\d-block\AppData\Local\Temp/ccslaaaa.s:48     .text:00000000 SDK_jetiAscTecExampleUpdateDisplay
+C:\Users\d-block\AppData\Local\Temp/ccslaaaa.s:56     .text:00000000 $a
+C:\Users\d-block\AppData\Local\Temp/ccslaaaa.s:67     .text:00000018 $d
+C:\Users\d-block\AppData\Local\Temp/ccslaaaa.s:76     .text:00000034 $a
+C:\Users\d-block\AppData\Local\Temp/ccslaaaa.s:186    .text:00000120 $d
+C:\Users\d-block\AppData\Local\Temp/ccslaaaa.s:276    .text:00000160 SDK_jetiAscTecExampleInit
+C:\Users\d-block\AppData\Local\Temp/ccslaaaa.s:282    .text:00000160 $a
+C:\Users\d-block\AppData\Local\Temp/ccslaaaa.s:445    .text:0000033c $d
+C:\Users\d-block\AppData\Local\Temp/ccslaaaa.s:472    .text:00000394 SDK_jetiAscTecExampleKeyChange
+C:\Users\d-block\AppData\Local\Temp/ccslaaaa.s:479    .text:00000394 $a
+C:\Users\d-block\AppData\Local\Temp/ccslaaaa.s:492    .text:000003b0 $d
+C:\Users\d-block\AppData\Local\Temp/ccslaaaa.s:501    .text:000003cc $a
+C:\Users\d-block\AppData\Local\Temp/ccslaaaa.s:647    .text:00000524 $d
+C:\Users\d-block\AppData\Local\Temp/ccslaaaa.s:908    .bss:00000002 displayState.1974
+C:\Users\d-block\AppData\Local\Temp/ccslaaaa.s:655    .text:00000530 SDK_jetiAscTecExampleRun
+C:\Users\d-block\AppData\Local\Temp/ccslaaaa.s:661    .text:00000530 $a
+C:\Users\d-block\AppData\Local\Temp/ccslaaaa.s:891    .text:000007c4 $d
+C:\Users\d-block\AppData\Local\Temp/ccslaaaa.s:906    .bss:00000001 first.2042
+C:\Users\d-block\AppData\Local\Temp/ccslaaaa.s:904    .bss:00000000 jetiDisplayUpdateCnt.2043
+                            *COM*:00000004 GPS_timeout
+                            *COM*:00000001 SYSTEM_initialized
+
+UNDEFINED SYMBOLS
+jetiSetTextDisplay
+sprintf
+emergencyMode
+RO_ALL_Data
+wpCtrlDistToWp
+wpExampleWpNr
+jetiSetDeviceName
+jetiInitValue
+jetiSetDecimalPoint
+jetiSetValue14B
+jetiSetValue22B
+jetiSetValue6B
+SDK_SetEmergencyMode
+wpExampleActive
+fast_sqrt
+jetiSetAlarm
+jetiCheckForKeyChange
+LL_1khz_attitude_data
+GPS_Data
+HL_Status

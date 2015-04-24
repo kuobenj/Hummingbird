@@ -1,0 +1,160 @@
+   1              		.file	"gpsmath.c"
+   9              	.Ltext0:
+  10              		.global	__divdf3
+  11              		.global	__muldf3
+  12              		.global	__adddf3
+  13              		.align	2
+  14              		.global	xy2latlon
+  16              	xy2latlon:
+  17              	.LFB2:
+  18              		.file 1 "gpsmath.c"
+   1:gpsmath.c     **** /*
+   2:gpsmath.c     **** 
+   3:gpsmath.c     **** Copyright (c) 2011, Ascending Technologies GmbH
+   4:gpsmath.c     **** All rights reserved.
+   5:gpsmath.c     **** 
+   6:gpsmath.c     **** Redistribution and use in source and binary forms, with or without
+   7:gpsmath.c     **** modification, are permitted provided that the following conditions are met:
+   8:gpsmath.c     **** 
+   9:gpsmath.c     ****  * Redistributions of source code must retain the above copyright notice,
+  10:gpsmath.c     ****    this list of conditions and the following disclaimer.
+  11:gpsmath.c     ****  * Redistributions in binary form must reproduce the above copyright
+  12:gpsmath.c     ****    notice, this list of conditions and the following disclaimer in the
+  13:gpsmath.c     ****    documentation and/or other materials provided with the distribution.
+  14:gpsmath.c     **** 
+  15:gpsmath.c     **** THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND ANY
+  16:gpsmath.c     **** EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  17:gpsmath.c     **** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  18:gpsmath.c     **** DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR ANY
+  19:gpsmath.c     **** DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  20:gpsmath.c     **** (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  21:gpsmath.c     **** SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  22:gpsmath.c     **** CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+  23:gpsmath.c     **** LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+  24:gpsmath.c     **** OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+  25:gpsmath.c     **** DAMAGE.
+  26:gpsmath.c     **** 
+  27:gpsmath.c     ****  */
+  28:gpsmath.c     **** 
+  29:gpsmath.c     **** #include "gpsmath.h"
+  30:gpsmath.c     **** #include "sdk.h"
+  31:gpsmath.c     **** 
+  32:gpsmath.c     **** struct GPS_DATA GPS_Data;
+  33:gpsmath.c     **** struct GPS_DATA gps_data_temp;
+  34:gpsmath.c     **** 
+  35:gpsmath.c     **** unsigned int gpsDataOkTrigger=0;
+  36:gpsmath.c     **** 
+  37:gpsmath.c     **** void xy2latlon(double lat0, double lon0, double X, double Y, double *lat, double *lon)	//X: East, Y
+  38:gpsmath.c     **** {
+  19              	nction supports interworking.
+  20              		@ args = 24, pretend = 0, frame = 8
+  21              		@ frame_needed = 0, uses_anonymous_args = 0
+  22              	.LVL0:
+  23              		stmfd	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}
+  24 0000 F04F2DE9 	.LCFI0:
+  25              		.loc 1 39 0
+  39:gpsmath.c     ****         *lat=lat0+Y/MEAN_EARTH_DIAMETER*360./PI;
+  26              	, .L3+16
+  27 0004 F4409FE5 		mov	r6, #1073741824
+  28 0008 0161A0E3 		.loc 1 38 0
+  29              		sub	sp, sp, #8
+  30 000c 08D04DE2 	.LCFI1:
+  31              		.loc 1 39 0
+  32              		mov	r5, #1073741824
+  33 0010 0151A0E3 		add	r6, r6, #7733248
+  34 0014 766886E2 		adr	r8, .L3
+  35 0018 D0808FE2 		ldmia	r8, {r8-r9}
+  36 001c 000398E8 		.loc 1 38 0
+  37              		mov	sl, r0
+  38 0020 00A0A0E1 	.LVL1:
+  39              		mov	fp, r1
+  40 0024 01B0A0E1 		stmia	sp, {r2-r3}
+  41 0028 0C008DE8 		.loc 1 39 0
+  42              		add	r0, sp, #52
+  43 002c 34008DE2 		ldmia	r0, {r0-r1}
+  44 0030 030090E8 	.LVL2:
+  45              		mov	r2, r4
+  46 0034 0420A0E1 	.LVL3:
+  47              		mov	r3, r5
+  48 0038 0530A0E1 		add	r6, r6, #32768
+  49 003c 026986E2 		mov	r7, #0
+  50 0040 0070A0E3 		bl	__divdf3
+  51 0044 FEFFFFEB 	.LVL4:
+  52              		mov	r2, r6
+  53 0048 0620A0E1 		mov	r3, r7
+  54 004c 0730A0E1 		bl	__muldf3
+  55 0050 FEFFFFEB 		mov	r2, r8
+  56 0054 0820A0E1 		mov	r3, r9
+  57 0058 0930A0E1 		bl	__divdf3
+  58 005c FEFFFFEB 		mov	r2, sl
+  59 0060 0A20A0E1 		mov	r3, fp
+  60 0064 0B30A0E1 		bl	__adddf3
+  61 0068 FEFFFFEB 		ldr	r3, [sp, #60]
+  62 006c 3C309DE5 		stmia	r3, {r0-r1}
+  63 0070 030083E8 		.loc 1 40 0
+  40:gpsmath.c     ****         *lon=lon0+X/MEAN_EARTH_DIAMETER*360./PI/cos(lat0*UMR);
+  64              	44
+  65 0074 0420A0E1 		ldmia	r0, {r0-r1}
+  66 0078 0530A0E1 		bl	__divdf3
+  67 007c 2C008DE2 		mov	r2, r6
+  68 0080 030090E8 		mov	r3, r7
+  69 0084 FEFFFFEB 		bl	__muldf3
+  70 0088 0620A0E1 		mov	r2, r8
+  71 008c 0730A0E1 		mov	r3, r9
+  72 0090 FEFFFFEB 		bl	__divdf3
+  73 0094 0820A0E1 		adr	r2, .L3+8
+  74 0098 0930A0E1 		ldmia	r2, {r2-r3}
+  75 009c FEFFFFEB 		mov	r4, r0
+  76 00a0 50208FE2 		mov	r5, r1
+  77 00a4 0C0092E8 		mov	r0, sl
+  78 00a8 0040A0E1 		mov	r1, fp
+  79 00ac 0150A0E1 		bl	__muldf3
+  80 00b0 0A00A0E1 		bl	cos
+  81 00b4 0B10A0E1 		mov	r2, r0
+  82 00b8 FEFFFFEB 		mov	r3, r1
+  83 00bc FEFFFFEB 		mov	r0, r4
+  84 00c0 0020A0E1 		mov	r1, r5
+  85 00c4 0130A0E1 		bl	__divdf3
+  86 00c8 0400A0E1 		ldmia	sp, {r2-r3}
+  87 00cc 0510A0E1 		bl	__adddf3
+  88 00d0 FEFFFFEB 		ldr	r3, [sp, #64]
+  89 00d4 0C009DE8 		stmia	r3, {r0-r1}
+  90 00d8 FEFFFFEB 		.loc 1 41 0
+  91 00dc 40309DE5 		add	sp, sp, #8
+  92 00e0 030083E8 		ldmfd	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}
+  41:gpsmath.c     **** }
+  93              	word	1074340347
+  94 00e4 08D08DE2 		.word	1413754136
+  95 00e8 F04FBDE8 		.word	1066524486
+  96 00ec 1EFF2FE1 		.word	-1571644103
+  97              		.word	1097356454
+  98              	.LFE2:
+ 100 00f0 FB210940 		.global	gpsDataOkTrigger
+ 101 00f4 182D4454 		.bss
+ 102 00f8 46DF913F 		.align	2
+ 105              	gpsDataOkTrigger:
+ 106              		.space	4
+ 107              		.comm	GPS_Data,44,4
+ 108              		.comm	gps_data_temp,44,4
+ 109              		.section	.debug_frame,"",%progbits
+ 110              	.Lframe0:
+ 111              		.4byte	.LECIE0-.LSCIE0
+ 112              	.LSCIE0:
+ 113 0000 00000000 		.4byte	0xffffffff
+ 114              		.byte	0x1
+ 115              		.ascii	"\000"
+ 167              		.byte	0x5d
+DEFINED SYMBOLS
+                            *ABS*:00000000 gpsmath.c
+C:\Users\d-block\AppData\Local\Temp/ccGWbaaa.s:16     .text:00000000 xy2latlon
+C:\Users\d-block\AppData\Local\Temp/ccGWbaaa.s:24     .text:00000000 $a
+C:\Users\d-block\AppData\Local\Temp/ccGWbaaa.s:100    .text:000000f0 $d
+C:\Users\d-block\AppData\Local\Temp/ccGWbaaa.s:112    .bss:00000000 gpsDataOkTrigger
+                            *COM*:0000002c GPS_Data
+                            *COM*:0000002c gps_data_temp
+
+UNDEFINED SYMBOLS
+__divdf3
+__muldf3
+__adddf3
+cos

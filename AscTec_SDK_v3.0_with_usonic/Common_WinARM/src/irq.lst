@@ -1,0 +1,471 @@
+   1              		.file	"irq.c"
+   9              	.Ltext0:
+  10              		.align	2
+  12              	DefaultVICHandler:
+  13              	.LFB2:
+  14              		.file 1 "Common_WinARM/src/irq.c"
+   1:Common_WinARM/src/irq.c **** /*****************************************************************************
+   2:Common_WinARM/src/irq.c ****  *   irq.c: Interrupt handler C file for Philips LPC214x Family Microprocessors
+   3:Common_WinARM/src/irq.c ****  *
+   4:Common_WinARM/src/irq.c ****  *   Copyright(C) 2006, Philips Semiconductor
+   5:Common_WinARM/src/irq.c ****  *   All rights reserved.
+   6:Common_WinARM/src/irq.c ****  *
+   7:Common_WinARM/src/irq.c ****  *   History
+   8:Common_WinARM/src/irq.c ****  *   2005.10.01  ver 1.00    Prelimnary version, first Release
+   9:Common_WinARM/src/irq.c ****  *
+  10:Common_WinARM/src/irq.c **** ******************************************************************************/
+  11:Common_WinARM/src/irq.c **** #include "LPC214x.h"			/* LPC23XX Peripheral Registers	*/
+  12:Common_WinARM/src/irq.c **** #include "irq.h"
+  13:Common_WinARM/src/irq.c **** 
+  14:Common_WinARM/src/irq.c **** #ifndef NULL
+  15:Common_WinARM/src/irq.c **** #define NULL    ((void *)0)
+  16:Common_WinARM/src/irq.c **** #endif
+  17:Common_WinARM/src/irq.c **** 
+  18:Common_WinARM/src/irq.c **** #ifndef FALSE
+  19:Common_WinARM/src/irq.c **** #define FALSE   (0)
+  20:Common_WinARM/src/irq.c **** #endif
+  21:Common_WinARM/src/irq.c **** 
+  22:Common_WinARM/src/irq.c **** #ifndef TRUE
+  23:Common_WinARM/src/irq.c **** #define TRUE    (1)
+  24:Common_WinARM/src/irq.c **** #endif
+  25:Common_WinARM/src/irq.c **** 
+  26:Common_WinARM/src/irq.c **** 
+  27:Common_WinARM/src/irq.c **** /******************************************************************************
+  28:Common_WinARM/src/irq.c **** ** Function name:		DefaultVICHandler
+  29:Common_WinARM/src/irq.c **** **
+  30:Common_WinARM/src/irq.c **** ** Descriptions:		Default VIC interrupt handler.
+  31:Common_WinARM/src/irq.c **** **				This handler is set to deal with spurious 
+  32:Common_WinARM/src/irq.c **** **				interrupt.
+  33:Common_WinARM/src/irq.c **** **				If the IRQ service routine reads the VIC
+  34:Common_WinARM/src/irq.c **** **				address register, and no IRQ slot responses
+  35:Common_WinARM/src/irq.c **** **				as described above, this address is returned.
+  36:Common_WinARM/src/irq.c **** ** parameters:			None
+  37:Common_WinARM/src/irq.c **** ** Returned value:		None
+  38:Common_WinARM/src/irq.c **** ** 
+  39:Common_WinARM/src/irq.c **** ******************************************************************************/
+  40:Common_WinARM/src/irq.c **** // mthomas: inserted static to avoid gcc-warning
+  41:Common_WinARM/src/irq.c **** static void DefaultVICHandler (void) __irq 
+  42:Common_WinARM/src/irq.c **** {
+  15              	@ Function supports interworking.
+  16              		@ args = 0, pretend = 0, frame = 0
+  17              		@ frame_needed = 1, uses_anonymous_args = 0
+  18              		mov	ip, sp
+  19 0000 0DC0A0E1 	.LCFI0:
+  20              		stmfd	sp!, {fp, ip, lr, pc}
+  21 0004 00D82DE9 	.LCFI1:
+  22              		sub	fp, ip, #4
+  23 0008 04B04CE2 	.LCFI2:
+  24              		.loc 1 47 0
+  43:Common_WinARM/src/irq.c ****     /* if the IRQ is not installed into the VIC, and interrupt occurs, the
+  44:Common_WinARM/src/irq.c ****     default interrupt VIC address will be used. This could happen in a race 
+  45:Common_WinARM/src/irq.c ****     condition. For debugging, use this endless loop to trace back. */
+  46:Common_WinARM/src/irq.c ****     /* For more details, see Philips appnote AN10414 */
+  47:Common_WinARM/src/irq.c ****     VICVectAddr = 0;		/* Acknowledge Interrupt */ 
+  25              	0
+  26 000c 0030A0E3 		sub	r3, r3, #4048
+  27 0010 FD3E43E2 		mov	r2, #0
+  28 0014 0020A0E3 		str	r2, [r3, #0]
+  29 0018 002083E5 		.loc 1 49 0
+  48:Common_WinARM/src/irq.c ****     // while ( 1 ); to find unknown interrupts while debugging
+  49:Common_WinARM/src/irq.c **** }
+  30              	sp, fp, #12
+  31 001c 0CD04BE2 		ldmfd	sp, {fp, sp, lr}
+  32 0020 00689DE8 		bx	lr
+  33 0024 1EFF2FE1 	.LFE2:
+  35              		.align	2
+  36              		.global	init_VIC
+  38              	init_VIC:
+  39              	.LFB3:
+  40              		.loc 1 61 0
+  50:Common_WinARM/src/irq.c **** 
+  51:Common_WinARM/src/irq.c **** /* Initialize the interrupt controller */
+  52:Common_WinARM/src/irq.c **** /******************************************************************************
+  53:Common_WinARM/src/irq.c **** ** Function name:		init_VIC
+  54:Common_WinARM/src/irq.c **** **
+  55:Common_WinARM/src/irq.c **** ** Descriptions:		Initialize VIC interrupt controller.
+  56:Common_WinARM/src/irq.c **** ** parameters:			None
+  57:Common_WinARM/src/irq.c **** ** Returned value:		None
+  58:Common_WinARM/src/irq.c **** ** 
+  59:Common_WinARM/src/irq.c **** ******************************************************************************/
+  60:Common_WinARM/src/irq.c **** void init_VIC(void) 
+  61:Common_WinARM/src/irq.c **** {
+  41              	 supports interworking.
+  42              		@ args = 0, pretend = 0, frame = 12
+  43              		@ frame_needed = 1, uses_anonymous_args = 0
+  44              		mov	ip, sp
+  45 0028 0DC0A0E1 	.LCFI3:
+  46              		stmfd	sp!, {fp, ip, lr, pc}
+  47 002c 00D82DE9 	.LCFI4:
+  48              		sub	fp, ip, #4
+  49 0030 04B04CE2 	.LCFI5:
+  50              		sub	sp, sp, #12
+  51 0034 0CD04DE2 	.LCFI6:
+  52              		.loc 1 62 0
+  62:Common_WinARM/src/irq.c ****     unsigned long i = 0;
+  53              		str	r3, [fp, #-24]
+  54 0038 0030A0E3 		.loc 1 66 0
+  55 003c 18300BE5 		mvn	r3, #4064
+  63:Common_WinARM/src/irq.c ****     unsigned long *vect_addr, *vect_cntl;
+  64:Common_WinARM/src/irq.c ****    	
+  65:Common_WinARM/src/irq.c ****     /* initialize VIC*/
+  66:Common_WinARM/src/irq.c ****     VICIntEnClr = 0xffffffff;
+  56              	b	r3, r3, #11
+  57 0040 FE3EE0E3 		mvn	r2, #0
+  58 0044 0B3043E2 		str	r2, [r3, #0]
+  59 0048 0020E0E3 		.loc 1 67 0
+  60 004c 002083E5 		mov	r3, #0
+  67:Common_WinARM/src/irq.c ****     VICVectAddr = 0;
+  61              	r3, r3, #4048
+  62 0050 0030A0E3 		mov	r2, #0
+  63 0054 FD3E43E2 		str	r2, [r3, #0]
+  64 0058 0020A0E3 		.loc 1 68 0
+  65 005c 002083E5 		mvn	r3, #4080
+  68:Common_WinARM/src/irq.c ****     VICIntSelect = 0;
+  66              	r3, r3, #3
+  67 0060 FF3EE0E3 		mov	r2, #0
+  68 0064 033043E2 		str	r2, [r3, #0]
+  69 0068 0020A0E3 		.loc 1 71 0
+  70 006c 002083E5 		mov	r3, #0
+  69:Common_WinARM/src/irq.c **** 
+  70:Common_WinARM/src/irq.c ****     /* set all the vector and vector control register to 0 */
+  71:Common_WinARM/src/irq.c ****     for ( i = 0; i < VIC_SIZE; i++ )
+  71              	r3, [fp, #-24]
+  72 0070 0030A0E3 		b	.L4
+  73 0074 18300BE5 	.L5:
+  74 0078 100000EA 		.loc 1 73 0
+  75              		ldr	r3, [fp, #-24]
+  72:Common_WinARM/src/irq.c ****     {
+  73:Common_WinARM/src/irq.c **** 	vect_addr = (unsigned long *)(VIC_BASE_ADDR + VECT_ADDR_INDEX + i*4);
+  76              	r3, r3, asl #2
+  77 007c 18301BE5 		sub	r3, r3, #3840
+  78 0080 0331A0E1 		str	r3, [fp, #-20]
+  79 0084 0F3C43E2 		.loc 1 74 0
+  80 0088 14300BE5 		ldr	r3, [fp, #-24]
+  74:Common_WinARM/src/irq.c **** 	vect_cntl = (unsigned long *)(VIC_BASE_ADDR + VECT_CNTL_INDEX + i*4);
+  81              	r3, r3, asl #2
+  82 008c 18301BE5 		sub	r3, r3, #3584
+  83 0090 0331A0E1 		str	r3, [fp, #-16]
+  84 0094 0E3C43E2 		.loc 1 75 0
+  85 0098 10300BE5 		ldr	r2, [fp, #-20]
+  75:Common_WinARM/src/irq.c **** 	*vect_addr = 0;	
+  86              	r3, #0
+  87 009c 14201BE5 		str	r3, [r2, #0]
+  88 00a0 0030A0E3 		.loc 1 76 0
+  89 00a4 003082E5 		ldr	r2, [fp, #-16]
+  76:Common_WinARM/src/irq.c **** 	*vect_cntl = 0;
+  90              		r3, #0
+  91 00a8 10201BE5 		str	r3, [r2, #0]
+  92 00ac 0030A0E3 		.loc 1 71 0
+  93 00b0 003082E5 		ldr	r3, [fp, #-24]
+  94              		add	r3, r3, #1
+  95 00b4 18301BE5 		str	r3, [fp, #-24]
+  96 00b8 013083E2 	.L4:
+  97 00bc 18300BE5 		ldr	r3, [fp, #-24]
+  98              		cmp	r3, #15
+  99 00c0 18301BE5 		bls	.L5
+ 100 00c4 0F0053E3 		.loc 1 80 0
+ 101 00c8 EBFFFF9A 		mvn	r3, #4032
+  77:Common_WinARM/src/irq.c ****     }
+  78:Common_WinARM/src/irq.c **** 
+  79:Common_WinARM/src/irq.c ****     /* Install the default VIC handler here */
+  80:Common_WinARM/src/irq.c ****     VICDefVectAddr = (unsigned long)DefaultVICHandler;   
+ 102              	 #11
+ 103 00cc 3F3DE0E3 		ldr	r2, .L8
+ 104 00d0 0B3043E2 		str	r2, [r3, #0]
+ 105 00d4 0C209FE5 		.loc 1 82 0
+ 106 00d8 002083E5 		sub	sp, fp, #12
+  81:Common_WinARM/src/irq.c ****     return;
+  82:Common_WinARM/src/irq.c **** }
+ 107              	d	sp, {fp, sp, lr}
+ 108 00dc 0CD04BE2 		bx	lr
+ 109 00e0 00689DE8 	.L9:
+ 110 00e4 1EFF2FE1 		.align	2
+ 111              	.L8:
+ 112              		.word	DefaultVICHandler
+ 113              	.LFE3:
+ 115              		.align	2
+ 116              		.global	install_irq
+ 118              	install_irq:
+ 119              	.LFB4:
+ 120              		.loc 1 98 0
+ 121              		@ Function supports interworking.
+  83:Common_WinARM/src/irq.c **** 
+  84:Common_WinARM/src/irq.c **** /******************************************************************************
+  85:Common_WinARM/src/irq.c **** ** Function name:		install_irq
+  86:Common_WinARM/src/irq.c **** **
+  87:Common_WinARM/src/irq.c **** ** Descriptions:		Install interrupt handler
+  88:Common_WinARM/src/irq.c **** **				The max VIC size is 16, but, there are 32 interrupt
+  89:Common_WinARM/src/irq.c **** **				request inputs. Not all of them can be installed into
+  90:Common_WinARM/src/irq.c **** **				VIC table at the same time.
+  91:Common_WinARM/src/irq.c **** **				The order of the interrupt request installation is
+  92:Common_WinARM/src/irq.c **** **				first come first serve.
+  93:Common_WinARM/src/irq.c **** ** parameters:			Interrupt number and interrupt handler address
+  94:Common_WinARM/src/irq.c **** ** Returned value:		true or false, when the table is full, return false
+  95:Common_WinARM/src/irq.c **** ** 
+  96:Common_WinARM/src/irq.c **** ******************************************************************************/
+  97:Common_WinARM/src/irq.c **** unsigned long install_irq( unsigned long IntNumber, void *HandlerAddr )
+  98:Common_WinARM/src/irq.c **** {
+ 122              	etend = 0, frame = 24
+ 123              		@ frame_needed = 1, uses_anonymous_args = 0
+ 124              		mov	ip, sp
+ 125              	.LCFI7:
+ 126 00ec 0DC0A0E1 		stmfd	sp!, {fp, ip, lr, pc}
+ 127              	.LCFI8:
+ 128 00f0 00D82DE9 		sub	fp, ip, #4
+ 129              	.LCFI9:
+ 130 00f4 04B04CE2 		sub	sp, sp, #24
+ 131              	.LCFI10:
+ 132 00f8 18D04DE2 		str	r0, [fp, #-28]
+ 133              		str	r1, [fp, #-32]
+ 134 00fc 1C000BE5 		.loc 1 103 0
+ 135 0100 20100BE5 		mvn	r2, #4064
+  99:Common_WinARM/src/irq.c ****     unsigned long i;
+ 100:Common_WinARM/src/irq.c ****     unsigned long *vect_addr;
+ 101:Common_WinARM/src/irq.c ****     unsigned long *vect_cntl;
+ 102:Common_WinARM/src/irq.c ****       
+ 103:Common_WinARM/src/irq.c ****     VICIntEnClr = 1 << IntNumber;	/* Disable Interrupt */
+ 136              	11
+ 137 0104 FE2EE0E3 		ldr	r1, [fp, #-28]
+ 138 0108 0B2042E2 		mov	r3, #1
+ 139 010c 1C101BE5 		mov	r3, r3, asl r1
+ 140 0110 0130A0E3 		str	r3, [r2, #0]
+ 141 0114 1331A0E1 		.loc 1 105 0
+ 142 0118 003082E5 		mov	r3, #0
+ 104:Common_WinARM/src/irq.c ****     
+ 105:Common_WinARM/src/irq.c ****     for ( i = 0; i < VIC_SIZE; i++ )
+ 143              	, [fp, #-24]
+ 144 011c 0030A0E3 		b	.L11
+ 145 0120 18300BE5 	.L12:
+ 146 0124 170000EA 		.loc 1 109 0
+ 147              		ldr	r3, [fp, #-24]
+ 106:Common_WinARM/src/irq.c ****     {
+ 107:Common_WinARM/src/irq.c **** 	/* find first un-assigned VIC address for the handler */
+ 108:Common_WinARM/src/irq.c **** 
+ 109:Common_WinARM/src/irq.c **** 	vect_addr = (unsigned long *)(VIC_BASE_ADDR + VECT_ADDR_INDEX + i*4);
+ 148              	r3, r3, asl #2
+ 149 0128 18301BE5 		sub	r3, r3, #3840
+ 150 012c 0331A0E1 		str	r3, [fp, #-20]
+ 151 0130 0F3C43E2 		.loc 1 110 0
+ 152 0134 14300BE5 		ldr	r3, [fp, #-24]
+ 110:Common_WinARM/src/irq.c **** 	vect_cntl = (unsigned long *)(VIC_BASE_ADDR + VECT_CNTL_INDEX + i*4);
+ 153              	r3, r3, asl #2
+ 154 0138 18301BE5 		sub	r3, r3, #3584
+ 155 013c 0331A0E1 		str	r3, [fp, #-16]
+ 156 0140 0E3C43E2 		.loc 1 111 0
+ 157 0144 10300BE5 		ldr	r3, [fp, #-20]
+ 111:Common_WinARM/src/irq.c **** 	if ( *vect_addr == (unsigned long)NULL )
+ 158              	r3, [r3, #0]
+ 159 0148 14301BE5 		cmp	r3, #0
+ 160 014c 003093E5 		bne	.L13
+ 161 0150 000053E3 		.loc 1 113 0
+ 162 0154 0800001A 		ldr	r3, [fp, #-32]
+ 112:Common_WinARM/src/irq.c **** 	{
+ 113:Common_WinARM/src/irq.c **** 	    *vect_addr = (unsigned long)HandlerAddr;	/* set interrupt vector */
+ 163              	r2, r3
+ 164 0158 20301BE5 		ldr	r3, [fp, #-20]
+ 165 015c 0320A0E1 		str	r2, [r3, #0]
+ 166 0160 14301BE5 		.loc 1 114 0
+ 167 0164 002083E5 		ldr	r3, [fp, #-28]
+ 114:Common_WinARM/src/irq.c **** 	    *vect_cntl = (unsigned long)(IRQ_SLOT_EN | IntNumber);
+ 168              	r2, r3, #32
+ 169 0168 1C301BE5 		ldr	r3, [fp, #-16]
+ 170 016c 202083E3 		str	r2, [r3, #0]
+ 171 0170 10301BE5 		.loc 1 115 0
+ 172 0174 002083E5 		b	.L15
+ 115:Common_WinARM/src/irq.c **** 	    break;
+ 173              	
+ 174 0178 050000EA 		.loc 1 105 0
+ 175              		ldr	r3, [fp, #-24]
+ 176              		add	r3, r3, #1
+ 177 017c 18301BE5 		str	r3, [fp, #-24]
+ 178 0180 013083E2 	.L11:
+ 179 0184 18300BE5 		ldr	r3, [fp, #-24]
+ 180              		cmp	r3, #15
+ 181 0188 18301BE5 		bls	.L12
+ 182 018c 0F0053E3 	.L15:
+ 183 0190 E4FFFF9A 		.loc 1 118 0
+ 184              		ldr	r3, [fp, #-24]
+ 116:Common_WinARM/src/irq.c **** 	}
+ 117:Common_WinARM/src/irq.c ****     }
+ 118:Common_WinARM/src/irq.c ****     if ( i == VIC_SIZE )
+ 185              	6
+ 186 0194 18301BE5 		bne	.L16
+ 187 0198 100053E3 		.loc 1 120 0
+ 188 019c 0200001A 		mov	r3, #0
+ 119:Common_WinARM/src/irq.c ****     {
+ 120:Common_WinARM/src/irq.c **** 	return( FALSE );		/* fatal error, can't find empty vector slot */
+ 189              		r3, [fp, #-36]
+ 190 01a0 0030A0E3 		b	.L18
+ 191 01a4 24300BE5 	.L16:
+ 192 01a8 070000EA 		.loc 1 122 0
+ 193              		mov	r2, #0
+ 121:Common_WinARM/src/irq.c ****     }
+ 122:Common_WinARM/src/irq.c ****     VICIntEnable = 1 << IntNumber;	/* Enable Interrupt */
+ 194              	r2, r2, #4080
+ 195 01ac 0020A0E3 		ldr	r1, [fp, #-28]
+ 196 01b0 FF2E42E2 		mov	r3, #1
+ 197 01b4 1C101BE5 		mov	r3, r3, asl r1
+ 198 01b8 0130A0E3 		str	r3, [r2, #0]
+ 199 01bc 1331A0E1 		.loc 1 123 0
+ 200 01c0 003082E5 		mov	r3, #1
+ 123:Common_WinARM/src/irq.c ****     return( TRUE );
+ 201              	, [fp, #-36]
+ 202 01c4 0130A0E3 	.L18:
+ 203 01c8 24300BE5 		ldr	r3, [fp, #-36]
+ 204              		.loc 1 124 0
+ 205 01cc 24301BE5 		mov	r0, r3
+ 124:Common_WinARM/src/irq.c **** }
+ 206              	sp, fp, #12
+ 207 01d0 0300A0E1 		ldmfd	sp, {fp, sp, lr}
+ 208 01d4 0CD04BE2 		bx	lr
+ 209 01d8 00689DE8 	.LFE4:
+ 211              		.align	2
+ 212              		.global	uninstall_irq
+ 214              	uninstall_irq:
+ 215              	.LFB5:
+ 216              		.loc 1 139 0
+ 217              		@ Function supports interworking.
+ 125:Common_WinARM/src/irq.c **** 
+ 126:Common_WinARM/src/irq.c **** /******************************************************************************
+ 127:Common_WinARM/src/irq.c **** ** Function name:		uninstall_irq
+ 128:Common_WinARM/src/irq.c **** **
+ 129:Common_WinARM/src/irq.c **** ** Descriptions:		Uninstall interrupt handler
+ 130:Common_WinARM/src/irq.c **** **				Find the interrupt handler installed in the VIC
+ 131:Common_WinARM/src/irq.c **** **				based on the interrupt number, set the location
+ 132:Common_WinARM/src/irq.c **** **				back to NULL to uninstall it.
+ 133:Common_WinARM/src/irq.c **** ** parameters:			Interrupt number
+ 134:Common_WinARM/src/irq.c **** ** Returned value:		true or false, when the interrupt number is not found, 
+ 135:Common_WinARM/src/irq.c **** **				return false
+ 136:Common_WinARM/src/irq.c **** ** 
+ 137:Common_WinARM/src/irq.c **** ******************************************************************************/
+ 138:Common_WinARM/src/irq.c **** unsigned long uninstall_irq( unsigned long IntNumber )
+ 139:Common_WinARM/src/irq.c **** {
+ 218              	 pretend = 0, frame = 20
+ 219              		@ frame_needed = 1, uses_anonymous_args = 0
+ 220              		mov	ip, sp
+ 221              	.LCFI11:
+ 222 01e0 0DC0A0E1 		stmfd	sp!, {fp, ip, lr, pc}
+ 223              	.LCFI12:
+ 224 01e4 00D82DE9 		sub	fp, ip, #4
+ 225              	.LCFI13:
+ 226 01e8 04B04CE2 		sub	sp, sp, #20
+ 227              	.LCFI14:
+ 228 01ec 14D04DE2 		str	r0, [fp, #-28]
+ 229              		.loc 1 144 0
+ 230 01f0 1C000BE5 		mvn	r2, #4064
+ 140:Common_WinARM/src/irq.c ****     unsigned long i;
+ 141:Common_WinARM/src/irq.c ****     unsigned long *vect_addr;
+ 142:Common_WinARM/src/irq.c ****     unsigned long *vect_cntl;
+ 143:Common_WinARM/src/irq.c ****       
+ 144:Common_WinARM/src/irq.c ****     VICIntEnClr = 1 << IntNumber;	/* Disable Interrupt */
+ 231              	#11
+ 232 01f4 FE2EE0E3 		ldr	r1, [fp, #-28]
+ 233 01f8 0B2042E2 		mov	r3, #1
+ 234 01fc 1C101BE5 		mov	r3, r3, asl r1
+ 235 0200 0130A0E3 		str	r3, [r2, #0]
+ 236 0204 1331A0E1 		.loc 1 146 0
+ 237 0208 003082E5 		mov	r3, #0
+ 145:Common_WinARM/src/irq.c ****     
+ 146:Common_WinARM/src/irq.c ****     for ( i = 0; i < VIC_SIZE; i++ )
+ 238              	, [fp, #-24]
+ 239 020c 0030A0E3 		b	.L21
+ 240 0210 18300BE5 	.L22:
+ 241 0214 190000EA 		.loc 1 149 0
+ 242              		ldr	r3, [fp, #-24]
+ 147:Common_WinARM/src/irq.c ****     {
+ 148:Common_WinARM/src/irq.c **** 	/* find first un-assigned VIC address for the handler */
+ 149:Common_WinARM/src/irq.c **** 	vect_addr = (unsigned long *)(VIC_BASE_ADDR + VECT_ADDR_INDEX + i*4);
+ 243              	r3, r3, asl #2
+ 244 0218 18301BE5 		sub	r3, r3, #3840
+ 245 021c 0331A0E1 		str	r3, [fp, #-20]
+ 246 0220 0F3C43E2 		.loc 1 150 0
+ 247 0224 14300BE5 		ldr	r3, [fp, #-24]
+ 150:Common_WinARM/src/irq.c **** 	vect_cntl = (unsigned long *)(VIC_BASE_ADDR + VECT_CNTL_INDEX + i*4);
+ 248              	r3, r3, asl #2
+ 249 0228 18301BE5 		sub	r3, r3, #3584
+ 250 022c 0331A0E1 		str	r3, [fp, #-16]
+ 251 0230 0E3C43E2 		.loc 1 151 0
+ 252 0234 10300BE5 		ldr	r3, [fp, #-16]
+ 151:Common_WinARM/src/irq.c **** 	if ( (*vect_cntl & ~IRQ_SLOT_EN ) == IntNumber )
+ 253              	r3, [r3, #0]
+ 254 0238 10301BE5 		bic	r2, r3, #32
+ 255 023c 003093E5 		ldr	r3, [fp, #-28]
+ 256 0240 2020C3E3 		cmp	r2, r3
+ 257 0244 1C301BE5 		bne	.L23
+ 258 0248 030052E1 		.loc 1 153 0
+ 259 024c 0800001A 		ldr	r2, [fp, #-20]
+ 152:Common_WinARM/src/irq.c **** 	{
+ 153:Common_WinARM/src/irq.c **** 	    *vect_addr = (unsigned long)NULL;	/* clear the VIC entry in the VIC table */
+ 260              	, #0
+ 261 0250 14201BE5 		str	r3, [r2, #0]
+ 262 0254 0030A0E3 		.loc 1 154 0
+ 263 0258 003082E5 		ldr	r3, [fp, #-16]
+ 154:Common_WinARM/src/irq.c **** 	    *vect_cntl &= ~IRQ_SLOT_EN;	/* disable SLOT_EN bit */	
+ 264              		r3, [r3, #0]
+ 265 025c 10301BE5 		bic	r2, r3, #32
+ 266 0260 003093E5 		ldr	r3, [fp, #-16]
+ 267 0264 2020C3E3 		str	r2, [r3, #0]
+ 268 0268 10301BE5 		.loc 1 155 0
+ 269 026c 002083E5 		b	.L25
+ 155:Common_WinARM/src/irq.c **** 	    break;
+ 270              		.loc 1 146 0
+ 271 0270 050000EA 		ldr	r3, [fp, #-24]
+ 272              		add	r3, r3, #1
+ 273              		str	r3, [fp, #-24]
+ 274 0274 18301BE5 	.L21:
+ 275 0278 013083E2 		ldr	r3, [fp, #-24]
+ 276 027c 18300BE5 		cmp	r3, #15
+ 277              		bls	.L22
+ 278 0280 18301BE5 	.L25:
+ 279 0284 0F0053E3 		.loc 1 158 0
+ 280 0288 E2FFFF9A 		ldr	r3, [fp, #-24]
+ 281              		cmp	r3, #16
+ 156:Common_WinARM/src/irq.c **** 	}
+ 157:Common_WinARM/src/irq.c ****     }
+ 158:Common_WinARM/src/irq.c ****     if ( i == VIC_SIZE )
+ 282              	loc 1 160 0
+ 283 028c 18301BE5 		mov	r3, #0
+ 284 0290 100053E3 		str	r3, [fp, #-32]
+ 285 0294 0200001A 		b	.L28
+ 159:Common_WinARM/src/irq.c ****     {
+ 160:Common_WinARM/src/irq.c **** 	return( FALSE );		/* fatal error, can't find interrupt number 
+ 286              	:
+ 287 0298 0030A0E3 		.loc 1 163 0
+ 288 029c 20300BE5 		mov	r2, #0
+ 289 02a0 070000EA 		sub	r2, r2, #4080
+ 290              		ldr	r1, [fp, #-28]
+ 161:Common_WinARM/src/irq.c **** 					in vector slot */
+ 162:Common_WinARM/src/irq.c ****     }
+ 163:Common_WinARM/src/irq.c ****     VICIntEnable = 1 << IntNumber;	/* Enable Interrupt */
+ 291              	r3, #1
+ 292 02a4 0020A0E3 		mov	r3, r3, asl r1
+ 293 02a8 FF2E42E2 		str	r3, [r2, #0]
+ 294 02ac 1C101BE5 		.loc 1 164 0
+ 295 02b0 0130A0E3 		mov	r3, #1
+ 296 02b4 1331A0E1 		str	r3, [fp, #-32]
+ 297 02b8 003082E5 	.L28:
+ 164:Common_WinARM/src/irq.c ****     return( TRUE );
+ 298              	, [fp, #-32]
+ 299 02bc 0130A0E3 		.loc 1 165 0
+ 300 02c0 20300BE5 		mov	r0, r3
+ 301              		sub	sp, fp, #12
+ 302 02c4 20301BE5 		ldmfd	sp, {fp, sp, lr}
+ 165:Common_WinARM/src/irq.c **** }
+ 303              	r
+ 304 02c8 0300A0E1 	.LFE5:
+ 306 02d0 00689DE8 		.section	.debug_frame,"",%progbits
+ 307 02d4 1EFF2FE1 	.Lframe0:
+ 308              		.4byte	.LECIE0-.LSCIE0
+ 309              	.LSCIE0:
+ 426              		.4byte	.LFB2-.Ltext0
+DEFINED SYMBOLS
+                            *ABS*:00000000 irq.c
+C:\Users\d-block\AppData\Local\Temp/cc4Yaaaa.s:12     .text:00000000 DefaultVICHandler
+C:\Users\d-block\AppData\Local\Temp/cc4Yaaaa.s:19     .text:00000000 $a
+C:\Users\d-block\AppData\Local\Temp/cc4Yaaaa.s:39     .text:00000028 init_VIC
+C:\Users\d-block\AppData\Local\Temp/cc4Yaaaa.s:114    .text:000000e8 $d
+C:\Users\d-block\AppData\Local\Temp/cc4Yaaaa.s:120    .text:000000ec install_irq
+C:\Users\d-block\AppData\Local\Temp/cc4Yaaaa.s:126    .text:000000ec $a
+C:\Users\d-block\AppData\Local\Temp/cc4Yaaaa.s:216    .text:000001e0 uninstall_irq
+
+NO UNDEFINED SYMBOLS

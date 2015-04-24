@@ -1,0 +1,293 @@
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/RMS_SVN/!svn/ver/497/Source/AscTecSDK
+END
+main.h
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/main.h
+END
+makefile
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/RMS_SVN/!svn/ver/485/Source/AscTecSDK/makefile
+END
+hardware.c
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/hardware.c
+END
+ublox.h
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/ublox.h
+END
+lab.c
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/RMS_SVN/!svn/ver/497/Source/AscTecSDK/lab.c
+END
+declination.h
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/declination.h
+END
+hardware.h
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/hardware.h
+END
+lab.h
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/RMS_SVN/!svn/ver/485/Source/AscTecSDK/lab.h
+END
+pelican_ptu.c
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/pelican_ptu.c
+END
+gpsmath.c
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/gpsmath.c
+END
+LL_HL_comm.c
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/LL_HL_comm.c
+END
+pelican_ptu.h
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/pelican_ptu.h
+END
+gpsmath.h
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/gpsmath.h
+END
+crt.s
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/crt.s
+END
+LL_HL_comm.h
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/LL_HL_comm.h
+END
+arm-elf-gdb.exe
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/arm-elf-gdb.exe
+END
+libdeclination.a
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/RMS_SVN/!svn/ver/195/Source/AscTecSDK/libdeclination.a
+END
+libublox.a
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/RMS_SVN/!svn/ver/195/Source/AscTecSDK/libublox.a
+END
+buzzer.c
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/buzzer.c
+END
+openocd-AT.exe.stackdump
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/openocd-AT.exe.stackdump
+END
+LPC2k_ee.c
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/LPC2k_ee.c
+END
+system.c
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/RMS_SVN/!svn/ver/351/Source/AscTecSDK/system.c
+END
+itk32.dll
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/itk32.dll
+END
+buzzer.h
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/buzzer.h
+END
+tcl84.dll
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/tcl84.dll
+END
+Asctec JTAG Debug 2.0.launch
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/Asctec%20JTAG%20Debug%202.0.launch
+END
+adc.c
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/adc.c
+END
+system.h
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/system.h
+END
+itcl32.dll
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/itcl32.dll
+END
+LPC2k_ee.h
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/LPC2k_ee.h
+END
+lpc2xxx_asctecusbjtag05.cfg
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/lpc2xxx_asctecusbjtag05.cfg
+END
+adc.h
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/adc.h
+END
+syscalls.c
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/syscalls.c
+END
+mymath.c
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/mymath.c
+END
+utils.c
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/RMS_SVN/!svn/ver/497/Source/AscTecSDK/utils.c
+END
+LPC214x.h
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/LPC214x.h
+END
+mymath.h
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/mymath.h
+END
+ssp.c
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/ssp.c
+END
+utils.h
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/RMS_SVN/!svn/ver/497/Source/AscTecSDK/utils.h
+END
+ssp.h
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/ssp.h
+END
+uart.c
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/uart.c
+END
+i2c.c
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/i2c.c
+END
+uart.h
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/uart.h
+END
+sdk.c
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/RMS_SVN/!svn/ver/485/Source/AscTecSDK/sdk.c
+END
+i2c.h
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/i2c.h
+END
+tk84.dll
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/tk84.dll
+END
+main.c
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/RMS_SVN/!svn/ver/492/Source/AscTecSDK/main.c
+END
+sdk.h
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/RMS_SVN/!svn/ver/487/Source/AscTecSDK/sdk.h
+END

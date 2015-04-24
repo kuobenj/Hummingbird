@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/Common_WinARM/src
+END
+irq.c
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/Common_WinARM/src/irq.c
+END
+interrupt_utils.c
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/Common_WinARM/src/interrupt_utils.c
+END
+swi_handler.S
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/Common_WinARM/src/swi_handler.S
+END
+timer.c
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/Common_WinARM/src/timer.c
+END
+Startup.S
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/Common_WinARM/src/Startup.S
+END
+target.c
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/RMS_SVN/!svn/ver/194/Source/AscTecSDK/Common_WinARM/src/target.c
+END

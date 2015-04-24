@@ -1,0 +1,823 @@
+   1              		.file	"lab.c"
+   9              	.Ltext0:
+  10              		.global	mass
+  11              		.data
+  12              		.align	2
+  15              	mass:
+  16 0000 0000C03F 		.word	1069547520
+  17              		.global	kF
+  18              		.align	2
+  21              	kF:
+  22 0004 10CE8637 		.word	931581456
+  23              		.global	kM
+  24              		.align	2
+  27              	kM:
+  28 0008 4D59AE34 		.word	883841357
+  29              		.global	l
+  30              		.align	2
+  33              	l:
+  34 000c F6285C3E 		.word	1046227190
+  35              		.global	MAXPHI2
+  36              		.align	2
+  39              	MAXPHI2:
+  40 0010 7B5E1449 		.word	1226071675
+  41              		.global	MINPHI2
+  42              		.align	2
+  45              	MINPHI2:
+  46 0014 747A4646 		.word	1179023988
+  47              		.global	g
+  48              		.align	2
+  51              	g:
+  52 0018 0AE81C41 		.word	1092413450
+  53              		.text
+  54              		.align	2
+  55              		.global	lab
+  57              	lab:
+  58              	.LFB2:
+  59              		.file 1 "lab.c"
+   1:lab.c         **** /*
+   2:lab.c         ****  * lab.c
+   3:lab.c         ****  *
+   4:lab.c         ****  *  Created on: Jan 26, 2015
+   5:lab.c         ****  *      Author: hanley6
+   6:lab.c         ****  */
+   7:lab.c         **** 
+   8:lab.c         **** /*----------------------------------------------------------------------*/
+   9:lab.c         **** /*------------------------------ Preamble ------------------------------*/
+  10:lab.c         **** /*----------------------------------------------------------------------*/
+  11:lab.c         **** 
+  12:lab.c         **** /*--------------- Includes ---------------*/
+  13:lab.c         **** #include "lab.h"
+  14:lab.c         **** #include "math.h"
+  15:lab.c         **** /*------------- End Includes -------------*/
+  16:lab.c         **** 
+  17:lab.c         **** /*---------- Function Prototypes ---------*/
+  18:lab.c         **** void lab2(void);
+  19:lab.c         **** /*-------- End Function Prototypes -------*/
+  20:lab.c         **** 
+  21:lab.c         **** 
+  22:lab.c         **** /*--------------- Globals ----------------*/
+  23:lab.c         **** struct imuSensor imusensor;
+  24:lab.c         **** struct U u;
+  25:lab.c         **** 
+  26:lab.c         **** /////////// HUMMINGBIRD PARAMETERS /////////////
+  27:lab.c         **** float mass = 1.5;  	// TO BE ENTERED!			
+  28:lab.c         **** float kF = 1.607e-5; 	// TO BE ENTERED!		
+  29:lab.c         **** float kM = 3.2475e-7; 	// TO BE ENTERED!		
+  30:lab.c         **** float l = 0.215;    	// TO BE ENTERED!		
+  31:lab.c         **** float MAXPHI2 = powf(779.5638,2.0);	// TO BE ENTERED!
+  32:lab.c         **** float MINPHI2 = powf(112.705875,2.0);	// TO BE ENTERED!
+  33:lab.c         **** ////////////////////////////////////////////
+  34:lab.c         **** 
+  35:lab.c         **** // Other Declarations
+  36:lab.c         **** float Winv[4*4];
+  37:lab.c         **** float cnt_u[4];
+  38:lab.c         **** float omega_cmd2[4];
+  39:lab.c         **** float omega_cmd[4];
+  40:lab.c         **** float cmd[4];
+  41:lab.c         **** float roll_desired;
+  42:lab.c         **** float pitch_desired;
+  43:lab.c         **** float yaw_desired;
+  44:lab.c         **** float x_nom[4];
+  45:lab.c         **** float g = 9.80665;	// Standard Gravity m/s^2
+  46:lab.c         **** float z[3];		// Sensor measurement for Kalman Filter
+  47:lab.c         **** float dt;
+  48:lab.c         **** 
+  49:lab.c         **** /*------------- End Globals --------------*/
+  50:lab.c         **** 
+  51:lab.c         **** /*----------------------------------------------------------------------*/
+  52:lab.c         **** /*---------------------------- End Preamble ----------------------------*/
+  53:lab.c         **** /*----------------------------------------------------------------------*/
+  54:lab.c         **** 
+  55:lab.c         **** 
+  56:lab.c         **** /*----------------------------------------------------------------------*/
+  57:lab.c         **** /*------------------ Main Loop (called at 1 kHz) -----------------------*/
+  58:lab.c         **** /*----------------------------------------------------------------------*/
+  59:lab.c         **** void lab(void)
+  60:lab.c         **** {
+  60              	, pretend = 0, frame = 0
+  61              		@ frame_needed = 1, uses_anonymous_args = 0
+  62              		mov	ip, sp
+  63              	.LCFI0:
+  64 0000 0DC0A0E1 		stmfd	sp!, {fp, ip, lr, pc}
+  65              	.LCFI1:
+  66 0004 00D82DE9 		sub	fp, ip, #4
+  67              	.LCFI2:
+  68 0008 04B04CE2 		.loc 1 62 0
+  69              		bl	lab2
+  61:lab.c         **** 	// Lab 2
+  62:lab.c         **** 	lab2();
+  70              	 0
+  71 000c FEFFFFEB 		bl	Command
+  63:lab.c         **** 
+  64:lab.c         **** 	// Convert Controller Outputs to Motor Inputs
+  65:lab.c         **** 	Command();
+  72              	loc 1 67 0
+  73 0010 FEFFFFEB 		sub	sp, fp, #12
+  66:lab.c         **** 	
+  67:lab.c         **** }
+  74              	dmfd	sp, {fp, sp, lr}
+  75 0014 0CD04BE2 		bx	lr
+  76 0018 00689DE8 	.LFE2:
+  78              		.global	__subsf3
+  79              		.global	__mulsf3
+  80              		.align	2
+  81              		.global	lab2
+  83              	lab2:
+  84              	.LFB3:
+  85              		.loc 1 77 0
+  86              		@ Function supports interworking.
+  68:lab.c         **** /*----------------------------------------------------------------------*/
+  69:lab.c         **** /*---------------- End Main Loop (called at 1 kHz) ---------------------*/
+  70:lab.c         **** /*----------------------------------------------------------------------*/
+  71:lab.c         **** 
+  72:lab.c         **** /*----------------------------------------------------------------------*/
+  73:lab.c         **** /*------------------------------ Helpers -------------------------------*/
+  74:lab.c         **** /*----------------------------------------------------------------------*/
+  75:lab.c         **** 
+  76:lab.c         **** /*-------------- Controller --------------*/
+  77:lab.c         **** void lab2() {
+  87              	pretend = 0, frame = 24
+  88              		@ frame_needed = 1, uses_anonymous_args = 0
+  89              		mov	ip, sp
+  90              	.LCFI3:
+  91 0020 0DC0A0E1 		stmfd	sp!, {r4, fp, ip, lr, pc}
+  92              	.LCFI4:
+  93 0024 10D82DE9 		sub	fp, ip, #4
+  94              	.LCFI5:
+  95 0028 04B04CE2 		sub	sp, sp, #24
+  96              	.LCFI6:
+  97 002c 18D04DE2 		.loc 1 80 0
+  98              		ldr	r2, .L5
+  78:lab.c         **** 	
+  79:lab.c         **** 	// Desired	
+  80:lab.c         **** 	pitch_desired = 0.0;
+  99              	+4	@ float
+ 100 0030 00219FE5 		str	r3, [r2, #0]	@ float
+ 101 0034 00319FE5 		.loc 1 84 0
+ 102 0038 003082E5 		ldr	r3, .L5+8	@ float
+  81:lab.c         **** 	
+  82:lab.c         **** 	// INNER LOOP
+  83:lab.c         **** 		// Hummingbird
+  84:lab.c         **** 	float Ktx_P = 1.0;	// Proportional Roll
+ 103              		r3, [fp, #-40]	@ float
+ 104 003c FC309FE5 		.loc 1 85 0
+ 105 0040 28300BE5 		ldr	r3, .L5+12	@ float
+  85:lab.c         **** 	float Ktx_D = 0.3;	// Derivative Roll
+ 106              	r	r3, [fp, #-36]	@ float
+ 107 0044 F8309FE5 		.loc 1 86 0
+ 108 0048 24300BE5 		ldr	r3, .L5+8	@ float
+  86:lab.c         **** 	float Kty_P = 1.0;	// Proportional Pitch
+ 109              	r	r3, [fp, #-32]	@ float
+ 110 004c EC309FE5 		.loc 1 87 0
+ 111 0050 20300BE5 		ldr	r3, .L5+12	@ float
+  87:lab.c         **** 	float Kty_D = 0.3;	// Derivative Pitch
+ 112              	r	r3, [fp, #-28]	@ float
+ 113 0054 E8309FE5 		.loc 1 88 0
+ 114 0058 1C300BE5 		ldr	r3, .L5+16	@ float
+  88:lab.c         **** 	float Ktz_P = 0.08;	// Proportional Yaw
+ 115              	r	r3, [fp, #-24]	@ float
+ 116 005c E4309FE5 		.loc 1 89 0
+ 117 0060 18300BE5 		ldr	r3, .L5+20	@ float
+  89:lab.c         **** 	float Ktz_D = 0.04;	// Derivative Yaw
+ 118              	r	r3, [fp, #-20]	@ float
+ 119 0064 E0309FE5 		.loc 1 93 0
+ 120 0068 14300BE5 		ldr	r2, .L5+24
+  90:lab.c         **** 		
+  91:lab.c         **** 	// Inner Loop PD 
+  92:lab.c         **** 	// Note: Lab 2 only tests Pitch control. Do not uncomment roll and yaw lines.
+  93:lab.c         **** 	cnt_u[0] = 0.0; // Ktx_P*(roll_desired-imusensor.dThetax)-Ktx_D*(imusensor.dOmegax);
+ 121              	r	r3, .L5+4	@ float
+ 122 006c DC209FE5 		str	r3, [r2, #0]	@ float
+ 123 0070 C4309FE5 		.loc 1 94 0
+ 124 0074 003082E5 		ldr	r3, .L5
+  94:lab.c         **** 	cnt_u[1] = Kty_P*(pitch_desired-imusensor.dThetay)-Kty_D*(imusensor.dOmegay);
+ 125              		r2, [r3, #0]	@ float
+ 126 0078 B8309FE5 		ldr	r3, .L5+28
+ 127 007c 002093E5 		ldr	r3, [r3, #8]	@ float
+ 128 0080 CC309FE5 		mov	r0, r2
+ 129 0084 083093E5 		mov	r1, r3
+ 130 0088 0200A0E1 		bl	__subsf3
+ 131 008c 0310A0E1 		mov	r3, r0
+ 132 0090 FEFFFFEB 		mov	r0, r3
+ 133 0094 0030A0E1 		ldr	r1, [fp, #-32]	@ float
+ 134 0098 0300A0E1 		bl	__mulsf3
+ 135 009c 20101BE5 		mov	r3, r0
+ 136 00a0 FEFFFFEB 		mov	r4, r3
+ 137 00a4 0030A0E1 		ldr	r3, .L5+28
+ 138 00a8 0340A0E1 		ldr	r3, [r3, #32]	@ float
+ 139 00ac A0309FE5 		mov	r0, r3
+ 140 00b0 203093E5 		ldr	r1, [fp, #-28]	@ float
+ 141 00b4 0300A0E1 		bl	__mulsf3
+ 142 00b8 1C101BE5 		mov	r3, r0
+ 143 00bc FEFFFFEB 		mov	r0, r4
+ 144 00c0 0030A0E1 		mov	r1, r3
+ 145 00c4 0400A0E1 		bl	__subsf3
+ 146 00c8 0310A0E1 		mov	r3, r0
+ 147 00cc FEFFFFEB 		mov	r2, r3
+ 148 00d0 0030A0E1 		ldr	r3, .L5+24
+ 149 00d4 0320A0E1 		str	r2, [r3, #4]	@ float
+ 150 00d8 70309FE5 		.loc 1 95 0
+ 151 00dc 042083E5 		ldr	r2, .L5+24
+  95:lab.c         **** 	cnt_u[2] = 0.0;//Ktz_P*(yaw_desired-imusensor.dThetaz)-Ktz_D*(imusensor.dOmegaz);
+ 152              		r3, [r2, #8]	@ float
+ 153 00e0 68209FE5 		.loc 1 98 0
+ 154 00e4 50309FE5 		ldr	r3, .L5+24
+ 155 00e8 083082E5 		ldr	r2, [r3, #0]	@ float
+  96:lab.c         **** 
+  97:lab.c         **** 	// For Keeping data
+  98:lab.c         **** 	u.u1 = cnt_u[0];
+ 156              		r3, .L5+32
+ 157 00ec 5C309FE5 		str	r2, [r3, #0]	@ float
+ 158 00f0 002093E5 		.loc 1 99 0
+ 159 00f4 5C309FE5 		ldr	r3, .L5+24
+ 160 00f8 002083E5 		ldr	r2, [r3, #4]	@ float
+  99:lab.c         **** 	u.u2 = cnt_u[1];
+ 161              	r3, .L5+32
+ 162 00fc 4C309FE5 		str	r2, [r3, #4]	@ float
+ 163 0100 042093E5 		.loc 1 100 0
+ 164 0104 4C309FE5 		ldr	r3, .L5+24
+ 165 0108 042083E5 		ldr	r2, [r3, #8]	@ float
+ 100:lab.c         **** 	u.u3 = cnt_u[2];
+ 166              	r3, .L5+32
+ 167 010c 3C309FE5 		str	r2, [r3, #8]	@ float
+ 168 0110 082093E5 		.loc 1 101 0
+ 169 0114 3C309FE5 		ldr	r3, .L5+24
+ 170 0118 082083E5 		ldr	r2, [r3, #12]	@ float
+ 101:lab.c         **** 	u.u4 = cnt_u[3];
+ 171              	r3, .L5+32
+ 172 011c 2C309FE5 		str	r2, [r3, #12]	@ float
+ 173 0120 0C2093E5 		.loc 1 102 0
+ 174 0124 2C309FE5 		sub	sp, fp, #16
+ 175 0128 0C2083E5 		ldmfd	sp, {r4, fp, sp, lr}
+ 102:lab.c         **** }
+ 176              	r
+ 177 012c 10D04BE2 	.L6:
+ 178 0130 10689DE8 		.align	2
+ 179 0134 1EFF2FE1 	.L5:
+ 180              		.word	pitch_desired
+ 181              		.word	0
+ 182              		.word	1065353216
+ 183 0138 00000000 		.word	1050253722
+ 184 013c 00000000 		.word	1034147594
+ 185 0140 0000803F 		.word	1025758986
+ 186 0144 9A99993E 		.word	cnt_u
+ 187 0148 0AD7A33D 		.word	imusensor
+ 188 014c 0AD7233D 		.word	u
+ 189 0150 00000000 	.LFE3:
+ 191 0158 00000000 		.global	__extendsfdf2
+ 192              		.global	__adddf3
+ 193              		.global	__muldf3
+ 194              		.global	__divdf3
+ 195              		.global	__truncdfsf2
+ 196              		.global	__gtsf2
+ 197              		.global	__ltsf2
+ 198              		.global	__subdf3
+ 199              		.global	__fixunssfsi
+ 200              		.align	2
+ 201              		.global	Command
+ 203              	Command:
+ 204              	.LFB4:
+ 205              		.loc 1 106 0
+ 206              		@ Function supports interworking.
+ 207              		@ args = 0, pretend = 0, frame = 16
+ 103:lab.c         **** /*------------ End Controller ------------*/
+ 104:lab.c         **** 
+ 105:lab.c         **** /*---------------- Command ---------------*/
+ 106:lab.c         **** void Command() {
+ 208              	ous_args = 0
+ 209              		mov	ip, sp
+ 210              	.LCFI7:
+ 211              		stmfd	sp!, {r4, r5, r6, fp, ip, lr, pc}
+ 212 015c 0DC0A0E1 	.LCFI8:
+ 213              		sub	fp, ip, #4
+ 214 0160 70D82DE9 	.LCFI9:
+ 215              		sub	sp, sp, #24
+ 216 0164 04B04CE2 	.LCFI10:
+ 217              		.loc 1 108 0
+ 218 0168 18D04DE2 		ldr	r2, .L24+16
+ 219              		mov	r3, #0
+ 107:lab.c         **** 	/////////////// Controller Settings ////////////
+ 108:lab.c         **** 	WO_SDK.ctrl_mode=0x00;  //0x00: direct individual motor control (individual commands for motors 0.
+ 220              	2, #0]
+ 221 016c FC249FE5 		.loc 1 114 0
+ 222 0170 0030A0E3 		ldr	r2, .L24+16
+ 223 0174 0030C2E5 		mov	r3, #1
+ 109:lab.c         **** 				//0x01: direct motor control using standard output mapping: commands are interpreted as pitch, 
+ 110:lab.c         **** 				//      and thrust inputs; no attitude controller active
+ 111:lab.c         **** 				//0x02: attitude and throttle control: commands are input for standard attitude controller
+ 112:lab.c         **** 				//0x03: GPS waypoint control
+ 113:lab.c         **** 
+ 114:lab.c         **** 	WO_SDK.ctrl_enabled=1;	//0: disable control by HL processor
+ 224              	b	r3, [r2, #1]
+ 225 0178 F0249FE5 		.loc 1 120 0
+ 226 017c 0130A0E3 		ldr	r3, .L24+20
+ 227 0180 0130C2E5 		ldr	r3, [r3, #0]	@ float
+ 115:lab.c         **** 				//1: enable control by HL processor
+ 116:lab.c         **** 	////////////////////////////////////////////////
+ 117:lab.c         **** 
+ 118:lab.c         **** 	//////// Translate commanded torques and thrust into rotor speed and commands ////////////
+ 119:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 120:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 228              		r0, r3
+ 229 0184 E8349FE5 		bl	__extendsfdf2
+ 230 0188 003093E5 		mov	r3, r0
+ 231 018c 0300A0E1 		mov	r4, r1
+ 232 0190 FEFFFFEB 		mov	r0, r3
+ 233 0194 0030A0E1 		mov	r1, r4
+ 234 0198 0140A0E1 		mov	r2, r3
+ 235 019c 0300A0E1 		mov	r3, r4
+ 236 01a0 0410A0E1 		bl	__adddf3
+ 237 01a4 0320A0E1 		mov	r3, r0
+ 238 01a8 0430A0E1 		mov	r4, r1
+ 239 01ac FEFFFFEB 		mov	r5, r3
+ 240 01b0 0030A0E1 		mov	r6, r4
+ 241 01b4 0140A0E1 		ldr	r3, .L24+24
+ 242 01b8 0350A0E1 		ldr	r3, [r3, #0]	@ float
+ 243 01bc 0460A0E1 		mov	r0, r3
+ 244 01c0 B0349FE5 		bl	__extendsfdf2
+ 245 01c4 003093E5 		mov	r3, r0
+ 246 01c8 0300A0E1 		mov	r4, r1
+ 247 01cc FEFFFFEB 		mov	r0, r5
+ 248 01d0 0030A0E1 		mov	r1, r6
+ 249 01d4 0140A0E1 		mov	r2, r3
+ 250 01d8 0500A0E1 		mov	r3, r4
+ 251 01dc 0610A0E1 		bl	__muldf3
+ 252 01e0 0320A0E1 		mov	r3, r0
+ 253 01e4 0430A0E1 		mov	r4, r1
+ 254 01e8 FEFFFFEB 		mov	r0, #1069547520
+ 255 01ec 0030A0E1 		add	r0, r0, #3145728
+ 256 01f0 0140A0E1 		mov	r1, #0
+ 257 01f4 FF05A0E3 		mov	r2, r3
+ 258 01f8 030680E2 		mov	r3, r4
+ 259 01fc 0010A0E3 		bl	__divdf3
+ 260 0200 0320A0E1 		mov	r3, r0
+ 261 0204 0430A0E1 		mov	r4, r1
+ 262 0208 FEFFFFEB 		mov	r0, r3
+ 263 020c 0030A0E1 		mov	r1, r4
+ 264 0210 0140A0E1 		bl	__truncdfsf2
+ 265 0214 0300A0E1 		mov	r3, r0
+ 266 0218 0410A0E1 		str	r3, [fp, #-40]	@ float
+ 267 021c FEFFFFEB 		.loc 1 121 0
+ 268 0220 0030A0E1 		ldr	r3, .L24+24
+ 269 0224 28300BE5 		ldr	r3, [r3, #0]	@ float
+ 121:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 270              		mov	r4, r1
+ 271 0228 48349FE5 		mov	r0, r3
+ 272 022c 003093E5 		mov	r1, r4
+ 273 0230 0300A0E1 		mov	r2, #1073741824
+ 274 0234 FEFFFFEB 		add	r2, r2, #1048576
+ 275 0238 0030A0E1 		mov	r3, #0
+ 276 023c 0140A0E1 		bl	__muldf3
+ 277 0240 0300A0E1 		mov	r3, r0
+ 278 0244 0410A0E1 		mov	r4, r1
+ 279 0248 0121A0E3 		mov	r0, #1069547520
+ 280 024c 012682E2 		add	r0, r0, #3145728
+ 281 0250 0030A0E3 		mov	r1, #0
+ 282 0254 FEFFFFEB 		mov	r2, r3
+ 283 0258 0030A0E1 		mov	r3, r4
+ 284 025c 0140A0E1 		bl	__divdf3
+ 285 0260 FF05A0E3 		mov	r3, r0
+ 286 0264 030680E2 		mov	r4, r1
+ 287 0268 0010A0E3 		mov	r0, r3
+ 288 026c 0320A0E1 		mov	r1, r4
+ 289 0270 0430A0E1 		bl	__truncdfsf2
+ 290 0274 FEFFFFEB 		mov	r3, r0
+ 291 0278 0030A0E1 		str	r3, [fp, #-36]	@ float
+ 292 027c 0140A0E1 		.loc 1 122 0
+ 293 0280 0300A0E1 		ldr	r3, .L24+28
+ 294 0284 0410A0E1 		ldr	r3, [r3, #0]	@ float
+ 295 0288 FEFFFFEB 		mov	r0, r3
+ 296 028c 0030A0E1 		bl	__extendsfdf2
+ 297 0290 24300BE5 		mov	r3, r0
+ 122:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
+ 298              		r1, r4
+ 299 0294 E0339FE5 		mov	r2, #1073741824
+ 300 0298 003093E5 		add	r2, r2, #1048576
+ 301 029c 0300A0E1 		mov	r3, #0
+ 302 02a0 FEFFFFEB 		bl	__muldf3
+ 303 02a4 0030A0E1 		mov	r3, r0
+ 304 02a8 0140A0E1 		mov	r4, r1
+ 305 02ac 0300A0E1 		mov	r0, #1069547520
+ 306 02b0 0410A0E1 		add	r0, r0, #3145728
+ 307 02b4 0121A0E3 		mov	r1, #0
+ 308 02b8 012682E2 		mov	r2, r3
+ 309 02bc 0030A0E3 		mov	r3, r4
+ 310 02c0 FEFFFFEB 		bl	__divdf3
+ 311 02c4 0030A0E1 		mov	r3, r0
+ 312 02c8 0140A0E1 		mov	r4, r1
+ 313 02cc FF05A0E3 		mov	r0, r3
+ 314 02d0 030680E2 		mov	r1, r4
+ 315 02d4 0010A0E3 		bl	__truncdfsf2
+ 316 02d8 0320A0E1 		mov	r3, r0
+ 317 02dc 0430A0E1 		str	r3, [fp, #-32]	@ float
+ 318 02e0 FEFFFFEB 		.loc 1 124 0
+ 319 02e4 0030A0E1 		ldr	r2, .L24+32
+ 320 02e8 0140A0E1 		ldr	r3, .L24+36	@ float
+ 321 02ec 0300A0E1 		str	r3, [r2, #0]	@ float
+ 322 02f0 0410A0E1 		.loc 1 125 0
+ 323 02f4 FEFFFFEB 		ldr	r2, .L24+32
+ 324 02f8 0030A0E1 		ldr	r3, [fp, #-40]	@ float
+ 325 02fc 20300BE5 		str	r3, [r2, #4]	@ float
+ 123:lab.c         **** 
+ 124:lab.c         **** 	Winv[0] = 0;
+ 326              	#-32]
+ 327 0300 78239FE5 		eor	r2, r3, #-2147483648
+ 328 0304 78339FE5 		ldr	r3, .L24+32
+ 329 0308 003082E5 		str	r2, [r3, #8]	@ float
+ 125:lab.c         **** 	Winv[1] = twolkF;
+ 330              	c 1 127 0
+ 331 030c 6C239FE5 		ldr	r2, .L24+32
+ 332 0310 28301BE5 		ldr	r3, [fp, #-36]	@ float
+ 333 0314 043082E5 		str	r3, [r2, #12]	@ float
+ 126:lab.c         **** 	Winv[2] = -fourkM;
+ 334              	c 1 128 0
+ 335 0318 20301BE5 		ldr	r3, [fp, #-40]
+ 336 031c 022123E2 		eor	r2, r3, #-2147483648
+ 337 0320 58339FE5 		ldr	r3, .L24+32
+ 338 0324 082083E5 		str	r2, [r3, #16]	@ float
+ 127:lab.c         **** 	Winv[3] = fourkF;
+ 339              	 1 129 0
+ 340 0328 50239FE5 		ldr	r2, .L24+32
+ 341 032c 24301BE5 		ldr	r3, .L24+36	@ float
+ 342 0330 0C3082E5 		str	r3, [r2, #20]	@ float
+ 128:lab.c         **** 	Winv[1*4+0] = -twolkF;
+ 343              	c 1 130 0
+ 344 0334 28301BE5 		ldr	r2, .L24+32
+ 345 0338 022123E2 		ldr	r3, [fp, #-32]	@ float
+ 346 033c 3C339FE5 		str	r3, [r2, #24]	@ float
+ 347 0340 102083E5 		.loc 1 131 0
+ 129:lab.c         **** 	Winv[1*4+1] = 0;
+ 348              	r2, .L24+32
+ 349 0344 34239FE5 		ldr	r3, [fp, #-36]	@ float
+ 350 0348 34339FE5 		str	r3, [r2, #28]	@ float
+ 351 034c 143082E5 		.loc 1 132 0
+ 130:lab.c         **** 	Winv[1*4+2] = fourkM;
+ 352              		r2, .L24+32
+ 353 0350 28239FE5 		ldr	r3, .L24+36	@ float
+ 354 0354 20301BE5 		str	r3, [r2, #32]	@ float
+ 355 0358 183082E5 		.loc 1 133 0
+ 131:lab.c         **** 	Winv[1*4+3] = fourkF;
+ 356              		r3, [fp, #-40]
+ 357 035c 1C239FE5 		eor	r2, r3, #-2147483648
+ 358 0360 24301BE5 		ldr	r3, .L24+32
+ 359 0364 1C3082E5 		str	r2, [r3, #36]	@ float
+ 132:lab.c         **** 	Winv[2*4+0] = 0;
+ 360              	c 1 134 0
+ 361 0368 10239FE5 		ldr	r3, [fp, #-32]
+ 362 036c 10339FE5 		eor	r2, r3, #-2147483648
+ 363 0370 203082E5 		ldr	r3, .L24+32
+ 133:lab.c         **** 	Winv[2*4+1] = -twolkF;
+ 364              		r2, [r3, #40]	@ float
+ 365 0374 28301BE5 		.loc 1 135 0
+ 366 0378 022123E2 		ldr	r2, .L24+32
+ 367 037c FC329FE5 		ldr	r3, [fp, #-36]	@ float
+ 368 0380 242083E5 		str	r3, [r2, #44]	@ float
+ 134:lab.c         **** 	Winv[2*4+2] = -fourkM;
+ 369              	 1 136 0
+ 370 0384 20301BE5 		ldr	r2, .L24+32
+ 371 0388 022123E2 		ldr	r3, [fp, #-40]	@ float
+ 372 038c EC329FE5 		str	r3, [r2, #48]	@ float
+ 373 0390 282083E5 		.loc 1 137 0
+ 135:lab.c         **** 	Winv[2*4+3] = fourkF;
+ 374              	r2, .L24+32
+ 375 0394 E4229FE5 		ldr	r3, .L24+36	@ float
+ 376 0398 24301BE5 		str	r3, [r2, #52]	@ float
+ 377 039c 2C3082E5 		.loc 1 138 0
+ 136:lab.c         **** 	Winv[3*4+0] = twolkF;
+ 378              		r2, .L24+32
+ 379 03a0 D8229FE5 		ldr	r3, [fp, #-32]	@ float
+ 380 03a4 28301BE5 		str	r3, [r2, #56]	@ float
+ 381 03a8 303082E5 		.loc 1 139 0
+ 137:lab.c         **** 	Winv[3*4+1] = 0;
+ 382              		r2, .L24+32
+ 383 03ac CC229FE5 		ldr	r3, [fp, #-36]	@ float
+ 384 03b0 CC329FE5 		str	r3, [r2, #60]	@ float
+ 385 03b4 343082E5 		.loc 1 141 0
+ 138:lab.c         **** 	Winv[3*4+2] = fourkM;
+ 386              		r3, .L24+40
+ 387 03b8 C0229FE5 		str	r3, [sp, #0]
+ 388 03bc 20301BE5 		ldr	r3, .L24+44
+ 389 03c0 383082E5 		str	r3, [sp, #4]
+ 139:lab.c         **** 	Winv[3*4+3] = fourkF;
+ 390              		r0, #4
+ 391 03c4 B4229FE5 		mov	r1, #4
+ 392 03c8 24301BE5 		mov	r2, #1
+ 393 03cc 3C3082E5 		ldr	r3, .L24+32
+ 140:lab.c         **** 
+ 141:lab.c         **** 	matrix_multiply(4,4,1,Winv,cnt_u,omega_cmd2);
+ 394              	matrix_multiply
+ 395 03d0 B0329FE5 		.loc 1 144 0
+ 396 03d4 00308DE5 		mov	r3, #0
+ 397 03d8 AC329FE5 		str	r3, [fp, #-28]
+ 398 03dc 04308DE5 		b	.L8
+ 399 03e0 0400A0E3 	.L9:
+ 400 03e4 0410A0E3 		.loc 1 145 0
+ 401 03e8 0120A0E3 		ldr	r2, [fp, #-28]
+ 402 03ec 8C329FE5 		ldr	r3, .L24+44
+ 403 03f0 FEFFFFEB 		ldr	r2, [r3, r2, asl #2]	@ float
+ 142:lab.c         **** 
+ 143:lab.c         **** 	int i;
+ 144:lab.c         **** 	for (i=0; i<4; i++) {
+ 404              	L24+48
+ 405 03f4 0030A0E3 		ldr	r3, [r3, #0]	@ float
+ 406 03f8 1C300BE5 		mov	r0, r2
+ 407 03fc 710000EA 		mov	r1, r3
+ 408              		bl	__gtsf2
+ 145:lab.c         **** 		if (omega_cmd2[i] > MAXPHI2) {
+ 409              	r3, r0
+ 410 0400 1C201BE5 		cmp	r3, #0
+ 411 0404 80329FE5 		bgt	.L12
+ 412 0408 022193E7 		b	.L10
+ 413 040c 7C329FE5 	.L12:
+ 414 0410 003093E5 		.loc 1 146 0
+ 415 0414 0200A0E1 		ldr	r1, [fp, #-28]
+ 416 0418 0310A0E1 		ldr	r3, .L24+48
+ 417 041c FEFFFFEB 		ldr	r2, [r3, #0]	@ float
+ 418 0420 0030A0E1 		ldr	r3, .L24+44
+ 419 0424 000053E3 		str	r2, [r3, r1, asl #2]	@ float
+ 420 0428 000000CA 		b	.L13
+ 421 042c 050000EA 	.L10:
+ 422              		.loc 1 148 0
+ 146:lab.c         **** 			omega_cmd2[i] = MAXPHI2;
+ 423              	#-28]
+ 424 0430 1C101BE5 		ldr	r3, .L24+44
+ 425 0434 54329FE5 		ldr	r2, [r3, r2, asl #2]	@ float
+ 426 0438 002093E5 		ldr	r3, .L24+52
+ 427 043c 48329FE5 		ldr	r3, [r3, #0]	@ float
+ 428 0440 012183E7 		mov	r0, r2
+ 429 0444 100000EA 		mov	r1, r3
+ 430              		bl	__ltsf2
+ 147:lab.c         **** 		}
+ 148:lab.c         **** 		else if (omega_cmd2[i] < MINPHI2) {
+ 431              	 r0
+ 432 0448 1C201BE5 		cmp	r3, #0
+ 433 044c 38329FE5 		blt	.L15
+ 434 0450 022193E7 		b	.L13
+ 435 0454 38329FE5 	.L15:
+ 436 0458 003093E5 		.loc 1 149 0
+ 437 045c 0200A0E1 		ldr	r1, [fp, #-28]
+ 438 0460 0310A0E1 		ldr	r3, .L24+52
+ 439 0464 FEFFFFEB 		ldr	r2, [r3, #0]	@ float
+ 440 0468 0030A0E1 		ldr	r3, .L24+44
+ 441 046c 000053E3 		str	r2, [r3, r1, asl #2]	@ float
+ 442 0470 000000BA 	.L13:
+ 443 0474 040000EA 		.loc 1 151 0
+ 444              		ldr	r5, [fp, #-28]
+ 149:lab.c         **** 			omega_cmd2[i] = MINPHI2;
+ 445              	#-28]
+ 446 0478 1C101BE5 		ldr	r3, .L24+44
+ 447 047c 10329FE5 		ldr	r3, [r3, r2, asl #2]	@ float
+ 448 0480 002093E5 		mov	r0, r3
+ 449 0484 00329FE5 		bl	__extendsfdf2
+ 450 0488 012183E7 		mov	r3, r0
+ 451              		mov	r4, r1
+ 150:lab.c         **** 		}
+ 151:lab.c         **** 		omega_cmd[i] = sqrt(omega_cmd2[i]);
+ 452              	, r3
+ 453 048c 1C501BE5 		mov	r1, r4
+ 454 0490 1C201BE5 		bl	sqrt
+ 455 0494 F0319FE5 		mov	r3, r0
+ 456 0498 023193E7 		mov	r4, r1
+ 457 049c 0300A0E1 		mov	r0, r3
+ 458 04a0 FEFFFFEB 		mov	r1, r4
+ 459 04a4 0030A0E1 		bl	__truncdfsf2
+ 460 04a8 0140A0E1 		mov	r2, r0
+ 461 04ac 0300A0E1 		ldr	r3, .L24+56
+ 462 04b0 0410A0E1 		str	r2, [r3, r5, asl #2]	@ float
+ 463 04b4 FEFFFFEB 		.loc 1 154 0
+ 464 04b8 0030A0E1 		ldr	r5, [fp, #-28]
+ 465 04bc 0140A0E1 		ldr	r2, [fp, #-28]
+ 466 04c0 0300A0E1 		ldr	r3, .L24+56
+ 467 04c4 0410A0E1 		ldr	r3, [r3, r2, asl #2]	@ float
+ 468 04c8 FEFFFFEB 		mov	r0, r3
+ 469 04cc 0020A0E1 		bl	__extendsfdf2
+ 470 04d0 C0319FE5 		mov	r3, r0
+ 471 04d4 052183E7 		mov	r4, r1
+ 152:lab.c         **** 		// Translate Desired Rotor Speed into Motor Commands
+ 153:lab.c         **** 		// NOTE: THIS IS FOR THE PELICAN
+ 154:lab.c         **** 		cmd[i] = 0.238432*omega_cmd[i] - 25.872642;	// Verify
+ 472              	 r4
+ 473 04d8 1C501BE5 		adr	r2, .L24
+ 474 04dc 1C201BE5 		ldmia	r2, {r2-r3}
+ 475 04e0 B0319FE5 		bl	__muldf3
+ 476 04e4 023193E7 		mov	r3, r0
+ 477 04e8 0300A0E1 		mov	r4, r1
+ 478 04ec FEFFFFEB 		mov	r0, r3
+ 479 04f0 0030A0E1 		mov	r1, r4
+ 480 04f4 0140A0E1 		adr	r2, .L24+8
+ 481 04f8 0300A0E1 		ldmia	r2, {r2-r3}
+ 482 04fc 0410A0E1 		bl	__subdf3
+ 483 0500 562F8FE2 		mov	r3, r0
+ 484 0504 0C0092E8 		mov	r4, r1
+ 485 0508 FEFFFFEB 		mov	r0, r3
+ 486 050c 0030A0E1 		mov	r1, r4
+ 487 0510 0140A0E1 		bl	__truncdfsf2
+ 488 0514 0300A0E1 		mov	r2, r0
+ 489 0518 0410A0E1 		ldr	r3, .L24+60
+ 490 051c 512F8FE2 		str	r2, [r3, r5, asl #2]	@ float
+ 491 0520 0C0092E8 		.loc 1 161 0
+ 492 0524 FEFFFFEB 		ldr	r2, [fp, #-28]
+ 493 0528 0030A0E1 		ldr	r3, .L24+60
+ 494 052c 0140A0E1 		ldr	r3, [r3, r2, asl #2]	@ float
+ 495 0530 0300A0E1 		mov	r0, r3
+ 496 0534 0410A0E1 		ldr	r1, .L24+64	@ float
+ 497 0538 FEFFFFEB 		bl	__ltsf2
+ 498 053c 0020A0E1 		mov	r3, r0
+ 499 0540 54319FE5 		cmp	r3, #0
+ 500 0544 052183E7 		blt	.L18
+ 155:lab.c         **** 
+ 156:lab.c         **** 		// Below is a safety measure. We want to make sure the motor 
+ 157:lab.c         **** 		// commands are never 0 so that the motors will always keep 
+ 158:lab.c         **** 		// spinning. Also makes sure that motor commands stay within range.
+ 159:lab.c         **** 		// NOTE: THIS SHOULD BE UNNECESSARY. I IMPLEMENTED THIS AS AN EXTRA 
+ 160:lab.c         **** 		// SAFETY MEASURE
+ 161:lab.c         **** 		if (cmd[i] < 1.0) {
+ 501              	ldr	r1, [fp, #-28]
+ 502 0548 1C201BE5 		ldr	r2, .L24+60
+ 503 054c 48319FE5 		ldr	r3, .L24+64	@ float
+ 504 0550 023193E7 		str	r3, [r2, r1, asl #2]	@ float
+ 505 0554 0300A0E1 		b	.L19
+ 506 0558 40119FE5 	.L16:
+ 507 055c FEFFFFEB 		.loc 1 164 0
+ 508 0560 0030A0E1 		ldr	r2, [fp, #-28]
+ 509 0564 000053E3 		ldr	r3, .L24+60
+ 510 0568 000000BA 		ldr	r3, [r3, r2, asl #2]	@ float
+ 511 056c 040000EA 		mov	r0, r3
+ 512              		ldr	r1, .L24+68	@ float
+ 162:lab.c         **** 			cmd[i] = 1.0;
+ 513              		mov	r3, r0
+ 514 0570 1C101BE5 		cmp	r3, #0
+ 515 0574 20219FE5 		bgt	.L21
+ 516 0578 20319FE5 		b	.L19
+ 517 057c 013182E7 	.L21:
+ 518 0580 0D0000EA 		.loc 1 165 0
+ 519              		ldr	r1, [fp, #-28]
+ 163:lab.c         **** 		}
+ 164:lab.c         **** 		else if (cmd[i] > 200.0) {
+ 520              	, .L24+60
+ 521 0584 1C201BE5 		ldr	r3, .L24+68	@ float
+ 522 0588 0C319FE5 		str	r3, [r2, r1, asl #2]	@ float
+ 523 058c 023193E7 	.L19:
+ 524 0590 0300A0E1 		.loc 1 144 0
+ 525 0594 08119FE5 		ldr	r3, [fp, #-28]
+ 526 0598 FEFFFFEB 		add	r3, r3, #1
+ 527 059c 0030A0E1 		str	r3, [fp, #-28]
+ 528 05a0 000053E3 	.L8:
+ 529 05a4 000000CA 		ldr	r3, [fp, #-28]
+ 530 05a8 030000EA 		cmp	r3, #3
+ 531              		ble	.L9
+ 165:lab.c         **** 			cmd[i] = 200.0;
+ 532              	0
+ 533 05ac 1C101BE5 		ldr	r3, .L24+60
+ 534 05b0 E4209FE5 		ldr	r3, [r3, #0]	@ float
+ 535 05b4 E8309FE5 		mov	r0, r3
+ 536 05b8 013182E7 		bl	__fixunssfsi
+ 537              		mov	r3, r0
+ 538              		and	r3, r3, #255
+ 539 05bc 1C301BE5 		ldr	r2, .L24+72
+ 540 05c0 013083E2 		strb	r3, [r2, #0]
+ 541 05c4 1C300BE5 		.loc 1 172 0
+ 542              		ldr	r3, .L24+60
+ 543 05c8 1C301BE5 		ldr	r3, [r3, #4]	@ float
+ 544 05cc 030053E3 		mov	r0, r3
+ 545 05d0 8AFFFFDA 		bl	__fixunssfsi
+ 166:lab.c         **** 		} 
+ 167:lab.c         **** 	}
+ 168:lab.c         **** 	/////////////////////////////////////////////////////////////////////////////////////////////
+ 169:lab.c         **** 
+ 170:lab.c         **** 	/////// Send Motor Commands ///////////
+ 171:lab.c         **** 	WO_Direct_Individual_Motor_Control.motor[0] = cmd[0];
+ 546              	nd	r3, r3, #255
+ 547 05d4 C0309FE5 		ldr	r2, .L24+72
+ 548 05d8 003093E5 		strb	r3, [r2, #3]
+ 549 05dc 0300A0E1 		.loc 1 173 0
+ 550 05e0 FEFFFFEB 		ldr	r3, .L24+60
+ 551 05e4 0030A0E1 		ldr	r3, [r3, #8]	@ float
+ 552 05e8 FF3003E2 		mov	r0, r3
+ 553 05ec B4209FE5 		bl	__fixunssfsi
+ 554 05f0 0030C2E5 		mov	r3, r0
+ 172:lab.c         **** 	WO_Direct_Individual_Motor_Control.motor[3] = cmd[1];
+ 555              	r3, #255
+ 556 05f4 A0309FE5 		ldr	r2, .L24+72
+ 557 05f8 043093E5 		strb	r3, [r2, #1]
+ 558 05fc 0300A0E1 		.loc 1 174 0
+ 559 0600 FEFFFFEB 		ldr	r3, .L24+60
+ 560 0604 0030A0E1 		ldr	r3, [r3, #12]	@ float
+ 561 0608 FF3003E2 		mov	r0, r3
+ 562 060c 94209FE5 		bl	__fixunssfsi
+ 563 0610 0330C2E5 		mov	r3, r0
+ 173:lab.c         **** 	WO_Direct_Individual_Motor_Control.motor[1] = cmd[2];
+ 564              	r3, #255
+ 565 0614 80309FE5 		ldr	r2, .L24+72
+ 566 0618 083093E5 		strb	r3, [r2, #2]
+ 567 061c 0300A0E1 		.loc 1 176 0
+ 568 0620 FEFFFFEB 		sub	sp, fp, #24
+ 569 0624 0030A0E1 		ldmfd	sp, {r4, r5, r6, fp, sp, lr}
+ 570 0628 FF3003E2 		bx	lr
+ 571 062c 74209FE5 	.L25:
+ 572 0630 0130C2E5 		.align	2
+ 174:lab.c         **** 	WO_Direct_Individual_Motor_Control.motor[2] = cmd[3];
+ 573              	ord	1070499056
+ 574 0634 60309FE5 		.word	-1792478831
+ 575 0638 0C3093E5 		.word	1077534565
+ 576 063c 0300A0E1 		.word	2001935796
+ 577 0640 FEFFFFEB 		.word	WO_SDK
+ 578 0644 0030A0E1 		.word	l
+ 579 0648 FF3003E2 		.word	kF
+ 580 064c 54209FE5 		.word	kM
+ 581 0650 0230C2E5 		.word	Winv
+ 175:lab.c         **** 	///////////////////////////////////////
+ 176:lab.c         **** }
+ 582              		.word	cnt_u
+ 583 0654 18D04BE2 		.word	omega_cmd2
+ 584 0658 70689DE8 		.word	MAXPHI2
+ 585 065c 1EFF2FE1 		.word	MINPHI2
+ 586              		.word	omega_cmd
+ 587              		.word	cmd
+ 588              		.word	1065353216
+ 589 0660 F084CE3F 		.word	1128792064
+ 590 0664 91F12895 		.word	WO_Direct_Individual_Motor_Control
+ 591 0668 65DF3940 	.LFE4:
+ 593 0670 00000000 		.comm	GPS_timeout,4,4
+ 594 0674 00000000 		.comm	SYSTEM_initialized,1,1
+ 595 0678 00000000 		.comm	imusensor,68,4
+ 596 067c 00000000 		.comm	u,16,4
+ 597 0680 00000000 		.comm	Winv,64,4
+ 598 0684 00000000 		.comm	cnt_u,16,4
+ 599 0688 00000000 		.comm	omega_cmd2,16,4
+ 600 068c 00000000 		.comm	omega_cmd,16,4
+ 601 0690 00000000 		.comm	cmd,16,4
+ 602 0694 00000000 		.comm	roll_desired,4,4
+ 603 0698 00000000 		.comm	pitch_desired,4,4
+ 604 069c 00000000 		.comm	yaw_desired,4,4
+ 605 06a0 0000803F 		.comm	x_nom,16,4
+ 606 06a4 00004843 		.comm	z,12,4
+ 607 06a8 00000000 		.comm	dt,4,4
+ 608              		.section	.debug_frame,"",%progbits
+ 609              	.Lframe0:
+ 610              		.4byte	.LECIE0-.LSCIE0
+ 611              	.LSCIE0:
+ 612              		.4byte	0xffffffff
+ 613              		.byte	0x1
+ 614              		.ascii	"\000"
+ 615              		.uleb128 0x1
+ 616              		.sleb128 -4
+ 617              		.byte	0xe
+ 618              		.byte	0xc
+ 619              		.uleb128 0xd
+ 620              		.uleb128 0x0
+ 621              		.align	2
+ 622              	.LECIE0:
+ 623              	.LSFDE0:
+ 624              		.4byte	.LEFDE0-.LASFDE0
+ 727              		.4byte	0x0
+DEFINED SYMBOLS
+                            *ABS*:00000000 lab.c
+C:\Users\bkuo\AppData\Local\Temp/ccUzaaaa.s:15     .data:00000000 mass
+C:\Users\bkuo\AppData\Local\Temp/ccUzaaaa.s:16     .data:00000000 $d
+C:\Users\bkuo\AppData\Local\Temp/ccUzaaaa.s:21     .data:00000004 kF
+C:\Users\bkuo\AppData\Local\Temp/ccUzaaaa.s:27     .data:00000008 kM
+C:\Users\bkuo\AppData\Local\Temp/ccUzaaaa.s:33     .data:0000000c l
+C:\Users\bkuo\AppData\Local\Temp/ccUzaaaa.s:39     .data:00000010 MAXPHI2
+C:\Users\bkuo\AppData\Local\Temp/ccUzaaaa.s:45     .data:00000014 MINPHI2
+C:\Users\bkuo\AppData\Local\Temp/ccUzaaaa.s:51     .data:00000018 g
+C:\Users\bkuo\AppData\Local\Temp/ccUzaaaa.s:57     .text:00000000 lab
+C:\Users\bkuo\AppData\Local\Temp/ccUzaaaa.s:64     .text:00000000 $a
+C:\Users\bkuo\AppData\Local\Temp/ccUzaaaa.s:85     .text:00000020 lab2
+C:\Users\bkuo\AppData\Local\Temp/ccUzaaaa.s:206    .text:0000015c Command
+C:\Users\bkuo\AppData\Local\Temp/ccUzaaaa.s:183    .text:00000138 $d
+                            *COM*:00000004 pitch_desired
+                            *COM*:00000010 cnt_u
+                            *COM*:00000044 imusensor
+                            *COM*:00000010 u
+C:\Users\bkuo\AppData\Local\Temp/ccUzaaaa.s:212    .text:0000015c $a
+C:\Users\bkuo\AppData\Local\Temp/ccUzaaaa.s:589    .text:00000660 $d
+                            *COM*:00000040 Winv
+                            *COM*:00000010 omega_cmd2
+                            *COM*:00000010 omega_cmd
+                            *COM*:00000010 cmd
+                            *COM*:00000004 GPS_timeout
+                            *COM*:00000001 SYSTEM_initialized
+                            *COM*:00000004 roll_desired
+                            *COM*:00000004 yaw_desired
+                            *COM*:00000010 x_nom
+                            *COM*:0000000c z
+                            *COM*:00000004 dt
+
+UNDEFINED SYMBOLS
+__subsf3
+__mulsf3
+__extendsfdf2
+__adddf3
+__muldf3
+__divdf3
+__truncdfsf2
+__gtsf2
+__ltsf2
+__subdf3
+__fixunssfsi
+matrix_multiply
+sqrt
+WO_SDK
+WO_Direct_Individual_Motor_Control

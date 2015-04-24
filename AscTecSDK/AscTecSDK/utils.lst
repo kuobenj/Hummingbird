@@ -1,0 +1,2315 @@
+   1              		.file	"utils.c"
+   3              		.text
+   4              	.Ltext0:
+  65              		.global	__subsf3
+  66              		.global	__extendsfdf2
+  67              		.global	__adddf3
+  68              		.global	__truncdfsf2
+  69              		.global	__subdf3
+  70              		.align	2
+  74              		.global	angle_diff
+  76              	angle_diff:
+   1:utils.c       **** #include "utils.h"
+   2:utils.c       **** #include "math.h"
+   3:utils.c       **** 
+   4:utils.c       **** 
+   5:utils.c       **** float angle_diff(float a1, float a2)
+   6:utils.c       **** {
+  78              	.LM0:
+  79              		@ Function supports interworking.
+  80              		@ args = 0, pretend = 0, frame = 8
+  81              		@ frame_needed = 1, uses_anonymous_args = 0
+  82 0000 0DC0A0E1 		mov	ip, sp
+  83 0004 10D82DE9 		stmfd	sp!, {r4, fp, ip, lr, pc}
+  84 0008 04B04CE2 		sub	fp, ip, #4
+  85 000c 08D04DE2 		sub	sp, sp, #8
+  86 0010 14000BE5 		str	r0, [fp, #-20]	@ float
+  87 0014 18100BE5 		str	r1, [fp, #-24]	@ float
+   7:utils.c       ****     return fmodf((a1 - a2) + 3*M_PI, 2*M_PI) - M_PI;
+  89              	.LM1:
+  90 0018 14001BE5 		ldr	r0, [fp, #-20]	@ float
+  91 001c 18101BE5 		ldr	r1, [fp, #-24]	@ float
+  92 0020 FEFFFFEB 		bl	__subsf3
+  93 0024 0030A0E1 		mov	r3, r0
+  94 0028 0300A0E1 		mov	r0, r3
+  95 002c FEFFFFEB 		bl	__extendsfdf2
+  96 0030 0030A0E1 		mov	r3, r0
+  97 0034 0140A0E1 		mov	r4, r1
+  98 0038 0300A0E1 		mov	r0, r3
+  99 003c 0410A0E1 		mov	r1, r4
+ 100 0040 78208FE2 		adr	r2, .L3
+ 101 0044 0C0092E8 		ldmia	r2, {r2-r3}
+ 102 0048 FEFFFFEB 		bl	__adddf3
+ 103 004c 0030A0E1 		mov	r3, r0
+ 104 0050 0140A0E1 		mov	r4, r1
+ 105 0054 0300A0E1 		mov	r0, r3
+ 106 0058 0410A0E1 		mov	r1, r4
+ 107 005c FEFFFFEB 		bl	__truncdfsf2
+ 108 0060 0030A0E1 		mov	r3, r0
+ 109 0064 0300A0E1 		mov	r0, r3
+ 110 0068 60109FE5 		ldr	r1, .L3+16	@ float
+ 111 006c FEFFFFEB 		bl	fmodf
+ 112 0070 0030A0E1 		mov	r3, r0
+ 113 0074 0300A0E1 		mov	r0, r3
+ 114 0078 FEFFFFEB 		bl	__extendsfdf2
+ 115 007c 0030A0E1 		mov	r3, r0
+ 116 0080 0140A0E1 		mov	r4, r1
+ 117 0084 0300A0E1 		mov	r0, r3
+ 118 0088 0410A0E1 		mov	r1, r4
+ 119 008c 34208FE2 		adr	r2, .L3+8
+ 120 0090 0C0092E8 		ldmia	r2, {r2-r3}
+ 121 0094 FEFFFFEB 		bl	__subdf3
+ 122 0098 0030A0E1 		mov	r3, r0
+ 123 009c 0140A0E1 		mov	r4, r1
+ 124 00a0 0300A0E1 		mov	r0, r3
+ 125 00a4 0410A0E1 		mov	r1, r4
+ 126 00a8 FEFFFFEB 		bl	__truncdfsf2
+ 127 00ac 0030A0E1 		mov	r3, r0
+   8:utils.c       **** 	//return ((float)fmod((a1-a2) + 3*3.1416, 2*3.1416) - 3.1416);
+   9:utils.c       **** 	//return fmodf((a1-a2) + 3*3.1416, 2*3.1416);
+  10:utils.c       **** }
+ 129              	.LM2:
+ 130 00b0 0300A0E1 		mov	r0, r3
+ 131 00b4 10D04BE2 		sub	sp, fp, #16
+ 132 00b8 10689DE8 		ldmfd	sp, {r4, fp, sp, lr}
+ 133 00bc 1EFF2FE1 		bx	lr
+ 134              	.L4:
+ 135              		.align	2
+ 136              	.L3:
+ 137 00c0 7CD92240 		.word	1076025724
+ 138 00c4 D221337F 		.word	2134057426
+ 139 00c8 FB210940 		.word	1074340347
+ 140 00cc 182D4454 		.word	1413754136
+ 141 00d0 DB0FC940 		.word	1086918619
+ 143              	.Lscope0:
+ 144              		.align	2
+ 148              		.global	unwedge
+ 150              	unwedge:
+  11:utils.c       **** 
+  12:utils.c       **** void unwedge(float* A, float* v) {
+ 152              	.LM3:
+ 153              		@ Function supports interworking.
+ 154              		@ args = 0, pretend = 0, frame = 8
+ 155              		@ frame_needed = 1, uses_anonymous_args = 0
+ 156 00d4 0DC0A0E1 		mov	ip, sp
+ 157 00d8 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+ 158 00dc 04B04CE2 		sub	fp, ip, #4
+ 159 00e0 08D04DE2 		sub	sp, sp, #8
+ 160 00e4 10000BE5 		str	r0, [fp, #-16]
+ 161 00e8 14100BE5 		str	r1, [fp, #-20]
+  13:utils.c       ****     // A must be 3x3 matrix
+  14:utils.c       ****     // v must be 3x1 vector
+  15:utils.c       ****     v[0] = A[2,1];
+ 163              	.LM4:
+ 164 00ec 10301BE5 		ldr	r3, [fp, #-16]
+ 165 00f0 043083E2 		add	r3, r3, #4
+ 166 00f4 002093E5 		ldr	r2, [r3, #0]	@ float
+ 167 00f8 14301BE5 		ldr	r3, [fp, #-20]
+ 168 00fc 002083E5 		str	r2, [r3, #0]	@ float
+  16:utils.c       ****     v[1] = -A[2,0];
+ 170              	.LM5:
+ 171 0100 14301BE5 		ldr	r3, [fp, #-20]
+ 172 0104 042083E2 		add	r2, r3, #4
+ 173 0108 10301BE5 		ldr	r3, [fp, #-16]
+ 174 010c 003093E5 		ldr	r3, [r3, #0]	@ float
+ 175 0110 023123E2 		eor	r3, r3, #-2147483648
+ 176 0114 003082E5 		str	r3, [r2, #0]	@ float
+  17:utils.c       ****     v[2] = A[1,0];
+ 178              	.LM6:
+ 179 0118 14301BE5 		ldr	r3, [fp, #-20]
+ 180 011c 082083E2 		add	r2, r3, #8
+ 181 0120 10301BE5 		ldr	r3, [fp, #-16]
+ 182 0124 003093E5 		ldr	r3, [r3, #0]	@ float
+ 183 0128 003082E5 		str	r3, [r2, #0]	@ float
+  18:utils.c       **** }
+ 185              	.LM7:
+ 186 012c 0CD04BE2 		sub	sp, fp, #12
+ 187 0130 00689DE8 		ldmfd	sp, {fp, sp, lr}
+ 188 0134 1EFF2FE1 		bx	lr
+ 190              	.Lscope1:
+ 191              		.global	__divsf3
+ 192              		.global	__mulsf3
+ 193              		.global	__addsf3
+ 194              		.align	2
+ 198              		.global	euler2quat
+ 200              	euler2quat:
+  19:utils.c       **** 
+  20:utils.c       **** void euler2quat(EulerAngles* angles, Quaternion* qout) {
+ 202              	.LM8:
+ 203              		@ Function supports interworking.
+ 204              		@ args = 0, pretend = 0, frame = 44
+ 205              		@ frame_needed = 1, uses_anonymous_args = 0
+ 206 0138 0DC0A0E1 		mov	ip, sp
+ 207 013c 10D82DE9 		stmfd	sp!, {r4, fp, ip, lr, pc}
+ 208 0140 04B04CE2 		sub	fp, ip, #4
+ 209 0144 2CD04DE2 		sub	sp, sp, #44
+ 210 0148 38000BE5 		str	r0, [fp, #-56]
+ 211 014c 3C100BE5 		str	r1, [fp, #-60]
+  21:utils.c       **** 
+  22:utils.c       **** 	float phi2 = angles->phi/2.0;
+ 213              	.LM9:
+ 214 0150 38301BE5 		ldr	r3, [fp, #-56]
+ 215 0154 003093E5 		ldr	r3, [r3, #0]	@ float
+ 216 0158 0300A0E1 		mov	r0, r3
+ 217 015c 1C139FE5 		ldr	r1, .L9	@ float
+ 218 0160 FEFFFFEB 		bl	__divsf3
+ 219 0164 0030A0E1 		mov	r3, r0
+ 220 0168 34300BE5 		str	r3, [fp, #-52]	@ float
+  23:utils.c       **** 	float theta2 = angles->theta/2.0;
+ 222              	.LM10:
+ 223 016c 38301BE5 		ldr	r3, [fp, #-56]
+ 224 0170 043093E5 		ldr	r3, [r3, #4]	@ float
+ 225 0174 0300A0E1 		mov	r0, r3
+ 226 0178 00139FE5 		ldr	r1, .L9	@ float
+ 227 017c FEFFFFEB 		bl	__divsf3
+ 228 0180 0030A0E1 		mov	r3, r0
+ 229 0184 30300BE5 		str	r3, [fp, #-48]	@ float
+  24:utils.c       **** 	float psi2 = angles->psi/2.0;
+ 231              	.LM11:
+ 232 0188 38301BE5 		ldr	r3, [fp, #-56]
+ 233 018c 083093E5 		ldr	r3, [r3, #8]	@ float
+ 234 0190 0300A0E1 		mov	r0, r3
+ 235 0194 E4129FE5 		ldr	r1, .L9	@ float
+ 236 0198 FEFFFFEB 		bl	__divsf3
+ 237 019c 0030A0E1 		mov	r3, r0
+ 238 01a0 2C300BE5 		str	r3, [fp, #-44]	@ float
+  25:utils.c       **** 
+  26:utils.c       **** 	float sinphi = sin(phi2);
+ 240              	.LM12:
+ 241 01a4 34001BE5 		ldr	r0, [fp, #-52]	@ float
+ 242 01a8 FEFFFFEB 		bl	__extendsfdf2
+ 243 01ac 0030A0E1 		mov	r3, r0
+ 244 01b0 0140A0E1 		mov	r4, r1
+ 245 01b4 0300A0E1 		mov	r0, r3
+ 246 01b8 0410A0E1 		mov	r1, r4
+ 247 01bc FEFFFFEB 		bl	sin
+ 248 01c0 0030A0E1 		mov	r3, r0
+ 249 01c4 0140A0E1 		mov	r4, r1
+ 250 01c8 0300A0E1 		mov	r0, r3
+ 251 01cc 0410A0E1 		mov	r1, r4
+ 252 01d0 FEFFFFEB 		bl	__truncdfsf2
+ 253 01d4 0030A0E1 		mov	r3, r0
+ 254 01d8 28300BE5 		str	r3, [fp, #-40]	@ float
+  27:utils.c       **** 	float sintheta = sin(theta2);
+ 256              	.LM13:
+ 257 01dc 30001BE5 		ldr	r0, [fp, #-48]	@ float
+ 258 01e0 FEFFFFEB 		bl	__extendsfdf2
+ 259 01e4 0030A0E1 		mov	r3, r0
+ 260 01e8 0140A0E1 		mov	r4, r1
+ 261 01ec 0300A0E1 		mov	r0, r3
+ 262 01f0 0410A0E1 		mov	r1, r4
+ 263 01f4 FEFFFFEB 		bl	sin
+ 264 01f8 0030A0E1 		mov	r3, r0
+ 265 01fc 0140A0E1 		mov	r4, r1
+ 266 0200 0300A0E1 		mov	r0, r3
+ 267 0204 0410A0E1 		mov	r1, r4
+ 268 0208 FEFFFFEB 		bl	__truncdfsf2
+ 269 020c 0030A0E1 		mov	r3, r0
+ 270 0210 24300BE5 		str	r3, [fp, #-36]	@ float
+  28:utils.c       **** 	float sinpsi = sin(psi2);
+ 272              	.LM14:
+ 273 0214 2C001BE5 		ldr	r0, [fp, #-44]	@ float
+ 274 0218 FEFFFFEB 		bl	__extendsfdf2
+ 275 021c 0030A0E1 		mov	r3, r0
+ 276 0220 0140A0E1 		mov	r4, r1
+ 277 0224 0300A0E1 		mov	r0, r3
+ 278 0228 0410A0E1 		mov	r1, r4
+ 279 022c FEFFFFEB 		bl	sin
+ 280 0230 0030A0E1 		mov	r3, r0
+ 281 0234 0140A0E1 		mov	r4, r1
+ 282 0238 0300A0E1 		mov	r0, r3
+ 283 023c 0410A0E1 		mov	r1, r4
+ 284 0240 FEFFFFEB 		bl	__truncdfsf2
+ 285 0244 0030A0E1 		mov	r3, r0
+ 286 0248 20300BE5 		str	r3, [fp, #-32]	@ float
+  29:utils.c       **** 	float cosphi = cos(phi2);
+ 288              	.LM15:
+ 289 024c 34001BE5 		ldr	r0, [fp, #-52]	@ float
+ 290 0250 FEFFFFEB 		bl	__extendsfdf2
+ 291 0254 0030A0E1 		mov	r3, r0
+ 292 0258 0140A0E1 		mov	r4, r1
+ 293 025c 0300A0E1 		mov	r0, r3
+ 294 0260 0410A0E1 		mov	r1, r4
+ 295 0264 FEFFFFEB 		bl	cos
+ 296 0268 0030A0E1 		mov	r3, r0
+ 297 026c 0140A0E1 		mov	r4, r1
+ 298 0270 0300A0E1 		mov	r0, r3
+ 299 0274 0410A0E1 		mov	r1, r4
+ 300 0278 FEFFFFEB 		bl	__truncdfsf2
+ 301 027c 0030A0E1 		mov	r3, r0
+ 302 0280 1C300BE5 		str	r3, [fp, #-28]	@ float
+  30:utils.c       **** 	float costheta = cos(theta2);
+ 304              	.LM16:
+ 305 0284 30001BE5 		ldr	r0, [fp, #-48]	@ float
+ 306 0288 FEFFFFEB 		bl	__extendsfdf2
+ 307 028c 0030A0E1 		mov	r3, r0
+ 308 0290 0140A0E1 		mov	r4, r1
+ 309 0294 0300A0E1 		mov	r0, r3
+ 310 0298 0410A0E1 		mov	r1, r4
+ 311 029c FEFFFFEB 		bl	cos
+ 312 02a0 0030A0E1 		mov	r3, r0
+ 313 02a4 0140A0E1 		mov	r4, r1
+ 314 02a8 0300A0E1 		mov	r0, r3
+ 315 02ac 0410A0E1 		mov	r1, r4
+ 316 02b0 FEFFFFEB 		bl	__truncdfsf2
+ 317 02b4 0030A0E1 		mov	r3, r0
+ 318 02b8 18300BE5 		str	r3, [fp, #-24]	@ float
+  31:utils.c       **** 	float cospsi = cos(psi2);
+ 320              	.LM17:
+ 321 02bc 2C001BE5 		ldr	r0, [fp, #-44]	@ float
+ 322 02c0 FEFFFFEB 		bl	__extendsfdf2
+ 323 02c4 0030A0E1 		mov	r3, r0
+ 324 02c8 0140A0E1 		mov	r4, r1
+ 325 02cc 0300A0E1 		mov	r0, r3
+ 326 02d0 0410A0E1 		mov	r1, r4
+ 327 02d4 FEFFFFEB 		bl	cos
+ 328 02d8 0030A0E1 		mov	r3, r0
+ 329 02dc 0140A0E1 		mov	r4, r1
+ 330 02e0 0300A0E1 		mov	r0, r3
+ 331 02e4 0410A0E1 		mov	r1, r4
+ 332 02e8 FEFFFFEB 		bl	__truncdfsf2
+ 333 02ec 0030A0E1 		mov	r3, r0
+ 334 02f0 14300BE5 		str	r3, [fp, #-20]	@ float
+  32:utils.c       **** 
+  33:utils.c       **** 	qout->w = cosphi * costheta * cospsi + sinphi * sintheta * sinpsi;
+ 336              	.LM18:
+ 337 02f4 1C001BE5 		ldr	r0, [fp, #-28]	@ float
+ 338 02f8 18101BE5 		ldr	r1, [fp, #-24]	@ float
+ 339 02fc FEFFFFEB 		bl	__mulsf3
+ 340 0300 0030A0E1 		mov	r3, r0
+ 341 0304 0300A0E1 		mov	r0, r3
+ 342 0308 14101BE5 		ldr	r1, [fp, #-20]	@ float
+ 343 030c FEFFFFEB 		bl	__mulsf3
+ 344 0310 0030A0E1 		mov	r3, r0
+ 345 0314 0340A0E1 		mov	r4, r3
+ 346 0318 28001BE5 		ldr	r0, [fp, #-40]	@ float
+ 347 031c 24101BE5 		ldr	r1, [fp, #-36]	@ float
+ 348 0320 FEFFFFEB 		bl	__mulsf3
+ 349 0324 0030A0E1 		mov	r3, r0
+ 350 0328 0300A0E1 		mov	r0, r3
+ 351 032c 20101BE5 		ldr	r1, [fp, #-32]	@ float
+ 352 0330 FEFFFFEB 		bl	__mulsf3
+ 353 0334 0030A0E1 		mov	r3, r0
+ 354 0338 0400A0E1 		mov	r0, r4
+ 355 033c 0310A0E1 		mov	r1, r3
+ 356 0340 FEFFFFEB 		bl	__addsf3
+ 357 0344 0030A0E1 		mov	r3, r0
+ 358 0348 0320A0E1 		mov	r2, r3
+ 359 034c 3C301BE5 		ldr	r3, [fp, #-60]
+ 360 0350 002083E5 		str	r2, [r3, #0]	@ float
+  34:utils.c       **** 	qout->x = sinphi * costheta * cospsi - cosphi * sintheta * sinpsi;
+ 362              	.LM19:
+ 363 0354 28001BE5 		ldr	r0, [fp, #-40]	@ float
+ 364 0358 18101BE5 		ldr	r1, [fp, #-24]	@ float
+ 365 035c FEFFFFEB 		bl	__mulsf3
+ 366 0360 0030A0E1 		mov	r3, r0
+ 367 0364 0300A0E1 		mov	r0, r3
+ 368 0368 14101BE5 		ldr	r1, [fp, #-20]	@ float
+ 369 036c FEFFFFEB 		bl	__mulsf3
+ 370 0370 0030A0E1 		mov	r3, r0
+ 371 0374 0340A0E1 		mov	r4, r3
+ 372 0378 1C001BE5 		ldr	r0, [fp, #-28]	@ float
+ 373 037c 24101BE5 		ldr	r1, [fp, #-36]	@ float
+ 374 0380 FEFFFFEB 		bl	__mulsf3
+ 375 0384 0030A0E1 		mov	r3, r0
+ 376 0388 0300A0E1 		mov	r0, r3
+ 377 038c 20101BE5 		ldr	r1, [fp, #-32]	@ float
+ 378 0390 FEFFFFEB 		bl	__mulsf3
+ 379 0394 0030A0E1 		mov	r3, r0
+ 380 0398 0400A0E1 		mov	r0, r4
+ 381 039c 0310A0E1 		mov	r1, r3
+ 382 03a0 FEFFFFEB 		bl	__subsf3
+ 383 03a4 0030A0E1 		mov	r3, r0
+ 384 03a8 0320A0E1 		mov	r2, r3
+ 385 03ac 3C301BE5 		ldr	r3, [fp, #-60]
+ 386 03b0 042083E5 		str	r2, [r3, #4]	@ float
+  35:utils.c       **** 	qout->y = cosphi * sintheta * cospsi + sinphi * costheta * sinpsi;
+ 388              	.LM20:
+ 389 03b4 1C001BE5 		ldr	r0, [fp, #-28]	@ float
+ 390 03b8 24101BE5 		ldr	r1, [fp, #-36]	@ float
+ 391 03bc FEFFFFEB 		bl	__mulsf3
+ 392 03c0 0030A0E1 		mov	r3, r0
+ 393 03c4 0300A0E1 		mov	r0, r3
+ 394 03c8 14101BE5 		ldr	r1, [fp, #-20]	@ float
+ 395 03cc FEFFFFEB 		bl	__mulsf3
+ 396 03d0 0030A0E1 		mov	r3, r0
+ 397 03d4 0340A0E1 		mov	r4, r3
+ 398 03d8 28001BE5 		ldr	r0, [fp, #-40]	@ float
+ 399 03dc 18101BE5 		ldr	r1, [fp, #-24]	@ float
+ 400 03e0 FEFFFFEB 		bl	__mulsf3
+ 401 03e4 0030A0E1 		mov	r3, r0
+ 402 03e8 0300A0E1 		mov	r0, r3
+ 403 03ec 20101BE5 		ldr	r1, [fp, #-32]	@ float
+ 404 03f0 FEFFFFEB 		bl	__mulsf3
+ 405 03f4 0030A0E1 		mov	r3, r0
+ 406 03f8 0400A0E1 		mov	r0, r4
+ 407 03fc 0310A0E1 		mov	r1, r3
+ 408 0400 FEFFFFEB 		bl	__addsf3
+ 409 0404 0030A0E1 		mov	r3, r0
+ 410 0408 0320A0E1 		mov	r2, r3
+ 411 040c 3C301BE5 		ldr	r3, [fp, #-60]
+ 412 0410 082083E5 		str	r2, [r3, #8]	@ float
+  36:utils.c       **** 	qout->z = cosphi * costheta * sinpsi - sinphi * sintheta * cospsi;
+ 414              	.LM21:
+ 415 0414 1C001BE5 		ldr	r0, [fp, #-28]	@ float
+ 416 0418 18101BE5 		ldr	r1, [fp, #-24]	@ float
+ 417 041c FEFFFFEB 		bl	__mulsf3
+ 418 0420 0030A0E1 		mov	r3, r0
+ 419 0424 0300A0E1 		mov	r0, r3
+ 420 0428 20101BE5 		ldr	r1, [fp, #-32]	@ float
+ 421 042c FEFFFFEB 		bl	__mulsf3
+ 422 0430 0030A0E1 		mov	r3, r0
+ 423 0434 0340A0E1 		mov	r4, r3
+ 424 0438 28001BE5 		ldr	r0, [fp, #-40]	@ float
+ 425 043c 24101BE5 		ldr	r1, [fp, #-36]	@ float
+ 426 0440 FEFFFFEB 		bl	__mulsf3
+ 427 0444 0030A0E1 		mov	r3, r0
+ 428 0448 0300A0E1 		mov	r0, r3
+ 429 044c 14101BE5 		ldr	r1, [fp, #-20]	@ float
+ 430 0450 FEFFFFEB 		bl	__mulsf3
+ 431 0454 0030A0E1 		mov	r3, r0
+ 432 0458 0400A0E1 		mov	r0, r4
+ 433 045c 0310A0E1 		mov	r1, r3
+ 434 0460 FEFFFFEB 		bl	__subsf3
+ 435 0464 0030A0E1 		mov	r3, r0
+ 436 0468 0320A0E1 		mov	r2, r3
+ 437 046c 3C301BE5 		ldr	r3, [fp, #-60]
+ 438 0470 0C2083E5 		str	r2, [r3, #12]	@ float
+  37:utils.c       **** 
+  38:utils.c       **** 	//Quaternion Qx = createQuaternion(cos(phi/2.0), sin(phi/2.0), 0 ,0);
+  39:utils.c       **** 	//Quaternion Qy = createQuaternion(cos(theta/2.0), 0, sin(theta/2.0), 0);
+  40:utils.c       **** 	//Quaternion Qz = createQuaternion(cos(psi/2.0), 0, 0, sin(psi/2.0));
+  41:utils.c       **** 	//Quaternion Q1 = quaternionmult(Qy, Qx);
+  42:utils.c       **** 	//Quaternion Q2 = quaternionmult(Qz, Q1);
+  43:utils.c       **** 	//return(Q2);
+  44:utils.c       **** }
+ 440              	.LM22:
+ 441 0474 10D04BE2 		sub	sp, fp, #16
+ 442 0478 10689DE8 		ldmfd	sp, {r4, fp, sp, lr}
+ 443 047c 1EFF2FE1 		bx	lr
+ 444              	.L10:
+ 445              		.align	2
+ 446              	.L9:
+ 447 0480 00000040 		.word	1073741824
+ 460              	.Lscope2:
+ 461              		.global	__muldf3
+ 462              		.align	2
+ 466              		.global	quat2euler
+ 468              	quat2euler:
+  45:utils.c       **** 
+  46:utils.c       **** void quat2euler(Quaternion* q, EulerAngles* angles) {
+ 470              	.LM23:
+ 471              		@ Function supports interworking.
+ 472              		@ args = 0, pretend = 0, frame = 8
+ 473              		@ frame_needed = 1, uses_anonymous_args = 0
+ 474 0484 0DC0A0E1 		mov	ip, sp
+ 475 0488 70D82DE9 		stmfd	sp!, {r4, r5, r6, fp, ip, lr, pc}
+ 476 048c 04B04CE2 		sub	fp, ip, #4
+ 477 0490 08D04DE2 		sub	sp, sp, #8
+ 478 0494 1C000BE5 		str	r0, [fp, #-28]
+ 479 0498 20100BE5 		str	r1, [fp, #-32]
+  47:utils.c       **** 	angles->phi = atan2(2.0*(q->w*q->x + q->y*q->z), 1.0-2.0*(q->x*q->x + q->z * q->z));
+ 481              	.LM24:
+ 482 049c 1C301BE5 		ldr	r3, [fp, #-28]
+ 483 04a0 002093E5 		ldr	r2, [r3, #0]	@ float
+ 484 04a4 1C301BE5 		ldr	r3, [fp, #-28]
+ 485 04a8 043093E5 		ldr	r3, [r3, #4]	@ float
+ 486 04ac 0200A0E1 		mov	r0, r2
+ 487 04b0 0310A0E1 		mov	r1, r3
+ 488 04b4 FEFFFFEB 		bl	__mulsf3
+ 489 04b8 0030A0E1 		mov	r3, r0
+ 490 04bc 0340A0E1 		mov	r4, r3
+ 491 04c0 1C301BE5 		ldr	r3, [fp, #-28]
+ 492 04c4 082093E5 		ldr	r2, [r3, #8]	@ float
+ 493 04c8 1C301BE5 		ldr	r3, [fp, #-28]
+ 494 04cc 0C3093E5 		ldr	r3, [r3, #12]	@ float
+ 495 04d0 0200A0E1 		mov	r0, r2
+ 496 04d4 0310A0E1 		mov	r1, r3
+ 497 04d8 FEFFFFEB 		bl	__mulsf3
+ 498 04dc 0030A0E1 		mov	r3, r0
+ 499 04e0 0400A0E1 		mov	r0, r4
+ 500 04e4 0310A0E1 		mov	r1, r3
+ 501 04e8 FEFFFFEB 		bl	__addsf3
+ 502 04ec 0030A0E1 		mov	r3, r0
+ 503 04f0 0300A0E1 		mov	r0, r3
+ 504 04f4 FEFFFFEB 		bl	__extendsfdf2
+ 505 04f8 0030A0E1 		mov	r3, r0
+ 506 04fc 0140A0E1 		mov	r4, r1
+ 507 0500 0300A0E1 		mov	r0, r3
+ 508 0504 0410A0E1 		mov	r1, r4
+ 509 0508 0320A0E1 		mov	r2, r3
+ 510 050c 0430A0E1 		mov	r3, r4
+ 511 0510 FEFFFFEB 		bl	__adddf3
+ 512 0514 0030A0E1 		mov	r3, r0
+ 513 0518 0140A0E1 		mov	r4, r1
+ 514 051c 0350A0E1 		mov	r5, r3
+ 515 0520 0460A0E1 		mov	r6, r4
+ 516 0524 1C301BE5 		ldr	r3, [fp, #-28]
+ 517 0528 042093E5 		ldr	r2, [r3, #4]	@ float
+ 518 052c 1C301BE5 		ldr	r3, [fp, #-28]
+ 519 0530 043093E5 		ldr	r3, [r3, #4]	@ float
+ 520 0534 0200A0E1 		mov	r0, r2
+ 521 0538 0310A0E1 		mov	r1, r3
+ 522 053c FEFFFFEB 		bl	__mulsf3
+ 523 0540 0030A0E1 		mov	r3, r0
+ 524 0544 0340A0E1 		mov	r4, r3
+ 525 0548 1C301BE5 		ldr	r3, [fp, #-28]
+ 526 054c 0C2093E5 		ldr	r2, [r3, #12]	@ float
+ 527 0550 1C301BE5 		ldr	r3, [fp, #-28]
+ 528 0554 0C3093E5 		ldr	r3, [r3, #12]	@ float
+ 529 0558 0200A0E1 		mov	r0, r2
+ 530 055c 0310A0E1 		mov	r1, r3
+ 531 0560 FEFFFFEB 		bl	__mulsf3
+ 532 0564 0030A0E1 		mov	r3, r0
+ 533 0568 0400A0E1 		mov	r0, r4
+ 534 056c 0310A0E1 		mov	r1, r3
+ 535 0570 FEFFFFEB 		bl	__addsf3
+ 536 0574 0030A0E1 		mov	r3, r0
+ 537 0578 0300A0E1 		mov	r0, r3
+ 538 057c FEFFFFEB 		bl	__extendsfdf2
+ 539 0580 0030A0E1 		mov	r3, r0
+ 540 0584 0140A0E1 		mov	r4, r1
+ 541 0588 0300A0E1 		mov	r0, r3
+ 542 058c 0410A0E1 		mov	r1, r4
+ 543 0590 0321A0E3 		mov	r2, #-1073741824
+ 544 0594 0030A0E3 		mov	r3, #0
+ 545 0598 FEFFFFEB 		bl	__muldf3
+ 546 059c 0030A0E1 		mov	r3, r0
+ 547 05a0 0140A0E1 		mov	r4, r1
+ 548 05a4 0300A0E1 		mov	r0, r3
+ 549 05a8 0410A0E1 		mov	r1, r4
+ 550 05ac FF25A0E3 		mov	r2, #1069547520
+ 551 05b0 032682E2 		add	r2, r2, #3145728
+ 552 05b4 0030A0E3 		mov	r3, #0
+ 553 05b8 FEFFFFEB 		bl	__adddf3
+ 554 05bc 0030A0E1 		mov	r3, r0
+ 555 05c0 0140A0E1 		mov	r4, r1
+ 556 05c4 0500A0E1 		mov	r0, r5
+ 557 05c8 0610A0E1 		mov	r1, r6
+ 558 05cc 0320A0E1 		mov	r2, r3
+ 559 05d0 0430A0E1 		mov	r3, r4
+ 560 05d4 FEFFFFEB 		bl	atan2
+ 561 05d8 0030A0E1 		mov	r3, r0
+ 562 05dc 0140A0E1 		mov	r4, r1
+ 563 05e0 0300A0E1 		mov	r0, r3
+ 564 05e4 0410A0E1 		mov	r1, r4
+ 565 05e8 FEFFFFEB 		bl	__truncdfsf2
+ 566 05ec 0020A0E1 		mov	r2, r0
+ 567 05f0 20301BE5 		ldr	r3, [fp, #-32]
+ 568 05f4 002083E5 		str	r2, [r3, #0]	@ float
+  48:utils.c       **** 	angles->theta = asin(2.0*(q->w*q->y - q->x * q->z));
+ 570              	.LM25:
+ 571 05f8 1C301BE5 		ldr	r3, [fp, #-28]
+ 572 05fc 002093E5 		ldr	r2, [r3, #0]	@ float
+ 573 0600 1C301BE5 		ldr	r3, [fp, #-28]
+ 574 0604 083093E5 		ldr	r3, [r3, #8]	@ float
+ 575 0608 0200A0E1 		mov	r0, r2
+ 576 060c 0310A0E1 		mov	r1, r3
+ 577 0610 FEFFFFEB 		bl	__mulsf3
+ 578 0614 0030A0E1 		mov	r3, r0
+ 579 0618 0340A0E1 		mov	r4, r3
+ 580 061c 1C301BE5 		ldr	r3, [fp, #-28]
+ 581 0620 042093E5 		ldr	r2, [r3, #4]	@ float
+ 582 0624 1C301BE5 		ldr	r3, [fp, #-28]
+ 583 0628 0C3093E5 		ldr	r3, [r3, #12]	@ float
+ 584 062c 0200A0E1 		mov	r0, r2
+ 585 0630 0310A0E1 		mov	r1, r3
+ 586 0634 FEFFFFEB 		bl	__mulsf3
+ 587 0638 0030A0E1 		mov	r3, r0
+ 588 063c 0400A0E1 		mov	r0, r4
+ 589 0640 0310A0E1 		mov	r1, r3
+ 590 0644 FEFFFFEB 		bl	__subsf3
+ 591 0648 0030A0E1 		mov	r3, r0
+ 592 064c 0300A0E1 		mov	r0, r3
+ 593 0650 FEFFFFEB 		bl	__extendsfdf2
+ 594 0654 0030A0E1 		mov	r3, r0
+ 595 0658 0140A0E1 		mov	r4, r1
+ 596 065c 0300A0E1 		mov	r0, r3
+ 597 0660 0410A0E1 		mov	r1, r4
+ 598 0664 0320A0E1 		mov	r2, r3
+ 599 0668 0430A0E1 		mov	r3, r4
+ 600 066c FEFFFFEB 		bl	__adddf3
+ 601 0670 0030A0E1 		mov	r3, r0
+ 602 0674 0140A0E1 		mov	r4, r1
+ 603 0678 0300A0E1 		mov	r0, r3
+ 604 067c 0410A0E1 		mov	r1, r4
+ 605 0680 FEFFFFEB 		bl	asin
+ 606 0684 0030A0E1 		mov	r3, r0
+ 607 0688 0140A0E1 		mov	r4, r1
+ 608 068c 0300A0E1 		mov	r0, r3
+ 609 0690 0410A0E1 		mov	r1, r4
+ 610 0694 FEFFFFEB 		bl	__truncdfsf2
+ 611 0698 0020A0E1 		mov	r2, r0
+ 612 069c 20301BE5 		ldr	r3, [fp, #-32]
+ 613 06a0 042083E5 		str	r2, [r3, #4]	@ float
+  49:utils.c       **** 	angles->psi = atan2(2.0*(q->w * q->z + q->x * q->y), 1.0-2.0*(q->y * q->y + q->z * q->z));
+ 615              	.LM26:
+ 616 06a4 1C301BE5 		ldr	r3, [fp, #-28]
+ 617 06a8 002093E5 		ldr	r2, [r3, #0]	@ float
+ 618 06ac 1C301BE5 		ldr	r3, [fp, #-28]
+ 619 06b0 0C3093E5 		ldr	r3, [r3, #12]	@ float
+ 620 06b4 0200A0E1 		mov	r0, r2
+ 621 06b8 0310A0E1 		mov	r1, r3
+ 622 06bc FEFFFFEB 		bl	__mulsf3
+ 623 06c0 0030A0E1 		mov	r3, r0
+ 624 06c4 0340A0E1 		mov	r4, r3
+ 625 06c8 1C301BE5 		ldr	r3, [fp, #-28]
+ 626 06cc 042093E5 		ldr	r2, [r3, #4]	@ float
+ 627 06d0 1C301BE5 		ldr	r3, [fp, #-28]
+ 628 06d4 083093E5 		ldr	r3, [r3, #8]	@ float
+ 629 06d8 0200A0E1 		mov	r0, r2
+ 630 06dc 0310A0E1 		mov	r1, r3
+ 631 06e0 FEFFFFEB 		bl	__mulsf3
+ 632 06e4 0030A0E1 		mov	r3, r0
+ 633 06e8 0400A0E1 		mov	r0, r4
+ 634 06ec 0310A0E1 		mov	r1, r3
+ 635 06f0 FEFFFFEB 		bl	__addsf3
+ 636 06f4 0030A0E1 		mov	r3, r0
+ 637 06f8 0300A0E1 		mov	r0, r3
+ 638 06fc FEFFFFEB 		bl	__extendsfdf2
+ 639 0700 0030A0E1 		mov	r3, r0
+ 640 0704 0140A0E1 		mov	r4, r1
+ 641 0708 0300A0E1 		mov	r0, r3
+ 642 070c 0410A0E1 		mov	r1, r4
+ 643 0710 0320A0E1 		mov	r2, r3
+ 644 0714 0430A0E1 		mov	r3, r4
+ 645 0718 FEFFFFEB 		bl	__adddf3
+ 646 071c 0030A0E1 		mov	r3, r0
+ 647 0720 0140A0E1 		mov	r4, r1
+ 648 0724 0350A0E1 		mov	r5, r3
+ 649 0728 0460A0E1 		mov	r6, r4
+ 650 072c 1C301BE5 		ldr	r3, [fp, #-28]
+ 651 0730 082093E5 		ldr	r2, [r3, #8]	@ float
+ 652 0734 1C301BE5 		ldr	r3, [fp, #-28]
+ 653 0738 083093E5 		ldr	r3, [r3, #8]	@ float
+ 654 073c 0200A0E1 		mov	r0, r2
+ 655 0740 0310A0E1 		mov	r1, r3
+ 656 0744 FEFFFFEB 		bl	__mulsf3
+ 657 0748 0030A0E1 		mov	r3, r0
+ 658 074c 0340A0E1 		mov	r4, r3
+ 659 0750 1C301BE5 		ldr	r3, [fp, #-28]
+ 660 0754 0C2093E5 		ldr	r2, [r3, #12]	@ float
+ 661 0758 1C301BE5 		ldr	r3, [fp, #-28]
+ 662 075c 0C3093E5 		ldr	r3, [r3, #12]	@ float
+ 663 0760 0200A0E1 		mov	r0, r2
+ 664 0764 0310A0E1 		mov	r1, r3
+ 665 0768 FEFFFFEB 		bl	__mulsf3
+ 666 076c 0030A0E1 		mov	r3, r0
+ 667 0770 0400A0E1 		mov	r0, r4
+ 668 0774 0310A0E1 		mov	r1, r3
+ 669 0778 FEFFFFEB 		bl	__addsf3
+ 670 077c 0030A0E1 		mov	r3, r0
+ 671 0780 0300A0E1 		mov	r0, r3
+ 672 0784 FEFFFFEB 		bl	__extendsfdf2
+ 673 0788 0030A0E1 		mov	r3, r0
+ 674 078c 0140A0E1 		mov	r4, r1
+ 675 0790 0300A0E1 		mov	r0, r3
+ 676 0794 0410A0E1 		mov	r1, r4
+ 677 0798 0321A0E3 		mov	r2, #-1073741824
+ 678 079c 0030A0E3 		mov	r3, #0
+ 679 07a0 FEFFFFEB 		bl	__muldf3
+ 680 07a4 0030A0E1 		mov	r3, r0
+ 681 07a8 0140A0E1 		mov	r4, r1
+ 682 07ac 0300A0E1 		mov	r0, r3
+ 683 07b0 0410A0E1 		mov	r1, r4
+ 684 07b4 FF25A0E3 		mov	r2, #1069547520
+ 685 07b8 032682E2 		add	r2, r2, #3145728
+ 686 07bc 0030A0E3 		mov	r3, #0
+ 687 07c0 FEFFFFEB 		bl	__adddf3
+ 688 07c4 0030A0E1 		mov	r3, r0
+ 689 07c8 0140A0E1 		mov	r4, r1
+ 690 07cc 0500A0E1 		mov	r0, r5
+ 691 07d0 0610A0E1 		mov	r1, r6
+ 692 07d4 0320A0E1 		mov	r2, r3
+ 693 07d8 0430A0E1 		mov	r3, r4
+ 694 07dc FEFFFFEB 		bl	atan2
+ 695 07e0 0030A0E1 		mov	r3, r0
+ 696 07e4 0140A0E1 		mov	r4, r1
+ 697 07e8 0300A0E1 		mov	r0, r3
+ 698 07ec 0410A0E1 		mov	r1, r4
+ 699 07f0 FEFFFFEB 		bl	__truncdfsf2
+ 700 07f4 0020A0E1 		mov	r2, r0
+ 701 07f8 20301BE5 		ldr	r3, [fp, #-32]
+ 702 07fc 082083E5 		str	r2, [r3, #8]	@ float
+  50:utils.c       **** }
+ 704              	.LM27:
+ 705 0800 18D04BE2 		sub	sp, fp, #24
+ 706 0804 70689DE8 		ldmfd	sp, {r4, r5, r6, fp, sp, lr}
+ 707 0808 1EFF2FE1 		bx	lr
+ 709              	.Lscope3:
+ 710              		.align	2
+ 715              		.global	quaternionmult
+ 717              	quaternionmult:
+  51:utils.c       **** 
+  52:utils.c       **** 
+  53:utils.c       **** void quaternionmult(Quaternion* q1, Quaternion* q2, Quaternion* qout) {
+ 719              	.LM28:
+ 720              		@ Function supports interworking.
+ 721              		@ args = 0, pretend = 0, frame = 12
+ 722              		@ frame_needed = 1, uses_anonymous_args = 0
+ 723 080c 0DC0A0E1 		mov	ip, sp
+ 724 0810 10D82DE9 		stmfd	sp!, {r4, fp, ip, lr, pc}
+ 725 0814 04B04CE2 		sub	fp, ip, #4
+ 726 0818 0CD04DE2 		sub	sp, sp, #12
+ 727 081c 14000BE5 		str	r0, [fp, #-20]
+ 728 0820 18100BE5 		str	r1, [fp, #-24]
+ 729 0824 1C200BE5 		str	r2, [fp, #-28]
+  54:utils.c       **** 	qout->w = q1->w * q2->w - q1->x * q2->x - q1->y * q2->y - q1->z * q2->z;
+ 731              	.LM29:
+ 732 0828 14301BE5 		ldr	r3, [fp, #-20]
+ 733 082c 002093E5 		ldr	r2, [r3, #0]	@ float
+ 734 0830 18301BE5 		ldr	r3, [fp, #-24]
+ 735 0834 003093E5 		ldr	r3, [r3, #0]	@ float
+ 736 0838 0200A0E1 		mov	r0, r2
+ 737 083c 0310A0E1 		mov	r1, r3
+ 738 0840 FEFFFFEB 		bl	__mulsf3
+ 739 0844 0030A0E1 		mov	r3, r0
+ 740 0848 0340A0E1 		mov	r4, r3
+ 741 084c 14301BE5 		ldr	r3, [fp, #-20]
+ 742 0850 042093E5 		ldr	r2, [r3, #4]	@ float
+ 743 0854 18301BE5 		ldr	r3, [fp, #-24]
+ 744 0858 043093E5 		ldr	r3, [r3, #4]	@ float
+ 745 085c 0200A0E1 		mov	r0, r2
+ 746 0860 0310A0E1 		mov	r1, r3
+ 747 0864 FEFFFFEB 		bl	__mulsf3
+ 748 0868 0030A0E1 		mov	r3, r0
+ 749 086c 0400A0E1 		mov	r0, r4
+ 750 0870 0310A0E1 		mov	r1, r3
+ 751 0874 FEFFFFEB 		bl	__subsf3
+ 752 0878 0030A0E1 		mov	r3, r0
+ 753 087c 0340A0E1 		mov	r4, r3
+ 754 0880 14301BE5 		ldr	r3, [fp, #-20]
+ 755 0884 082093E5 		ldr	r2, [r3, #8]	@ float
+ 756 0888 18301BE5 		ldr	r3, [fp, #-24]
+ 757 088c 083093E5 		ldr	r3, [r3, #8]	@ float
+ 758 0890 0200A0E1 		mov	r0, r2
+ 759 0894 0310A0E1 		mov	r1, r3
+ 760 0898 FEFFFFEB 		bl	__mulsf3
+ 761 089c 0030A0E1 		mov	r3, r0
+ 762 08a0 0400A0E1 		mov	r0, r4
+ 763 08a4 0310A0E1 		mov	r1, r3
+ 764 08a8 FEFFFFEB 		bl	__subsf3
+ 765 08ac 0030A0E1 		mov	r3, r0
+ 766 08b0 0340A0E1 		mov	r4, r3
+ 767 08b4 14301BE5 		ldr	r3, [fp, #-20]
+ 768 08b8 0C2093E5 		ldr	r2, [r3, #12]	@ float
+ 769 08bc 18301BE5 		ldr	r3, [fp, #-24]
+ 770 08c0 0C3093E5 		ldr	r3, [r3, #12]	@ float
+ 771 08c4 0200A0E1 		mov	r0, r2
+ 772 08c8 0310A0E1 		mov	r1, r3
+ 773 08cc FEFFFFEB 		bl	__mulsf3
+ 774 08d0 0030A0E1 		mov	r3, r0
+ 775 08d4 0400A0E1 		mov	r0, r4
+ 776 08d8 0310A0E1 		mov	r1, r3
+ 777 08dc FEFFFFEB 		bl	__subsf3
+ 778 08e0 0030A0E1 		mov	r3, r0
+ 779 08e4 0320A0E1 		mov	r2, r3
+ 780 08e8 1C301BE5 		ldr	r3, [fp, #-28]
+ 781 08ec 002083E5 		str	r2, [r3, #0]	@ float
+  55:utils.c       **** 	qout->x = q1->w * q2->x + q1->x * q2->w + q1->y * q2->z - q1->z * q2->y;
+ 783              	.LM30:
+ 784 08f0 14301BE5 		ldr	r3, [fp, #-20]
+ 785 08f4 002093E5 		ldr	r2, [r3, #0]	@ float
+ 786 08f8 18301BE5 		ldr	r3, [fp, #-24]
+ 787 08fc 043093E5 		ldr	r3, [r3, #4]	@ float
+ 788 0900 0200A0E1 		mov	r0, r2
+ 789 0904 0310A0E1 		mov	r1, r3
+ 790 0908 FEFFFFEB 		bl	__mulsf3
+ 791 090c 0030A0E1 		mov	r3, r0
+ 792 0910 0340A0E1 		mov	r4, r3
+ 793 0914 14301BE5 		ldr	r3, [fp, #-20]
+ 794 0918 042093E5 		ldr	r2, [r3, #4]	@ float
+ 795 091c 18301BE5 		ldr	r3, [fp, #-24]
+ 796 0920 003093E5 		ldr	r3, [r3, #0]	@ float
+ 797 0924 0200A0E1 		mov	r0, r2
+ 798 0928 0310A0E1 		mov	r1, r3
+ 799 092c FEFFFFEB 		bl	__mulsf3
+ 800 0930 0030A0E1 		mov	r3, r0
+ 801 0934 0400A0E1 		mov	r0, r4
+ 802 0938 0310A0E1 		mov	r1, r3
+ 803 093c FEFFFFEB 		bl	__addsf3
+ 804 0940 0030A0E1 		mov	r3, r0
+ 805 0944 0340A0E1 		mov	r4, r3
+ 806 0948 14301BE5 		ldr	r3, [fp, #-20]
+ 807 094c 082093E5 		ldr	r2, [r3, #8]	@ float
+ 808 0950 18301BE5 		ldr	r3, [fp, #-24]
+ 809 0954 0C3093E5 		ldr	r3, [r3, #12]	@ float
+ 810 0958 0200A0E1 		mov	r0, r2
+ 811 095c 0310A0E1 		mov	r1, r3
+ 812 0960 FEFFFFEB 		bl	__mulsf3
+ 813 0964 0030A0E1 		mov	r3, r0
+ 814 0968 0400A0E1 		mov	r0, r4
+ 815 096c 0310A0E1 		mov	r1, r3
+ 816 0970 FEFFFFEB 		bl	__addsf3
+ 817 0974 0030A0E1 		mov	r3, r0
+ 818 0978 0340A0E1 		mov	r4, r3
+ 819 097c 14301BE5 		ldr	r3, [fp, #-20]
+ 820 0980 0C2093E5 		ldr	r2, [r3, #12]	@ float
+ 821 0984 18301BE5 		ldr	r3, [fp, #-24]
+ 822 0988 083093E5 		ldr	r3, [r3, #8]	@ float
+ 823 098c 0200A0E1 		mov	r0, r2
+ 824 0990 0310A0E1 		mov	r1, r3
+ 825 0994 FEFFFFEB 		bl	__mulsf3
+ 826 0998 0030A0E1 		mov	r3, r0
+ 827 099c 0400A0E1 		mov	r0, r4
+ 828 09a0 0310A0E1 		mov	r1, r3
+ 829 09a4 FEFFFFEB 		bl	__subsf3
+ 830 09a8 0030A0E1 		mov	r3, r0
+ 831 09ac 0320A0E1 		mov	r2, r3
+ 832 09b0 1C301BE5 		ldr	r3, [fp, #-28]
+ 833 09b4 042083E5 		str	r2, [r3, #4]	@ float
+  56:utils.c       **** 	qout->y = q1->w * q2->y - q1->x * q2->z + q1->y * q2->w + q1->z * q2->x;
+ 835              	.LM31:
+ 836 09b8 14301BE5 		ldr	r3, [fp, #-20]
+ 837 09bc 002093E5 		ldr	r2, [r3, #0]	@ float
+ 838 09c0 18301BE5 		ldr	r3, [fp, #-24]
+ 839 09c4 083093E5 		ldr	r3, [r3, #8]	@ float
+ 840 09c8 0200A0E1 		mov	r0, r2
+ 841 09cc 0310A0E1 		mov	r1, r3
+ 842 09d0 FEFFFFEB 		bl	__mulsf3
+ 843 09d4 0030A0E1 		mov	r3, r0
+ 844 09d8 0340A0E1 		mov	r4, r3
+ 845 09dc 14301BE5 		ldr	r3, [fp, #-20]
+ 846 09e0 042093E5 		ldr	r2, [r3, #4]	@ float
+ 847 09e4 18301BE5 		ldr	r3, [fp, #-24]
+ 848 09e8 0C3093E5 		ldr	r3, [r3, #12]	@ float
+ 849 09ec 0200A0E1 		mov	r0, r2
+ 850 09f0 0310A0E1 		mov	r1, r3
+ 851 09f4 FEFFFFEB 		bl	__mulsf3
+ 852 09f8 0030A0E1 		mov	r3, r0
+ 853 09fc 0400A0E1 		mov	r0, r4
+ 854 0a00 0310A0E1 		mov	r1, r3
+ 855 0a04 FEFFFFEB 		bl	__subsf3
+ 856 0a08 0030A0E1 		mov	r3, r0
+ 857 0a0c 0340A0E1 		mov	r4, r3
+ 858 0a10 14301BE5 		ldr	r3, [fp, #-20]
+ 859 0a14 082093E5 		ldr	r2, [r3, #8]	@ float
+ 860 0a18 18301BE5 		ldr	r3, [fp, #-24]
+ 861 0a1c 003093E5 		ldr	r3, [r3, #0]	@ float
+ 862 0a20 0200A0E1 		mov	r0, r2
+ 863 0a24 0310A0E1 		mov	r1, r3
+ 864 0a28 FEFFFFEB 		bl	__mulsf3
+ 865 0a2c 0030A0E1 		mov	r3, r0
+ 866 0a30 0400A0E1 		mov	r0, r4
+ 867 0a34 0310A0E1 		mov	r1, r3
+ 868 0a38 FEFFFFEB 		bl	__addsf3
+ 869 0a3c 0030A0E1 		mov	r3, r0
+ 870 0a40 0340A0E1 		mov	r4, r3
+ 871 0a44 14301BE5 		ldr	r3, [fp, #-20]
+ 872 0a48 0C2093E5 		ldr	r2, [r3, #12]	@ float
+ 873 0a4c 18301BE5 		ldr	r3, [fp, #-24]
+ 874 0a50 043093E5 		ldr	r3, [r3, #4]	@ float
+ 875 0a54 0200A0E1 		mov	r0, r2
+ 876 0a58 0310A0E1 		mov	r1, r3
+ 877 0a5c FEFFFFEB 		bl	__mulsf3
+ 878 0a60 0030A0E1 		mov	r3, r0
+ 879 0a64 0400A0E1 		mov	r0, r4
+ 880 0a68 0310A0E1 		mov	r1, r3
+ 881 0a6c FEFFFFEB 		bl	__addsf3
+ 882 0a70 0030A0E1 		mov	r3, r0
+ 883 0a74 0320A0E1 		mov	r2, r3
+ 884 0a78 1C301BE5 		ldr	r3, [fp, #-28]
+ 885 0a7c 082083E5 		str	r2, [r3, #8]	@ float
+  57:utils.c       **** 	qout->z = q1->w * q2->z + q1->x * q2->y - q1->y * q2->x + q1->z * q2->w;
+ 887              	.LM32:
+ 888 0a80 14301BE5 		ldr	r3, [fp, #-20]
+ 889 0a84 002093E5 		ldr	r2, [r3, #0]	@ float
+ 890 0a88 18301BE5 		ldr	r3, [fp, #-24]
+ 891 0a8c 0C3093E5 		ldr	r3, [r3, #12]	@ float
+ 892 0a90 0200A0E1 		mov	r0, r2
+ 893 0a94 0310A0E1 		mov	r1, r3
+ 894 0a98 FEFFFFEB 		bl	__mulsf3
+ 895 0a9c 0030A0E1 		mov	r3, r0
+ 896 0aa0 0340A0E1 		mov	r4, r3
+ 897 0aa4 14301BE5 		ldr	r3, [fp, #-20]
+ 898 0aa8 042093E5 		ldr	r2, [r3, #4]	@ float
+ 899 0aac 18301BE5 		ldr	r3, [fp, #-24]
+ 900 0ab0 083093E5 		ldr	r3, [r3, #8]	@ float
+ 901 0ab4 0200A0E1 		mov	r0, r2
+ 902 0ab8 0310A0E1 		mov	r1, r3
+ 903 0abc FEFFFFEB 		bl	__mulsf3
+ 904 0ac0 0030A0E1 		mov	r3, r0
+ 905 0ac4 0400A0E1 		mov	r0, r4
+ 906 0ac8 0310A0E1 		mov	r1, r3
+ 907 0acc FEFFFFEB 		bl	__addsf3
+ 908 0ad0 0030A0E1 		mov	r3, r0
+ 909 0ad4 0340A0E1 		mov	r4, r3
+ 910 0ad8 14301BE5 		ldr	r3, [fp, #-20]
+ 911 0adc 082093E5 		ldr	r2, [r3, #8]	@ float
+ 912 0ae0 18301BE5 		ldr	r3, [fp, #-24]
+ 913 0ae4 043093E5 		ldr	r3, [r3, #4]	@ float
+ 914 0ae8 0200A0E1 		mov	r0, r2
+ 915 0aec 0310A0E1 		mov	r1, r3
+ 916 0af0 FEFFFFEB 		bl	__mulsf3
+ 917 0af4 0030A0E1 		mov	r3, r0
+ 918 0af8 0400A0E1 		mov	r0, r4
+ 919 0afc 0310A0E1 		mov	r1, r3
+ 920 0b00 FEFFFFEB 		bl	__subsf3
+ 921 0b04 0030A0E1 		mov	r3, r0
+ 922 0b08 0340A0E1 		mov	r4, r3
+ 923 0b0c 14301BE5 		ldr	r3, [fp, #-20]
+ 924 0b10 0C2093E5 		ldr	r2, [r3, #12]	@ float
+ 925 0b14 18301BE5 		ldr	r3, [fp, #-24]
+ 926 0b18 003093E5 		ldr	r3, [r3, #0]	@ float
+ 927 0b1c 0200A0E1 		mov	r0, r2
+ 928 0b20 0310A0E1 		mov	r1, r3
+ 929 0b24 FEFFFFEB 		bl	__mulsf3
+ 930 0b28 0030A0E1 		mov	r3, r0
+ 931 0b2c 0400A0E1 		mov	r0, r4
+ 932 0b30 0310A0E1 		mov	r1, r3
+ 933 0b34 FEFFFFEB 		bl	__addsf3
+ 934 0b38 0030A0E1 		mov	r3, r0
+ 935 0b3c 0320A0E1 		mov	r2, r3
+ 936 0b40 1C301BE5 		ldr	r3, [fp, #-28]
+ 937 0b44 0C2083E5 		str	r2, [r3, #12]	@ float
+  58:utils.c       **** }
+ 939              	.LM33:
+ 940 0b48 10D04BE2 		sub	sp, fp, #16
+ 941 0b4c 10689DE8 		ldmfd	sp, {r4, fp, sp, lr}
+ 942 0b50 1EFF2FE1 		bx	lr
+ 944              	.Lscope4:
+ 945              		.global	__gtdf2
+ 946              		.align	2
+ 949              		.global	quaternionNormalize
+ 951              	quaternionNormalize:
+  59:utils.c       **** 
+  60:utils.c       **** void quaternionNormalize(Quaternion* q) {
+ 953              	.LM34:
+ 954              		@ Function supports interworking.
+ 955              		@ args = 0, pretend = 0, frame = 12
+ 956              		@ frame_needed = 1, uses_anonymous_args = 0
+ 957 0b54 0DC0A0E1 		mov	ip, sp
+ 958 0b58 10D82DE9 		stmfd	sp!, {r4, fp, ip, lr, pc}
+ 959 0b5c 04B04CE2 		sub	fp, ip, #4
+ 960 0b60 0CD04DE2 		sub	sp, sp, #12
+ 961 0b64 1C000BE5 		str	r0, [fp, #-28]
+  61:utils.c       **** 	// Don't normalize if we don't have to
+  62:utils.c       **** 	float mag2 = q->w * q->w + q->x * q->x + q->y * q->y + q->z * q->z;
+ 963              	.LM35:
+ 964 0b68 1C301BE5 		ldr	r3, [fp, #-28]
+ 965 0b6c 002093E5 		ldr	r2, [r3, #0]	@ float
+ 966 0b70 1C301BE5 		ldr	r3, [fp, #-28]
+ 967 0b74 003093E5 		ldr	r3, [r3, #0]	@ float
+ 968 0b78 0200A0E1 		mov	r0, r2
+ 969 0b7c 0310A0E1 		mov	r1, r3
+ 970 0b80 FEFFFFEB 		bl	__mulsf3
+ 971 0b84 0030A0E1 		mov	r3, r0
+ 972 0b88 0340A0E1 		mov	r4, r3
+ 973 0b8c 1C301BE5 		ldr	r3, [fp, #-28]
+ 974 0b90 042093E5 		ldr	r2, [r3, #4]	@ float
+ 975 0b94 1C301BE5 		ldr	r3, [fp, #-28]
+ 976 0b98 043093E5 		ldr	r3, [r3, #4]	@ float
+ 977 0b9c 0200A0E1 		mov	r0, r2
+ 978 0ba0 0310A0E1 		mov	r1, r3
+ 979 0ba4 FEFFFFEB 		bl	__mulsf3
+ 980 0ba8 0030A0E1 		mov	r3, r0
+ 981 0bac 0400A0E1 		mov	r0, r4
+ 982 0bb0 0310A0E1 		mov	r1, r3
+ 983 0bb4 FEFFFFEB 		bl	__addsf3
+ 984 0bb8 0030A0E1 		mov	r3, r0
+ 985 0bbc 0340A0E1 		mov	r4, r3
+ 986 0bc0 1C301BE5 		ldr	r3, [fp, #-28]
+ 987 0bc4 082093E5 		ldr	r2, [r3, #8]	@ float
+ 988 0bc8 1C301BE5 		ldr	r3, [fp, #-28]
+ 989 0bcc 083093E5 		ldr	r3, [r3, #8]	@ float
+ 990 0bd0 0200A0E1 		mov	r0, r2
+ 991 0bd4 0310A0E1 		mov	r1, r3
+ 992 0bd8 FEFFFFEB 		bl	__mulsf3
+ 993 0bdc 0030A0E1 		mov	r3, r0
+ 994 0be0 0400A0E1 		mov	r0, r4
+ 995 0be4 0310A0E1 		mov	r1, r3
+ 996 0be8 FEFFFFEB 		bl	__addsf3
+ 997 0bec 0030A0E1 		mov	r3, r0
+ 998 0bf0 0340A0E1 		mov	r4, r3
+ 999 0bf4 1C301BE5 		ldr	r3, [fp, #-28]
+ 1000 0bf8 0C2093E5 		ldr	r2, [r3, #12]	@ float
+ 1001 0bfc 1C301BE5 		ldr	r3, [fp, #-28]
+ 1002 0c00 0C3093E5 		ldr	r3, [r3, #12]	@ float
+ 1003 0c04 0200A0E1 		mov	r0, r2
+ 1004 0c08 0310A0E1 		mov	r1, r3
+ 1005 0c0c FEFFFFEB 		bl	__mulsf3
+ 1006 0c10 0030A0E1 		mov	r3, r0
+ 1007 0c14 0400A0E1 		mov	r0, r4
+ 1008 0c18 0310A0E1 		mov	r1, r3
+ 1009 0c1c FEFFFFEB 		bl	__addsf3
+ 1010 0c20 0030A0E1 		mov	r3, r0
+ 1011 0c24 18300BE5 		str	r3, [fp, #-24]	@ float
+  63:utils.c       **** 	if (fabs(mag2) > g_tolerance && fabs(mag2 - 1.0f) > g_tolerance) {
+ 1013              	.LM36:
+ 1014 0c28 18301BE5 		ldr	r3, [fp, #-24]
+ 1015 0c2c 0231C3E3 		bic	r3, r3, #-2147483648
+ 1016 0c30 0300A0E1 		mov	r0, r3
+ 1017 0c34 FEFFFFEB 		bl	__extendsfdf2
+ 1018 0c38 0030A0E1 		mov	r3, r0
+ 1019 0c3c 0140A0E1 		mov	r4, r1
+ 1020 0c40 0300A0E1 		mov	r0, r3
+ 1021 0c44 0410A0E1 		mov	r1, r4
+ 1022 0c48 132E8FE2 		adr	r2, .L22
+ 1023 0c4c 0C0092E8 		ldmia	r2, {r2-r3}
+ 1024 0c50 FEFFFFEB 		bl	__gtdf2
+ 1025 0c54 0030A0E1 		mov	r3, r0
+ 1026 0c58 000053E3 		cmp	r3, #0
+ 1027 0c5c 000000CA 		bgt	.L18
+ 1028 0c60 430000EA 		b	.L21
+ 1029              	.L18:
+ 1030 0c64 18001BE5 		ldr	r0, [fp, #-24]	@ float
+ 1031 0c68 18119FE5 		ldr	r1, .L22+8	@ float
+ 1032 0c6c FEFFFFEB 		bl	__subsf3
+ 1033 0c70 0030A0E1 		mov	r3, r0
+ 1034 0c74 0231C3E3 		bic	r3, r3, #-2147483648
+ 1035 0c78 0300A0E1 		mov	r0, r3
+ 1036 0c7c FEFFFFEB 		bl	__extendsfdf2
+ 1037 0c80 0030A0E1 		mov	r3, r0
+ 1038 0c84 0140A0E1 		mov	r4, r1
+ 1039 0c88 0300A0E1 		mov	r0, r3
+ 1040 0c8c 0410A0E1 		mov	r1, r4
+ 1041 0c90 E8208FE2 		adr	r2, .L22
+ 1042 0c94 0C0092E8 		ldmia	r2, {r2-r3}
+ 1043 0c98 FEFFFFEB 		bl	__gtdf2
+ 1044 0c9c 0030A0E1 		mov	r3, r0
+ 1045 0ca0 000053E3 		cmp	r3, #0
+ 1046 0ca4 000000CA 		bgt	.L20
+ 1047 0ca8 310000EA 		b	.L21
+ 1048              	.L20:
+ 1049              	.LBB2:
+  64:utils.c       **** 		float mag = sqrt(mag2);
+ 1051              	.LM37:
+ 1052 0cac 18001BE5 		ldr	r0, [fp, #-24]	@ float
+ 1053 0cb0 FEFFFFEB 		bl	__extendsfdf2
+ 1054 0cb4 0030A0E1 		mov	r3, r0
+ 1055 0cb8 0140A0E1 		mov	r4, r1
+ 1056 0cbc 0300A0E1 		mov	r0, r3
+ 1057 0cc0 0410A0E1 		mov	r1, r4
+ 1058 0cc4 FEFFFFEB 		bl	sqrt
+ 1059 0cc8 0030A0E1 		mov	r3, r0
+ 1060 0ccc 0140A0E1 		mov	r4, r1
+ 1061 0cd0 0300A0E1 		mov	r0, r3
+ 1062 0cd4 0410A0E1 		mov	r1, r4
+ 1063 0cd8 FEFFFFEB 		bl	__truncdfsf2
+ 1064 0cdc 0030A0E1 		mov	r3, r0
+ 1065 0ce0 14300BE5 		str	r3, [fp, #-20]	@ float
+  65:utils.c       **** 		q->w /= mag;
+ 1067              	.LM38:
+ 1068 0ce4 1C301BE5 		ldr	r3, [fp, #-28]
+ 1069 0ce8 003093E5 		ldr	r3, [r3, #0]	@ float
+ 1070 0cec 0300A0E1 		mov	r0, r3
+ 1071 0cf0 14101BE5 		ldr	r1, [fp, #-20]	@ float
+ 1072 0cf4 FEFFFFEB 		bl	__divsf3
+ 1073 0cf8 0030A0E1 		mov	r3, r0
+ 1074 0cfc 0320A0E1 		mov	r2, r3
+ 1075 0d00 1C301BE5 		ldr	r3, [fp, #-28]
+ 1076 0d04 002083E5 		str	r2, [r3, #0]	@ float
+  66:utils.c       **** 		q->x /= mag;
+ 1078              	.LM39:
+ 1079 0d08 1C301BE5 		ldr	r3, [fp, #-28]
+ 1080 0d0c 043093E5 		ldr	r3, [r3, #4]	@ float
+ 1081 0d10 0300A0E1 		mov	r0, r3
+ 1082 0d14 14101BE5 		ldr	r1, [fp, #-20]	@ float
+ 1083 0d18 FEFFFFEB 		bl	__divsf3
+ 1084 0d1c 0030A0E1 		mov	r3, r0
+ 1085 0d20 0320A0E1 		mov	r2, r3
+ 1086 0d24 1C301BE5 		ldr	r3, [fp, #-28]
+ 1087 0d28 042083E5 		str	r2, [r3, #4]	@ float
+  67:utils.c       **** 		q->y /= mag;
+ 1089              	.LM40:
+ 1090 0d2c 1C301BE5 		ldr	r3, [fp, #-28]
+ 1091 0d30 083093E5 		ldr	r3, [r3, #8]	@ float
+ 1092 0d34 0300A0E1 		mov	r0, r3
+ 1093 0d38 14101BE5 		ldr	r1, [fp, #-20]	@ float
+ 1094 0d3c FEFFFFEB 		bl	__divsf3
+ 1095 0d40 0030A0E1 		mov	r3, r0
+ 1096 0d44 0320A0E1 		mov	r2, r3
+ 1097 0d48 1C301BE5 		ldr	r3, [fp, #-28]
+ 1098 0d4c 082083E5 		str	r2, [r3, #8]	@ float
+  68:utils.c       **** 		q->z /= mag;
+ 1100              	.LM41:
+ 1101 0d50 1C301BE5 		ldr	r3, [fp, #-28]
+ 1102 0d54 0C3093E5 		ldr	r3, [r3, #12]	@ float
+ 1103 0d58 0300A0E1 		mov	r0, r3
+ 1104 0d5c 14101BE5 		ldr	r1, [fp, #-20]	@ float
+ 1105 0d60 FEFFFFEB 		bl	__divsf3
+ 1106 0d64 0030A0E1 		mov	r3, r0
+ 1107 0d68 0320A0E1 		mov	r2, r3
+ 1108 0d6c 1C301BE5 		ldr	r3, [fp, #-28]
+ 1109 0d70 0C2083E5 		str	r2, [r3, #12]	@ float
+ 1110              	.L21:
+ 1111              	.LBE2:
+  69:utils.c       **** 	}
+  70:utils.c       **** }
+ 1113              	.LM42:
+ 1114 0d74 10D04BE2 		sub	sp, fp, #16
+ 1115 0d78 10689DE8 		ldmfd	sp, {r4, fp, sp, lr}
+ 1116 0d7c 1EFF2FE1 		bx	lr
+ 1117              	.L23:
+ 1118              		.align	2
+ 1119              	.L22:
+ 1120 0d80 F7C6B03E 		.word	1051772663
+ 1121 0d84 8DEDB5A0 		.word	-1598689907
+ 1122 0d88 0000803F 		.word	1065353216
+ 1130              	.Lscope5:
+ 1131              		.align	2
+ 1137              		.global	euler2rotmat
+ 1139              	euler2rotmat:
+  71:utils.c       **** 
+  72:utils.c       **** void euler2rotmat(float phi, float theta, float psi, float *R) {
+ 1141              	.LM43:
+ 1142              		@ Function supports interworking.
+ 1143              		@ args = 0, pretend = 0, frame = 40
+ 1144              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1145 0d8c 0DC0A0E1 		mov	ip, sp
+ 1146 0d90 30D82DE9 		stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+ 1147 0d94 04B04CE2 		sub	fp, ip, #4
+ 1148 0d98 28D04DE2 		sub	sp, sp, #40
+ 1149 0d9c 30000BE5 		str	r0, [fp, #-48]	@ float
+ 1150 0da0 34100BE5 		str	r1, [fp, #-52]	@ float
+ 1151 0da4 38200BE5 		str	r2, [fp, #-56]	@ float
+ 1152 0da8 3C300BE5 		str	r3, [fp, #-60]
+  73:utils.c       ****     // Compute rotation matrix R01, rotation from World to Body frame
+  74:utils.c       ****     
+  75:utils.c       **** 	float sphi = sin(phi);
+ 1154              	.LM44:
+ 1155 0dac 30001BE5 		ldr	r0, [fp, #-48]	@ float
+ 1156 0db0 FEFFFFEB 		bl	__extendsfdf2
+ 1157 0db4 0030A0E1 		mov	r3, r0
+ 1158 0db8 0140A0E1 		mov	r4, r1
+ 1159 0dbc 0300A0E1 		mov	r0, r3
+ 1160 0dc0 0410A0E1 		mov	r1, r4
+ 1161 0dc4 FEFFFFEB 		bl	sin
+ 1162 0dc8 0030A0E1 		mov	r3, r0
+ 1163 0dcc 0140A0E1 		mov	r4, r1
+ 1164 0dd0 0300A0E1 		mov	r0, r3
+ 1165 0dd4 0410A0E1 		mov	r1, r4
+ 1166 0dd8 FEFFFFEB 		bl	__truncdfsf2
+ 1167 0ddc 0030A0E1 		mov	r3, r0
+ 1168 0de0 2C300BE5 		str	r3, [fp, #-44]	@ float
+  76:utils.c       **** 	float stheta = sin(theta);
+ 1170              	.LM45:
+ 1171 0de4 34001BE5 		ldr	r0, [fp, #-52]	@ float
+ 1172 0de8 FEFFFFEB 		bl	__extendsfdf2
+ 1173 0dec 0030A0E1 		mov	r3, r0
+ 1174 0df0 0140A0E1 		mov	r4, r1
+ 1175 0df4 0300A0E1 		mov	r0, r3
+ 1176 0df8 0410A0E1 		mov	r1, r4
+ 1177 0dfc FEFFFFEB 		bl	sin
+ 1178 0e00 0030A0E1 		mov	r3, r0
+ 1179 0e04 0140A0E1 		mov	r4, r1
+ 1180 0e08 0300A0E1 		mov	r0, r3
+ 1181 0e0c 0410A0E1 		mov	r1, r4
+ 1182 0e10 FEFFFFEB 		bl	__truncdfsf2
+ 1183 0e14 0030A0E1 		mov	r3, r0
+ 1184 0e18 28300BE5 		str	r3, [fp, #-40]	@ float
+  77:utils.c       **** 	float spsi = sin(psi);
+ 1186              	.LM46:
+ 1187 0e1c 38001BE5 		ldr	r0, [fp, #-56]	@ float
+ 1188 0e20 FEFFFFEB 		bl	__extendsfdf2
+ 1189 0e24 0030A0E1 		mov	r3, r0
+ 1190 0e28 0140A0E1 		mov	r4, r1
+ 1191 0e2c 0300A0E1 		mov	r0, r3
+ 1192 0e30 0410A0E1 		mov	r1, r4
+ 1193 0e34 FEFFFFEB 		bl	sin
+ 1194 0e38 0030A0E1 		mov	r3, r0
+ 1195 0e3c 0140A0E1 		mov	r4, r1
+ 1196 0e40 0300A0E1 		mov	r0, r3
+ 1197 0e44 0410A0E1 		mov	r1, r4
+ 1198 0e48 FEFFFFEB 		bl	__truncdfsf2
+ 1199 0e4c 0030A0E1 		mov	r3, r0
+ 1200 0e50 24300BE5 		str	r3, [fp, #-36]	@ float
+  78:utils.c       **** 	float cphi = cos(phi);
+ 1202              	.LM47:
+ 1203 0e54 30001BE5 		ldr	r0, [fp, #-48]	@ float
+ 1204 0e58 FEFFFFEB 		bl	__extendsfdf2
+ 1205 0e5c 0030A0E1 		mov	r3, r0
+ 1206 0e60 0140A0E1 		mov	r4, r1
+ 1207 0e64 0300A0E1 		mov	r0, r3
+ 1208 0e68 0410A0E1 		mov	r1, r4
+ 1209 0e6c FEFFFFEB 		bl	cos
+ 1210 0e70 0030A0E1 		mov	r3, r0
+ 1211 0e74 0140A0E1 		mov	r4, r1
+ 1212 0e78 0300A0E1 		mov	r0, r3
+ 1213 0e7c 0410A0E1 		mov	r1, r4
+ 1214 0e80 FEFFFFEB 		bl	__truncdfsf2
+ 1215 0e84 0030A0E1 		mov	r3, r0
+ 1216 0e88 20300BE5 		str	r3, [fp, #-32]	@ float
+  79:utils.c       **** 	float ctheta = cos(theta);
+ 1218              	.LM48:
+ 1219 0e8c 34001BE5 		ldr	r0, [fp, #-52]	@ float
+ 1220 0e90 FEFFFFEB 		bl	__extendsfdf2
+ 1221 0e94 0030A0E1 		mov	r3, r0
+ 1222 0e98 0140A0E1 		mov	r4, r1
+ 1223 0e9c 0300A0E1 		mov	r0, r3
+ 1224 0ea0 0410A0E1 		mov	r1, r4
+ 1225 0ea4 FEFFFFEB 		bl	cos
+ 1226 0ea8 0030A0E1 		mov	r3, r0
+ 1227 0eac 0140A0E1 		mov	r4, r1
+ 1228 0eb0 0300A0E1 		mov	r0, r3
+ 1229 0eb4 0410A0E1 		mov	r1, r4
+ 1230 0eb8 FEFFFFEB 		bl	__truncdfsf2
+ 1231 0ebc 0030A0E1 		mov	r3, r0
+ 1232 0ec0 1C300BE5 		str	r3, [fp, #-28]	@ float
+  80:utils.c       **** 	float cpsi = cos(psi);
+ 1234              	.LM49:
+ 1235 0ec4 38001BE5 		ldr	r0, [fp, #-56]	@ float
+ 1236 0ec8 FEFFFFEB 		bl	__extendsfdf2
+ 1237 0ecc 0030A0E1 		mov	r3, r0
+ 1238 0ed0 0140A0E1 		mov	r4, r1
+ 1239 0ed4 0300A0E1 		mov	r0, r3
+ 1240 0ed8 0410A0E1 		mov	r1, r4
+ 1241 0edc FEFFFFEB 		bl	cos
+ 1242 0ee0 0030A0E1 		mov	r3, r0
+ 1243 0ee4 0140A0E1 		mov	r4, r1
+ 1244 0ee8 0300A0E1 		mov	r0, r3
+ 1245 0eec 0410A0E1 		mov	r1, r4
+ 1246 0ef0 FEFFFFEB 		bl	__truncdfsf2
+ 1247 0ef4 0030A0E1 		mov	r3, r0
+ 1248 0ef8 18300BE5 		str	r3, [fp, #-24]	@ float
+  81:utils.c       **** 
+  82:utils.c       **** 	// ROW ORDER?
+  83:utils.c       **** 	R[0] = ctheta * cpsi;
+ 1250              	.LM50:
+ 1251 0efc 1C001BE5 		ldr	r0, [fp, #-28]	@ float
+ 1252 0f00 18101BE5 		ldr	r1, [fp, #-24]	@ float
+ 1253 0f04 FEFFFFEB 		bl	__mulsf3
+ 1254 0f08 0030A0E1 		mov	r3, r0
+ 1255 0f0c 0320A0E1 		mov	r2, r3
+ 1256 0f10 3C301BE5 		ldr	r3, [fp, #-60]
+ 1257 0f14 002083E5 		str	r2, [r3, #0]	@ float
+  84:utils.c       **** 	R[1] = ctheta * spsi;
+ 1259              	.LM51:
+ 1260 0f18 3C301BE5 		ldr	r3, [fp, #-60]
+ 1261 0f1c 044083E2 		add	r4, r3, #4
+ 1262 0f20 1C001BE5 		ldr	r0, [fp, #-28]	@ float
+ 1263 0f24 24101BE5 		ldr	r1, [fp, #-36]	@ float
+ 1264 0f28 FEFFFFEB 		bl	__mulsf3
+ 1265 0f2c 0030A0E1 		mov	r3, r0
+ 1266 0f30 003084E5 		str	r3, [r4, #0]	@ float
+  85:utils.c       **** 	R[2] = -stheta;
+ 1268              	.LM52:
+ 1269 0f34 3C301BE5 		ldr	r3, [fp, #-60]
+ 1270 0f38 082083E2 		add	r2, r3, #8
+ 1271 0f3c 28301BE5 		ldr	r3, [fp, #-40]
+ 1272 0f40 023123E2 		eor	r3, r3, #-2147483648
+ 1273 0f44 003082E5 		str	r3, [r2, #0]	@ float
+  86:utils.c       **** 	R[3] = sphi*stheta*cpsi - cphi*spsi;
+ 1275              	.LM53:
+ 1276 0f48 3C301BE5 		ldr	r3, [fp, #-60]
+ 1277 0f4c 0C5083E2 		add	r5, r3, #12
+ 1278 0f50 2C001BE5 		ldr	r0, [fp, #-44]	@ float
+ 1279 0f54 28101BE5 		ldr	r1, [fp, #-40]	@ float
+ 1280 0f58 FEFFFFEB 		bl	__mulsf3
+ 1281 0f5c 0030A0E1 		mov	r3, r0
+ 1282 0f60 0300A0E1 		mov	r0, r3
+ 1283 0f64 18101BE5 		ldr	r1, [fp, #-24]	@ float
+ 1284 0f68 FEFFFFEB 		bl	__mulsf3
+ 1285 0f6c 0030A0E1 		mov	r3, r0
+ 1286 0f70 0340A0E1 		mov	r4, r3
+ 1287 0f74 20001BE5 		ldr	r0, [fp, #-32]	@ float
+ 1288 0f78 24101BE5 		ldr	r1, [fp, #-36]	@ float
+ 1289 0f7c FEFFFFEB 		bl	__mulsf3
+ 1290 0f80 0030A0E1 		mov	r3, r0
+ 1291 0f84 0400A0E1 		mov	r0, r4
+ 1292 0f88 0310A0E1 		mov	r1, r3
+ 1293 0f8c FEFFFFEB 		bl	__subsf3
+ 1294 0f90 0030A0E1 		mov	r3, r0
+ 1295 0f94 003085E5 		str	r3, [r5, #0]	@ float
+  87:utils.c       **** 	R[4] = sphi*stheta*spsi + cphi*cpsi;
+ 1297              	.LM54:
+ 1298 0f98 3C301BE5 		ldr	r3, [fp, #-60]
+ 1299 0f9c 105083E2 		add	r5, r3, #16
+ 1300 0fa0 2C001BE5 		ldr	r0, [fp, #-44]	@ float
+ 1301 0fa4 28101BE5 		ldr	r1, [fp, #-40]	@ float
+ 1302 0fa8 FEFFFFEB 		bl	__mulsf3
+ 1303 0fac 0030A0E1 		mov	r3, r0
+ 1304 0fb0 0300A0E1 		mov	r0, r3
+ 1305 0fb4 24101BE5 		ldr	r1, [fp, #-36]	@ float
+ 1306 0fb8 FEFFFFEB 		bl	__mulsf3
+ 1307 0fbc 0030A0E1 		mov	r3, r0
+ 1308 0fc0 0340A0E1 		mov	r4, r3
+ 1309 0fc4 20001BE5 		ldr	r0, [fp, #-32]	@ float
+ 1310 0fc8 18101BE5 		ldr	r1, [fp, #-24]	@ float
+ 1311 0fcc FEFFFFEB 		bl	__mulsf3
+ 1312 0fd0 0030A0E1 		mov	r3, r0
+ 1313 0fd4 0400A0E1 		mov	r0, r4
+ 1314 0fd8 0310A0E1 		mov	r1, r3
+ 1315 0fdc FEFFFFEB 		bl	__addsf3
+ 1316 0fe0 0030A0E1 		mov	r3, r0
+ 1317 0fe4 003085E5 		str	r3, [r5, #0]	@ float
+  88:utils.c       **** 	R[5] = sphi*ctheta;
+ 1319              	.LM55:
+ 1320 0fe8 3C301BE5 		ldr	r3, [fp, #-60]
+ 1321 0fec 144083E2 		add	r4, r3, #20
+ 1322 0ff0 2C001BE5 		ldr	r0, [fp, #-44]	@ float
+ 1323 0ff4 1C101BE5 		ldr	r1, [fp, #-28]	@ float
+ 1324 0ff8 FEFFFFEB 		bl	__mulsf3
+ 1325 0ffc 0030A0E1 		mov	r3, r0
+ 1326 1000 003084E5 		str	r3, [r4, #0]	@ float
+  89:utils.c       **** 	R[6] = cphi*stheta*cpsi + sphi*spsi;
+ 1328              	.LM56:
+ 1329 1004 3C301BE5 		ldr	r3, [fp, #-60]
+ 1330 1008 185083E2 		add	r5, r3, #24
+ 1331 100c 20001BE5 		ldr	r0, [fp, #-32]	@ float
+ 1332 1010 28101BE5 		ldr	r1, [fp, #-40]	@ float
+ 1333 1014 FEFFFFEB 		bl	__mulsf3
+ 1334 1018 0030A0E1 		mov	r3, r0
+ 1335 101c 0300A0E1 		mov	r0, r3
+ 1336 1020 18101BE5 		ldr	r1, [fp, #-24]	@ float
+ 1337 1024 FEFFFFEB 		bl	__mulsf3
+ 1338 1028 0030A0E1 		mov	r3, r0
+ 1339 102c 0340A0E1 		mov	r4, r3
+ 1340 1030 2C001BE5 		ldr	r0, [fp, #-44]	@ float
+ 1341 1034 24101BE5 		ldr	r1, [fp, #-36]	@ float
+ 1342 1038 FEFFFFEB 		bl	__mulsf3
+ 1343 103c 0030A0E1 		mov	r3, r0
+ 1344 1040 0400A0E1 		mov	r0, r4
+ 1345 1044 0310A0E1 		mov	r1, r3
+ 1346 1048 FEFFFFEB 		bl	__addsf3
+ 1347 104c 0030A0E1 		mov	r3, r0
+ 1348 1050 003085E5 		str	r3, [r5, #0]	@ float
+  90:utils.c       **** 	R[7] = cphi*stheta*spsi - sphi*cpsi;
+ 1350              	.LM57:
+ 1351 1054 3C301BE5 		ldr	r3, [fp, #-60]
+ 1352 1058 1C5083E2 		add	r5, r3, #28
+ 1353 105c 20001BE5 		ldr	r0, [fp, #-32]	@ float
+ 1354 1060 28101BE5 		ldr	r1, [fp, #-40]	@ float
+ 1355 1064 FEFFFFEB 		bl	__mulsf3
+ 1356 1068 0030A0E1 		mov	r3, r0
+ 1357 106c 0300A0E1 		mov	r0, r3
+ 1358 1070 24101BE5 		ldr	r1, [fp, #-36]	@ float
+ 1359 1074 FEFFFFEB 		bl	__mulsf3
+ 1360 1078 0030A0E1 		mov	r3, r0
+ 1361 107c 0340A0E1 		mov	r4, r3
+ 1362 1080 2C001BE5 		ldr	r0, [fp, #-44]	@ float
+ 1363 1084 18101BE5 		ldr	r1, [fp, #-24]	@ float
+ 1364 1088 FEFFFFEB 		bl	__mulsf3
+ 1365 108c 0030A0E1 		mov	r3, r0
+ 1366 1090 0400A0E1 		mov	r0, r4
+ 1367 1094 0310A0E1 		mov	r1, r3
+ 1368 1098 FEFFFFEB 		bl	__subsf3
+ 1369 109c 0030A0E1 		mov	r3, r0
+ 1370 10a0 003085E5 		str	r3, [r5, #0]	@ float
+  91:utils.c       **** 	R[8] = cphi*ctheta;
+ 1372              	.LM58:
+ 1373 10a4 3C301BE5 		ldr	r3, [fp, #-60]
+ 1374 10a8 204083E2 		add	r4, r3, #32
+ 1375 10ac 20001BE5 		ldr	r0, [fp, #-32]	@ float
+ 1376 10b0 1C101BE5 		ldr	r1, [fp, #-28]	@ float
+ 1377 10b4 FEFFFFEB 		bl	__mulsf3
+ 1378 10b8 0030A0E1 		mov	r3, r0
+ 1379 10bc 003084E5 		str	r3, [r4, #0]	@ float
+  92:utils.c       **** }
+ 1381              	.LM59:
+ 1382 10c0 14D04BE2 		sub	sp, fp, #20
+ 1383 10c4 30689DE8 		ldmfd	sp, {r4, r5, fp, sp, lr}
+ 1384 10c8 1EFF2FE1 		bx	lr
+ 1394              	.Lscope6:
+ 1395              		.align	2
+ 1401              		.global	S_from_euler
+ 1403              	S_from_euler:
+  93:utils.c       **** void S_from_euler(float phi, float theta, float psi, float *S) {
+ 1405              	.LM60:
+ 1406              		@ Function supports interworking.
+ 1407              		@ args = 0, pretend = 0, frame = 32
+ 1408              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1409 10cc 0DC0A0E1 		mov	ip, sp
+ 1410 10d0 10D82DE9 		stmfd	sp!, {r4, fp, ip, lr, pc}
+ 1411 10d4 04B04CE2 		sub	fp, ip, #4
+ 1412 10d8 20D04DE2 		sub	sp, sp, #32
+ 1413 10dc 24000BE5 		str	r0, [fp, #-36]	@ float
+ 1414 10e0 28100BE5 		str	r1, [fp, #-40]	@ float
+ 1415 10e4 2C200BE5 		str	r2, [fp, #-44]	@ float
+ 1416 10e8 30300BE5 		str	r3, [fp, #-48]
+  94:utils.c       **** 	float sphi = sin(phi);
+ 1418              	.LM61:
+ 1419 10ec 24001BE5 		ldr	r0, [fp, #-36]	@ float
+ 1420 10f0 FEFFFFEB 		bl	__extendsfdf2
+ 1421 10f4 0030A0E1 		mov	r3, r0
+ 1422 10f8 0140A0E1 		mov	r4, r1
+ 1423 10fc 0300A0E1 		mov	r0, r3
+ 1424 1100 0410A0E1 		mov	r1, r4
+ 1425 1104 FEFFFFEB 		bl	sin
+ 1426 1108 0030A0E1 		mov	r3, r0
+ 1427 110c 0140A0E1 		mov	r4, r1
+ 1428 1110 0300A0E1 		mov	r0, r3
+ 1429 1114 0410A0E1 		mov	r1, r4
+ 1430 1118 FEFFFFEB 		bl	__truncdfsf2
+ 1431 111c 0030A0E1 		mov	r3, r0
+ 1432 1120 20300BE5 		str	r3, [fp, #-32]	@ float
+  95:utils.c       **** 	float cphi = cos(phi);
+ 1434              	.LM62:
+ 1435 1124 24001BE5 		ldr	r0, [fp, #-36]	@ float
+ 1436 1128 FEFFFFEB 		bl	__extendsfdf2
+ 1437 112c 0030A0E1 		mov	r3, r0
+ 1438 1130 0140A0E1 		mov	r4, r1
+ 1439 1134 0300A0E1 		mov	r0, r3
+ 1440 1138 0410A0E1 		mov	r1, r4
+ 1441 113c FEFFFFEB 		bl	cos
+ 1442 1140 0030A0E1 		mov	r3, r0
+ 1443 1144 0140A0E1 		mov	r4, r1
+ 1444 1148 0300A0E1 		mov	r0, r3
+ 1445 114c 0410A0E1 		mov	r1, r4
+ 1446 1150 FEFFFFEB 		bl	__truncdfsf2
+ 1447 1154 0030A0E1 		mov	r3, r0
+ 1448 1158 1C300BE5 		str	r3, [fp, #-28]	@ float
+  96:utils.c       **** 	float ctheta = cos(theta);
+ 1450              	.LM63:
+ 1451 115c 28001BE5 		ldr	r0, [fp, #-40]	@ float
+ 1452 1160 FEFFFFEB 		bl	__extendsfdf2
+ 1453 1164 0030A0E1 		mov	r3, r0
+ 1454 1168 0140A0E1 		mov	r4, r1
+ 1455 116c 0300A0E1 		mov	r0, r3
+ 1456 1170 0410A0E1 		mov	r1, r4
+ 1457 1174 FEFFFFEB 		bl	cos
+ 1458 1178 0030A0E1 		mov	r3, r0
+ 1459 117c 0140A0E1 		mov	r4, r1
+ 1460 1180 0300A0E1 		mov	r0, r3
+ 1461 1184 0410A0E1 		mov	r1, r4
+ 1462 1188 FEFFFFEB 		bl	__truncdfsf2
+ 1463 118c 0030A0E1 		mov	r3, r0
+ 1464 1190 18300BE5 		str	r3, [fp, #-24]	@ float
+  97:utils.c       **** 	float ttheta = tan(theta);
+ 1466              	.LM64:
+ 1467 1194 28001BE5 		ldr	r0, [fp, #-40]	@ float
+ 1468 1198 FEFFFFEB 		bl	__extendsfdf2
+ 1469 119c 0030A0E1 		mov	r3, r0
+ 1470 11a0 0140A0E1 		mov	r4, r1
+ 1471 11a4 0300A0E1 		mov	r0, r3
+ 1472 11a8 0410A0E1 		mov	r1, r4
+ 1473 11ac FEFFFFEB 		bl	tan
+ 1474 11b0 0030A0E1 		mov	r3, r0
+ 1475 11b4 0140A0E1 		mov	r4, r1
+ 1476 11b8 0300A0E1 		mov	r0, r3
+ 1477 11bc 0410A0E1 		mov	r1, r4
+ 1478 11c0 FEFFFFEB 		bl	__truncdfsf2
+ 1479 11c4 0030A0E1 		mov	r3, r0
+ 1480 11c8 14300BE5 		str	r3, [fp, #-20]	@ float
+  98:utils.c       **** 
+  99:utils.c       **** 	S[0] = 1.0;
+ 1482              	.LM65:
+ 1483 11cc 30201BE5 		ldr	r2, [fp, #-48]
+ 1484 11d0 C0309FE5 		ldr	r3, .L28	@ float
+ 1485 11d4 003082E5 		str	r3, [r2, #0]	@ float
+ 100:utils.c       **** 	S[1] = sphi*ttheta;
+ 1487              	.LM66:
+ 1488 11d8 30301BE5 		ldr	r3, [fp, #-48]
+ 1489 11dc 044083E2 		add	r4, r3, #4
+ 1490 11e0 20001BE5 		ldr	r0, [fp, #-32]	@ float
+ 1491 11e4 14101BE5 		ldr	r1, [fp, #-20]	@ float
+ 1492 11e8 FEFFFFEB 		bl	__mulsf3
+ 1493 11ec 0030A0E1 		mov	r3, r0
+ 1494 11f0 003084E5 		str	r3, [r4, #0]	@ float
+ 101:utils.c       **** 	S[2] = cphi*ttheta;
+ 1496              	.LM67:
+ 1497 11f4 30301BE5 		ldr	r3, [fp, #-48]
+ 1498 11f8 084083E2 		add	r4, r3, #8
+ 1499 11fc 1C001BE5 		ldr	r0, [fp, #-28]	@ float
+ 1500 1200 14101BE5 		ldr	r1, [fp, #-20]	@ float
+ 1501 1204 FEFFFFEB 		bl	__mulsf3
+ 1502 1208 0030A0E1 		mov	r3, r0
+ 1503 120c 003084E5 		str	r3, [r4, #0]	@ float
+ 102:utils.c       **** 	S[3] = 0;
+ 1505              	.LM68:
+ 1506 1210 30301BE5 		ldr	r3, [fp, #-48]
+ 1507 1214 0C2083E2 		add	r2, r3, #12
+ 1508 1218 7C309FE5 		ldr	r3, .L28+4	@ float
+ 1509 121c 003082E5 		str	r3, [r2, #0]	@ float
+ 103:utils.c       **** 	S[4] = cphi;
+ 1511              	.LM69:
+ 1512 1220 30301BE5 		ldr	r3, [fp, #-48]
+ 1513 1224 102083E2 		add	r2, r3, #16
+ 1514 1228 1C301BE5 		ldr	r3, [fp, #-28]	@ float
+ 1515 122c 003082E5 		str	r3, [r2, #0]	@ float
+ 104:utils.c       **** 	S[5] = -sphi;
+ 1517              	.LM70:
+ 1518 1230 30301BE5 		ldr	r3, [fp, #-48]
+ 1519 1234 142083E2 		add	r2, r3, #20
+ 1520 1238 20301BE5 		ldr	r3, [fp, #-32]
+ 1521 123c 023123E2 		eor	r3, r3, #-2147483648
+ 1522 1240 003082E5 		str	r3, [r2, #0]	@ float
+ 105:utils.c       **** 	S[6] = 0;
+ 1524              	.LM71:
+ 1525 1244 30301BE5 		ldr	r3, [fp, #-48]
+ 1526 1248 182083E2 		add	r2, r3, #24
+ 1527 124c 48309FE5 		ldr	r3, .L28+4	@ float
+ 1528 1250 003082E5 		str	r3, [r2, #0]	@ float
+ 106:utils.c       **** 	S[7] = sphi/ctheta;
+ 1530              	.LM72:
+ 1531 1254 30301BE5 		ldr	r3, [fp, #-48]
+ 1532 1258 1C4083E2 		add	r4, r3, #28
+ 1533 125c 20001BE5 		ldr	r0, [fp, #-32]	@ float
+ 1534 1260 18101BE5 		ldr	r1, [fp, #-24]	@ float
+ 1535 1264 FEFFFFEB 		bl	__divsf3
+ 1536 1268 0030A0E1 		mov	r3, r0
+ 1537 126c 003084E5 		str	r3, [r4, #0]	@ float
+ 107:utils.c       **** 	S[8] = cphi/ctheta;
+ 1539              	.LM73:
+ 1540 1270 30301BE5 		ldr	r3, [fp, #-48]
+ 1541 1274 204083E2 		add	r4, r3, #32
+ 1542 1278 1C001BE5 		ldr	r0, [fp, #-28]	@ float
+ 1543 127c 18101BE5 		ldr	r1, [fp, #-24]	@ float
+ 1544 1280 FEFFFFEB 		bl	__divsf3
+ 1545 1284 0030A0E1 		mov	r3, r0
+ 1546 1288 003084E5 		str	r3, [r4, #0]	@ float
+ 108:utils.c       **** }
+ 1548              	.LM74:
+ 1549 128c 10D04BE2 		sub	sp, fp, #16
+ 1550 1290 10689DE8 		ldmfd	sp, {r4, fp, sp, lr}
+ 1551 1294 1EFF2FE1 		bx	lr
+ 1552              	.L29:
+ 1553              		.align	2
+ 1554              	.L28:
+ 1555 1298 0000803F 		.word	1065353216
+ 1556 129c 00000000 		.word	0
+ 1564              	.Lscope7:
+ 1565              		.align	2
+ 1571              		.global	matrix_transpose
+ 1573              	matrix_transpose:
+ 109:utils.c       **** 
+ 110:utils.c       **** //transpose matrix A (m x n)  to  B (n x m)
+ 111:utils.c       **** void matrix_transpose(int m , int n, float* A,  float* B) {
+ 1575              	.LM75:
+ 1576              		@ Function supports interworking.
+ 1577              		@ args = 0, pretend = 0, frame = 24
+ 1578              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1579 12a0 0DC0A0E1 		mov	ip, sp
+ 1580 12a4 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+ 1581 12a8 04B04CE2 		sub	fp, ip, #4
+ 1582 12ac 18D04DE2 		sub	sp, sp, #24
+ 1583 12b0 18000BE5 		str	r0, [fp, #-24]
+ 1584 12b4 1C100BE5 		str	r1, [fp, #-28]
+ 1585 12b8 20200BE5 		str	r2, [fp, #-32]
+ 1586 12bc 24300BE5 		str	r3, [fp, #-36]
+ 112:utils.c       **** 	int i,j;
+ 113:utils.c       **** 	for(i=0;i<m;i++)
+ 1588              	.LM76:
+ 1589 12c0 0030A0E3 		mov	r3, #0
+ 1590 12c4 14300BE5 		str	r3, [fp, #-20]
+ 1591 12c8 200000EA 		b	.L31
+ 1592              	.L32:
+ 114:utils.c       **** 		for(j=0;j<n;j++)
+ 1594              	.LM77:
+ 1595 12cc 0030A0E3 		mov	r3, #0
+ 1596 12d0 10300BE5 		str	r3, [fp, #-16]
+ 1597 12d4 160000EA 		b	.L33
+ 1598              	.L34:
+ 115:utils.c       **** 			B[j*m+i] = A[i*n+j];
+ 1600              	.LM78:
+ 1601 12d8 10201BE5 		ldr	r2, [fp, #-16]
+ 1602 12dc 18301BE5 		ldr	r3, [fp, #-24]
+ 1603 12e0 930202E0 		mul	r2, r3, r2
+ 1604 12e4 14301BE5 		ldr	r3, [fp, #-20]
+ 1605 12e8 033082E0 		add	r3, r2, r3
+ 1606 12ec 0331A0E1 		mov	r3, r3, asl #2
+ 1607 12f0 0320A0E1 		mov	r2, r3
+ 1608 12f4 24301BE5 		ldr	r3, [fp, #-36]
+ 1609 12f8 031082E0 		add	r1, r2, r3
+ 1610 12fc 14201BE5 		ldr	r2, [fp, #-20]
+ 1611 1300 1C301BE5 		ldr	r3, [fp, #-28]
+ 1612 1304 930202E0 		mul	r2, r3, r2
+ 1613 1308 10301BE5 		ldr	r3, [fp, #-16]
+ 1614 130c 033082E0 		add	r3, r2, r3
+ 1615 1310 0331A0E1 		mov	r3, r3, asl #2
+ 1616 1314 0320A0E1 		mov	r2, r3
+ 1617 1318 20301BE5 		ldr	r3, [fp, #-32]
+ 1618 131c 033082E0 		add	r3, r2, r3
+ 1619 1320 003093E5 		ldr	r3, [r3, #0]	@ float
+ 1620 1324 003081E5 		str	r3, [r1, #0]	@ float
+ 114:utils.c       **** 		for(j=0;j<n;j++)
+ 1622              	.LM79:
+ 1623 1328 10301BE5 		ldr	r3, [fp, #-16]
+ 1624 132c 013083E2 		add	r3, r3, #1
+ 1625 1330 10300BE5 		str	r3, [fp, #-16]
+ 1626              	.L33:
+ 1627 1334 10201BE5 		ldr	r2, [fp, #-16]
+ 1628 1338 1C301BE5 		ldr	r3, [fp, #-28]
+ 1629 133c 030052E1 		cmp	r2, r3
+ 1630 1340 E4FFFFBA 		blt	.L34
+ 113:utils.c       **** 	for(i=0;i<m;i++)
+ 1632              	.LM80:
+ 1633 1344 14301BE5 		ldr	r3, [fp, #-20]
+ 1634 1348 013083E2 		add	r3, r3, #1
+ 1635 134c 14300BE5 		str	r3, [fp, #-20]
+ 1636              	.L31:
+ 1637 1350 14201BE5 		ldr	r2, [fp, #-20]
+ 1638 1354 18301BE5 		ldr	r3, [fp, #-24]
+ 1639 1358 030052E1 		cmp	r2, r3
+ 1640 135c DAFFFFBA 		blt	.L32
+ 116:utils.c       **** }
+ 1642              	.LM81:
+ 1643 1360 0CD04BE2 		sub	sp, fp, #12
+ 1644 1364 00689DE8 		ldmfd	sp, {fp, sp, lr}
+ 1645 1368 1EFF2FE1 		bx	lr
+ 1651              	.Lscope8:
+ 1652              		.align	2
+ 1660              		.global	matrix_multiply
+ 1662              	matrix_multiply:
+ 117:utils.c       **** 
+ 118:utils.c       **** //multiply matrix A (m x p) by  B(p x n) , put result in C (m x n)
+ 119:utils.c       **** void matrix_multiply( int m, int p, int n , float *A, float *B,  float *C) {
+ 1664              	.LM82:
+ 1665              		@ Function supports interworking.
+ 1666              		@ args = 8, pretend = 0, frame = 28
+ 1667              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1668 136c 0DC0A0E1 		mov	ip, sp
+ 1669 1370 30D82DE9 		stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+ 1670 1374 04B04CE2 		sub	fp, ip, #4
+ 1671 1378 1CD04DE2 		sub	sp, sp, #28
+ 1672 137c 24000BE5 		str	r0, [fp, #-36]
+ 1673 1380 28100BE5 		str	r1, [fp, #-40]
+ 1674 1384 2C200BE5 		str	r2, [fp, #-44]
+ 1675 1388 30300BE5 		str	r3, [fp, #-48]
+ 120:utils.c       **** 	int i,j,k;
+ 121:utils.c       **** 	for(i=0;i<m;i++)		//each row in A
+ 1677              	.LM83:
+ 1678 138c 0030A0E3 		mov	r3, #0
+ 1679 1390 20300BE5 		str	r3, [fp, #-32]
+ 1680 1394 510000EA 		b	.L39
+ 1681              	.L40:
+ 122:utils.c       **** 		for(j=0;j<n;j++){	//each column in B
+ 1683              	.LM84:
+ 1684 1398 0030A0E3 		mov	r3, #0
+ 1685 139c 1C300BE5 		str	r3, [fp, #-28]
+ 1686 13a0 470000EA 		b	.L41
+ 1687              	.L42:
+ 123:utils.c       **** 			C[i*n+j] = 0;
+ 1689              	.LM85:
+ 1690 13a4 20201BE5 		ldr	r2, [fp, #-32]
+ 1691 13a8 2C301BE5 		ldr	r3, [fp, #-44]
+ 1692 13ac 930202E0 		mul	r2, r3, r2
+ 1693 13b0 1C301BE5 		ldr	r3, [fp, #-28]
+ 1694 13b4 033082E0 		add	r3, r2, r3
+ 1695 13b8 0331A0E1 		mov	r3, r3, asl #2
+ 1696 13bc 0320A0E1 		mov	r2, r3
+ 1697 13c0 08309BE5 		ldr	r3, [fp, #8]
+ 1698 13c4 032082E0 		add	r2, r2, r3
+ 1699 13c8 2C319FE5 		ldr	r3, .L49	@ float
+ 1700 13cc 003082E5 		str	r3, [r2, #0]	@ float
+ 124:utils.c       **** 			for(k=0;k<p;k++){//each element in row A & column B
+ 1702              	.LM86:
+ 1703 13d0 0030A0E3 		mov	r3, #0
+ 1704 13d4 18300BE5 		str	r3, [fp, #-24]
+ 1705 13d8 320000EA 		b	.L43
+ 1706              	.L44:
+ 125:utils.c       **** 				C[i*n+j] += A[i*p+k]*B[k*n+j];
+ 1708              	.LM87:
+ 1709 13dc 20201BE5 		ldr	r2, [fp, #-32]
+ 1710 13e0 2C301BE5 		ldr	r3, [fp, #-44]
+ 1711 13e4 930202E0 		mul	r2, r3, r2
+ 1712 13e8 1C301BE5 		ldr	r3, [fp, #-28]
+ 1713 13ec 033082E0 		add	r3, r2, r3
+ 1714 13f0 0331A0E1 		mov	r3, r3, asl #2
+ 1715 13f4 0320A0E1 		mov	r2, r3
+ 1716 13f8 08309BE5 		ldr	r3, [fp, #8]
+ 1717 13fc 034082E0 		add	r4, r2, r3
+ 1718 1400 20201BE5 		ldr	r2, [fp, #-32]
+ 1719 1404 2C301BE5 		ldr	r3, [fp, #-44]
+ 1720 1408 930202E0 		mul	r2, r3, r2
+ 1721 140c 1C301BE5 		ldr	r3, [fp, #-28]
+ 1722 1410 033082E0 		add	r3, r2, r3
+ 1723 1414 0331A0E1 		mov	r3, r3, asl #2
+ 1724 1418 0320A0E1 		mov	r2, r3
+ 1725 141c 08309BE5 		ldr	r3, [fp, #8]
+ 1726 1420 033082E0 		add	r3, r2, r3
+ 1727 1424 005093E5 		ldr	r5, [r3, #0]	@ float
+ 1728 1428 20201BE5 		ldr	r2, [fp, #-32]
+ 1729 142c 28301BE5 		ldr	r3, [fp, #-40]
+ 1730 1430 930202E0 		mul	r2, r3, r2
+ 1731 1434 18301BE5 		ldr	r3, [fp, #-24]
+ 1732 1438 033082E0 		add	r3, r2, r3
+ 1733 143c 0331A0E1 		mov	r3, r3, asl #2
+ 1734 1440 0320A0E1 		mov	r2, r3
+ 1735 1444 30301BE5 		ldr	r3, [fp, #-48]
+ 1736 1448 033082E0 		add	r3, r2, r3
+ 1737 144c 001093E5 		ldr	r1, [r3, #0]	@ float
+ 1738 1450 18201BE5 		ldr	r2, [fp, #-24]
+ 1739 1454 2C301BE5 		ldr	r3, [fp, #-44]
+ 1740 1458 930202E0 		mul	r2, r3, r2
+ 1741 145c 1C301BE5 		ldr	r3, [fp, #-28]
+ 1742 1460 033082E0 		add	r3, r2, r3
+ 1743 1464 0331A0E1 		mov	r3, r3, asl #2
+ 1744 1468 0320A0E1 		mov	r2, r3
+ 1745 146c 04309BE5 		ldr	r3, [fp, #4]
+ 1746 1470 033082E0 		add	r3, r2, r3
+ 1747 1474 003093E5 		ldr	r3, [r3, #0]	@ float
+ 1748 1478 0100A0E1 		mov	r0, r1
+ 1749 147c 0310A0E1 		mov	r1, r3
+ 1750 1480 FEFFFFEB 		bl	__mulsf3
+ 1751 1484 0030A0E1 		mov	r3, r0
+ 1752 1488 0500A0E1 		mov	r0, r5
+ 1753 148c 0310A0E1 		mov	r1, r3
+ 1754 1490 FEFFFFEB 		bl	__addsf3
+ 1755 1494 0030A0E1 		mov	r3, r0
+ 1756 1498 003084E5 		str	r3, [r4, #0]	@ float
+ 124:utils.c       **** 			for(k=0;k<p;k++){//each element in row A & column B
+ 1758              	.LM88:
+ 1759 149c 18301BE5 		ldr	r3, [fp, #-24]
+ 1760 14a0 013083E2 		add	r3, r3, #1
+ 1761 14a4 18300BE5 		str	r3, [fp, #-24]
+ 1762              	.L43:
+ 1763 14a8 18201BE5 		ldr	r2, [fp, #-24]
+ 1764 14ac 28301BE5 		ldr	r3, [fp, #-40]
+ 1765 14b0 030052E1 		cmp	r2, r3
+ 1766 14b4 C8FFFFBA 		blt	.L44
+ 122:utils.c       **** 		for(j=0;j<n;j++){	//each column in B
+ 1768              	.LM89:
+ 1769 14b8 1C301BE5 		ldr	r3, [fp, #-28]
+ 1770 14bc 013083E2 		add	r3, r3, #1
+ 1771 14c0 1C300BE5 		str	r3, [fp, #-28]
+ 1772              	.L41:
+ 1773 14c4 1C201BE5 		ldr	r2, [fp, #-28]
+ 1774 14c8 2C301BE5 		ldr	r3, [fp, #-44]
+ 1775 14cc 030052E1 		cmp	r2, r3
+ 1776 14d0 B3FFFFBA 		blt	.L42
+ 121:utils.c       **** 	for(i=0;i<m;i++)		//each row in A
+ 1778              	.LM90:
+ 1779 14d4 20301BE5 		ldr	r3, [fp, #-32]
+ 1780 14d8 013083E2 		add	r3, r3, #1
+ 1781 14dc 20300BE5 		str	r3, [fp, #-32]
+ 1782              	.L39:
+ 1783 14e0 20201BE5 		ldr	r2, [fp, #-32]
+ 1784 14e4 24301BE5 		ldr	r3, [fp, #-36]
+ 1785 14e8 030052E1 		cmp	r2, r3
+ 1786 14ec A9FFFFBA 		blt	.L40
+ 126:utils.c       **** 				//printf("i=%d j=%d k=%d a=%f b=%f c=%f ",i,j,k,(double)(A[i*p+k]),(double)(B[k*n+j]),(double)(
+ 127:utils.c       **** 			}
+ 128:utils.c       **** 			//printf("\n");
+ 129:utils.c       **** 		}
+ 130:utils.c       **** };
+ 1788              	.LM91:
+ 1789 14f0 14D04BE2 		sub	sp, fp, #20
+ 1790 14f4 30689DE8 		ldmfd	sp, {r4, r5, fp, sp, lr}
+ 1791 14f8 1EFF2FE1 		bx	lr
+ 1792              	.L50:
+ 1793              		.align	2
+ 1794              	.L49:
+ 1795 14fc 00000000 		.word	0
+ 1802              	.Lscope9:
+ 1803              		.align	2
+ 1809              		.global	matrix_copy
+ 1811              	matrix_copy:
+ 131:utils.c       **** 
+ 132:utils.c       **** 
+ 133:utils.c       **** void matrix_copy(int m, int n, float* A, float* B ) {
+ 1813              	.LM92:
+ 1814              		@ Function supports interworking.
+ 1815              		@ args = 0, pretend = 0, frame = 24
+ 1816              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1817 1500 0DC0A0E1 		mov	ip, sp
+ 1818 1504 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+ 1819 1508 04B04CE2 		sub	fp, ip, #4
+ 1820 150c 18D04DE2 		sub	sp, sp, #24
+ 1821 1510 18000BE5 		str	r0, [fp, #-24]
+ 1822 1514 1C100BE5 		str	r1, [fp, #-28]
+ 1823 1518 20200BE5 		str	r2, [fp, #-32]
+ 1824 151c 24300BE5 		str	r3, [fp, #-36]
+ 134:utils.c       **** 	int i,j;
+ 135:utils.c       **** 	for(i=0;i<m;i++)
+ 1826              	.LM93:
+ 1827 1520 0030A0E3 		mov	r3, #0
+ 1828 1524 14300BE5 		str	r3, [fp, #-20]
+ 1829 1528 200000EA 		b	.L52
+ 1830              	.L53:
+ 136:utils.c       **** 		for(j=0;j<n;j++)
+ 1832              	.LM94:
+ 1833 152c 0030A0E3 		mov	r3, #0
+ 1834 1530 10300BE5 		str	r3, [fp, #-16]
+ 1835 1534 160000EA 		b	.L54
+ 1836              	.L55:
+ 137:utils.c       **** 			B[i*n+j] = A[i*n+j];
+ 1838              	.LM95:
+ 1839 1538 14201BE5 		ldr	r2, [fp, #-20]
+ 1840 153c 1C301BE5 		ldr	r3, [fp, #-28]
+ 1841 1540 930202E0 		mul	r2, r3, r2
+ 1842 1544 10301BE5 		ldr	r3, [fp, #-16]
+ 1843 1548 033082E0 		add	r3, r2, r3
+ 1844 154c 0331A0E1 		mov	r3, r3, asl #2
+ 1845 1550 0320A0E1 		mov	r2, r3
+ 1846 1554 24301BE5 		ldr	r3, [fp, #-36]
+ 1847 1558 031082E0 		add	r1, r2, r3
+ 1848 155c 14201BE5 		ldr	r2, [fp, #-20]
+ 1849 1560 1C301BE5 		ldr	r3, [fp, #-28]
+ 1850 1564 930202E0 		mul	r2, r3, r2
+ 1851 1568 10301BE5 		ldr	r3, [fp, #-16]
+ 1852 156c 033082E0 		add	r3, r2, r3
+ 1853 1570 0331A0E1 		mov	r3, r3, asl #2
+ 1854 1574 0320A0E1 		mov	r2, r3
+ 1855 1578 20301BE5 		ldr	r3, [fp, #-32]
+ 1856 157c 033082E0 		add	r3, r2, r3
+ 1857 1580 003093E5 		ldr	r3, [r3, #0]	@ float
+ 1858 1584 003081E5 		str	r3, [r1, #0]	@ float
+ 136:utils.c       **** 		for(j=0;j<n;j++)
+ 1860              	.LM96:
+ 1861 1588 10301BE5 		ldr	r3, [fp, #-16]
+ 1862 158c 013083E2 		add	r3, r3, #1
+ 1863 1590 10300BE5 		str	r3, [fp, #-16]
+ 1864              	.L54:
+ 1865 1594 10201BE5 		ldr	r2, [fp, #-16]
+ 1866 1598 1C301BE5 		ldr	r3, [fp, #-28]
+ 1867 159c 030052E1 		cmp	r2, r3
+ 1868 15a0 E4FFFFBA 		blt	.L55
+ 135:utils.c       **** 	for(i=0;i<m;i++)
+ 1870              	.LM97:
+ 1871 15a4 14301BE5 		ldr	r3, [fp, #-20]
+ 1872 15a8 013083E2 		add	r3, r3, #1
+ 1873 15ac 14300BE5 		str	r3, [fp, #-20]
+ 1874              	.L52:
+ 1875 15b0 14201BE5 		ldr	r2, [fp, #-20]
+ 1876 15b4 18301BE5 		ldr	r3, [fp, #-24]
+ 1877 15b8 030052E1 		cmp	r2, r3
+ 1878 15bc DAFFFFBA 		blt	.L53
+ 138:utils.c       **** }
+ 1880              	.LM98:
+ 1881 15c0 0CD04BE2 		sub	sp, fp, #12
+ 1882 15c4 00689DE8 		ldmfd	sp, {fp, sp, lr}
+ 1883 15c8 1EFF2FE1 		bx	lr
+ 1889              	.Lscope10:
+ 1890              		.align	2
+ 1896              		.global	matrix_scalar_mult
+ 1898              	matrix_scalar_mult:
+ 139:utils.c       **** 
+ 140:utils.c       **** void matrix_scalar_mult(int n, int m, float *A, float s) { // in place!
+ 1900              	.LM99:
+ 1901              		@ Function supports interworking.
+ 1902              		@ args = 0, pretend = 0, frame = 24
+ 1903              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1904 15cc 0DC0A0E1 		mov	ip, sp
+ 1905 15d0 10D82DE9 		stmfd	sp!, {r4, fp, ip, lr, pc}
+ 1906 15d4 04B04CE2 		sub	fp, ip, #4
+ 1907 15d8 18D04DE2 		sub	sp, sp, #24
+ 1908 15dc 1C000BE5 		str	r0, [fp, #-28]
+ 1909 15e0 20100BE5 		str	r1, [fp, #-32]
+ 1910 15e4 24200BE5 		str	r2, [fp, #-36]
+ 1911 15e8 28300BE5 		str	r3, [fp, #-40]	@ float
+ 141:utils.c       **** 	int i, j;
+ 142:utils.c       **** 	for (i=0; i<n; i++) {
+ 1913              	.LM100:
+ 1914 15ec 0030A0E3 		mov	r3, #0
+ 1915 15f0 18300BE5 		str	r3, [fp, #-24]
+ 1916 15f4 240000EA 		b	.L60
+ 1917              	.L61:
+ 143:utils.c       **** 		for (j=0; j<m; j++) {
+ 1919              	.LM101:
+ 1920 15f8 0030A0E3 		mov	r3, #0
+ 1921 15fc 14300BE5 		str	r3, [fp, #-20]
+ 1922 1600 1A0000EA 		b	.L62
+ 1923              	.L63:
+ 144:utils.c       **** 			A[i*m + j] = A[i*m + j]*s;
+ 1925              	.LM102:
+ 1926 1604 18201BE5 		ldr	r2, [fp, #-24]
+ 1927 1608 20301BE5 		ldr	r3, [fp, #-32]
+ 1928 160c 930202E0 		mul	r2, r3, r2
+ 1929 1610 14301BE5 		ldr	r3, [fp, #-20]
+ 1930 1614 033082E0 		add	r3, r2, r3
+ 1931 1618 0331A0E1 		mov	r3, r3, asl #2
+ 1932 161c 0320A0E1 		mov	r2, r3
+ 1933 1620 24301BE5 		ldr	r3, [fp, #-36]
+ 1934 1624 034082E0 		add	r4, r2, r3
+ 1935 1628 18201BE5 		ldr	r2, [fp, #-24]
+ 1936 162c 20301BE5 		ldr	r3, [fp, #-32]
+ 1937 1630 930202E0 		mul	r2, r3, r2
+ 1938 1634 14301BE5 		ldr	r3, [fp, #-20]
+ 1939 1638 033082E0 		add	r3, r2, r3
+ 1940 163c 0331A0E1 		mov	r3, r3, asl #2
+ 1941 1640 0320A0E1 		mov	r2, r3
+ 1942 1644 24301BE5 		ldr	r3, [fp, #-36]
+ 1943 1648 033082E0 		add	r3, r2, r3
+ 1944 164c 003093E5 		ldr	r3, [r3, #0]	@ float
+ 1945 1650 0300A0E1 		mov	r0, r3
+ 1946 1654 28101BE5 		ldr	r1, [fp, #-40]	@ float
+ 1947 1658 FEFFFFEB 		bl	__mulsf3
+ 1948 165c 0030A0E1 		mov	r3, r0
+ 1949 1660 003084E5 		str	r3, [r4, #0]	@ float
+ 143:utils.c       **** 		for (j=0; j<m; j++) {
+ 1951              	.LM103:
+ 1952 1664 14301BE5 		ldr	r3, [fp, #-20]
+ 1953 1668 013083E2 		add	r3, r3, #1
+ 1954 166c 14300BE5 		str	r3, [fp, #-20]
+ 1955              	.L62:
+ 1956 1670 14201BE5 		ldr	r2, [fp, #-20]
+ 1957 1674 20301BE5 		ldr	r3, [fp, #-32]
+ 1958 1678 030052E1 		cmp	r2, r3
+ 1959 167c E0FFFFBA 		blt	.L63
+ 142:utils.c       **** 	for (i=0; i<n; i++) {
+ 1961              	.LM104:
+ 1962 1680 18301BE5 		ldr	r3, [fp, #-24]
+ 1963 1684 013083E2 		add	r3, r3, #1
+ 1964 1688 18300BE5 		str	r3, [fp, #-24]
+ 1965              	.L60:
+ 1966 168c 18201BE5 		ldr	r2, [fp, #-24]
+ 1967 1690 1C301BE5 		ldr	r3, [fp, #-28]
+ 1968 1694 030052E1 		cmp	r2, r3
+ 1969 1698 D6FFFFBA 		blt	.L61
+ 145:utils.c       **** 		}
+ 146:utils.c       **** 	}
+ 147:utils.c       **** }
+ 1971              	.LM105:
+ 1972 169c 10D04BE2 		sub	sp, fp, #16
+ 1973 16a0 10689DE8 		ldmfd	sp, {r4, fp, sp, lr}
+ 1974 16a4 1EFF2FE1 		bx	lr
+ 1980              	.Lscope11:
+ 1981              		.align	2
+ 1987              		.global	matrix_add
+ 1989              	matrix_add:
+ 148:utils.c       **** void matrix_add(int n, int m, float *A, float *B) { // in place!  overwrites A!
+ 1991              	.LM106:
+ 1992              		@ Function supports interworking.
+ 1993              		@ args = 0, pretend = 0, frame = 24
+ 1994              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1995 16a8 0DC0A0E1 		mov	ip, sp
+ 1996 16ac 10D82DE9 		stmfd	sp!, {r4, fp, ip, lr, pc}
+ 1997 16b0 04B04CE2 		sub	fp, ip, #4
+ 1998 16b4 18D04DE2 		sub	sp, sp, #24
+ 1999 16b8 1C000BE5 		str	r0, [fp, #-28]
+ 2000 16bc 20100BE5 		str	r1, [fp, #-32]
+ 2001 16c0 24200BE5 		str	r2, [fp, #-36]
+ 2002 16c4 28300BE5 		str	r3, [fp, #-40]
+ 149:utils.c       **** 	int i, j;
+ 150:utils.c       **** 	for (i=0; i<n; i++) {
+ 2004              	.LM107:
+ 2005 16c8 0030A0E3 		mov	r3, #0
+ 2006 16cc 18300BE5 		str	r3, [fp, #-24]
+ 2007 16d0 2E0000EA 		b	.L68
+ 2008              	.L69:
+ 151:utils.c       **** 		for (j=0; j<m; j++) {
+ 2010              	.LM108:
+ 2011 16d4 0030A0E3 		mov	r3, #0
+ 2012 16d8 14300BE5 		str	r3, [fp, #-20]
+ 2013 16dc 240000EA 		b	.L70
+ 2014              	.L71:
+ 152:utils.c       **** 			A[i*m + j] = A[i*m + j] + B[i*m + j];
+ 2016              	.LM109:
+ 2017 16e0 18201BE5 		ldr	r2, [fp, #-24]
+ 2018 16e4 20301BE5 		ldr	r3, [fp, #-32]
+ 2019 16e8 930202E0 		mul	r2, r3, r2
+ 2020 16ec 14301BE5 		ldr	r3, [fp, #-20]
+ 2021 16f0 033082E0 		add	r3, r2, r3
+ 2022 16f4 0331A0E1 		mov	r3, r3, asl #2
+ 2023 16f8 0320A0E1 		mov	r2, r3
+ 2024 16fc 24301BE5 		ldr	r3, [fp, #-36]
+ 2025 1700 034082E0 		add	r4, r2, r3
+ 2026 1704 18201BE5 		ldr	r2, [fp, #-24]
+ 2027 1708 20301BE5 		ldr	r3, [fp, #-32]
+ 2028 170c 930202E0 		mul	r2, r3, r2
+ 2029 1710 14301BE5 		ldr	r3, [fp, #-20]
+ 2030 1714 033082E0 		add	r3, r2, r3
+ 2031 1718 0331A0E1 		mov	r3, r3, asl #2
+ 2032 171c 0320A0E1 		mov	r2, r3
+ 2033 1720 24301BE5 		ldr	r3, [fp, #-36]
+ 2034 1724 033082E0 		add	r3, r2, r3
+ 2035 1728 001093E5 		ldr	r1, [r3, #0]	@ float
+ 2036 172c 18201BE5 		ldr	r2, [fp, #-24]
+ 2037 1730 20301BE5 		ldr	r3, [fp, #-32]
+ 2038 1734 930202E0 		mul	r2, r3, r2
+ 2039 1738 14301BE5 		ldr	r3, [fp, #-20]
+ 2040 173c 033082E0 		add	r3, r2, r3
+ 2041 1740 0331A0E1 		mov	r3, r3, asl #2
+ 2042 1744 0320A0E1 		mov	r2, r3
+ 2043 1748 28301BE5 		ldr	r3, [fp, #-40]
+ 2044 174c 033082E0 		add	r3, r2, r3
+ 2045 1750 003093E5 		ldr	r3, [r3, #0]	@ float
+ 2046 1754 0100A0E1 		mov	r0, r1
+ 2047 1758 0310A0E1 		mov	r1, r3
+ 2048 175c FEFFFFEB 		bl	__addsf3
+ 2049 1760 0030A0E1 		mov	r3, r0
+ 2050 1764 003084E5 		str	r3, [r4, #0]	@ float
+ 151:utils.c       **** 		for (j=0; j<m; j++) {
+ 2052              	.LM110:
+ 2053 1768 14301BE5 		ldr	r3, [fp, #-20]
+ 2054 176c 013083E2 		add	r3, r3, #1
+ 2055 1770 14300BE5 		str	r3, [fp, #-20]
+ 2056              	.L70:
+ 2057 1774 14201BE5 		ldr	r2, [fp, #-20]
+ 2058 1778 20301BE5 		ldr	r3, [fp, #-32]
+ 2059 177c 030052E1 		cmp	r2, r3
+ 2060 1780 D6FFFFBA 		blt	.L71
+ 150:utils.c       **** 	for (i=0; i<n; i++) {
+ 2062              	.LM111:
+ 2063 1784 18301BE5 		ldr	r3, [fp, #-24]
+ 2064 1788 013083E2 		add	r3, r3, #1
+ 2065 178c 18300BE5 		str	r3, [fp, #-24]
+ 2066              	.L68:
+ 2067 1790 18201BE5 		ldr	r2, [fp, #-24]
+ 2068 1794 1C301BE5 		ldr	r3, [fp, #-28]
+ 2069 1798 030052E1 		cmp	r2, r3
+ 2070 179c CCFFFFBA 		blt	.L69
+ 153:utils.c       **** 		}
+ 154:utils.c       **** 	}
+ 155:utils.c       **** }
+ 2072              	.LM112:
+ 2073 17a0 10D04BE2 		sub	sp, fp, #16
+ 2074 17a4 10689DE8 		ldmfd	sp, {r4, fp, sp, lr}
+ 2075 17a8 1EFF2FE1 		bx	lr
+ 2081              	.Lscope12:
+ 2082              		.align	2
+ 2088              		.global	matrix_subtract
+ 2090              	matrix_subtract:
+ 156:utils.c       **** 
+ 157:utils.c       **** void matrix_subtract(int n, int m, float *A, float *B) { // in place!  overwrites A!
+ 2092              	.LM113:
+ 2093              		@ Function supports interworking.
+ 2094              		@ args = 0, pretend = 0, frame = 24
+ 2095              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2096 17ac 0DC0A0E1 		mov	ip, sp
+ 2097 17b0 10D82DE9 		stmfd	sp!, {r4, fp, ip, lr, pc}
+ 2098 17b4 04B04CE2 		sub	fp, ip, #4
+ 2099 17b8 18D04DE2 		sub	sp, sp, #24
+ 2100 17bc 1C000BE5 		str	r0, [fp, #-28]
+ 2101 17c0 20100BE5 		str	r1, [fp, #-32]
+ 2102 17c4 24200BE5 		str	r2, [fp, #-36]
+ 2103 17c8 28300BE5 		str	r3, [fp, #-40]
+ 158:utils.c       **** 	int i, j;
+ 159:utils.c       **** 	for (i=0; i<n; i++) {
+ 2105              	.LM114:
+ 2106 17cc 0030A0E3 		mov	r3, #0
+ 2107 17d0 18300BE5 		str	r3, [fp, #-24]
+ 2108 17d4 2E0000EA 		b	.L76
+ 2109              	.L77:
+ 160:utils.c       **** 		for (j=0; j<m; j++) {
+ 2111              	.LM115:
+ 2112 17d8 0030A0E3 		mov	r3, #0
+ 2113 17dc 14300BE5 		str	r3, [fp, #-20]
+ 2114 17e0 240000EA 		b	.L78
+ 2115              	.L79:
+ 161:utils.c       **** 			A[i*m + j] = A[i*m + j] - B[i*m + j];
+ 2117              	.LM116:
+ 2118 17e4 18201BE5 		ldr	r2, [fp, #-24]
+ 2119 17e8 20301BE5 		ldr	r3, [fp, #-32]
+ 2120 17ec 930202E0 		mul	r2, r3, r2
+ 2121 17f0 14301BE5 		ldr	r3, [fp, #-20]
+ 2122 17f4 033082E0 		add	r3, r2, r3
+ 2123 17f8 0331A0E1 		mov	r3, r3, asl #2
+ 2124 17fc 0320A0E1 		mov	r2, r3
+ 2125 1800 24301BE5 		ldr	r3, [fp, #-36]
+ 2126 1804 034082E0 		add	r4, r2, r3
+ 2127 1808 18201BE5 		ldr	r2, [fp, #-24]
+ 2128 180c 20301BE5 		ldr	r3, [fp, #-32]
+ 2129 1810 930202E0 		mul	r2, r3, r2
+ 2130 1814 14301BE5 		ldr	r3, [fp, #-20]
+ 2131 1818 033082E0 		add	r3, r2, r3
+ 2132 181c 0331A0E1 		mov	r3, r3, asl #2
+ 2133 1820 0320A0E1 		mov	r2, r3
+ 2134 1824 24301BE5 		ldr	r3, [fp, #-36]
+ 2135 1828 033082E0 		add	r3, r2, r3
+ 2136 182c 001093E5 		ldr	r1, [r3, #0]	@ float
+ 2137 1830 18201BE5 		ldr	r2, [fp, #-24]
+ 2138 1834 20301BE5 		ldr	r3, [fp, #-32]
+ 2139 1838 930202E0 		mul	r2, r3, r2
+ 2140 183c 14301BE5 		ldr	r3, [fp, #-20]
+ 2141 1840 033082E0 		add	r3, r2, r3
+ 2142 1844 0331A0E1 		mov	r3, r3, asl #2
+ 2143 1848 0320A0E1 		mov	r2, r3
+ 2144 184c 28301BE5 		ldr	r3, [fp, #-40]
+ 2145 1850 033082E0 		add	r3, r2, r3
+ 2146 1854 003093E5 		ldr	r3, [r3, #0]	@ float
+ 2147 1858 0100A0E1 		mov	r0, r1
+ 2148 185c 0310A0E1 		mov	r1, r3
+ 2149 1860 FEFFFFEB 		bl	__subsf3
+ 2150 1864 0030A0E1 		mov	r3, r0
+ 2151 1868 003084E5 		str	r3, [r4, #0]	@ float
+ 160:utils.c       **** 		for (j=0; j<m; j++) {
+ 2153              	.LM117:
+ 2154 186c 14301BE5 		ldr	r3, [fp, #-20]
+ 2155 1870 013083E2 		add	r3, r3, #1
+ 2156 1874 14300BE5 		str	r3, [fp, #-20]
+ 2157              	.L78:
+ 2158 1878 14201BE5 		ldr	r2, [fp, #-20]
+ 2159 187c 20301BE5 		ldr	r3, [fp, #-32]
+ 2160 1880 030052E1 		cmp	r2, r3
+ 2161 1884 D6FFFFBA 		blt	.L79
+ 159:utils.c       **** 	for (i=0; i<n; i++) {
+ 2163              	.LM118:
+ 2164 1888 18301BE5 		ldr	r3, [fp, #-24]
+ 2165 188c 013083E2 		add	r3, r3, #1
+ 2166 1890 18300BE5 		str	r3, [fp, #-24]
+ 2167              	.L76:
+ 2168 1894 18201BE5 		ldr	r2, [fp, #-24]
+ 2169 1898 1C301BE5 		ldr	r3, [fp, #-28]
+ 2170 189c 030052E1 		cmp	r2, r3
+ 2171 18a0 CCFFFFBA 		blt	.L77
+ 162:utils.c       **** 		}
+ 163:utils.c       **** 	}
+ 164:utils.c       **** }
+ 2173              	.LM119:
+ 2174 18a4 10D04BE2 		sub	sp, fp, #16
+ 2175 18a8 10689DE8 		ldmfd	sp, {r4, fp, sp, lr}
+ 2176 18ac 1EFF2FE1 		bx	lr
+ 2182              	.Lscope13:
+ 2183              		.align	2
+ 2189              		.global	matrix_scalar_add
+ 2191              	matrix_scalar_add:
+ 165:utils.c       **** 
+ 166:utils.c       **** void matrix_scalar_add(int n, int m, float *A, float s) { // in place!
+ 2193              	.LM120:
+ 2194              		@ Function supports interworking.
+ 2195              		@ args = 0, pretend = 0, frame = 24
+ 2196              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2197 18b0 0DC0A0E1 		mov	ip, sp
+ 2198 18b4 10D82DE9 		stmfd	sp!, {r4, fp, ip, lr, pc}
+ 2199 18b8 04B04CE2 		sub	fp, ip, #4
+ 2200 18bc 18D04DE2 		sub	sp, sp, #24
+ 2201 18c0 1C000BE5 		str	r0, [fp, #-28]
+ 2202 18c4 20100BE5 		str	r1, [fp, #-32]
+ 2203 18c8 24200BE5 		str	r2, [fp, #-36]
+ 2204 18cc 28300BE5 		str	r3, [fp, #-40]	@ float
+ 167:utils.c       **** 	int i, j;
+ 168:utils.c       **** 	for (i=0; i<n; i++) {
+ 2206              	.LM121:
+ 2207 18d0 0030A0E3 		mov	r3, #0
+ 2208 18d4 18300BE5 		str	r3, [fp, #-24]
+ 2209 18d8 240000EA 		b	.L84
+ 2210              	.L85:
+ 169:utils.c       **** 		for (j=0; j<m; j++) {
+ 2212              	.LM122:
+ 2213 18dc 0030A0E3 		mov	r3, #0
+ 2214 18e0 14300BE5 		str	r3, [fp, #-20]
+ 2215 18e4 1A0000EA 		b	.L86
+ 2216              	.L87:
+ 170:utils.c       **** 			A[i*m + j] = A[i*m + j] + s;
+ 2218              	.LM123:
+ 2219 18e8 18201BE5 		ldr	r2, [fp, #-24]
+ 2220 18ec 20301BE5 		ldr	r3, [fp, #-32]
+ 2221 18f0 930202E0 		mul	r2, r3, r2
+ 2222 18f4 14301BE5 		ldr	r3, [fp, #-20]
+ 2223 18f8 033082E0 		add	r3, r2, r3
+ 2224 18fc 0331A0E1 		mov	r3, r3, asl #2
+ 2225 1900 0320A0E1 		mov	r2, r3
+ 2226 1904 24301BE5 		ldr	r3, [fp, #-36]
+ 2227 1908 034082E0 		add	r4, r2, r3
+ 2228 190c 18201BE5 		ldr	r2, [fp, #-24]
+ 2229 1910 20301BE5 		ldr	r3, [fp, #-32]
+ 2230 1914 930202E0 		mul	r2, r3, r2
+ 2231 1918 14301BE5 		ldr	r3, [fp, #-20]
+ 2232 191c 033082E0 		add	r3, r2, r3
+ 2233 1920 0331A0E1 		mov	r3, r3, asl #2
+ 2234 1924 0320A0E1 		mov	r2, r3
+ 2235 1928 24301BE5 		ldr	r3, [fp, #-36]
+ 2236 192c 033082E0 		add	r3, r2, r3
+ 2237 1930 003093E5 		ldr	r3, [r3, #0]	@ float
+ 2238 1934 0300A0E1 		mov	r0, r3
+ 2239 1938 28101BE5 		ldr	r1, [fp, #-40]	@ float
+ 2240 193c FEFFFFEB 		bl	__addsf3
+ 2241 1940 0030A0E1 		mov	r3, r0
+ 2242 1944 003084E5 		str	r3, [r4, #0]	@ float
+ 169:utils.c       **** 		for (j=0; j<m; j++) {
+ 2244              	.LM124:
+ 2245 1948 14301BE5 		ldr	r3, [fp, #-20]
+ 2246 194c 013083E2 		add	r3, r3, #1
+ 2247 1950 14300BE5 		str	r3, [fp, #-20]
+ 2248              	.L86:
+ 2249 1954 14201BE5 		ldr	r2, [fp, #-20]
+ 2250 1958 20301BE5 		ldr	r3, [fp, #-32]
+ 2251 195c 030052E1 		cmp	r2, r3
+ 2252 1960 E0FFFFBA 		blt	.L87
+ 168:utils.c       **** 	for (i=0; i<n; i++) {
+ 2254              	.LM125:
+ 2255 1964 18301BE5 		ldr	r3, [fp, #-24]
+ 2256 1968 013083E2 		add	r3, r3, #1
+ 2257 196c 18300BE5 		str	r3, [fp, #-24]
+ 2258              	.L84:
+ 2259 1970 18201BE5 		ldr	r2, [fp, #-24]
+ 2260 1974 1C301BE5 		ldr	r3, [fp, #-28]
+ 2261 1978 030052E1 		cmp	r2, r3
+ 2262 197c D6FFFFBA 		blt	.L85
+ 171:utils.c       **** 		}
+ 172:utils.c       **** 	}
+ 173:utils.c       **** }
+ 2264              	.LM126:
+ 2265 1980 10D04BE2 		sub	sp, fp, #16
+ 2266 1984 10689DE8 		ldmfd	sp, {r4, fp, sp, lr}
+ 2267 1988 1EFF2FE1 		bx	lr
+ 2273              	.Lscope14:
+ 2274              		.global	__floatsisf
+ 2275              		.global	__divdf3
+ 2276              		.global	__fixunsdfsi
+ 2277              		.align	2
+ 2282              		.global	throttle_scaling
+ 2284              	throttle_scaling:
+ 174:utils.c       **** 
+ 175:utils.c       **** unsigned short throttle_scaling(unsigned short stick, float M, float X1) {
+ 2286              	.LM127:
+ 2287              		@ Function supports interworking.
+ 2288              		@ args = 0, pretend = 0, frame = 24
+ 2289              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2290 198c 0DC0A0E1 		mov	ip, sp
+ 2291 1990 70D82DE9 		stmfd	sp!, {r4, r5, r6, fp, ip, lr, pc}
+ 2292 1994 04B04CE2 		sub	fp, ip, #4
+ 2293 1998 18D04DE2 		sub	sp, sp, #24
+ 2294 199c 0030A0E1 		mov	r3, r0
+ 2295 19a0 28100BE5 		str	r1, [fp, #-40]	@ float
+ 2296 19a4 2C200BE5 		str	r2, [fp, #-44]	@ float
+ 2297 19a8 B4324BE1 		strh	r3, [fp, #-36]	@ movhi
+ 176:utils.c       **** 	float b=(1.0-M)*2047.5;
+ 2299              	.LM128:
+ 2300 19ac 28001BE5 		ldr	r0, [fp, #-40]	@ float
+ 2301 19b0 FEFFFFEB 		bl	__extendsfdf2
+ 2302 19b4 0030A0E1 		mov	r3, r0
+ 2303 19b8 0140A0E1 		mov	r4, r1
+ 2304 19bc FF05A0E3 		mov	r0, #1069547520
+ 2305 19c0 030680E2 		add	r0, r0, #3145728
+ 2306 19c4 0010A0E3 		mov	r1, #0
+ 2307 19c8 0320A0E1 		mov	r2, r3
+ 2308 19cc 0430A0E1 		mov	r3, r4
+ 2309 19d0 FEFFFFEB 		bl	__subdf3
+ 2310 19d4 0030A0E1 		mov	r3, r0
+ 2311 19d8 0140A0E1 		mov	r4, r1
+ 2312 19dc 0300A0E1 		mov	r0, r3
+ 2313 19e0 0410A0E1 		mov	r1, r4
+ 2314 19e4 0121A0E3 		mov	r2, #1073741824
+ 2315 19e8 9F2882E2 		add	r2, r2, #10420224
+ 2316 19ec FE2C82E2 		add	r2, r2, #65024
+ 2317 19f0 0030A0E3 		mov	r3, #0
+ 2318 19f4 FEFFFFEB 		bl	__muldf3
+ 2319 19f8 0030A0E1 		mov	r3, r0
+ 2320 19fc 0140A0E1 		mov	r4, r1
+ 2321 1a00 0300A0E1 		mov	r0, r3
+ 2322 1a04 0410A0E1 		mov	r1, r4
+ 2323 1a08 FEFFFFEB 		bl	__truncdfsf2
+ 2324 1a0c 0030A0E1 		mov	r3, r0
+ 2325 1a10 20300BE5 		str	r3, [fp, #-32]	@ float
+ 177:utils.c       **** 	float tmp=(float)stick;
+ 2327              	.LM129:
+ 2328 1a14 F4325BE1 		ldrsh	r3, [fp, #-36]
+ 2329 1a18 0300A0E1 		mov	r0, r3
+ 2330 1a1c FEFFFFEB 		bl	__floatsisf
+ 2331 1a20 30000BE5 		str	r0, [fp, #-48]	@ float
+ 2332 1a24 F4325BE1 		ldrsh	r3, [fp, #-36]
+ 2333 1a28 000053E3 		cmp	r3, #0
+ 2334 1a2c 040000AA 		bge	.L92
+ 2335 1a30 30001BE5 		ldr	r0, [fp, #-48]	@ float
+ 2336 1a34 20119FE5 		ldr	r1, .L94+8	@ float
+ 2337 1a38 FEFFFFEB 		bl	__addsf3
+ 2338 1a3c 0030A0E1 		mov	r3, r0
+ 2339 1a40 30300BE5 		str	r3, [fp, #-48]	@ float
+ 2340              	.L92:
+ 2341 1a44 30301BE5 		ldr	r3, [fp, #-48]	@ float
+ 2342 1a48 1C300BE5 		str	r3, [fp, #-28]	@ float
+ 178:utils.c       **** 	return((unsigned short)(tanh(3.0*tmp/(40.95*X1))*(M*tmp+b)));
+ 2344              	.LM130:
+ 2345 1a4c 1C001BE5 		ldr	r0, [fp, #-28]	@ float
+ 2346 1a50 FEFFFFEB 		bl	__extendsfdf2
+ 2347 1a54 0030A0E1 		mov	r3, r0
+ 2348 1a58 0140A0E1 		mov	r4, r1
+ 2349 1a5c 0300A0E1 		mov	r0, r3
+ 2350 1a60 0410A0E1 		mov	r1, r4
+ 2351 1a64 0121A0E3 		mov	r2, #1073741824
+ 2352 1a68 022782E2 		add	r2, r2, #524288
+ 2353 1a6c 0030A0E3 		mov	r3, #0
+ 2354 1a70 FEFFFFEB 		bl	__muldf3
+ 2355 1a74 0030A0E1 		mov	r3, r0
+ 2356 1a78 0140A0E1 		mov	r4, r1
+ 2357 1a7c 0350A0E1 		mov	r5, r3
+ 2358 1a80 0460A0E1 		mov	r6, r4
+ 2359 1a84 2C001BE5 		ldr	r0, [fp, #-44]	@ float
+ 2360 1a88 FEFFFFEB 		bl	__extendsfdf2
+ 2361 1a8c 0030A0E1 		mov	r3, r0
+ 2362 1a90 0140A0E1 		mov	r4, r1
+ 2363 1a94 0300A0E1 		mov	r0, r3
+ 2364 1a98 0410A0E1 		mov	r1, r4
+ 2365 1a9c B0208FE2 		adr	r2, .L94
+ 2366 1aa0 0C0092E8 		ldmia	r2, {r2-r3}
+ 2367 1aa4 FEFFFFEB 		bl	__muldf3
+ 2368 1aa8 0030A0E1 		mov	r3, r0
+ 2369 1aac 0140A0E1 		mov	r4, r1
+ 2370 1ab0 0500A0E1 		mov	r0, r5
+ 2371 1ab4 0610A0E1 		mov	r1, r6
+ 2372 1ab8 0320A0E1 		mov	r2, r3
+ 2373 1abc 0430A0E1 		mov	r3, r4
+ 2374 1ac0 FEFFFFEB 		bl	__divdf3
+ 2375 1ac4 0030A0E1 		mov	r3, r0
+ 2376 1ac8 0140A0E1 		mov	r4, r1
+ 2377 1acc 0300A0E1 		mov	r0, r3
+ 2378 1ad0 0410A0E1 		mov	r1, r4
+ 2379 1ad4 FEFFFFEB 		bl	tanh
+ 2380 1ad8 0050A0E1 		mov	r5, r0
+ 2381 1adc 0160A0E1 		mov	r6, r1
+ 2382 1ae0 28001BE5 		ldr	r0, [fp, #-40]	@ float
+ 2383 1ae4 1C101BE5 		ldr	r1, [fp, #-28]	@ float
+ 2384 1ae8 FEFFFFEB 		bl	__mulsf3
+ 2385 1aec 0030A0E1 		mov	r3, r0
+ 2386 1af0 0300A0E1 		mov	r0, r3
+ 2387 1af4 20101BE5 		ldr	r1, [fp, #-32]	@ float
+ 2388 1af8 FEFFFFEB 		bl	__addsf3
+ 2389 1afc 0030A0E1 		mov	r3, r0
+ 2390 1b00 0300A0E1 		mov	r0, r3
+ 2391 1b04 FEFFFFEB 		bl	__extendsfdf2
+ 2392 1b08 0030A0E1 		mov	r3, r0
+ 2393 1b0c 0140A0E1 		mov	r4, r1
+ 2394 1b10 0500A0E1 		mov	r0, r5
+ 2395 1b14 0610A0E1 		mov	r1, r6
+ 2396 1b18 0320A0E1 		mov	r2, r3
+ 2397 1b1c 0430A0E1 		mov	r3, r4
+ 2398 1b20 FEFFFFEB 		bl	__muldf3
+ 2399 1b24 0030A0E1 		mov	r3, r0
+ 2400 1b28 0140A0E1 		mov	r4, r1
+ 2401 1b2c 0300A0E1 		mov	r0, r3
+ 2402 1b30 0410A0E1 		mov	r1, r4
+ 2403 1b34 FEFFFFEB 		bl	__fixunsdfsi
+ 2404 1b38 0030A0E1 		mov	r3, r0
+ 2405 1b3c 0338A0E1 		mov	r3, r3, asl #16
+ 2406 1b40 2338A0E1 		mov	r3, r3, lsr #16
+ 179:utils.c       **** }
+ 2408              	.LM131:
+ 2409 1b44 0300A0E1 		mov	r0, r3
+ 2410 1b48 18D04BE2 		sub	sp, fp, #24
+ 2411 1b4c 70689DE8 		ldmfd	sp, {r4, r5, r6, fp, sp, lr}
+ 2412 1b50 1EFF2FE1 		bx	lr
+ 2413              	.L95:
+ 2414              		.align	2
+ 2415              	.L94:
+ 2416 1b54 99794440 		.word	1078229401
+ 2417 1b58 9A999999 		.word	-1717986918
+ 2418 1b5c 00008047 		.word	1199570944
+ 2424              	.Lscope15:
+ 2426              	.Letext0:
+ 2427              		.ident	"GCC: (GNU) 4.1.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 utils.c
+     /tmp/cc6QIExn.s:70     .text:00000000 $a
+     /tmp/cc6QIExn.s:76     .text:00000000 angle_diff
+     /tmp/cc6QIExn.s:137    .text:000000c0 $d
+     /tmp/cc6QIExn.s:144    .text:000000d4 $a
+     /tmp/cc6QIExn.s:150    .text:000000d4 unwedge
+     /tmp/cc6QIExn.s:200    .text:00000138 euler2quat
+     /tmp/cc6QIExn.s:447    .text:00000480 $d
+     /tmp/cc6QIExn.s:462    .text:00000484 $a
+     /tmp/cc6QIExn.s:468    .text:00000484 quat2euler
+     /tmp/cc6QIExn.s:717    .text:0000080c quaternionmult
+     /tmp/cc6QIExn.s:951    .text:00000b54 quaternionNormalize
+     /tmp/cc6QIExn.s:1120   .text:00000d80 $d
+     /tmp/cc6QIExn.s:1131   .text:00000d8c $a
+     /tmp/cc6QIExn.s:1139   .text:00000d8c euler2rotmat
+     /tmp/cc6QIExn.s:1403   .text:000010cc S_from_euler
+     /tmp/cc6QIExn.s:1555   .text:00001298 $d
+     /tmp/cc6QIExn.s:1565   .text:000012a0 $a
+     /tmp/cc6QIExn.s:1573   .text:000012a0 matrix_transpose
+     /tmp/cc6QIExn.s:1662   .text:0000136c matrix_multiply
+     /tmp/cc6QIExn.s:1795   .text:000014fc $d
+     /tmp/cc6QIExn.s:1803   .text:00001500 $a
+     /tmp/cc6QIExn.s:1811   .text:00001500 matrix_copy
+     /tmp/cc6QIExn.s:1898   .text:000015cc matrix_scalar_mult
+     /tmp/cc6QIExn.s:1989   .text:000016a8 matrix_add
+     /tmp/cc6QIExn.s:2090   .text:000017ac matrix_subtract
+     /tmp/cc6QIExn.s:2191   .text:000018b0 matrix_scalar_add
+     /tmp/cc6QIExn.s:2284   .text:0000198c throttle_scaling
+     /tmp/cc6QIExn.s:2416   .text:00001b54 $d
+
+UNDEFINED SYMBOLS
+__subsf3
+__extendsfdf2
+__adddf3
+__truncdfsf2
+__subdf3
+fmodf
+__divsf3
+__mulsf3
+__addsf3
+sin
+cos
+__muldf3
+atan2
+asin
+__gtdf2
+sqrt
+tan
+__floatsisf
+__divdf3
+__fixunsdfsi
+tanh

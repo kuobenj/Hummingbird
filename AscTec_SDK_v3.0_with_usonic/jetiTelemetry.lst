@@ -1,0 +1,1915 @@
+   1              		.file	"jetiTelemetry.c"
+   9              	.Ltext0:
+  10              		.global	jetiAlarm
+  11              		.bss
+  14              	jetiAlarm:
+  15 0000 00       		.space	1
+  16              		.global	jetiAlarmType
+  19              	jetiAlarmType:
+  20 0001 00       		.space	1
+  21              		.global	jetiTriggerTextSync
+  24              	jetiTriggerTextSync:
+  25 0002 00       		.space	1
+  26              		.global	jetiKeyChanged
+  29              	jetiKeyChanged:
+  30 0003 00       		.space	1
+  31              		.global	jetiKey
+  34              	jetiKey:
+  35 0004 00       		.space	1
+  36              		.text
+  37              		.align	2
+  38              		.global	jetiSetKeyChanged
+  40              	jetiSetKeyChanged:
+  41              	.LFB2:
+  42              		.file 1 "jetiTelemetry.c"
+   1:jetiTelemetry.c **** /*
+   2:jetiTelemetry.c **** 
+   3:jetiTelemetry.c **** Copyright (c) 2013, Ascending Technologies GmbH
+   4:jetiTelemetry.c **** All rights reserved.
+   5:jetiTelemetry.c **** 
+   6:jetiTelemetry.c **** Redistribution and use in source and binary forms, with or without
+   7:jetiTelemetry.c **** modification, are permitted provided that the following conditions are met:
+   8:jetiTelemetry.c **** 
+   9:jetiTelemetry.c ****  * Redistributions of source code must retain the above copyright notice,
+  10:jetiTelemetry.c ****    this list of conditions and the following disclaimer.
+  11:jetiTelemetry.c ****  * Redistributions in binary form must reproduce the above copyright
+  12:jetiTelemetry.c ****    notice, this list of conditions and the following disclaimer in the
+  13:jetiTelemetry.c ****    documentation and/or other materials provided with the distribution.
+  14:jetiTelemetry.c **** 
+  15:jetiTelemetry.c **** THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND ANY
+  16:jetiTelemetry.c **** EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  17:jetiTelemetry.c **** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  18:jetiTelemetry.c **** DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR ANY
+  19:jetiTelemetry.c **** DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  20:jetiTelemetry.c **** (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  21:jetiTelemetry.c **** SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  22:jetiTelemetry.c **** CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+  23:jetiTelemetry.c **** LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+  24:jetiTelemetry.c **** OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+  25:jetiTelemetry.c **** DAMAGE.
+  26:jetiTelemetry.c **** 
+  27:jetiTelemetry.c ****  */
+  28:jetiTelemetry.c **** 
+  29:jetiTelemetry.c **** #include "jetiTelemetry.h"
+  30:jetiTelemetry.c **** #include <string.h>
+  31:jetiTelemetry.c **** 
+  32:jetiTelemetry.c **** struct JETI_VALUE jetiValues[15];
+  33:jetiTelemetry.c **** 
+  34:jetiTelemetry.c **** unsigned char jetiName[10];
+  35:jetiTelemetry.c **** 
+  36:jetiTelemetry.c **** unsigned char jetiDisplayText[32];
+  37:jetiTelemetry.c **** 
+  38:jetiTelemetry.c **** unsigned char jetiAlarm=0;
+  39:jetiTelemetry.c **** unsigned char jetiAlarmType=0;
+  40:jetiTelemetry.c **** unsigned char jetiTriggerTextSync=0;
+  41:jetiTelemetry.c **** 
+  42:jetiTelemetry.c **** unsigned char jetiKeyChanged=0;
+  43:jetiTelemetry.c **** unsigned char jetiKey=0;
+  44:jetiTelemetry.c **** 
+  45:jetiTelemetry.c **** 
+  46:jetiTelemetry.c **** void jetiSetKeyChanged(unsigned char key)
+  47:jetiTelemetry.c **** {
+  43              	king.
+  44              		@ args = 0, pretend = 0, frame = 4
+  45              		@ frame_needed = 1, uses_anonymous_args = 0
+  46              		mov	ip, sp
+  47 0000 0DC0A0E1 	.LCFI0:
+  48              		stmfd	sp!, {fp, ip, lr, pc}
+  49 0004 00D82DE9 	.LCFI1:
+  50              		sub	fp, ip, #4
+  51 0008 04B04CE2 	.LCFI2:
+  52              		sub	sp, sp, #4
+  53 000c 04D04DE2 	.LCFI3:
+  54              		mov	r3, r0
+  55 0010 0030A0E1 		strb	r3, [fp, #-16]
+  56 0014 10304BE5 		.loc 1 48 0
+  48:jetiTelemetry.c **** 	jetiKey=key;
+  57              	ldrb	r3, [fp, #-16]
+  58 0018 1C209FE5 		strb	r3, [r2, #0]
+  59 001c 10305BE5 		.loc 1 49 0
+  60 0020 0030C2E5 		ldr	r2, .L3+4
+  49:jetiTelemetry.c **** 	jetiKeyChanged=1;
+  61              		r3, #1
+  62 0024 14209FE5 		strb	r3, [r2, #0]
+  63 0028 0130A0E3 		.loc 1 50 0
+  64 002c 0030C2E5 		sub	sp, fp, #12
+  50:jetiTelemetry.c **** }
+  65              	fd	sp, {fp, sp, lr}
+  66 0030 0CD04BE2 		bx	lr
+  67 0034 00689DE8 	.L4:
+  68 0038 1EFF2FE1 		.align	2
+  69              	.L3:
+  70              		.word	jetiKey
+  71              		.word	jetiKeyChanged
+  72 003c 00000000 	.LFE2:
+  74              		.align	2
+  75              		.global	jetiCheckForKeyChange
+  77              	jetiCheckForKeyChange:
+  78              	.LFB3:
+  79              		.loc 1 54 0
+  80              		@ Function supports interworking.
+  51:jetiTelemetry.c **** 
+  52:jetiTelemetry.c **** 
+  53:jetiTelemetry.c **** unsigned char jetiCheckForKeyChange(void)
+  54:jetiTelemetry.c **** {
+  81              	tend = 0, frame = 4
+  82              		@ frame_needed = 1, uses_anonymous_args = 0
+  83              		mov	ip, sp
+  84              	.LCFI4:
+  85 0044 0DC0A0E1 		stmfd	sp!, {fp, ip, lr, pc}
+  86              	.LCFI5:
+  87 0048 00D82DE9 		sub	fp, ip, #4
+  88              	.LCFI6:
+  89 004c 04B04CE2 		sub	sp, sp, #4
+  90              	.LCFI7:
+  91 0050 04D04DE2 		.loc 1 55 0
+  92              		ldr	r3, .L10
+  55:jetiTelemetry.c **** 	if (jetiKeyChanged)
+  93              	3, #0]	@ zero_extendqisi2
+  94 0054 40309FE5 		cmp	r3, #0
+  95 0058 0030D3E5 		beq	.L6
+  96 005c 000053E3 		.loc 1 57 0
+  97 0060 0600000A 		ldr	r2, .L10
+  56:jetiTelemetry.c **** 	{
+  57:jetiTelemetry.c **** 		jetiKeyChanged=0;
+  98              	r3, #0
+  99 0064 30209FE5 		strb	r3, [r2, #0]
+ 100 0068 0030A0E3 		.loc 1 58 0
+ 101 006c 0030C2E5 		ldr	r3, .L10+4
+  58:jetiTelemetry.c **** 		return jetiKey;
+ 102              	b	r3, [r3, #0]	@ zero_extendqisi2
+ 103 0070 28309FE5 		str	r3, [fp, #-16]
+ 104 0074 0030D3E5 		b	.L8
+ 105 0078 10300BE5 	.L6:
+ 106 007c 010000EA 		.loc 1 60 0
+ 107              		mov	r3, #0
+  59:jetiTelemetry.c **** 	}else
+  60:jetiTelemetry.c **** 		return 0;
+ 108              	3, [fp, #-16]
+ 109 0080 0030A0E3 	.L8:
+ 110 0084 10300BE5 		ldr	r3, [fp, #-16]
+ 111              		.loc 1 61 0
+ 112 0088 10301BE5 		mov	r0, r3
+  61:jetiTelemetry.c **** }
+ 113              	sp, fp, #12
+ 114 008c 0300A0E1 		ldmfd	sp, {fp, sp, lr}
+ 115 0090 0CD04BE2 		bx	lr
+ 116 0094 00689DE8 	.L11:
+ 117 0098 1EFF2FE1 		.align	2
+ 118              	.L10:
+ 119              		.word	jetiKeyChanged
+ 120              		.word	jetiKey
+ 121 009c 00000000 	.LFE3:
+ 123              		.align	2
+ 124              		.global	jetiSetAlarm
+ 126              	jetiSetAlarm:
+ 127              	.LFB4:
+ 128              		.loc 1 63 0
+ 129              		@ Function supports interworking.
+  62:jetiTelemetry.c **** unsigned char jetiSetAlarm(unsigned char alarm, unsigned alarmType)
+  63:jetiTelemetry.c **** {
+ 130              	end = 0, frame = 12
+ 131              		@ frame_needed = 1, uses_anonymous_args = 0
+ 132              		mov	ip, sp
+ 133              	.LCFI8:
+ 134 00a4 0DC0A0E1 		stmfd	sp!, {fp, ip, lr, pc}
+ 135              	.LCFI9:
+ 136 00a8 00D82DE9 		sub	fp, ip, #4
+ 137              	.LCFI10:
+ 138 00ac 04B04CE2 		sub	sp, sp, #12
+ 139              	.LCFI11:
+ 140 00b0 0CD04DE2 		mov	r3, r0
+ 141              		str	r1, [fp, #-20]
+ 142 00b4 0030A0E1 		strb	r3, [fp, #-16]
+ 143 00b8 14100BE5 		.loc 1 64 0
+ 144 00bc 10304BE5 		ldrb	r3, [fp, #-16]	@ zero_extendqisi2
+  64:jetiTelemetry.c **** 	if (((alarm<'A')||(alarm>'Z')) && (alarm))
+ 145              	ls	.L13
+ 146 00c0 10305BE5 		ldrb	r3, [fp, #-16]	@ zero_extendqisi2
+ 147 00c4 400053E3 		cmp	r3, #90
+ 148 00c8 0200009A 		bls	.L15
+ 149 00cc 10305BE5 	.L13:
+ 150 00d0 5A0053E3 		ldrb	r3, [fp, #-16]	@ zero_extendqisi2
+ 151 00d4 0500009A 		cmp	r3, #0
+ 152              		beq	.L15
+ 153 00d8 10305BE5 		.loc 1 65 0
+ 154 00dc 000053E3 		mov	r3, #80
+ 155 00e0 0200000A 		str	r3, [fp, #-24]
+  65:jetiTelemetry.c **** 		return JETI_ERROR_ALARM_RANGE;
+ 156              	5:
+ 157 00e4 5030A0E3 		.loc 1 66 0
+ 158 00e8 18300BE5 		ldr	r3, [fp, #-20]
+ 159 00ec 0E0000EA 		cmp	r3, #1
+ 160              		bls	.L18
+  66:jetiTelemetry.c **** 	if (alarmType>1)
+ 161              	 1 67 0
+ 162 00f0 14301BE5 		mov	r3, #81
+ 163 00f4 010053E3 		str	r3, [fp, #-24]
+ 164 00f8 0200009A 		b	.L17
+  67:jetiTelemetry.c **** 		return JETI_ERROR_ALARM_TYPE;
+ 165              	:
+ 166 00fc 5130A0E3 		.loc 1 68 0
+ 167 0100 18300BE5 		ldr	r2, .L21
+ 168 0104 080000EA 		ldrb	r3, [fp, #-16]
+ 169              		strb	r3, [r2, #0]
+  68:jetiTelemetry.c **** 	jetiAlarm=alarm;
+ 170              	 1 69 0
+ 171 0108 30209FE5 		ldr	r3, [fp, #-20]
+ 172 010c 10305BE5 		and	r3, r3, #255
+ 173 0110 0030C2E5 		ldr	r2, .L21+4
+  69:jetiTelemetry.c **** 	jetiAlarmType=alarmType;
+ 174              	b	r3, [r2, #0]
+ 175 0114 14301BE5 		.loc 1 71 0
+ 176 0118 FF3003E2 		mov	r3, #0
+ 177 011c 20209FE5 		str	r3, [fp, #-24]
+ 178 0120 0030C2E5 	.L17:
+  70:jetiTelemetry.c **** 
+  71:jetiTelemetry.c **** 	return JETI_NO_ERROR;
+ 179              	r3, [fp, #-24]
+ 180 0124 0030A0E3 		.loc 1 73 0
+ 181 0128 18300BE5 		mov	r0, r3
+ 182              		sub	sp, fp, #12
+ 183 012c 18301BE5 		ldmfd	sp, {fp, sp, lr}
+  72:jetiTelemetry.c **** 
+  73:jetiTelemetry.c **** }
+ 184              	r
+ 185 0130 0300A0E1 	.L22:
+ 186 0134 0CD04BE2 		.align	2
+ 187 0138 00689DE8 	.L21:
+ 188 013c 1EFF2FE1 		.word	jetiAlarm
+ 189              		.word	jetiAlarmType
+ 190              	.LFE4:
+ 192 0140 00000000 		.align	2
+ 193 0144 00000000 		.global	jetiSetDeviceName
+ 195              	jetiSetDeviceName:
+ 196              	.LFB5:
+ 197              		.loc 1 76 0
+ 198              		@ Function supports interworking.
+ 199              		@ args = 0, pretend = 0, frame = 16
+ 200              		@ frame_needed = 1, uses_anonymous_args = 0
+  74:jetiTelemetry.c **** 
+  75:jetiTelemetry.c **** unsigned char jetiSetDeviceName(char * name)
+  76:jetiTelemetry.c **** {
+ 201              	12:
+ 202              		stmfd	sp!, {fp, ip, lr, pc}
+ 203              	.LCFI13:
+ 204              		sub	fp, ip, #4
+ 205 0148 0DC0A0E1 	.LCFI14:
+ 206              		sub	sp, sp, #16
+ 207 014c 00D82DE9 	.LCFI15:
+ 208              		str	r0, [fp, #-28]
+ 209 0150 04B04CE2 		.loc 1 77 0
+ 210              		mov	r3, #0
+ 211 0154 10D04DE2 		strb	r3, [fp, #-21]
+ 212              		.loc 1 79 0
+ 213 0158 1C000BE5 		mov	r3, #0
+  77:jetiTelemetry.c **** 	unsigned char nameLength=0;
+ 214              	, #-13]
+ 215 015c 0030A0E3 		.loc 1 81 0
+ 216 0160 15304BE5 		mov	r3, #0
+  78:jetiTelemetry.c **** 	int i;
+  79:jetiTelemetry.c **** 	unsigned char error=JETI_NO_ERROR;
+ 217              	r	r3, [fp, #-20]
+ 218 0164 0030A0E3 		b	.L24
+ 219 0168 0D304BE5 	.L25:
+  80:jetiTelemetry.c **** 
+  81:jetiTelemetry.c **** 	for (i=0;i<11;i++)
+ 220              	oc 1 82 0
+ 221 016c 0030A0E3 		ldr	r3, [fp, #-20]
+ 222 0170 14300BE5 		mov	r2, r3
+ 223 0174 090000EA 		ldr	r3, [fp, #-28]
+ 224              		add	r3, r2, r3
+  82:jetiTelemetry.c **** 		if (name[i]==0)
+ 225              		r3, [r3, #0]	@ zero_extendqisi2
+ 226 0178 14301BE5 		cmp	r3, #0
+ 227 017c 0320A0E1 		beq	.L26
+ 228 0180 1C301BE5 		.loc 1 81 0
+ 229 0184 033082E0 		ldr	r3, [fp, #-20]
+ 230 0188 0030D3E5 		add	r3, r3, #1
+ 231 018c 000053E3 		str	r3, [fp, #-20]
+ 232 0190 0500000A 	.L24:
+ 233              		ldr	r3, [fp, #-20]
+ 234 0194 14301BE5 		cmp	r3, #10
+ 235 0198 013083E2 		ble	.L25
+ 236 019c 14300BE5 	.L26:
+ 237              		.loc 1 84 0
+ 238 01a0 14301BE5 		ldr	r3, [fp, #-20]
+ 239 01a4 0A0053E3 		cmp	r3, #10
+ 240 01a8 F2FFFFDA 		bne	.L28
+ 241              		.loc 1 85 0
+  83:jetiTelemetry.c **** 			break;
+  84:jetiTelemetry.c **** 	if (i==10)
+ 242              	b	r3, [fp, #-13]
+ 243 01ac 14301BE5 	.L28:
+ 244 01b0 0A0053E3 		.loc 1 87 0
+ 245 01b4 0100001A 		ldr	r3, [fp, #-20]
+  85:jetiTelemetry.c **** 		error=JETI_ERROR_STRING_NAME;
+ 246              	b	r3, [fp, #-21]
+ 247 01b8 1330A0E3 		.loc 1 89 0
+ 248 01bc 0D304BE5 		ldrb	r1, [fp, #-21]	@ zero_extendqisi2
+ 249              		ldr	r3, .L31
+  86:jetiTelemetry.c **** 
+  87:jetiTelemetry.c **** 	nameLength=i;
+ 250              		r2, [fp, #-28]
+ 251 01c0 14301BE5 		mov	ip, r1
+ 252 01c4 15304BE5 		mov	r0, r3
+  88:jetiTelemetry.c **** 
+  89:jetiTelemetry.c **** 	memcpy(&jetiName[0],name,nameLength);
+ 253              	v	r1, r2
+ 254 01c8 15105BE5 		mov	r2, ip
+ 255 01cc 28309FE5 		bl	memcpy
+ 256 01d0 1C201BE5 		.loc 1 91 0
+ 257 01d4 01C0A0E1 		ldrb	r3, [fp, #-13]	@ zero_extendqisi2
+ 258 01d8 0300A0E1 		.loc 1 92 0
+ 259 01dc 0210A0E1 		mov	r0, r3
+ 260 01e0 0C20A0E1 		sub	sp, fp, #12
+ 261 01e4 FEFFFFEB 		ldmfd	sp, {fp, sp, lr}
+  90:jetiTelemetry.c **** 
+  91:jetiTelemetry.c **** 	return error;
+ 262              	32:
+ 263 01e8 0D305BE5 		.align	2
+  92:jetiTelemetry.c **** }
+ 264              	31:
+ 265 01ec 0300A0E1 		.word	jetiName
+ 266 01f0 0CD04BE2 	.LFE5:
+ 268 01f8 1EFF2FE1 		.align	2
+ 269              		.global	jetiActivateValue
+ 271              	jetiActivateValue:
+ 272 01fc 00000000 	.LFB6:
+ 273              		.loc 1 95 0
+ 274              		@ Function supports interworking.
+ 275              		@ args = 0, pretend = 0, frame = 8
+ 276              		@ frame_needed = 1, uses_anonymous_args = 0
+ 277              		mov	ip, sp
+ 278              	.LCFI16:
+ 279              		stmfd	sp!, {fp, ip, lr, pc}
+  93:jetiTelemetry.c **** 
+  94:jetiTelemetry.c **** unsigned char jetiActivateValue(unsigned char id)
+  95:jetiTelemetry.c **** {
+ 280              	, ip, #4
+ 281              	.LCFI18:
+ 282              		sub	sp, sp, #8
+ 283              	.LCFI19:
+ 284 0200 0DC0A0E1 		mov	r3, r0
+ 285              		strb	r3, [fp, #-16]
+ 286 0204 00D82DE9 		.loc 1 96 0
+ 287              		ldrb	r3, [fp, #-16]	@ zero_extendqisi2
+ 288 0208 04B04CE2 		cmp	r3, #14
+ 289              		bls	.L34
+ 290 020c 08D04DE2 		.loc 1 97 0
+ 291              		mov	r3, #1
+ 292 0210 0030A0E1 		str	r3, [fp, #-20]
+ 293 0214 10304BE5 		b	.L36
+  96:jetiTelemetry.c **** 	if (id>14)
+ 294              	98 0
+ 295 0218 10305BE5 		ldrb	r2, [fp, #-16]	@ zero_extendqisi2
+ 296 021c 0E0053E3 		ldrb	r3, [fp, #-16]
+ 297 0220 0200009A 		add	r3, r3, #1
+  97:jetiTelemetry.c **** 		return JETI_ERROR_ID_RANGE;
+ 298              		r1, r3, #255
+ 299 0224 0130A0E3 		ldr	r0, .L38
+ 300 0228 14300BE5 		mov	r3, r2
+ 301 022c 0F0000EA 		mov	r3, r3, asl #2
+ 302              		add	r3, r3, r2
+  98:jetiTelemetry.c **** 	jetiValues[id].active=id+1;
+ 303              	r3, r3, asl #1
+ 304 0230 10205BE5 		add	r3, r3, r2
+ 305 0234 10305BE5 		mov	r3, r3, asl #1
+ 306 0238 013083E2 		add	r2, r3, r0
+ 307 023c FF1003E2 		mov	r3, r1
+ 308 0240 3C009FE5 		strb	r3, [r2, #0]
+ 309 0244 0230A0E1 		.loc 1 100 0
+ 310 0248 0331A0E1 		mov	r3, #0
+ 311 024c 023083E0 		str	r3, [fp, #-20]
+ 312 0250 8330A0E1 	.L36:
+ 313 0254 023083E0 		ldr	r3, [fp, #-20]
+ 314 0258 8330A0E1 		.loc 1 101 0
+ 315 025c 002083E0 		mov	r0, r3
+ 316 0260 0130A0E1 		sub	sp, fp, #12
+ 317 0264 0030C2E5 		ldmfd	sp, {fp, sp, lr}
+  99:jetiTelemetry.c **** 
+ 100:jetiTelemetry.c **** 	return JETI_NO_ERROR;
+ 318              	align	2
+ 319 0268 0030A0E3 	.L38:
+ 320 026c 14300BE5 		.word	jetiValues
+ 321              	.LFE6:
+ 101:jetiTelemetry.c **** }
+ 323              	gn	2
+ 324 0274 0300A0E1 		.global	jetiDeactivateValue
+ 326 027c 00689DE8 	jetiDeactivateValue:
+ 327 0280 1EFF2FE1 	.LFB7:
+ 328              		.loc 1 104 0
+ 329              		@ Function supports interworking.
+ 330              		@ args = 0, pretend = 0, frame = 8
+ 331 0284 00000000 		@ frame_needed = 1, uses_anonymous_args = 0
+ 332              		mov	ip, sp
+ 333              	.LCFI20:
+ 334              		stmfd	sp!, {fp, ip, lr, pc}
+ 335              	.LCFI21:
+ 336              		sub	fp, ip, #4
+ 337              	.LCFI22:
+ 338              		sub	sp, sp, #8
+ 102:jetiTelemetry.c **** 
+ 103:jetiTelemetry.c **** unsigned char jetiDeactivateValue(unsigned char id)
+ 104:jetiTelemetry.c **** {
+ 339              	, r0
+ 340              		strb	r3, [fp, #-16]
+ 341              		.loc 1 105 0
+ 342              		ldrb	r3, [fp, #-16]	@ zero_extendqisi2
+ 343 0288 0DC0A0E1 		cmp	r3, #14
+ 344              		bls	.L41
+ 345 028c 00D82DE9 		.loc 1 106 0
+ 346              		mov	r3, #1
+ 347 0290 04B04CE2 		str	r3, [fp, #-20]
+ 348              		b	.L43
+ 349 0294 08D04DE2 	.L41:
+ 350              		.loc 1 107 0
+ 351 0298 0030A0E1 		ldrb	r2, [fp, #-16]	@ zero_extendqisi2
+ 352 029c 10304BE5 		ldr	r1, .L45
+ 105:jetiTelemetry.c **** 	if (id>14)
+ 353              	ov	r3, r3, asl #2
+ 354 02a0 10305BE5 		add	r3, r3, r2
+ 355 02a4 0E0053E3 		mov	r3, r3, asl #1
+ 356 02a8 0200009A 		add	r3, r3, r2
+ 106:jetiTelemetry.c **** 		return JETI_ERROR_ID_RANGE;
+ 357              		r3, r3, asl #1
+ 358 02ac 0130A0E3 		add	r2, r3, r1
+ 359 02b0 14300BE5 		mov	r3, #0
+ 360 02b4 0C0000EA 		strb	r3, [r2, #0]
+ 361              		.loc 1 109 0
+ 107:jetiTelemetry.c **** 	jetiValues[id].active=0;
+ 362              	r3, #0
+ 363 02b8 10205BE5 		str	r3, [fp, #-20]
+ 364 02bc 3C109FE5 	.L43:
+ 365 02c0 0230A0E1 		ldr	r3, [fp, #-20]
+ 366 02c4 0331A0E1 		.loc 1 110 0
+ 367 02c8 023083E0 		mov	r0, r3
+ 368 02cc 8330A0E1 		sub	sp, fp, #12
+ 369 02d0 023083E0 		ldmfd	sp, {fp, sp, lr}
+ 370 02d4 8330A0E1 		bx	lr
+ 371 02d8 012083E0 	.L46:
+ 372 02dc 0030A0E3 		.align	2
+ 373 02e0 0030C2E5 	.L45:
+ 108:jetiTelemetry.c **** 
+ 109:jetiTelemetry.c **** 	return JETI_NO_ERROR;
+ 374              	alues
+ 375 02e4 0030A0E3 	.LFE7:
+ 377              		.align	2
+ 378 02ec 14301BE5 		.global	jetiSetDecimalPoint
+ 110:jetiTelemetry.c **** }
+ 379              	e	jetiSetDecimalPoint, %function
+ 380 02f0 0300A0E1 	jetiSetDecimalPoint:
+ 381 02f4 0CD04BE2 	.LFB8:
+ 382 02f8 00689DE8 		.loc 1 113 0
+ 383 02fc 1EFF2FE1 		@ Function supports interworking.
+ 384              		@ args = 0, pretend = 0, frame = 12
+ 385              		@ frame_needed = 1, uses_anonymous_args = 0
+ 386              		mov	ip, sp
+ 387 0300 00000000 	.LCFI24:
+ 388              		stmfd	sp!, {fp, ip, lr, pc}
+ 389              	.LCFI25:
+ 390              		sub	fp, ip, #4
+ 391              	.LCFI26:
+ 392              		sub	sp, sp, #12
+ 393              	.LCFI27:
+ 394              		mov	r3, r0
+ 111:jetiTelemetry.c **** 
+ 112:jetiTelemetry.c **** unsigned char jetiSetDecimalPoint(unsigned char id, unsigned char decimalPoint)
+ 113:jetiTelemetry.c **** {
+ 395              	b	r3, [fp, #-16]
+ 396              		mov	r3, r2
+ 397              		strb	r3, [fp, #-20]
+ 398              		.loc 1 114 0
+ 399 0304 0DC0A0E1 		ldrb	r3, [fp, #-16]	@ zero_extendqisi2
+ 400              		cmp	r3, #14
+ 401 0308 00D82DE9 		bls	.L48
+ 402              		.loc 1 115 0
+ 403 030c 04B04CE2 		mov	r3, #1
+ 404              		str	r3, [fp, #-24]
+ 405 0310 0CD04DE2 		b	.L50
+ 406              	.L48:
+ 407 0314 0030A0E1 		.loc 1 116 0
+ 408 0318 0120A0E1 		ldrb	r3, [fp, #-20]	@ zero_extendqisi2
+ 409 031c 10304BE5 		cmp	r3, #3
+ 410 0320 0230A0E1 		bls	.L51
+ 411 0324 14304BE5 		.loc 1 117 0
+ 114:jetiTelemetry.c **** 	if (id>14)
+ 412              		r3, [fp, #-24]
+ 413 0328 10305BE5 		b	.L50
+ 414 032c 0E0053E3 	.L51:
+ 415 0330 0200009A 		.loc 1 118 0
+ 115:jetiTelemetry.c **** 		return JETI_ERROR_ID_RANGE;
+ 416              	b	r2, [fp, #-16]	@ zero_extendqisi2
+ 417 0334 0130A0E3 		ldr	r1, .L54
+ 418 0338 18300BE5 		mov	r0, #17
+ 419 033c 140000EA 		mov	r3, r2
+ 420              		mov	r3, r3, asl #2
+ 116:jetiTelemetry.c **** 	if (decimalPoint>3)
+ 421              	r3, r3, r2
+ 422 0340 14305BE5 		mov	r3, r3, asl #1
+ 423 0344 030053E3 		add	r3, r3, r2
+ 424 0348 0200009A 		mov	r3, r3, asl #1
+ 117:jetiTelemetry.c **** 		return JETI_ERROR_DECPOINT_RANGE;
+ 425              		r3, r3, r1
+ 426 034c 3030A0E3 		add	r2, r3, r0
+ 427 0350 18300BE5 		ldrb	r3, [fp, #-20]
+ 428 0354 0E0000EA 		strb	r3, [r2, #0]
+ 429              		.loc 1 119 0
+ 118:jetiTelemetry.c **** 	jetiValues[id].decPoint=decimalPoint;
+ 430              	r3, #0
+ 431 0358 10205BE5 		str	r3, [fp, #-24]
+ 432 035c 44109FE5 	.L50:
+ 433 0360 1100A0E3 		ldr	r3, [fp, #-24]
+ 434 0364 0230A0E1 		.loc 1 120 0
+ 435 0368 0331A0E1 		mov	r0, r3
+ 436 036c 023083E0 		sub	sp, fp, #12
+ 437 0370 8330A0E1 		ldmfd	sp, {fp, sp, lr}
+ 438 0374 023083E0 		bx	lr
+ 439 0378 8330A0E1 	.L55:
+ 440 037c 013083E0 		.align	2
+ 441 0380 002083E0 	.L54:
+ 442 0384 14305BE5 		.word	jetiValues
+ 443 0388 0030C2E5 	.LFE8:
+ 119:jetiTelemetry.c **** 	return JETI_NO_ERROR;
+ 444              	DecimalPoint, .-jetiSetDecimalPoint
+ 445 038c 0030A0E3 		.align	2
+ 446 0390 18300BE5 		.global	jetiSetValue30B
+ 448 0394 18301BE5 	jetiSetValue30B:
+ 120:jetiTelemetry.c **** }
+ 449              	:
+ 450 0398 0300A0E1 		.loc 1 123 0
+ 451 039c 0CD04BE2 		@ Function supports interworking.
+ 452 03a0 00689DE8 		@ args = 0, pretend = 0, frame = 12
+ 453 03a4 1EFF2FE1 		@ frame_needed = 1, uses_anonymous_args = 0
+ 454              		mov	ip, sp
+ 455              	.LCFI28:
+ 456              		stmfd	sp!, {fp, ip, lr, pc}
+ 457 03a8 00000000 	.LCFI29:
+ 458              		sub	fp, ip, #4
+ 459              	.LCFI30:
+ 460              		sub	sp, sp, #12
+ 461              	.LCFI31:
+ 462              		mov	r3, r0
+ 463              		str	r1, [fp, #-20]
+ 464              		strb	r3, [fp, #-16]
+ 121:jetiTelemetry.c **** 
+ 122:jetiTelemetry.c **** unsigned char jetiSetValue30B(unsigned char id, int value)
+ 123:jetiTelemetry.c **** {
+ 465              	drb	r3, [fp, #-16]	@ zero_extendqisi2
+ 466              		cmp	r3, #14
+ 467              		bls	.L57
+ 468              		.loc 1 125 0
+ 469 03ac 0DC0A0E1 		mov	r3, #1
+ 470              		str	r3, [fp, #-24]
+ 471 03b0 00D82DE9 		b	.L59
+ 472              	.L57:
+ 473 03b4 04B04CE2 		.loc 1 127 0
+ 474              		ldr	r3, [fp, #-20]
+ 475 03b8 0CD04DE2 		cmn	r3, #-1073741823
+ 476              		bgt	.L60
+ 477 03bc 0030A0E1 		ldr	r3, [fp, #-20]
+ 478 03c0 14100BE5 		cmp	r3, #-1073741824
+ 479 03c4 10304BE5 		bgt	.L62
+ 124:jetiTelemetry.c **** 	if (id>14)
+ 480              	28 0
+ 481 03c8 10305BE5 		mov	r3, #32
+ 482 03cc 0E0053E3 		str	r3, [fp, #-24]
+ 483 03d0 0200009A 		b	.L59
+ 125:jetiTelemetry.c **** 		return JETI_ERROR_ID_RANGE;
+ 484              	:
+ 485 03d4 0130A0E3 		.loc 1 130 0
+ 486 03d8 18300BE5 		ldrb	r2, [fp, #-16]	@ zero_extendqisi2
+ 487 03dc 480000EA 		ldr	r1, .L66
+ 488              		mov	r0, #16
+ 126:jetiTelemetry.c **** 
+ 127:jetiTelemetry.c **** 	if ((value>=(1<<30)) || (value<=-(1<<30)))
+ 489              	r3, r2
+ 490 03e0 14301BE5 		mov	r3, r3, asl #2
+ 491 03e4 070173E3 		add	r3, r3, r2
+ 492 03e8 020000CA 		mov	r3, r3, asl #1
+ 493 03ec 14301BE5 		add	r3, r3, r2
+ 494 03f0 030153E3 		mov	r3, r3, asl #1
+ 495 03f4 020000CA 		add	r3, r3, r1
+ 496              		add	r0, r3, r0
+ 128:jetiTelemetry.c **** 		return JETI_ERROR_VALUE_RANGE;
+ 497              	, [fp, #-20]	@ zero_extendqisi2
+ 498 03f8 2030A0E3 		mov	r3, #0
+ 499 03fc 18300BE5 		mov	r2, r3
+ 500 0400 3F0000EA 		mov	r3, r1
+ 501              		orr	r3, r2, r3
+ 129:jetiTelemetry.c **** 
+ 130:jetiTelemetry.c **** 	jetiValues[id].value=value;
+ 502              		r3, [r0, #2]
+ 503 0404 10205BE5 		ldrb	r1, [fp, #-19]	@ zero_extendqisi2
+ 504 0408 08119FE5 		mov	r3, #0
+ 505 040c 1000A0E3 		mov	r2, r3
+ 506 0410 0230A0E1 		mov	r3, r1
+ 507 0414 0331A0E1 		orr	r3, r2, r3
+ 508 0418 023083E0 		strb	r3, [r0, #3]
+ 509 041c 8330A0E1 		ldrb	r1, [fp, #-18]	@ zero_extendqisi2
+ 510 0420 023083E0 		mov	r3, #0
+ 511 0424 8330A0E1 		mov	r2, r3
+ 512 0428 013083E0 		mov	r3, r1
+ 513 042c 000083E0 		orr	r3, r2, r3
+ 514 0430 14105BE5 		strb	r3, [r0, #4]
+ 515 0434 0030A0E3 		ldrb	r1, [fp, #-17]	@ zero_extendqisi2
+ 516 0438 0320A0E1 		mov	r3, #0
+ 517 043c 0130A0E1 		mov	r2, r3
+ 518 0440 033082E1 		mov	r3, r1
+ 519 0444 0230C0E5 		orr	r3, r2, r3
+ 520 0448 13105BE5 		strb	r3, [r0, #5]
+ 521 044c 0030A0E3 		.loc 1 131 0
+ 522 0450 0320A0E1 		ldrb	r2, [fp, #-16]	@ zero_extendqisi2
+ 523 0454 0130A0E1 		ldr	r1, .L66
+ 524 0458 033082E1 		mov	r0, #16
+ 525 045c 0330C0E5 		mov	r3, r2
+ 526 0460 12105BE5 		mov	r3, r3, asl #2
+ 527 0464 0030A0E3 		add	r3, r3, r2
+ 528 0468 0320A0E1 		mov	r3, r3, asl #1
+ 529 046c 0130A0E1 		add	r3, r3, r2
+ 530 0470 033082E1 		mov	r3, r3, asl #1
+ 531 0474 0430C0E5 		add	r3, r3, r1
+ 532 0478 11105BE5 		add	r3, r3, r0
+ 533 047c 0030A0E3 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 534 0480 0320A0E1 		cmp	r3, #72
+ 535 0484 0130A0E1 		beq	.L63
+ 536 0488 033082E1 		.loc 1 133 0
+ 537 048c 0530C0E5 		ldrb	r2, [fp, #-16]	@ zero_extendqisi2
+ 131:jetiTelemetry.c **** 	if (jetiValues[id].varType!=JETI_VART_30B)
+ 538              	r2
+ 539 0490 10205BE5 		mov	r3, r3, asl #2
+ 540 0494 7C109FE5 		add	r3, r3, r2
+ 541 0498 1000A0E3 		mov	r3, r3, asl #1
+ 542 049c 0230A0E1 		add	r3, r3, r2
+ 543 04a0 0331A0E1 		mov	r3, r3, asl #1
+ 544 04a4 023083E0 		add	r3, r3, r1
+ 545 04a8 8330A0E1 		add	r2, r3, r0
+ 546 04ac 023083E0 		mov	r3, #72
+ 547 04b0 8330A0E1 		strb	r3, [r2, #0]
+ 548 04b4 013083E0 	.L63:
+ 549 04b8 003083E0 		.loc 1 136 0
+ 550 04bc 0030D3E5 		mov	r3, #0
+ 551 04c0 480053E3 		str	r3, [fp, #-24]
+ 552 04c4 0C00000A 	.L59:
+ 132:jetiTelemetry.c **** 	{
+ 133:jetiTelemetry.c **** 		jetiValues[id].varType=JETI_VART_30B;
+ 553              	-24]
+ 554 04c8 10205BE5 		.loc 1 138 0
+ 555 04cc 44109FE5 		mov	r0, r3
+ 556 04d0 1000A0E3 		sub	sp, fp, #12
+ 557 04d4 0230A0E1 		ldmfd	sp, {fp, sp, lr}
+ 558 04d8 0331A0E1 		bx	lr
+ 559 04dc 023083E0 	.L67:
+ 560 04e0 8330A0E1 		.align	2
+ 561 04e4 023083E0 	.L66:
+ 562 04e8 8330A0E1 		.word	jetiValues
+ 563 04ec 013083E0 	.LFE9:
+ 565 04f4 4830A0E3 		.align	2
+ 566 04f8 0030C2E5 		.global	jetiSetValue22B
+ 134:jetiTelemetry.c **** 	}
+ 135:jetiTelemetry.c **** 
+ 136:jetiTelemetry.c **** 	return JETI_NO_ERROR;
+ 568              	:
+ 569 04fc 0030A0E3 	.LFB10:
+ 570 0500 18300BE5 		.loc 1 141 0
+ 571              		@ Function supports interworking.
+ 572 0504 18301BE5 		@ args = 0, pretend = 0, frame = 12
+ 137:jetiTelemetry.c **** 
+ 138:jetiTelemetry.c **** }
+ 573              	ame_needed = 1, uses_anonymous_args = 0
+ 574 0508 0300A0E1 		mov	ip, sp
+ 575 050c 0CD04BE2 	.LCFI32:
+ 576 0510 00689DE8 		stmfd	sp!, {fp, ip, lr, pc}
+ 577 0514 1EFF2FE1 	.LCFI33:
+ 578              		sub	fp, ip, #4
+ 579              	.LCFI34:
+ 580              		sub	sp, sp, #12
+ 581 0518 00000000 	.LCFI35:
+ 582              		mov	r3, r0
+ 583              		str	r1, [fp, #-20]
+ 584              		strb	r3, [fp, #-16]
+ 585              		.loc 1 142 0
+ 586              		ldrb	r3, [fp, #-16]	@ zero_extendqisi2
+ 587              		cmp	r3, #14
+ 588              		bls	.L69
+ 139:jetiTelemetry.c **** 
+ 140:jetiTelemetry.c **** unsigned char jetiSetValue22B(unsigned char id, int value)
+ 141:jetiTelemetry.c **** {
+ 589              	ov	r3, #1
+ 590              		str	r3, [fp, #-24]
+ 591              		b	.L71
+ 592              	.L69:
+ 593 051c 0DC0A0E1 		.loc 1 144 0
+ 594              		ldr	r2, [fp, #-20]
+ 595 0520 00D82DE9 		mov	r3, #8388608
+ 596              		sub	r3, r3, #1
+ 597 0524 04B04CE2 		cmp	r2, r3
+ 598              		bgt	.L72
+ 599 0528 0CD04DE2 		ldr	r3, [fp, #-20]
+ 600              		cmn	r3, #8388608
+ 601 052c 0030A0E1 		bgt	.L74
+ 602 0530 14100BE5 	.L72:
+ 603 0534 10304BE5 		.loc 1 145 0
+ 142:jetiTelemetry.c **** 	if (id>14)
+ 604              	tr	r3, [fp, #-24]
+ 605 0538 10305BE5 		b	.L71
+ 606 053c 0E0053E3 	.L74:
+ 607 0540 0200009A 		.loc 1 147 0
+ 143:jetiTelemetry.c **** 		return JETI_ERROR_ID_RANGE;
+ 608              	b	r2, [fp, #-16]	@ zero_extendqisi2
+ 609 0544 0130A0E3 		ldr	r1, .L78
+ 610 0548 18300BE5 		mov	r0, #16
+ 611 054c 4A0000EA 		mov	r3, r2
+ 612              		mov	r3, r3, asl #2
+ 144:jetiTelemetry.c **** 	if ((value>=(1<<23)) || (value<=-(1<<23)))
+ 613              	r3, r3, r2
+ 614 0550 14201BE5 		mov	r3, r3, asl #1
+ 615 0554 0235A0E3 		add	r3, r3, r2
+ 616 0558 013043E2 		mov	r3, r3, asl #1
+ 617 055c 030052E1 		add	r3, r3, r1
+ 618 0560 020000CA 		add	r0, r3, r0
+ 619 0564 14301BE5 		ldrb	r1, [fp, #-20]	@ zero_extendqisi2
+ 620 0568 020573E3 		mov	r3, #0
+ 621 056c 020000CA 		mov	r2, r3
+ 622              		mov	r3, r1
+ 145:jetiTelemetry.c **** 		return JETI_ERROR_VALUE_RANGE;
+ 623              	2, r3
+ 624 0570 2030A0E3 		strb	r3, [r0, #2]
+ 625 0574 18300BE5 		ldrb	r1, [fp, #-19]	@ zero_extendqisi2
+ 626 0578 3F0000EA 		mov	r3, #0
+ 627              		mov	r2, r3
+ 146:jetiTelemetry.c **** 
+ 147:jetiTelemetry.c **** 	jetiValues[id].value=value;
+ 628              	r3, r1
+ 629 057c 10205BE5 		orr	r3, r2, r3
+ 630 0580 08119FE5 		strb	r3, [r0, #3]
+ 631 0584 1000A0E3 		ldrb	r1, [fp, #-18]	@ zero_extendqisi2
+ 632 0588 0230A0E1 		mov	r3, #0
+ 633 058c 0331A0E1 		mov	r2, r3
+ 634 0590 023083E0 		mov	r3, r1
+ 635 0594 8330A0E1 		orr	r3, r2, r3
+ 636 0598 023083E0 		strb	r3, [r0, #4]
+ 637 059c 8330A0E1 		ldrb	r1, [fp, #-17]	@ zero_extendqisi2
+ 638 05a0 013083E0 		mov	r3, #0
+ 639 05a4 000083E0 		mov	r2, r3
+ 640 05a8 14105BE5 		mov	r3, r1
+ 641 05ac 0030A0E3 		orr	r3, r2, r3
+ 642 05b0 0320A0E1 		strb	r3, [r0, #5]
+ 643 05b4 0130A0E1 		.loc 1 148 0
+ 644 05b8 033082E1 		ldrb	r2, [fp, #-16]	@ zero_extendqisi2
+ 645 05bc 0230C0E5 		ldr	r1, .L78
+ 646 05c0 13105BE5 		mov	r0, #16
+ 647 05c4 0030A0E3 		mov	r3, r2
+ 648 05c8 0320A0E1 		mov	r3, r3, asl #2
+ 649 05cc 0130A0E1 		add	r3, r3, r2
+ 650 05d0 033082E1 		mov	r3, r3, asl #1
+ 651 05d4 0330C0E5 		add	r3, r3, r2
+ 652 05d8 12105BE5 		mov	r3, r3, asl #1
+ 653 05dc 0030A0E3 		add	r3, r3, r1
+ 654 05e0 0320A0E1 		add	r3, r3, r0
+ 655 05e4 0130A0E1 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 656 05e8 033082E1 		cmp	r3, #52
+ 657 05ec 0430C0E5 		beq	.L75
+ 658 05f0 11105BE5 		.loc 1 150 0
+ 659 05f4 0030A0E3 		ldrb	r2, [fp, #-16]	@ zero_extendqisi2
+ 660 05f8 0320A0E1 		ldr	r1, .L78
+ 661 05fc 0130A0E1 		mov	r0, #16
+ 662 0600 033082E1 		mov	r3, r2
+ 663 0604 0530C0E5 		mov	r3, r3, asl #2
+ 148:jetiTelemetry.c **** 	if (jetiValues[id].varType!=JETI_VART_22B)
+ 664              		add	r3, r3, r2
+ 665 0608 10205BE5 		mov	r3, r3, asl #1
+ 666 060c 7C109FE5 		add	r3, r3, r1
+ 667 0610 1000A0E3 		add	r2, r3, r0
+ 668 0614 0230A0E1 		mov	r3, #52
+ 669 0618 0331A0E1 		strb	r3, [r2, #0]
+ 670 061c 023083E0 	.L75:
+ 671 0620 8330A0E1 		.loc 1 153 0
+ 672 0624 023083E0 		mov	r3, #0
+ 673 0628 8330A0E1 		str	r3, [fp, #-24]
+ 674 062c 013083E0 	.L71:
+ 675 0630 003083E0 		ldr	r3, [fp, #-24]
+ 676 0634 0030D3E5 		.loc 1 154 0
+ 677 0638 340053E3 		mov	r0, r3
+ 678 063c 0C00000A 		sub	sp, fp, #12
+ 149:jetiTelemetry.c **** 	{
+ 150:jetiTelemetry.c **** 		jetiValues[id].varType=JETI_VART_22B;
+ 679              	 sp, lr}
+ 680 0640 10205BE5 		bx	lr
+ 681 0644 44109FE5 	.L79:
+ 682 0648 1000A0E3 		.align	2
+ 683 064c 0230A0E1 	.L78:
+ 684 0650 0331A0E1 		.word	jetiValues
+ 685 0654 023083E0 	.LFE10:
+ 687 065c 023083E0 		.align	2
+ 688 0660 8330A0E1 		.global	jetiSetValue6B
+ 690 0668 002083E0 	jetiSetValue6B:
+ 691 066c 3430A0E3 	.LFB11:
+ 692 0670 0030C2E5 		.loc 1 157 0
+ 693              		@ Function supports interworking.
+ 151:jetiTelemetry.c **** 	}
+ 152:jetiTelemetry.c **** 
+ 153:jetiTelemetry.c **** 	return JETI_NO_ERROR;
+ 694              	etend = 0, frame = 12
+ 695 0674 0030A0E3 		@ frame_needed = 1, uses_anonymous_args = 0
+ 696 0678 18300BE5 		mov	ip, sp
+ 697              	.LCFI36:
+ 698 067c 18301BE5 		stmfd	sp!, {fp, ip, lr, pc}
+ 154:jetiTelemetry.c **** }
+ 699              	37:
+ 700 0680 0300A0E1 		sub	fp, ip, #4
+ 701 0684 0CD04BE2 	.LCFI38:
+ 702 0688 00689DE8 		sub	sp, sp, #12
+ 703 068c 1EFF2FE1 	.LCFI39:
+ 704              		mov	r3, r0
+ 705              		str	r1, [fp, #-20]
+ 706              		strb	r3, [fp, #-16]
+ 707 0690 00000000 		.loc 1 158 0
+ 708              		ldrb	r3, [fp, #-16]	@ zero_extendqisi2
+ 709              		cmp	r3, #14
+ 710              		bls	.L81
+ 711              		.loc 1 159 0
+ 712              		mov	r3, #1
+ 713              		str	r3, [fp, #-24]
+ 714              		b	.L83
+ 155:jetiTelemetry.c **** 
+ 156:jetiTelemetry.c **** unsigned char jetiSetValue6B(unsigned char id, int value)
+ 157:jetiTelemetry.c **** {
+ 715              	1 0
+ 716              		ldr	r3, [fp, #-20]
+ 717              		cmp	r3, #127
+ 718              		bgt	.L84
+ 719 0694 0DC0A0E1 		ldr	r3, [fp, #-20]
+ 720              		cmn	r3, #128
+ 721 0698 00D82DE9 		bgt	.L86
+ 722              	.L84:
+ 723 069c 04B04CE2 		.loc 1 162 0
+ 724              		mov	r3, #32
+ 725 06a0 0CD04DE2 		str	r3, [fp, #-24]
+ 726              		b	.L83
+ 727 06a4 0030A0E1 	.L86:
+ 728 06a8 14100BE5 		.loc 1 164 0
+ 729 06ac 10304BE5 		ldrb	r2, [fp, #-16]	@ zero_extendqisi2
+ 158:jetiTelemetry.c **** 	if (id>14)
+ 730              	mov	r0, #16
+ 731 06b0 10305BE5 		mov	r3, r2
+ 732 06b4 0E0053E3 		mov	r3, r3, asl #2
+ 733 06b8 0200009A 		add	r3, r3, r2
+ 159:jetiTelemetry.c **** 		return JETI_ERROR_ID_RANGE;
+ 734              		r3, r3, asl #1
+ 735 06bc 0130A0E3 		add	r3, r3, r2
+ 736 06c0 18300BE5 		mov	r3, r3, asl #1
+ 737 06c4 480000EA 		add	r3, r3, r1
+ 738              		add	r0, r3, r0
+ 160:jetiTelemetry.c **** 
+ 161:jetiTelemetry.c **** 	if ((value>=(1<<7)) || (value<=-(1<<7)))
+ 739              		r1, [fp, #-20]	@ zero_extendqisi2
+ 740 06c8 14301BE5 		mov	r3, #0
+ 741 06cc 7F0053E3 		mov	r2, r3
+ 742 06d0 020000CA 		mov	r3, r1
+ 743 06d4 14301BE5 		orr	r3, r2, r3
+ 744 06d8 800073E3 		strb	r3, [r0, #2]
+ 745 06dc 020000CA 		ldrb	r1, [fp, #-19]	@ zero_extendqisi2
+ 746              		mov	r3, #0
+ 162:jetiTelemetry.c **** 		return JETI_ERROR_VALUE_RANGE;
+ 747              	 r3
+ 748 06e0 2030A0E3 		mov	r3, r1
+ 749 06e4 18300BE5 		orr	r3, r2, r3
+ 750 06e8 3F0000EA 		strb	r3, [r0, #3]
+ 751              		ldrb	r1, [fp, #-18]	@ zero_extendqisi2
+ 163:jetiTelemetry.c **** 
+ 164:jetiTelemetry.c **** 	jetiValues[id].value=value;
+ 752              	r3, #0
+ 753 06ec 10205BE5 		mov	r2, r3
+ 754 06f0 08119FE5 		mov	r3, r1
+ 755 06f4 1000A0E3 		orr	r3, r2, r3
+ 756 06f8 0230A0E1 		strb	r3, [r0, #4]
+ 757 06fc 0331A0E1 		ldrb	r1, [fp, #-17]	@ zero_extendqisi2
+ 758 0700 023083E0 		mov	r3, #0
+ 759 0704 8330A0E1 		mov	r2, r3
+ 760 0708 023083E0 		mov	r3, r1
+ 761 070c 8330A0E1 		orr	r3, r2, r3
+ 762 0710 013083E0 		strb	r3, [r0, #5]
+ 763 0714 000083E0 		.loc 1 165 0
+ 764 0718 14105BE5 		ldrb	r2, [fp, #-16]	@ zero_extendqisi2
+ 765 071c 0030A0E3 		ldr	r1, .L90
+ 766 0720 0320A0E1 		mov	r0, #16
+ 767 0724 0130A0E1 		mov	r3, r2
+ 768 0728 033082E1 		mov	r3, r3, asl #2
+ 769 072c 0230C0E5 		add	r3, r3, r2
+ 770 0730 13105BE5 		mov	r3, r3, asl #1
+ 771 0734 0030A0E3 		add	r3, r3, r2
+ 772 0738 0320A0E1 		mov	r3, r3, asl #1
+ 773 073c 0130A0E1 		add	r3, r3, r1
+ 774 0740 033082E1 		add	r3, r3, r0
+ 775 0744 0330C0E5 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 776 0748 12105BE5 		cmp	r3, #16
+ 777 074c 0030A0E3 		beq	.L87
+ 778 0750 0320A0E1 		.loc 1 167 0
+ 779 0754 0130A0E1 		ldrb	r2, [fp, #-16]	@ zero_extendqisi2
+ 780 0758 033082E1 		ldr	r1, .L90
+ 781 075c 0430C0E5 		mov	r0, #16
+ 782 0760 11105BE5 		mov	r3, r2
+ 783 0764 0030A0E3 		mov	r3, r3, asl #2
+ 784 0768 0320A0E1 		add	r3, r3, r2
+ 785 076c 0130A0E1 		mov	r3, r3, asl #1
+ 786 0770 033082E1 		add	r3, r3, r2
+ 787 0774 0530C0E5 		mov	r3, r3, asl #1
+ 165:jetiTelemetry.c **** 	if (jetiValues[id].varType!=JETI_VART_6B)
+ 788              		r3, #16
+ 789 0778 10205BE5 		strb	r3, [r2, #0]
+ 790 077c 7C109FE5 	.L87:
+ 791 0780 1000A0E3 		.loc 1 170 0
+ 792 0784 0230A0E1 		mov	r3, #0
+ 793 0788 0331A0E1 		str	r3, [fp, #-24]
+ 794 078c 023083E0 	.L83:
+ 795 0790 8330A0E1 		ldr	r3, [fp, #-24]
+ 796 0794 023083E0 		.loc 1 171 0
+ 797 0798 8330A0E1 		mov	r0, r3
+ 798 079c 013083E0 		sub	sp, fp, #12
+ 799 07a0 003083E0 		ldmfd	sp, {fp, sp, lr}
+ 800 07a4 0030D3E5 		bx	lr
+ 801 07a8 100053E3 	.L91:
+ 802 07ac 0C00000A 		.align	2
+ 166:jetiTelemetry.c **** 	{
+ 167:jetiTelemetry.c **** 		jetiValues[id].varType=JETI_VART_6B;
+ 803              	tiValues
+ 804 07b0 10205BE5 	.LFE11:
+ 806 07b8 1000A0E3 		.align	2
+ 807 07bc 0230A0E1 		.global	jetiSetValue14B
+ 809 07c4 023083E0 	jetiSetValue14B:
+ 810 07c8 8330A0E1 	.LFB12:
+ 811 07cc 023083E0 		.loc 1 174 0
+ 812 07d0 8330A0E1 		@ Function supports interworking.
+ 813 07d4 013083E0 		@ args = 0, pretend = 0, frame = 12
+ 814 07d8 002083E0 		@ frame_needed = 1, uses_anonymous_args = 0
+ 815 07dc 1030A0E3 		mov	ip, sp
+ 816 07e0 0030C2E5 	.LCFI40:
+ 817              		stmfd	sp!, {fp, ip, lr, pc}
+ 168:jetiTelemetry.c **** 	}
+ 169:jetiTelemetry.c **** 
+ 170:jetiTelemetry.c **** 	return JETI_NO_ERROR;
+ 818              	p, ip, #4
+ 819 07e4 0030A0E3 	.LCFI42:
+ 820 07e8 18300BE5 		sub	sp, sp, #12
+ 821              	.LCFI43:
+ 822 07ec 18301BE5 		mov	r3, r0
+ 171:jetiTelemetry.c **** }
+ 823              	r1, [fp, #-20]
+ 824 07f0 0300A0E1 		strb	r3, [fp, #-16]
+ 825 07f4 0CD04BE2 		.loc 1 175 0
+ 826 07f8 00689DE8 		ldrb	r3, [fp, #-16]	@ zero_extendqisi2
+ 827 07fc 1EFF2FE1 		cmp	r3, #14
+ 828              		bls	.L93
+ 829              		.loc 1 176 0
+ 830              		mov	r3, #1
+ 831 0800 00000000 		str	r3, [fp, #-24]
+ 832              		b	.L95
+ 833              	.L93:
+ 834              		.loc 1 178 0
+ 835              		ldr	r2, [fp, #-20]
+ 836              		mov	r3, #32512
+ 837              		add	r3, r3, #255
+ 838              		cmp	r2, r3
+ 172:jetiTelemetry.c **** 
+ 173:jetiTelemetry.c **** unsigned char jetiSetValue14B(unsigned char id, int value)
+ 174:jetiTelemetry.c **** {
+ 839              	3, [fp, #-20]
+ 840              		cmn	r3, #32768
+ 841              		bgt	.L98
+ 842              	.L96:
+ 843 0804 0DC0A0E1 		.loc 1 179 0
+ 844              		mov	r3, #32
+ 845 0808 00D82DE9 		str	r3, [fp, #-24]
+ 846              		b	.L95
+ 847 080c 04B04CE2 	.L98:
+ 848              		.loc 1 181 0
+ 849 0810 0CD04DE2 		ldrb	r2, [fp, #-16]	@ zero_extendqisi2
+ 850              		ldr	r1, .L102
+ 851 0814 0030A0E1 		mov	r0, #16
+ 852 0818 14100BE5 		mov	r3, r2
+ 853 081c 10304BE5 		mov	r3, r3, asl #2
+ 175:jetiTelemetry.c **** 	if (id>14)
+ 854              	
+ 855 0820 10305BE5 		mov	r3, r3, asl #1
+ 856 0824 0E0053E3 		add	r3, r3, r2
+ 857 0828 0200009A 		mov	r3, r3, asl #1
+ 176:jetiTelemetry.c **** 		return JETI_ERROR_ID_RANGE;
+ 858              	d	r3, r3, r1
+ 859 082c 0130A0E3 		add	r0, r3, r0
+ 860 0830 18300BE5 		ldrb	r1, [fp, #-20]	@ zero_extendqisi2
+ 861 0834 4A0000EA 		mov	r3, #0
+ 862              		mov	r2, r3
+ 177:jetiTelemetry.c **** 
+ 178:jetiTelemetry.c **** 	if ((value>=(1<<15)) || (value<=-(1<<15)))
+ 863              	r3, r1
+ 864 0838 14201BE5 		orr	r3, r2, r3
+ 865 083c 7F3CA0E3 		strb	r3, [r0, #2]
+ 866 0840 FF3083E2 		ldrb	r1, [fp, #-19]	@ zero_extendqisi2
+ 867 0844 030052E1 		mov	r3, #0
+ 868 0848 020000CA 		mov	r2, r3
+ 869 084c 14301BE5 		mov	r3, r1
+ 870 0850 020973E3 		orr	r3, r2, r3
+ 871 0854 020000CA 		strb	r3, [r0, #3]
+ 872              		ldrb	r1, [fp, #-18]	@ zero_extendqisi2
+ 179:jetiTelemetry.c **** 		return JETI_ERROR_VALUE_RANGE;
+ 873              	0
+ 874 0858 2030A0E3 		mov	r2, r3
+ 875 085c 18300BE5 		mov	r3, r1
+ 876 0860 3F0000EA 		orr	r3, r2, r3
+ 877              		strb	r3, [r0, #4]
+ 180:jetiTelemetry.c **** 
+ 181:jetiTelemetry.c **** 	jetiValues[id].value=value;
+ 878              		r1, [fp, #-17]	@ zero_extendqisi2
+ 879 0864 10205BE5 		mov	r3, #0
+ 880 0868 08119FE5 		mov	r2, r3
+ 881 086c 1000A0E3 		mov	r3, r1
+ 882 0870 0230A0E1 		orr	r3, r2, r3
+ 883 0874 0331A0E1 		strb	r3, [r0, #5]
+ 884 0878 023083E0 		.loc 1 182 0
+ 885 087c 8330A0E1 		ldrb	r2, [fp, #-16]	@ zero_extendqisi2
+ 886 0880 023083E0 		ldr	r1, .L102
+ 887 0884 8330A0E1 		mov	r0, #16
+ 888 0888 013083E0 		mov	r3, r2
+ 889 088c 000083E0 		mov	r3, r3, asl #2
+ 890 0890 14105BE5 		add	r3, r3, r2
+ 891 0894 0030A0E3 		mov	r3, r3, asl #1
+ 892 0898 0320A0E1 		add	r3, r3, r2
+ 893 089c 0130A0E1 		mov	r3, r3, asl #1
+ 894 08a0 033082E1 		add	r3, r3, r1
+ 895 08a4 0230C0E5 		add	r3, r3, r0
+ 896 08a8 13105BE5 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 897 08ac 0030A0E3 		cmp	r3, #33
+ 898 08b0 0320A0E1 		beq	.L99
+ 899 08b4 0130A0E1 		.loc 1 184 0
+ 900 08b8 033082E1 		ldrb	r2, [fp, #-16]	@ zero_extendqisi2
+ 901 08bc 0330C0E5 		ldr	r1, .L102
+ 902 08c0 12105BE5 		mov	r0, #16
+ 903 08c4 0030A0E3 		mov	r3, r2
+ 904 08c8 0320A0E1 		mov	r3, r3, asl #2
+ 905 08cc 0130A0E1 		add	r3, r3, r2
+ 906 08d0 033082E1 		mov	r3, r3, asl #1
+ 907 08d4 0430C0E5 		add	r3, r3, r2
+ 908 08d8 11105BE5 		mov	r3, r3, asl #1
+ 909 08dc 0030A0E3 		add	r3, r3, r1
+ 910 08e0 0320A0E1 		add	r2, r3, r0
+ 911 08e4 0130A0E1 		mov	r3, #33
+ 912 08e8 033082E1 		strb	r3, [r2, #0]
+ 913 08ec 0530C0E5 	.L99:
+ 182:jetiTelemetry.c **** 	if (jetiValues[id].varType!=JETI_VART_14B)
+ 914              	fp, #-24]
+ 915 08f0 10205BE5 	.L95:
+ 916 08f4 7C109FE5 		ldr	r3, [fp, #-24]
+ 917 08f8 1000A0E3 		.loc 1 189 0
+ 918 08fc 0230A0E1 		mov	r0, r3
+ 919 0900 0331A0E1 		sub	sp, fp, #12
+ 920 0904 023083E0 		ldmfd	sp, {fp, sp, lr}
+ 921 0908 8330A0E1 		bx	lr
+ 922 090c 023083E0 	.L103:
+ 923 0910 8330A0E1 		.align	2
+ 924 0914 013083E0 	.L102:
+ 925 0918 003083E0 		.word	jetiValues
+ 926 091c 0030D3E5 	.LFE12:
+ 928 0924 0C00000A 		.align	2
+ 183:jetiTelemetry.c **** 	{
+ 184:jetiTelemetry.c **** 		jetiValues[id].varType=JETI_VART_14B;
+ 929              	tValueTime
+ 931 092c 44109FE5 	jetiSetValueTime:
+ 932 0930 1000A0E3 	.LFB13:
+ 933 0934 0230A0E1 		.loc 1 192 0
+ 934 0938 0331A0E1 		@ Function supports interworking.
+ 935 093c 023083E0 		@ args = 0, pretend = 0, frame = 24
+ 936 0940 8330A0E1 		@ frame_needed = 1, uses_anonymous_args = 0
+ 937 0944 023083E0 		mov	ip, sp
+ 938 0948 8330A0E1 	.LCFI44:
+ 939 094c 013083E0 		stmfd	sp!, {fp, ip, lr, pc}
+ 940 0950 002083E0 	.LCFI45:
+ 941 0954 2130A0E3 		sub	fp, ip, #4
+ 942 0958 0030C2E5 	.LCFI46:
+ 943              		sub	sp, sp, #24
+ 185:jetiTelemetry.c **** 	}
+ 186:jetiTelemetry.c **** 
+ 187:jetiTelemetry.c **** 	return JETI_NO_ERROR;
+ 944              	p, r3
+ 945 095c 0030A0E3 		mov	r3, r0
+ 946 0960 18300BE5 		strb	r3, [fp, #-20]
+ 947              		mov	r3, r1
+ 948 0964 18301BE5 		strb	r3, [fp, #-24]
+ 188:jetiTelemetry.c **** 
+ 189:jetiTelemetry.c **** }
+ 949              	r3, r2
+ 950 0968 0300A0E1 		strb	r3, [fp, #-28]
+ 951 096c 0CD04BE2 		mov	r3, ip
+ 952 0970 00689DE8 		strb	r3, [fp, #-32]
+ 953 0974 1EFF2FE1 		.loc 1 194 0
+ 954              		ldrb	r3, [fp, #-20]	@ zero_extendqisi2
+ 955              		cmp	r3, #14
+ 956              		bls	.L105
+ 957 0978 00000000 		.loc 1 195 0
+ 958              		mov	r3, #1
+ 959              		str	r3, [fp, #-36]
+ 960              		b	.L107
+ 961              	.L105:
+ 962              		.loc 1 196 0
+ 963              		ldrb	r3, [fp, #-32]	@ zero_extendqisi2
+ 964              		cmp	r3, #59
+ 190:jetiTelemetry.c **** 
+ 191:jetiTelemetry.c **** unsigned char jetiSetValueTime(unsigned char id, unsigned char hours, unsigned char minutes, unsign
+ 192:jetiTelemetry.c **** {
+ 965              	 1 197 0
+ 966              		mov	r3, #70
+ 967              		str	r3, [fp, #-36]
+ 968              		b	.L107
+ 969 097c 0DC0A0E1 	.L108:
+ 970              		.loc 1 198 0
+ 971 0980 00D82DE9 		ldrb	r3, [fp, #-28]	@ zero_extendqisi2
+ 972              		cmp	r3, #59
+ 973 0984 04B04CE2 		bls	.L110
+ 974              		.loc 1 199 0
+ 975 0988 18D04DE2 		mov	r3, #69
+ 976              		str	r3, [fp, #-36]
+ 977 098c 03C0A0E1 		b	.L107
+ 978 0990 0030A0E1 	.L110:
+ 979 0994 14304BE5 		.loc 1 200 0
+ 980 0998 0130A0E1 		ldrb	r3, [fp, #-24]	@ zero_extendqisi2
+ 981 099c 18304BE5 		cmp	r3, #23
+ 982 09a0 0230A0E1 		bls	.L112
+ 983 09a4 1C304BE5 		.loc 1 201 0
+ 984 09a8 0C30A0E1 		mov	r3, #68
+ 985 09ac 20304BE5 		str	r3, [fp, #-36]
+ 193:jetiTelemetry.c **** 	unsigned int value;
+ 194:jetiTelemetry.c **** 	if (id>14)
+ 986              	 1 203 0
+ 987 09b0 14305BE5 		ldrb	r3, [fp, #-32]	@ zero_extendqisi2
+ 988 09b4 0E0053E3 		str	r3, [fp, #-16]
+ 989 09b8 0200009A 		.loc 1 204 0
+ 195:jetiTelemetry.c **** 		return JETI_ERROR_ID_RANGE;
+ 990              	b	r3, [fp, #-28]	@ zero_extendqisi2
+ 991 09bc 0130A0E3 		mov	r3, r3, asl #8
+ 992 09c0 24300BE5 		mov	r2, r3
+ 993 09c4 580000EA 		ldr	r3, [fp, #-16]
+ 994              		orr	r3, r3, r2
+ 196:jetiTelemetry.c **** 	if (seconds>59)
+ 995              	r3, [fp, #-16]
+ 996 09c8 20305BE5 		.loc 1 205 0
+ 997 09cc 3B0053E3 		ldrb	r3, [fp, #-24]	@ zero_extendqisi2
+ 998 09d0 0200009A 		mov	r3, r3, asl #16
+ 197:jetiTelemetry.c **** 		return JETI_ERROR_SECOND;
+ 999              		r2, r3
+ 1000 09d4 4630A0E3 		ldr	r3, [fp, #-16]
+ 1001 09d8 24300BE5 		orr	r3, r3, r2
+ 1002 09dc 520000EA 		str	r3, [fp, #-16]
+ 1003              		.loc 1 207 0
+ 198:jetiTelemetry.c **** 	if (minutes>59)
+ 1004              		r2, [fp, #-20]	@ zero_extendqisi2
+ 1005 09e0 1C305BE5 		ldr	r0, [fp, #-16]
+ 1006 09e4 3B0053E3 		ldr	r1, .L115
+ 1007 09e8 0200009A 		mov	ip, #16
+ 199:jetiTelemetry.c **** 		return JETI_ERROR_MINUTE;
+ 1008              		r3, r2
+ 1009 09ec 4530A0E3 		mov	r3, r3, asl #2
+ 1010 09f0 24300BE5 		add	r3, r3, r2
+ 1011 09f4 4C0000EA 		mov	r3, r3, asl #1
+ 1012              		add	r3, r3, r2
+ 200:jetiTelemetry.c **** 	if (hours>23)
+ 1013              	r3, r3, asl #1
+ 1014 09f8 18305BE5 		add	r3, r3, r1
+ 1015 09fc 170053E3 		add	ip, r3, ip
+ 1016 0a00 0200009A 		and	r1, r0, #255
+ 201:jetiTelemetry.c **** 		return JETI_ERROR_HOUR;
+ 1017              		r3, #0
+ 1018 0a04 4430A0E3 		mov	r2, r3
+ 1019 0a08 24300BE5 		mov	r3, r1
+ 1020 0a0c 460000EA 		orr	r3, r2, r3
+ 1021              		strb	r3, [ip, #2]
+ 202:jetiTelemetry.c **** 
+ 203:jetiTelemetry.c **** 	value=seconds;
+ 1022              	r3, r0, lsr #8
+ 1023 0a10 20305BE5 		and	r1, r3, #255
+ 1024 0a14 10300BE5 		mov	r3, #0
+ 204:jetiTelemetry.c **** 	value|=minutes<<8;
+ 1025              	v	r2, r3
+ 1026 0a18 1C305BE5 		mov	r3, r1
+ 1027 0a1c 0334A0E1 		orr	r3, r2, r3
+ 1028 0a20 0320A0E1 		strb	r3, [ip, #3]
+ 1029 0a24 10301BE5 		mov	r3, r0, lsr #16
+ 1030 0a28 023083E1 		and	r1, r3, #255
+ 1031 0a2c 10300BE5 		mov	r3, #0
+ 205:jetiTelemetry.c **** 	value|=hours<<16;
+ 1032              	, r3
+ 1033 0a30 18305BE5 		mov	r3, r1
+ 1034 0a34 0338A0E1 		orr	r3, r2, r3
+ 1035 0a38 0320A0E1 		strb	r3, [ip, #4]
+ 1036 0a3c 10301BE5 		mov	r1, r0, lsr #24
+ 1037 0a40 023083E1 		mov	r3, #0
+ 1038 0a44 10300BE5 		mov	r2, r3
+ 206:jetiTelemetry.c **** 
+ 207:jetiTelemetry.c **** 	jetiValues[id].value=value;
+ 1039              	, r1
+ 1040 0a48 14205BE5 		orr	r3, r2, r3
+ 1041 0a4c 10001BE5 		strb	r3, [ip, #5]
+ 1042 0a50 E8109FE5 		.loc 1 208 0
+ 1043 0a54 10C0A0E3 		ldrb	r3, [fp, #-20]	@ zero_extendqisi2
+ 1044 0a58 0230A0E1 		mov	r0, r3
+ 1045 0a5c 0331A0E1 		mov	r1, #0
+ 1046 0a60 023083E0 		bl	jetiSetDecimalPoint
+ 1047 0a64 8330A0E1 		.loc 1 209 0
+ 1048 0a68 023083E0 		ldrb	r2, [fp, #-20]	@ zero_extendqisi2
+ 1049 0a6c 8330A0E1 		ldr	r1, .L115
+ 1050 0a70 013083E0 		mov	r0, #16
+ 1051 0a74 0CC083E0 		mov	r3, r2
+ 1052 0a78 FF1000E2 		mov	r3, r3, asl #2
+ 1053 0a7c 0030A0E3 		add	r3, r3, r2
+ 1054 0a80 0320A0E1 		mov	r3, r3, asl #1
+ 1055 0a84 0130A0E1 		add	r3, r3, r2
+ 1056 0a88 033082E1 		mov	r3, r3, asl #1
+ 1057 0a8c 0230CCE5 		add	r3, r3, r1
+ 1058 0a90 2034A0E1 		add	r2, r3, r0
+ 1059 0a94 FF1003E2 		mov	r3, #53
+ 1060 0a98 0030A0E3 		strb	r3, [r2, #0]
+ 1061 0a9c 0320A0E1 		.loc 1 211 0
+ 1062 0aa0 0130A0E1 		mov	r3, #0
+ 1063 0aa4 033082E1 		str	r3, [fp, #-36]
+ 1064 0aa8 0330CCE5 	.L107:
+ 1065 0aac 2038A0E1 		ldr	r3, [fp, #-36]
+ 1066 0ab0 FF1003E2 		.loc 1 212 0
+ 1067 0ab4 0030A0E3 		mov	r0, r3
+ 1068 0ab8 0320A0E1 		sub	sp, fp, #12
+ 1069 0abc 0130A0E1 		ldmfd	sp, {fp, sp, lr}
+ 1070 0ac0 033082E1 		bx	lr
+ 1071 0ac4 0430CCE5 	.L116:
+ 1072 0ac8 201CA0E1 		.align	2
+ 1073 0acc 0030A0E3 	.L115:
+ 1074 0ad0 0320A0E1 		.word	jetiValues
+ 1075 0ad4 0130A0E1 	.LFE13:
+ 1077 0adc 0530CCE5 		.align	2
+ 208:jetiTelemetry.c **** 	jetiSetDecimalPoint(id,0); //time
+ 1078              	tValueDate, %function
+ 1079 0ae0 14305BE5 	jetiSetValueDate:
+ 1080 0ae4 0300A0E1 	.LFB14:
+ 1081 0ae8 0010A0E3 		.loc 1 215 0
+ 1082 0aec FEFFFFEB 		@ Function supports interworking.
+ 209:jetiTelemetry.c **** 	jetiValues[id].varType=JETI_VART_DATETIME;
+ 1083              	gs = 0, pretend = 0, frame = 24
+ 1084 0af0 14205BE5 		@ frame_needed = 1, uses_anonymous_args = 0
+ 1085 0af4 44109FE5 		mov	ip, sp
+ 1086 0af8 1000A0E3 	.LCFI48:
+ 1087 0afc 0230A0E1 		stmfd	sp!, {fp, ip, lr, pc}
+ 1088 0b00 0331A0E1 	.LCFI49:
+ 1089 0b04 023083E0 		sub	fp, ip, #4
+ 1090 0b08 8330A0E1 	.LCFI50:
+ 1091 0b0c 023083E0 		sub	sp, sp, #24
+ 1092 0b10 8330A0E1 	.LCFI51:
+ 1093 0b14 013083E0 		mov	ip, r3
+ 1094 0b18 002083E0 		mov	r3, r0
+ 1095 0b1c 3530A0E3 		strb	r3, [fp, #-20]
+ 1096 0b20 0030C2E5 		mov	r3, r1
+ 210:jetiTelemetry.c **** 
+ 211:jetiTelemetry.c **** 	return JETI_NO_ERROR;
+ 1097              	 #-24]
+ 1098 0b24 0030A0E3 		mov	r3, r2
+ 1099 0b28 24300BE5 		strb	r3, [fp, #-28]
+ 1100              		strh	ip, [fp, #-32]	@ movhi
+ 1101 0b2c 24301BE5 		.loc 1 217 0
+ 212:jetiTelemetry.c **** }
+ 1102              		r3, [fp, #-20]	@ zero_extendqisi2
+ 1103 0b30 0300A0E1 		cmp	r3, #14
+ 1104 0b34 0CD04BE2 		bls	.L118
+ 1105 0b38 00689DE8 		.loc 1 218 0
+ 1106 0b3c 1EFF2FE1 		mov	r3, #1
+ 1107              		str	r3, [fp, #-36]
+ 1108              		b	.L120
+ 1109              	.L118:
+ 1110 0b40 00000000 		.loc 1 220 0
+ 1111              		ldrh	r3, [fp, #-32]
+ 1112              		cmp	r3, #2000
+ 1113              		bls	.L121
+ 1114              		.loc 1 221 0
+ 1115              		ldrh	r3, [fp, #-32]	@ movhi
+ 1116              		sub	r3, r3, #2000
+ 1117              		strh	r3, [fp, #-32]	@ movhi
+ 213:jetiTelemetry.c **** 
+ 214:jetiTelemetry.c **** unsigned char jetiSetValueDate(unsigned char id, unsigned char day, unsigned char month, unsigned s
+ 215:jetiTelemetry.c **** {
+ 1118              	22 0
+ 1119              		ldrh	r3, [fp, #-32]
+ 1120              		cmp	r3, #100
+ 1121              		bls	.L123
+ 1122 0b44 0DC0A0E1 		.loc 1 223 0
+ 1123              		mov	r3, #65
+ 1124 0b48 00D82DE9 		str	r3, [fp, #-36]
+ 1125              		b	.L120
+ 1126 0b4c 04B04CE2 	.L123:
+ 1127              		.loc 1 224 0
+ 1128 0b50 18D04DE2 		ldrb	r3, [fp, #-28]	@ zero_extendqisi2
+ 1129              		cmp	r3, #0
+ 1130 0b54 03C0A0E1 		beq	.L125
+ 1131 0b58 0030A0E1 		ldrb	r3, [fp, #-28]	@ zero_extendqisi2
+ 1132 0b5c 14304BE5 		cmp	r3, #12
+ 1133 0b60 0130A0E1 		bls	.L127
+ 1134 0b64 18304BE5 	.L125:
+ 1135 0b68 0230A0E1 		.loc 1 225 0
+ 1136 0b6c 1C304BE5 		mov	r3, #66
+ 1137 0b70 B0C24BE1 		str	r3, [fp, #-36]
+ 216:jetiTelemetry.c **** 	unsigned int value;
+ 217:jetiTelemetry.c **** 	if (id>14)
+ 1138              	c 1 226 0
+ 1139 0b74 14305BE5 		ldrb	r3, [fp, #-24]	@ zero_extendqisi2
+ 1140 0b78 0E0053E3 		cmp	r3, #0
+ 1141 0b7c 0200009A 		beq	.L128
+ 218:jetiTelemetry.c **** 		return JETI_ERROR_ID_RANGE;
+ 1142              	b	r3, [fp, #-24]	@ zero_extendqisi2
+ 1143 0b80 0130A0E3 		cmp	r3, #31
+ 1144 0b84 24300BE5 		bls	.L130
+ 1145 0b88 640000EA 	.L128:
+ 1146              		.loc 1 227 0
+ 219:jetiTelemetry.c **** 
+ 220:jetiTelemetry.c **** 	if (year>2000)
+ 1147              	r3, #67
+ 1148 0b8c B0325BE1 		str	r3, [fp, #-36]
+ 1149 0b90 7D0E53E3 		b	.L120
+ 1150 0b94 0200009A 	.L130:
+ 221:jetiTelemetry.c **** 		year-=2000;
+ 1151              	c 1 229 0
+ 1152 0b98 B0325BE1 		ldrh	r3, [fp, #-32]
+ 1153 0b9c 7D3E43E2 		str	r3, [fp, #-16]
+ 1154 0ba0 B0324BE1 		.loc 1 230 0
+ 1155              		ldrb	r3, [fp, #-28]	@ zero_extendqisi2
+ 222:jetiTelemetry.c **** 	if (year>100)
+ 1156              	r3, r3, asl #8
+ 1157 0ba4 B0325BE1 		mov	r2, r3
+ 1158 0ba8 640053E3 		ldr	r3, [fp, #-16]
+ 1159 0bac 0200009A 		orr	r3, r3, r2
+ 223:jetiTelemetry.c **** 		return JETI_ERROR_YEAR;
+ 1160              		r3, [fp, #-16]
+ 1161 0bb0 4130A0E3 		.loc 1 231 0
+ 1162 0bb4 24300BE5 		ldrb	r3, [fp, #-24]	@ zero_extendqisi2
+ 1163 0bb8 580000EA 		mov	r3, r3, asl #16
+ 1164              		mov	r2, r3
+ 224:jetiTelemetry.c **** 	if ((month<1)||(month>12))
+ 1165              	r3, [fp, #-16]
+ 1166 0bbc 1C305BE5 		orr	r3, r3, r2
+ 1167 0bc0 000053E3 		str	r3, [fp, #-16]
+ 1168 0bc4 0200000A 		.loc 1 233 0
+ 1169 0bc8 1C305BE5 		ldrb	r2, [fp, #-20]	@ zero_extendqisi2
+ 1170 0bcc 0C0053E3 		ldr	r0, [fp, #-16]
+ 1171 0bd0 0200009A 		ldr	r1, .L132
+ 1172              		mov	ip, #16
+ 225:jetiTelemetry.c **** 		return JETI_ERROR_MONTH;
+ 1173              	 r2
+ 1174 0bd4 4230A0E3 		mov	r3, r3, asl #2
+ 1175 0bd8 24300BE5 		add	r3, r3, r2
+ 1176 0bdc 4F0000EA 		mov	r3, r3, asl #1
+ 1177              		add	r3, r3, r2
+ 226:jetiTelemetry.c **** 	if ((day<1)||(day>31))
+ 1178              	r3, r3, asl #1
+ 1179 0be0 18305BE5 		add	r3, r3, r1
+ 1180 0be4 000053E3 		add	ip, r3, ip
+ 1181 0be8 0200000A 		and	r1, r0, #255
+ 1182 0bec 18305BE5 		mov	r3, #0
+ 1183 0bf0 1F0053E3 		mov	r2, r3
+ 1184 0bf4 0200009A 		mov	r3, r1
+ 1185              		orr	r3, r2, r3
+ 227:jetiTelemetry.c **** 		return JETI_ERROR_DAY;
+ 1186              	, [ip, #2]
+ 1187 0bf8 4330A0E3 		mov	r3, r0, lsr #8
+ 1188 0bfc 24300BE5 		and	r1, r3, #255
+ 1189 0c00 460000EA 		mov	r3, #0
+ 1190              		mov	r2, r3
+ 228:jetiTelemetry.c **** 
+ 229:jetiTelemetry.c **** 	value=year;
+ 1191              	r3, r1
+ 1192 0c04 B0325BE1 		orr	r3, r2, r3
+ 1193 0c08 10300BE5 		strb	r3, [ip, #3]
+ 230:jetiTelemetry.c **** 	value|=month<<8;
+ 1194              	v	r3, r0, lsr #16
+ 1195 0c0c 1C305BE5 		and	r1, r3, #255
+ 1196 0c10 0334A0E1 		mov	r3, #0
+ 1197 0c14 0320A0E1 		mov	r2, r3
+ 1198 0c18 10301BE5 		mov	r3, r1
+ 1199 0c1c 023083E1 		orr	r3, r2, r3
+ 1200 0c20 10300BE5 		strb	r3, [ip, #4]
+ 231:jetiTelemetry.c **** 	value|=day<<16;
+ 1201              	, r0, lsr #24
+ 1202 0c24 18305BE5 		mov	r3, #0
+ 1203 0c28 0338A0E1 		mov	r2, r3
+ 1204 0c2c 0320A0E1 		mov	r3, r1
+ 1205 0c30 10301BE5 		orr	r3, r2, r3
+ 1206 0c34 023083E1 		strb	r3, [ip, #5]
+ 1207 0c38 10300BE5 		.loc 1 234 0
+ 232:jetiTelemetry.c **** 
+ 233:jetiTelemetry.c **** 	jetiValues[id].value=value;
+ 1208              	3, [fp, #-20]	@ zero_extendqisi2
+ 1209 0c3c 14205BE5 		mov	r0, r3
+ 1210 0c40 10001BE5 		mov	r1, #1
+ 1211 0c44 E8109FE5 		bl	jetiSetDecimalPoint
+ 1212 0c48 10C0A0E3 		.loc 1 235 0
+ 1213 0c4c 0230A0E1 		ldrb	r2, [fp, #-20]	@ zero_extendqisi2
+ 1214 0c50 0331A0E1 		ldr	r1, .L132
+ 1215 0c54 023083E0 		mov	r0, #16
+ 1216 0c58 8330A0E1 		mov	r3, r2
+ 1217 0c5c 023083E0 		mov	r3, r3, asl #2
+ 1218 0c60 8330A0E1 		add	r3, r3, r2
+ 1219 0c64 013083E0 		mov	r3, r3, asl #1
+ 1220 0c68 0CC083E0 		add	r3, r3, r2
+ 1221 0c6c FF1000E2 		mov	r3, r3, asl #1
+ 1222 0c70 0030A0E3 		add	r3, r3, r1
+ 1223 0c74 0320A0E1 		add	r2, r3, r0
+ 1224 0c78 0130A0E1 		mov	r3, #53
+ 1225 0c7c 033082E1 		strb	r3, [r2, #0]
+ 1226 0c80 0230CCE5 		.loc 1 237 0
+ 1227 0c84 2034A0E1 		mov	r3, #0
+ 1228 0c88 FF1003E2 		str	r3, [fp, #-36]
+ 1229 0c8c 0030A0E3 	.L120:
+ 1230 0c90 0320A0E1 		ldr	r3, [fp, #-36]
+ 1231 0c94 0130A0E1 		.loc 1 238 0
+ 1232 0c98 033082E1 		mov	r0, r3
+ 1233 0c9c 0330CCE5 		sub	sp, fp, #12
+ 1234 0ca0 2038A0E1 		ldmfd	sp, {fp, sp, lr}
+ 1235 0ca4 FF1003E2 		bx	lr
+ 1236 0ca8 0030A0E3 	.L133:
+ 1237 0cac 0320A0E1 		.align	2
+ 1238 0cb0 0130A0E1 	.L132:
+ 1239 0cb4 033082E1 		.word	jetiValues
+ 1240 0cb8 0430CCE5 	.LFE14:
+ 1242 0cc0 0030A0E3 		.align	2
+ 1243 0cc4 0320A0E1 		.global	jetiSetTextDisplay
+ 1245 0ccc 033082E1 	jetiSetTextDisplay:
+ 1246 0cd0 0530CCE5 	.LFB15:
+ 234:jetiTelemetry.c **** 	jetiSetDecimalPoint(id,1); //time
+ 1247              	rworking.
+ 1248 0cd4 14305BE5 		@ args = 0, pretend = 0, frame = 12
+ 1249 0cd8 0300A0E1 		@ frame_needed = 1, uses_anonymous_args = 0
+ 1250 0cdc 0110A0E3 		mov	ip, sp
+ 1251 0ce0 FEFFFFEB 	.LCFI52:
+ 235:jetiTelemetry.c **** 	jetiValues[id].varType=JETI_VART_DATETIME;
+ 1252              	d	sp!, {fp, ip, lr, pc}
+ 1253 0ce4 14205BE5 	.LCFI53:
+ 1254 0ce8 44109FE5 		sub	fp, ip, #4
+ 1255 0cec 1000A0E3 	.LCFI54:
+ 1256 0cf0 0230A0E1 		sub	sp, sp, #12
+ 1257 0cf4 0331A0E1 	.LCFI55:
+ 1258 0cf8 023083E0 		str	r0, [fp, #-24]
+ 1259 0cfc 8330A0E1 		.loc 1 242 0
+ 1260 0d00 023083E0 		mov	r3, #0
+ 1261 0d04 8330A0E1 		strb	r3, [fp, #-19]
+ 1262 0d08 013083E0 		.loc 1 243 0
+ 1263 0d0c 002083E0 		mov	r3, #0
+ 1264 0d10 3530A0E3 		strb	r3, [fp, #-18]
+ 1265 0d14 0030C2E5 		.loc 1 244 0
+ 236:jetiTelemetry.c **** 
+ 237:jetiTelemetry.c **** 	return JETI_NO_ERROR;
+ 1266              	trb	r3, [fp, #-17]
+ 1267 0d18 0030A0E3 		.loc 1 247 0
+ 1268 0d1c 24300BE5 		mov	r3, #0
+ 1269              		str	r3, [fp, #-16]
+ 1270 0d20 24301BE5 		b	.L135
+ 238:jetiTelemetry.c **** }
+ 1271              	:
+ 1272 0d24 0300A0E1 		.loc 1 249 0
+ 1273 0d28 0CD04BE2 		ldr	r3, [fp, #-16]
+ 1274 0d2c 00689DE8 		mov	r2, r3
+ 1275 0d30 1EFF2FE1 		ldr	r3, [fp, #-24]
+ 1276              		add	r3, r2, r3
+ 1277              		ldrb	r1, [r3, #0]	@ zero_extendqisi2
+ 1278              		ldr	r2, [fp, #-16]
+ 1279 0d34 00000000 		ldr	r3, .L150
+ 1280              		ldrb	r3, [r3, r2]	@ zero_extendqisi2
+ 1281              		cmp	r1, r3
+ 1282              		beq	.L137
+ 1283              		.loc 1 250 0
+ 1284              		mov	r3, #1
+ 1285              		strb	r3, [fp, #-17]
+ 1286              	.L137:
+ 239:jetiTelemetry.c **** 
+ 240:jetiTelemetry.c **** unsigned char jetiSetTextDisplay(char * text)
+ 241:jetiTelemetry.c **** {
+ 1287              	dr	r3, [fp, #-16]
+ 1288              		mov	r2, r3
+ 1289              		ldr	r3, [fp, #-24]
+ 1290              		add	r3, r2, r3
+ 1291 0d38 0DC0A0E1 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1292              		cmp	r3, #0
+ 1293 0d3c 00D82DE9 		beq	.L139
+ 1294              		.loc 1 247 0
+ 1295 0d40 04B04CE2 		ldr	r3, [fp, #-16]
+ 1296              		add	r3, r3, #1
+ 1297 0d44 0CD04DE2 		str	r3, [fp, #-16]
+ 1298              	.L135:
+ 1299 0d48 18000BE5 		ldr	r3, [fp, #-16]
+ 242:jetiTelemetry.c **** 	unsigned char textLength=0;
+ 1300              		ble	.L136
+ 1301 0d4c 0030A0E3 	.L139:
+ 1302 0d50 13304BE5 		.loc 1 254 0
+ 243:jetiTelemetry.c **** 	unsigned char error=JETI_NO_ERROR;
+ 1303              	r	r3, [fp, #-16]
+ 1304 0d54 0030A0E3 		cmp	r3, #32
+ 1305 0d58 12304BE5 		bne	.L141
+ 244:jetiTelemetry.c **** 	unsigned char textChanged=0;
+ 1306              	oc 1 255 0
+ 1307 0d5c 0030A0E3 		mov	r3, #22
+ 1308 0d60 11304BE5 		strb	r3, [fp, #-18]
+ 245:jetiTelemetry.c **** 	int i;
+ 246:jetiTelemetry.c **** 
+ 247:jetiTelemetry.c **** 	for (i=0;i<33;i++)
+ 1309              	41:
+ 1310 0d64 0030A0E3 		.loc 1 257 0
+ 1311 0d68 10300BE5 		ldr	r3, [fp, #-16]
+ 1312 0d6c 150000EA 		strb	r3, [fp, #-19]
+ 1313              		.loc 1 258 0
+ 248:jetiTelemetry.c **** 	{
+ 249:jetiTelemetry.c **** 		if (text[i]!=jetiDisplayText[i])
+ 1314              		r1, [fp, #-19]	@ zero_extendqisi2
+ 1315 0d70 10301BE5 		ldr	r3, .L150
+ 1316 0d74 0320A0E1 		ldr	r2, [fp, #-24]
+ 1317 0d78 18301BE5 		mov	ip, r1
+ 1318 0d7c 033082E0 		mov	r0, r3
+ 1319 0d80 0010D3E5 		mov	r1, r2
+ 1320 0d84 10201BE5 		mov	r2, ip
+ 1321 0d88 EC309FE5 		bl	memcpy
+ 1322 0d8c 0230D3E7 		.loc 1 259 0
+ 1323 0d90 030051E1 		ldrb	r3, [fp, #-19]	@ zero_extendqisi2
+ 1324 0d94 0100000A 		cmp	r3, #31
+ 250:jetiTelemetry.c **** 			textChanged=1;
+ 1325              		.loc 1 260 0
+ 1326 0d98 0130A0E3 		ldrb	r3, [fp, #-19]	@ zero_extendqisi2
+ 1327 0d9c 11304BE5 		str	r3, [fp, #-16]
+ 1328              		b	.L145
+ 251:jetiTelemetry.c **** 		if (text[i]==0)
+ 1329              	6:
+ 1330 0da0 10301BE5 		.loc 1 261 0
+ 1331 0da4 0320A0E1 		ldr	r1, [fp, #-16]
+ 1332 0da8 18301BE5 		ldr	r2, .L150
+ 1333 0dac 033082E0 		mov	r3, #0
+ 1334 0db0 0030D3E5 		strb	r3, [r2, r1]
+ 1335 0db4 000053E3 		.loc 1 260 0
+ 1336 0db8 0500000A 		ldr	r3, [fp, #-16]
+ 1337              		add	r3, r3, #1
+ 1338 0dbc 10301BE5 		str	r3, [fp, #-16]
+ 1339 0dc0 013083E2 	.L145:
+ 1340 0dc4 10300BE5 		ldr	r3, [fp, #-16]
+ 1341              		cmp	r3, #31
+ 1342 0dc8 10301BE5 		ble	.L146
+ 1343 0dcc 200053E3 	.L143:
+ 1344 0dd0 E6FFFFDA 		.loc 1 263 0
+ 1345              		ldrb	r3, [fp, #-17]	@ zero_extendqisi2
+ 252:jetiTelemetry.c **** 			break;
+ 253:jetiTelemetry.c **** 	}
+ 254:jetiTelemetry.c **** 	if (i==32)
+ 1346              	.L147
+ 1347 0dd4 10301BE5 		.loc 1 264 0
+ 1348 0dd8 200053E3 		ldr	r3, .L150+4
+ 1349 0ddc 0100001A 		mov	r2, #1
+ 255:jetiTelemetry.c **** 		error=JETI_ERROR_STRING_TEXT;
+ 1350              	b	r2, [r3, #0]
+ 1351 0de0 1630A0E3 	.L147:
+ 1352 0de4 12304BE5 		.loc 1 265 0
+ 1353              		ldrb	r3, [fp, #-18]	@ zero_extendqisi2
+ 256:jetiTelemetry.c **** 
+ 257:jetiTelemetry.c **** 	textLength=i;
+ 1354              	c 1 266 0
+ 1355 0de8 10301BE5 		mov	r0, r3
+ 1356 0dec 13304BE5 		sub	sp, fp, #12
+ 258:jetiTelemetry.c **** 	memcpy(&jetiDisplayText[0],text,textLength);
+ 1357              	mfd	sp, {fp, sp, lr}
+ 1358 0df0 13105BE5 		bx	lr
+ 1359 0df4 80309FE5 	.L151:
+ 1360 0df8 18201BE5 		.align	2
+ 1361 0dfc 01C0A0E1 	.L150:
+ 1362 0e00 0300A0E1 		.word	jetiDisplayText
+ 1363 0e04 0210A0E1 		.word	jetiTriggerTextSync
+ 1364 0e08 0C20A0E1 	.LFE15:
+ 259:jetiTelemetry.c **** 	if (textLength<32)
+ 1366              	
+ 1367 0e10 13305BE5 		.global	jetiInitValue
+ 1369 0e18 0C00008A 	jetiInitValue:
+ 260:jetiTelemetry.c **** 		for (i=textLength;i<32;i++)
+ 1370              	B16:
+ 1371 0e1c 13305BE5 		.loc 1 269 0
+ 1372 0e20 10300BE5 		@ Function supports interworking.
+ 1373 0e24 060000EA 		@ args = 0, pretend = 0, frame = 24
+ 1374              		@ frame_needed = 1, uses_anonymous_args = 0
+ 261:jetiTelemetry.c **** 			jetiDisplayText[i]=0;
+ 1375              	ip, sp
+ 1376 0e28 10101BE5 	.LCFI56:
+ 1377 0e2c 48209FE5 		stmfd	sp!, {fp, ip, lr, pc}
+ 1378 0e30 0030A0E3 	.LCFI57:
+ 1379 0e34 0130C2E7 		sub	fp, ip, #4
+ 1380              	.LCFI58:
+ 1381 0e38 10301BE5 		sub	sp, sp, #24
+ 1382 0e3c 013083E2 	.LCFI59:
+ 1383 0e40 10300BE5 		mov	r3, r0
+ 1384              		str	r1, [fp, #-28]
+ 1385 0e44 10301BE5 		str	r2, [fp, #-32]
+ 1386 0e48 1F0053E3 		strb	r3, [fp, #-24]
+ 1387 0e4c F5FFFFDA 		.loc 1 270 0
+ 1388              		mov	r3, #0
+ 262:jetiTelemetry.c **** 
+ 263:jetiTelemetry.c **** 	if (textChanged)
+ 1389              	 #-19]
+ 1390 0e50 11305BE5 		.loc 1 271 0
+ 1391 0e54 000053E3 		mov	r3, #0
+ 1392 0e58 0200000A 		strb	r3, [fp, #-18]
+ 264:jetiTelemetry.c **** 		jetiTriggerTextSync=1;
+ 1393              	c 1 272 0
+ 1394 0e5c 1C309FE5 		mov	r3, #0
+ 1395 0e60 0120A0E3 		strb	r3, [fp, #-17]
+ 1396 0e64 0020C3E5 		.loc 1 276 0
+ 1397              		ldrb	r3, [fp, #-24]	@ zero_extendqisi2
+ 265:jetiTelemetry.c **** 	return error;
+ 1398              	r3, #14
+ 1399 0e68 12305BE5 		bls	.L153
+ 266:jetiTelemetry.c **** }
+ 1400              	loc 1 277 0
+ 1401 0e6c 0300A0E1 		mov	r3, #1
+ 1402 0e70 0CD04BE2 		str	r3, [fp, #-36]
+ 1403 0e74 00689DE8 		b	.L155
+ 1404 0e78 1EFF2FE1 	.L153:
+ 1405              		.loc 1 279 0
+ 1406              		mov	r3, #0
+ 1407              		str	r3, [fp, #-16]
+ 1408 0e7c 00000000 		b	.L156
+ 1409 0e80 00000000 	.L157:
+ 1410              		.loc 1 280 0
+ 1411              		ldr	r3, [fp, #-16]
+ 1412              		mov	r2, r3
+ 1413              		ldr	r3, [fp, #-28]
+ 1414              		add	r3, r2, r3
+ 1415              		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1416              		cmp	r3, #0
+ 267:jetiTelemetry.c **** 
+ 268:jetiTelemetry.c **** unsigned char jetiInitValue(unsigned char id, char * description, char * unit)
+ 269:jetiTelemetry.c **** {
+ 1417              	1 279 0
+ 1418              		ldr	r3, [fp, #-16]
+ 1419              		add	r3, r3, #1
+ 1420              		str	r3, [fp, #-16]
+ 1421 0e84 0DC0A0E1 	.L156:
+ 1422              		ldr	r3, [fp, #-16]
+ 1423 0e88 00D82DE9 		cmp	r3, #10
+ 1424              		ble	.L157
+ 1425 0e8c 04B04CE2 	.L158:
+ 1426              		.loc 1 282 0
+ 1427 0e90 18D04DE2 		ldr	r3, [fp, #-16]
+ 1428              		cmp	r3, #10
+ 1429 0e94 0030A0E1 		bne	.L160
+ 1430 0e98 1C100BE5 		.loc 1 283 0
+ 1431 0e9c 20200BE5 		mov	r3, #20
+ 1432 0ea0 18304BE5 		strb	r3, [fp, #-17]
+ 270:jetiTelemetry.c **** 	unsigned char descLength=0;
+ 1433              	84 0
+ 1434 0ea4 0030A0E3 		ldr	r3, [fp, #-16]
+ 1435 0ea8 13304BE5 		strb	r3, [fp, #-19]
+ 271:jetiTelemetry.c **** 	unsigned char unitLength=0;
+ 1436              	oc 1 286 0
+ 1437 0eac 0030A0E3 		mov	r3, #0
+ 1438 0eb0 12304BE5 		str	r3, [fp, #-16]
+ 272:jetiTelemetry.c **** 	unsigned char error=JETI_NO_ERROR;
+ 1439              	.L162
+ 1440 0eb4 0030A0E3 	.L163:
+ 1441 0eb8 11304BE5 		.loc 1 287 0
+ 273:jetiTelemetry.c **** 
+ 274:jetiTelemetry.c **** 	int i;
+ 275:jetiTelemetry.c **** 
+ 276:jetiTelemetry.c **** 	if (id>14)
+ 1442              	r	r3, [fp, #-16]
+ 1443 0ebc 18305BE5 		mov	r2, r3
+ 1444 0ec0 0E0053E3 		ldr	r3, [fp, #-32]
+ 1445 0ec4 0200009A 		add	r3, r2, r3
+ 277:jetiTelemetry.c **** 		return JETI_ERROR_ID_RANGE;
+ 1446              	b	r3, [r3, #0]	@ zero_extendqisi2
+ 1447 0ec8 0130A0E3 		cmp	r3, #0
+ 1448 0ecc 24300BE5 		beq	.L164
+ 1449 0ed0 680000EA 		.loc 1 286 0
+ 1450              		ldr	r3, [fp, #-16]
+ 278:jetiTelemetry.c **** 
+ 279:jetiTelemetry.c **** 	for (i=0;i<11;i++)
+ 1451              	r3, r3, #1
+ 1452 0ed4 0030A0E3 		str	r3, [fp, #-16]
+ 1453 0ed8 10300BE5 	.L162:
+ 1454 0edc 090000EA 		ldr	r3, [fp, #-16]
+ 1455              		cmp	r3, #5
+ 280:jetiTelemetry.c **** 		if (description[i]==0)
+ 1456              	.L163
+ 1457 0ee0 10301BE5 	.L164:
+ 1458 0ee4 0320A0E1 		.loc 1 289 0
+ 1459 0ee8 1C301BE5 		ldr	r3, [fp, #-16]
+ 1460 0eec 033082E0 		cmp	r3, #5
+ 1461 0ef0 0030D3E5 		bne	.L166
+ 1462 0ef4 000053E3 		.loc 1 290 0
+ 1463 0ef8 0500000A 		mov	r3, #21
+ 1464              		strb	r3, [fp, #-17]
+ 1465 0efc 10301BE5 	.L166:
+ 1466 0f00 013083E2 		.loc 1 292 0
+ 1467 0f04 10300BE5 		ldr	r3, [fp, #-16]
+ 1468              		strb	r3, [fp, #-18]
+ 1469 0f08 10301BE5 		.loc 1 294 0
+ 1470 0f0c 0A0053E3 		ldrb	r2, [fp, #-24]	@ zero_extendqisi2
+ 1471 0f10 F2FFFFDA 		ldrb	r3, [fp, #-24]
+ 1472              		add	r3, r3, #1
+ 281:jetiTelemetry.c **** 			break;
+ 282:jetiTelemetry.c **** 	if (i==10)
+ 1473              	
+ 1474 0f14 10301BE5 		ldr	r0, .L169
+ 1475 0f18 0A0053E3 		mov	r3, r2
+ 1476 0f1c 0100001A 		mov	r3, r3, asl #2
+ 283:jetiTelemetry.c **** 		error=JETI_ERROR_STRING_DESC;
+ 1477              	d	r3, r3, r2
+ 1478 0f20 1430A0E3 		mov	r3, r3, asl #1
+ 1479 0f24 11304BE5 		add	r3, r3, r2
+ 1480              		mov	r3, r3, asl #1
+ 284:jetiTelemetry.c **** 	descLength=i;
+ 1481              		r2, r3, r0
+ 1482 0f28 10301BE5 		mov	r3, r1
+ 1483 0f2c 13304BE5 		strb	r3, [r2, #0]
+ 285:jetiTelemetry.c **** 
+ 286:jetiTelemetry.c **** 	for (i=0;i<6;i++)
+ 1484              	oc 1 295 0
+ 1485 0f30 0030A0E3 		ldrb	r2, [fp, #-24]	@ zero_extendqisi2
+ 1486 0f34 10300BE5 		mov	r3, r2
+ 1487 0f38 090000EA 		mov	r3, r3, asl #2
+ 1488              		add	r3, r3, r2
+ 287:jetiTelemetry.c **** 			if (unit[i]==0)
+ 1489              	r3, r3, asl #1
+ 1490 0f3c 10301BE5 		add	r3, r3, r2
+ 1491 0f40 0320A0E1 		mov	r2, r3, asl #1
+ 1492 0f44 20301BE5 		ldr	r3, .L169
+ 1493 0f48 033082E0 		add	r3, r2, r3
+ 1494 0f4c 0030D3E5 		add	r2, r3, #1
+ 1495 0f50 000053E3 		ldrb	r1, [fp, #-19]	@ zero_extendqisi2
+ 1496 0f54 0500000A 		ldr	r3, [fp, #-28]
+ 1497              		mov	ip, r1
+ 1498 0f58 10301BE5 		mov	r0, r2
+ 1499 0f5c 013083E2 		mov	r1, r3
+ 1500 0f60 10300BE5 		mov	r2, ip
+ 1501              		bl	memcpy
+ 1502 0f64 10301BE5 		.loc 1 296 0
+ 1503 0f68 050053E3 		ldrb	r2, [fp, #-24]	@ zero_extendqisi2
+ 1504 0f6c F2FFFFDA 		mov	r3, r2
+ 1505              		mov	r3, r3, asl #2
+ 288:jetiTelemetry.c **** 				break;
+ 289:jetiTelemetry.c **** 	if (i==5)
+ 1506              	mov	r3, r3, asl #1
+ 1507 0f70 10301BE5 		add	r3, r3, r2
+ 1508 0f74 050053E3 		mov	r3, r3, asl #1
+ 1509 0f78 0100001A 		add	r2, r3, #8
+ 290:jetiTelemetry.c **** 			error=JETI_ERROR_STRING_UNIT;
+ 1510              		r3, .L169
+ 1511 0f7c 1530A0E3 		add	r3, r2, r3
+ 1512 0f80 11304BE5 		add	r2, r3, #3
+ 1513              		ldrb	r1, [fp, #-18]	@ zero_extendqisi2
+ 291:jetiTelemetry.c **** 
+ 292:jetiTelemetry.c **** 	unitLength=i;
+ 1514              		r3, [fp, #-32]
+ 1515 0f84 10301BE5 		mov	ip, r1
+ 1516 0f88 12304BE5 		mov	r0, r2
+ 293:jetiTelemetry.c **** 
+ 294:jetiTelemetry.c **** 	jetiValues[id].active=id+1;
+ 1517              	v	r1, r3
+ 1518 0f8c 18205BE5 		mov	r2, ip
+ 1519 0f90 18305BE5 		bl	memcpy
+ 1520 0f94 013083E2 		.loc 1 297 0
+ 1521 0f98 FF1003E2 		ldrb	r3, [fp, #-24]	@ zero_extendqisi2
+ 1522 0f9c E8009FE5 		mov	r0, r3
+ 1523 0fa0 0230A0E1 		mov	r1, #0
+ 1524 0fa4 0331A0E1 		bl	jetiSetValue6B
+ 1525 0fa8 023083E0 		.loc 1 298 0
+ 1526 0fac 8330A0E1 		ldrb	r3, [fp, #-24]	@ zero_extendqisi2
+ 1527 0fb0 023083E0 		mov	r0, r3
+ 1528 0fb4 8330A0E1 		mov	r1, #0
+ 1529 0fb8 002083E0 		bl	jetiSetDecimalPoint
+ 1530 0fbc 0130A0E1 		.loc 1 300 0
+ 1531 0fc0 0030C2E5 		ldrb	r3, [fp, #-17]	@ zero_extendqisi2
+ 295:jetiTelemetry.c **** 	memcpy(&jetiValues[id].name[0],description,descLength);
+ 1532              	-36]
+ 1533 0fc4 18205BE5 	.L155:
+ 1534 0fc8 0230A0E1 		ldr	r3, [fp, #-36]
+ 1535 0fcc 0331A0E1 		.loc 1 302 0
+ 1536 0fd0 023083E0 		mov	r0, r3
+ 1537 0fd4 8330A0E1 		sub	sp, fp, #12
+ 1538 0fd8 023083E0 		ldmfd	sp, {fp, sp, lr}
+ 1539 0fdc 8320A0E1 		bx	lr
+ 1540 0fe0 A4309FE5 	.L170:
+ 1541 0fe4 033082E0 		.align	2
+ 1542 0fe8 012083E2 	.L169:
+ 1543 0fec 13105BE5 		.word	jetiValues
+ 1544 0ff0 1C301BE5 	.LFE16:
+ 1546 0ff8 0200A0E1 		.comm	jetiName,10,1
+ 1547 0ffc 0310A0E1 		.comm	jetiValues,330,1
+ 1548 1000 0C20A0E1 		.comm	jetiDisplayText,32,1
+ 1549 1004 FEFFFFEB 		.section	.debug_frame,"",%progbits
+ 296:jetiTelemetry.c **** 	memcpy(&jetiValues[id].unit[0],unit,unitLength);
+ 1550              	.LECIE0-.LSCIE0
+ 1551 1008 18205BE5 	.LSCIE0:
+ 1552 100c 0230A0E1 		.4byte	0xffffffff
+ 1553 1010 0331A0E1 		.byte	0x1
+ 1554 1014 023083E0 		.ascii	"\000"
+ 1555 1018 8330A0E1 		.uleb128 0x1
+ 1556 101c 023083E0 		.sleb128 -4
+ 1557 1020 8330A0E1 		.byte	0xe
+ 1558 1024 082083E2 		.byte	0xc
+ 1559 1028 5C309FE5 		.uleb128 0xd
+ 1560 102c 033082E0 		.uleb128 0x0
+ 1561 1030 032083E2 		.align	2
+ 1562 1034 12105BE5 	.LECIE0:
+ 1563 1038 20301BE5 	.LSFDE0:
+ 1564 103c 01C0A0E1 		.4byte	.LEFDE0-.LASFDE0
+ 1565 1040 0200A0E1 	.LASFDE0:
+ 1566 1044 0310A0E1 		.4byte	.Lframe0
+ 1567 1048 0C20A0E1 		.4byte	.LFB2
+ 1568 104c FEFFFFEB 		.4byte	.LFE2-.LFB2
+ 297:jetiTelemetry.c **** 	jetiSetValue6B(id,0);
+ 1569              	.LCFI0-.LFB2
+ 1570 1050 18305BE5 		.byte	0xd
+ 1571 1054 0300A0E1 		.uleb128 0xc
+ 1572 1058 0010A0E3 		.byte	0x4
+ 1573 105c FEFFFFEB 		.4byte	.LCFI1-.LCFI0
+ 298:jetiTelemetry.c **** 	jetiSetDecimalPoint(id,0);
+ 1574              	e	0x8e
+ 1575 1060 18305BE5 		.uleb128 0x2
+ 1576 1064 0300A0E1 		.byte	0x8d
+ 1577 1068 0010A0E3 		.uleb128 0x3
+ 1578 106c FEFFFFEB 		.byte	0x8b
+ 299:jetiTelemetry.c **** 
+ 300:jetiTelemetry.c **** 	return error;
+ 1579              	b128 0x4
+ 1580 1070 11305BE5 		.byte	0x4
+ 1581 1074 24300BE5 		.4byte	.LCFI2-.LCFI1
+ 1582              		.byte	0xc
+ 1583 1078 24301BE5 		.uleb128 0xb
+ 301:jetiTelemetry.c **** 
+ 302:jetiTelemetry.c **** }
+ 1584              	b128 0x4
+ 1585 107c 0300A0E1 		.align	2
+ 1586 1080 0CD04BE2 	.LEFDE0:
+ 1587 1084 00689DE8 	.LSFDE2:
+ 1588 1088 1EFF2FE1 		.4byte	.LEFDE2-.LASFDE2
+ 1589              	.LASFDE2:
+ 1590              		.4byte	.Lframe0
+ 1591              		.4byte	.LFB3
+ 1592 108c 00000000 		.4byte	.LFE3-.LFB3
+ 1593              		.byte	0x4
+ 1594              		.4byte	.LCFI4-.LFB3
+ 1595              		.byte	0xd
+ 1596              		.uleb128 0xc
+ 1597              		.byte	0x4
+ 1990              	.LLST3:
+DEFINED SYMBOLS
+                            *ABS*:00000000 jetiTelemetry.c
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:14     .bss:00000000 jetiAlarm
+                             .bss:00000000 $d
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:19     .bss:00000001 jetiAlarmType
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:24     .bss:00000002 jetiTriggerTextSync
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:29     .bss:00000003 jetiKeyChanged
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:34     .bss:00000004 jetiKey
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:40     .text:00000000 jetiSetKeyChanged
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:47     .text:00000000 $a
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:72     .text:0000003c $d
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:79     .text:00000044 jetiCheckForKeyChange
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:85     .text:00000044 $a
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:121    .text:0000009c $d
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:128    .text:000000a4 jetiSetAlarm
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:134    .text:000000a4 $a
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:192    .text:00000140 $d
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:199    .text:00000148 jetiSetDeviceName
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:205    .text:00000148 $a
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:272    .text:000001fc $d
+                            *COM*:0000000a jetiName
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:278    .text:00000200 jetiActivateValue
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:284    .text:00000200 $a
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:331    .text:00000284 $d
+                            *COM*:0000014a jetiValues
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:337    .text:00000288 jetiDeactivateValue
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:343    .text:00000288 $a
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:387    .text:00000300 $d
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:393    .text:00000304 jetiSetDecimalPoint
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:399    .text:00000304 $a
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:457    .text:000003a8 $d
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:463    .text:000003ac jetiSetValue30B
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:469    .text:000003ac $a
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:581    .text:00000518 $d
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:587    .text:0000051c jetiSetValue22B
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:593    .text:0000051c $a
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:707    .text:00000690 $d
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:713    .text:00000694 jetiSetValue6B
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:719    .text:00000694 $a
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:831    .text:00000800 $d
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:837    .text:00000804 jetiSetValue14B
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:843    .text:00000804 $a
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:957    .text:00000978 $d
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:963    .text:0000097c jetiSetValueTime
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:969    .text:0000097c $a
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:1110   .text:00000b40 $d
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:1116   .text:00000b44 jetiSetValueDate
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:1122   .text:00000b44 $a
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:1279   .text:00000d34 $d
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:1285   .text:00000d38 jetiSetTextDisplay
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:1291   .text:00000d38 $a
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:1408   .text:00000e7c $d
+                            *COM*:00000020 jetiDisplayText
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:1415   .text:00000e84 jetiInitValue
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:1421   .text:00000e84 $a
+C:\Users\d-block\AppData\Local\Temp/ccYTaaaa.s:1592   .text:0000108c $d
+
+UNDEFINED SYMBOLS
+memcpy
