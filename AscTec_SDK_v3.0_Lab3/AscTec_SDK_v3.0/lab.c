@@ -48,6 +48,13 @@ float yaw_desired;
 float x_nom[4];
 float g = 9.80665;	// Standard Gravity m/s^2
 float z[3];		// Sensor measurement for Kalman Filter
+float dt;
+
+//Benjamin Kuo Additions for Usonics
+extern int USMaxBot_range1;
+int USMaxBot_range1_old;
+
+//End Benjamin Kuo Additions
 /*------------- End Globals --------------*/
 
 /*----------------------------------------------------------------------*/
@@ -181,16 +188,21 @@ void lab3() {
 	float Kd_z = -2.4473;
 	float Ki_z = 0.0;
 
+	//USonic Gains
+	float U_Kp_z = -4.3112;
+	float U_Kd_z = -2.4473;
+	float U_Ki_z = 0.0;
+
 	// Outer Loop PD
 	float a_x;
 	float a_y;
 	a_x = Kp_x*(x_nom[0]-mocap.dX)-Kd_x*mocap.dVx+Ki_x*errorcum[0];
 	a_y = Kp_y*(x_nom[1]-mocap.dY)-Kd_y*mocap.dVy+Ki_y*errorcum[1];
-	pitch_desired = a_x*cos(real_mocap.dThetaz)-a_y*sin(real_mocap.dThetaz);
-	roll_desired = a_x*sin(real_mocap.dThetaz)+a_y*cos(real_mocap.dThetaz);
-	yaw_desired = x_nom[3];
-	cnt_u[3] = Kp_z*(x_nom[2]-mocap.dZ)-Kd_z*mocap.dVz+mass*9.81+Ki_z*errorcum[2];
-
+	pitch_desired = 0;//a_x*cos(real_mocap.dThetaz)-a_y*sin(real_mocap.dThetaz);
+	roll_desired = 0;//a_x*sin(real_mocap.dThetaz)+a_y*cos(real_mocap.dThetaz);
+	yaw_desired = 0;//x_nom[3];
+	cnt_u[3] = U_Kp_z*(x_nom[2]-USMaxBot_range1)-U_Kd_z*(USMaxBot_range1 - USMaxBot_range1_old)*1000+mass*9.81+U_Ki_z*errorcum[2];// I believe it said this was executed at 1kHz
+	USMaxBot_range1_old = USMaxBot_range1;
 	// INNER LOOP
 		// Hummingbird
 	float Ktx_P = 1.0;

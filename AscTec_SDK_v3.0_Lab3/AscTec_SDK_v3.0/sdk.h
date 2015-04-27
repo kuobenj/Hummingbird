@@ -29,7 +29,10 @@ DAMAGE.
 #ifndef SDK_
 #define SDK_
 
-void SDK_Init(void);
+// Dan Block Added
+void SDK_init(void);
+extern void SPI0Handler (void);
+// End Dan Block Added
 void SDK_mainloop(void);
 extern void rt_OneStep (void); //Matlab-Simulink code main
 extern unsigned char xbee_send_flag;

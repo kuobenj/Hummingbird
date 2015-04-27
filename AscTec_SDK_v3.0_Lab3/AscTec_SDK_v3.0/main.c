@@ -86,6 +86,13 @@ unsigned char fireflyLedEnabled=0;
 unsigned char PTU_cam_option_4_version=2;
 unsigned short mainloop_overflows=0;
 
+// Dan Block Add
+// Still need to figure out how to send this back to user
+extern int GotMagnet;
+//these variables are in sdk.c
+extern int USMaxBot_range1;
+// End Dan Block Add
+
 void timer0ISR(void) __irq
 {
   T0IR = 0x01;      //Clear the timer 0 interrupt
@@ -138,7 +145,9 @@ int	main (void) {
   //update parameters stored by ACI:
   //...
 
-  PTU_init();	//initialize camera PanTiltUnit
+  // Dan Block Change   Commented out
+  //PTU_init();	//initialize camera PanTiltUnit
+  // End Dan Block Change
 #ifdef MATLAB
   //ee_read((unsigned int*)&matlab_params); //read params from eeprom
   onboard_matlab_initialize(); //initialize matlab code
@@ -305,8 +314,10 @@ void mainloop(void) //mainloop is triggered at 1 kHz
     //write data to transmit buffer for immediate transfer to LL processor
     HL2LL_write_cycle();
 
+    // Dan Block Change  Commented out PTU
     //control pan-tilt-unit ("cam option 4" @ AscTec Pelican and AscTec Firefly)
-    PTU_update();
+    //PTU_update();
+    // End Dan Block Change
 
     //synchronize all variables, commands and parameters with ACI
     aciSyncVar();
@@ -359,7 +370,11 @@ void ACISDK(void)
 	aciPublishCommand(&(real_mocap.dThetaz), VARTYPE_SINGLE , 0x0517, "Mocap Yaw", "Yaw Euler angle from MOCAP", "rad");
 
 	// Parameters
-
+	// Start Added Ben Kuo
+	//USMaxBot_range1 is the ultra sonic
+	aciPublishVariable(&USMaxBot_range1, VARTYPE_INT32, 0x0608, "range_read", "Range Sensor", "not sure yet");
+	// End Added Ben Kuo
+	// Commands
 #else
 	// Matlab parameters
 

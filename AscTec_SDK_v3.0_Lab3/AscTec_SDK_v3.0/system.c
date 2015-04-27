@@ -36,6 +36,9 @@ DAMAGE.
 #include "i2c.h"
 #include "ssp.h"
 #include "adc.h"
+// Dan Block Added
+#include "sdk.h"
+// End Dan Block Add
 
 void init(void)
 {
@@ -78,6 +81,12 @@ void init_interrupts(void)
   //I2C0 interrupt
 //  install_irq( I2C0_INT, (void *) I2C0MasterHandler );
 //  I20CONSET = I2CONSET_I2EN;
+
+// Dan Block Added
+    // SPI0 interrupt
+    install_irq( SPI0_INT, (void *) SPI0Handler );
+    S0SPCR |= 0x80;  // Enable SPI0 interrupts
+// End Dan Block Add
 
   //SSP interrupt
   install_irq( SPI1_INT, (void *) SSPHandler );
@@ -215,8 +224,15 @@ void PWM_Init( void )
 
 void init_spi(void)
 {
-  S0SPCCR=0x04; //30 clock-cycles (~60MHz) = 1 SPI cycle => SPI @ 2MHz
-  S0SPCR=0x20;  //LPC is Master
+// Dan Block Added
+  S0SPCCR=0x18; //24 clock-cycles (~60MHz) = 1 SPI cycle => SPI @ 2.5MHz
+  //S0SPCCR=0x0C; //12 clock-cycles (~60MHz) = 1 SPI cycle => SPI @ 5MHz
+  S0SPCR=0x24;  //LPC is Master  16bit transfer
+
+
+  //  S0SPCCR=0x04; //30 clock-cycles (~60MHz) = 1 SPI cycle => SPI @ 2MHz
+  //  S0SPCR=0x20;  //LPC is Master
+// End Dan Block Add
 }
 
 void init_spi1(void)

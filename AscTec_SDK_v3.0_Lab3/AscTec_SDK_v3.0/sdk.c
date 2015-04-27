@@ -39,6 +39,17 @@ DAMAGE.
 #include "lab.h"
 #include "Utilites.h"
 
+//Dan Block Add
+#include <stdio.h>
+#include "LPC214x.h"
+#include "hardware.h"
+#include "irq.h"
+
+#define USONIC_INIT_DELAY 2000
+#define SWITCH_INIT_DELAY 2000
+#define SDCARD_START_DELAY 4000
+//End Dan Block Add
+
 #ifdef MATLAB
 #include "..\custom_mdl\onboard_matlab_ert_rtw\onboard_matlab.h"
 #endif
@@ -75,6 +86,108 @@ void SDK_EXAMPLE_gps_waypoint_control(void);
 int SDK_EXAMPLE_turn_motors_on(void);
 int SDK_EXAMPLE_turn_motors_off(void);
 
+// Start Added by Dan Block
+unsigned long my_sdkloop_counter = 0;
+static int timer = 1;
+int firebit = 1;
+int UsonicTimer = 0;
+unsigned int SPI0data = 0;
+unsigned int SPI0command = 0;
+int f28027_ready = 0;
+int UsonicData = 0;
+int NewUsonicData = 0;
+int USMaxBot_range1 = 0;
+
+int SwitchTimer = 0;
+int readSwitchbit = 0;
+int MagnetSwitch = 0;
+int NewMagnetSwitch = 0;
+int GotMagnet = 0;
+
+#define MAX_SPI_SEND_SHORTS  50
+int SPItxCount = 0;
+int SPItxSize = 0;
+unsigned short int SPItxArray[MAX_SPI_SEND_SHORTS];
+int	SPItxDone = 1;
+int numMissedTx = 0;
+
+typedef union float2short_tag {
+	float fl;
+	unsigned short int sh[2];
+} float2short;
+
+float2short f2s;
+
+int testcount = 0;
+float testarray[5];
+
+void SPI0Handler(void) __irq
+{
+	IENABLE;
+
+	IOSET0 = (1<<EXT_NCS); // set CS back high
+	if ((S0SPSR&0x80) == 0x80) {
+		SPI0data = S0SPDR; // read data
+	}
+
+	if (SPI0command == 0xCC01) {  // command to tell f28027 to fire ultrasonic sensor
+		if ((SPI0data == 0xBABE) || (SPI0data == 0xCABB)) {
+			firebit = 0;
+		} else { // error go back to not ready
+			f28027_ready = 0;
+		}
+	} else if (SPI0command == 0xCC02) {  // command to read date from f28027 ultrasonic reading
+		//mytest = SPI0data & 0xFF00;
+		if ( (SPI0data & 0xFF00) == 0xDD00) {
+			UsonicData = SPI0data & 0xFF;
+			NewUsonicData = 1;
+			firebit = 1;
+			UsonicTimer = 0;
+		} else {  // error go back to not ready
+			f28027_ready = 0;
+		}
+
+	} else if (SPI0command == 0xCC03) {  // command to just check if board attached to SPI
+		if (SPI0data == 0xCABB) {
+			f28027_ready = 1;
+			firebit = 1;
+			readSwitchbit = 1;
+			UsonicTimer = 0;
+			SwitchTimer = 0;
+		}
+	} else if (SPI0command == 0xCC04) { // command to beaglebone to store data to SD card
+		if (SPItxCount < SPItxSize) {
+			IOCLR0 = (1<<EXT_NCS);
+			S0SPDR = SPItxArray[SPItxCount];
+			SPItxCount++;
+		} else {
+			SPItxDone = 1;
+		}
+	} else if (SPI0command == 0xCC05) {  // command to tell f28027 to transfer magnet switch state
+		if ((SPI0data == 0xBABE) || (SPI0data == 0xCABB)) {
+			readSwitchbit = 0;
+		} else { // error go back to not ready
+			f28027_ready = 0;
+		}
+	} else if (SPI0command == 0xCC06) {  // command to read magnet switch state
+		if ( (SPI0data & 0xFF00) == 0xDD00) {
+			MagnetSwitch = SPI0data & 0xFF;
+			NewMagnetSwitch = 1;
+			readSwitchbit = 1;
+			SwitchTimer = 0;
+		} else {  // error go back to not ready
+			f28027_ready = 0;
+		}
+
+	}
+
+
+	S0SPINT = 0x1;  // clear interrupt
+
+	IDISABLE;
+	VICVectAddr = 0;		/* Acknowledge Interrupt */
+}
+// End Dan Block Added
 
 /*----------------------------------------------------------------------*/
 /*------------------------- Initialization -----------------------------*/
@@ -124,6 +237,16 @@ void SDK_Init(void) { 	// Used in lab.c
 	IntegralHolder = 0;
 
 	takeoff2 = 0;
+
+	// Start Dan Block Added
+//	ultrasound_timer = 0;
+//	ultrasound_z = 0;
+//	ultrasound_vz = 0;
+//	ultrasound_z_prev = 0;
+//	ultrasound_z_error_sum = 0;
+
+	my_sdkloop_counter = 0;
+// End Dan Block Added
 }
 /*----------------------------------------------------------------------*/
 /*----------------------- End Initialization ---------------------------*/
@@ -155,7 +278,99 @@ void SDK_mainloop(void)
 		}
 	}
 
+// Added By Dan Block
+	if (NewUsonicData == 1) {
+		USMaxBot_range1 = UsonicData;
+		//filter_ultrasound_z();
+		NewUsonicData = 0;
+	}
+	if (NewMagnetSwitch == 1) {
+		GotMagnet = ~MagnetSwitch & 0x1;
+		NewMagnetSwitch = 0;
+	}
+// End Add
+
 	lab();
+
+//	 Add by Dan Block
+//	 Code to read magnet switch from attached 28027 board
+//	if (timer > SWITCH_INIT_DELAY) { //wait SWITCH_INIT_DELAY ms before talking to 28027
+//		if (f28027_ready == 1) {
+//			SwitchTimer++;
+//			if (readSwitchbit == 1) {
+//				if (SwitchTimer == 25) {  // read every 25 ms
+//					IOCLR0 = (1<<EXT_NCS);
+//					SPI0command = 0xCC05;
+//					S0SPDR = SPI0command;  // send Sample Switch Command
+//				}
+//			} else if (SwitchTimer == 26) {
+//				IOCLR0 = (1<<EXT_NCS);
+//				SPI0command = 0xCC06;
+//				S0SPDR = SPI0command;  // send transfer Switch State Command
+//			}
+//		} else {
+//			IOCLR0 = (1<<EXT_NCS);
+//			SPI0command = 0xCC03;
+//			S0SPDR = SPI0command;  // send Are you Alive command
+//		}
+//	}
+
+// This code was communicating with BBB
+//	if (timer > SDCARD_START_DELAY) {
+//		if(0==(timer%500)) {
+//			if (SPItxDone == 1) {
+//				SPItxDone = 0;
+//				testarray[0] = (float)(testcount);
+//				testarray[1] = (float)(5*testcount + 1);
+//				testarray[2] = (float)(5*testcount + 2);
+//				testarray[3] = (float)(5*testcount + 3);
+//				testarray[4] = (float)(5*testcount + 4);
+//				testcount++;
+//				for (i=0;i<5;i++) {
+//					f2s.fl = testarray[i];
+//					SPItxArray[2*i] = f2s.sh[0];
+//					SPItxArray[2*i + 1] = f2s.sh[1];
+//				}
+//				SPItxCount = 0;
+//				SPItxSize = 10;
+//
+//				IOCLR0 = (1<<EXT_NCS);
+//				SPI0command = 0xCC04;
+//				S0SPDR = SPI0command;  // send Command to beaglebone to store floats to SDCard
+//			} else {
+//				numMissedTx++;
+//			}
+//		}
+//	}
+
+
+	// Code for reading Ultrasonic sensor if 28027 board attached
+	if (timer > USONIC_INIT_DELAY) { //wait USONIC_INIT_DELAY ms before talking to 28027
+		if (f28027_ready == 1) {
+			UsonicTimer++;
+			if (firebit == 1) {
+				if (UsonicTimer == 5) {
+					IOCLR0 = (1<<EXT_NCS);
+					SPI0command = 0xCC01;
+					S0SPDR = SPI0command;  // send Start Measurement Usonic Command
+				}
+			} else if (UsonicTimer == 75) {
+				IOCLR0 = (1<<EXT_NCS);
+				SPI0command = 0xCC02;
+				S0SPDR = SPI0command;  // send Read Measurement Usonic Command
+			}
+		} else {
+			IOCLR0 = (1<<EXT_NCS);
+			SPI0command = 0xCC03;
+			S0SPDR = SPI0command;  // send Are you Alive command
+		}
+	}
+
+	timer++;
+
+	my_sdkloop_counter++;
+
+// End Add by Dan Block
 
 	//SDK_jetiAscTecExampleRun();
 
@@ -165,6 +380,24 @@ void SDK_mainloop(void)
 //#endif
 }
 
+// Dan Block Add
+//void filter_ultrasound_z(void) {
+//	// take finite difference to estimate z velocity
+//	float dt = ((float)(my_sdkloop_counter - ultrasound_timer))/1000.0;
+//    float alpha = 0.95;
+//	ultrasound_z = (float)UsonicData/100.0;
+//	if (ultrasound_z_prev > 0.0) {
+//        ultrasound_z = alpha * ultrasound_z + (1-alpha)* ultrasound_z_prev;
+//		ultrasound_vz = (ultrasound_z - ultrasound_z_prev)/dt;
+//	}
+//
+//	g_state.dZ = ultrasound_z;
+//	g_state.dVz = ultrasound_vz;
+//
+//	ultrasound_z_prev = ultrasound_z;
+//	ultrasound_timer = my_sdkloop_counter;
+//}
+// End Dan Block Add
 
 /*
  *
