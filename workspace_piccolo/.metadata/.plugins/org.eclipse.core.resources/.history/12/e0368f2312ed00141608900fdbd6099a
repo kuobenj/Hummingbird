@@ -1,0 +1,187 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
+
+# Add inputs and outputs from these tool invocations to the build variables 
+CMD_SRCS += \
+C:/dan/omapl138/GE423Dev/trunk/asctec_ultrasonic_piccolo/user_lnk.cmd 
+
+TCF_SRCS += \
+C:/dan/omapl138/GE423Dev/trunk/asctec_ultrasonic_piccolo/asctec_ultrasonic_piccolo.tcf 
+
+ASM_SRCS += \
+C:/dan/omapl138/GE423Dev/trunk/f28027/common/v126/DSP2802x_common/source/DSP2802x_CSMPasswords.asm \
+C:/dan/omapl138/GE423Dev/trunk/f28027/common/v126/DSP2802x_common/source/DSP2802x_CodeStartBranch.asm \
+C:/dan/omapl138/GE423Dev/trunk/f28027/common/v126/DSP2802x_common/source/DSP2802x_usDelay.asm 
+
+S??_SRCS += \
+./asctec_ultrasonic_piccolocfg.s?? 
+
+C_SRCS += \
+C:/dan/omapl138/GE423Dev/trunk/f28027/COECSL/28027_pwm.c \
+C:/dan/omapl138/GE423Dev/trunk/f28027/COECSL/28027_serial.c \
+C:/dan/omapl138/GE423Dev/trunk/f28027/common/v126/DSP2802x_common/source/DSP2802x_Adc.c \
+C:/dan/omapl138/GE423Dev/trunk/f28027/common/v126/DSP2802x_common/source/DSP2802x_CpuTimers.c \
+C:/dan/omapl138/GE423Dev/trunk/f28027/common/v126/DSP2802x_headers/source/DSP2802x_GlobalVariableDefs.c \
+C:/dan/omapl138/GE423Dev/trunk/f28027/common/v126/DSP2802x_common/source/DSP2802x_Gpio.c \
+C:/dan/omapl138/GE423Dev/trunk/f28027/common/v126/DSP2802x_common/source/DSP2802x_I2C.c \
+C:/dan/omapl138/GE423Dev/trunk/f28027/common/v126/DSP2802x_common/source/DSP2802x_PieCtrl.c \
+C:/dan/omapl138/GE423Dev/trunk/f28027/common/v126/DSP2802x_common/source/DSP2802x_Sci.c \
+C:/dan/omapl138/GE423Dev/trunk/f28027/common/v126/DSP2802x_common/source/DSP2802x_Spi.c \
+C:/dan/omapl138/GE423Dev/trunk/f28027/common/v126/DSP2802x_common/source/DSP2802x_SysCtrl.c \
+./asctec_ultrasonic_piccolocfg_c.c \
+C:/dan/omapl138/GE423Dev/trunk/f28027/COECSL/coecsl.c \
+C:/dan/omapl138/GE423Dev/trunk/f28027/COECSL/smallprintf.c \
+C:/dan/omapl138/GE423Dev/trunk/asctec_ultrasonic_piccolo/user_asctec_ultrasonic_piccolo.c 
+
+OBJS += \
+./28027_pwm.obj \
+./28027_serial.obj \
+./DSP2802x_Adc.obj \
+./DSP2802x_CSMPasswords.obj \
+./DSP2802x_CodeStartBranch.obj \
+./DSP2802x_CpuTimers.obj \
+./DSP2802x_GlobalVariableDefs.obj \
+./DSP2802x_Gpio.obj \
+./DSP2802x_I2C.obj \
+./DSP2802x_PieCtrl.obj \
+./DSP2802x_Sci.obj \
+./DSP2802x_Spi.obj \
+./DSP2802x_SysCtrl.obj \
+./DSP2802x_usDelay.obj \
+./asctec_ultrasonic_piccolocfg.obj \
+./asctec_ultrasonic_piccolocfg_c.obj \
+./coecsl.obj \
+./smallprintf.obj \
+./user_asctec_ultrasonic_piccolo.obj 
+
+GEN_MISC_FILES += \
+./asctec_ultrasonic_piccolo.cdb 
+
+ASM_DEPS += \
+./DSP2802x_CSMPasswords.pp \
+./DSP2802x_CodeStartBranch.pp \
+./DSP2802x_usDelay.pp 
+
+GEN_HDRS += \
+./asctec_ultrasonic_piccolocfg.h \
+./asctec_ultrasonic_piccolocfg.h?? 
+
+S??_DEPS += \
+./asctec_ultrasonic_piccolocfg.pp 
+
+C_DEPS += \
+./28027_pwm.pp \
+./28027_serial.pp \
+./DSP2802x_Adc.pp \
+./DSP2802x_CpuTimers.pp \
+./DSP2802x_GlobalVariableDefs.pp \
+./DSP2802x_Gpio.pp \
+./DSP2802x_I2C.pp \
+./DSP2802x_PieCtrl.pp \
+./DSP2802x_Sci.pp \
+./DSP2802x_Spi.pp \
+./DSP2802x_SysCtrl.pp \
+./asctec_ultrasonic_piccolocfg_c.pp \
+./coecsl.pp \
+./smallprintf.pp \
+./user_asctec_ultrasonic_piccolo.pp 
+
+GEN_CMDS += \
+./asctec_ultrasonic_piccolocfg.cmd 
+
+GEN_FILES += \
+./asctec_ultrasonic_piccolocfg.cmd \
+./asctec_ultrasonic_piccolocfg.s?? \
+./asctec_ultrasonic_piccolocfg_c.c 
+
+GEN_HDRS__QUOTED += \
+"asctec_ultrasonic_piccolocfg.h" \
+"asctec_ultrasonic_piccolocfg.h??" 
+
+GEN_MISC_FILES__QUOTED += \
+"asctec_ultrasonic_piccolo.cdb" 
+
+GEN_FILES__QUOTED += \
+"asctec_ultrasonic_piccolocfg.cmd" \
+"asctec_ultrasonic_piccolocfg.s??" \
+"asctec_ultrasonic_piccolocfg_c.c" 
+
+C_DEPS__QUOTED += \
+"28027_pwm.pp" \
+"28027_serial.pp" \
+"DSP2802x_Adc.pp" \
+"DSP2802x_CpuTimers.pp" \
+"DSP2802x_GlobalVariableDefs.pp" \
+"DSP2802x_Gpio.pp" \
+"DSP2802x_I2C.pp" \
+"DSP2802x_PieCtrl.pp" \
+"DSP2802x_Sci.pp" \
+"DSP2802x_Spi.pp" \
+"DSP2802x_SysCtrl.pp" \
+"asctec_ultrasonic_piccolocfg_c.pp" \
+"coecsl.pp" \
+"smallprintf.pp" \
+"user_asctec_ultrasonic_piccolo.pp" 
+
+S??_DEPS__QUOTED += \
+"asctec_ultrasonic_piccolocfg.pp" 
+
+OBJS__QUOTED += \
+"28027_pwm.obj" \
+"28027_serial.obj" \
+"DSP2802x_Adc.obj" \
+"DSP2802x_CSMPasswords.obj" \
+"DSP2802x_CodeStartBranch.obj" \
+"DSP2802x_CpuTimers.obj" \
+"DSP2802x_GlobalVariableDefs.obj" \
+"DSP2802x_Gpio.obj" \
+"DSP2802x_I2C.obj" \
+"DSP2802x_PieCtrl.obj" \
+"DSP2802x_Sci.obj" \
+"DSP2802x_Spi.obj" \
+"DSP2802x_SysCtrl.obj" \
+"DSP2802x_usDelay.obj" \
+"asctec_ultrasonic_piccolocfg.obj" \
+"asctec_ultrasonic_piccolocfg_c.obj" \
+"coecsl.obj" \
+"smallprintf.obj" \
+"user_asctec_ultrasonic_piccolo.obj" 
+
+ASM_DEPS__QUOTED += \
+"DSP2802x_CSMPasswords.pp" \
+"DSP2802x_CodeStartBranch.pp" \
+"DSP2802x_usDelay.pp" 
+
+C_SRCS__QUOTED += \
+"C:/dan/omapl138/GE423Dev/trunk/f28027/COECSL/28027_pwm.c" \
+"C:/dan/omapl138/GE423Dev/trunk/f28027/COECSL/28027_serial.c" \
+"C:/dan/omapl138/GE423Dev/trunk/f28027/common/v126/DSP2802x_common/source/DSP2802x_Adc.c" \
+"C:/dan/omapl138/GE423Dev/trunk/f28027/common/v126/DSP2802x_common/source/DSP2802x_CpuTimers.c" \
+"C:/dan/omapl138/GE423Dev/trunk/f28027/common/v126/DSP2802x_headers/source/DSP2802x_GlobalVariableDefs.c" \
+"C:/dan/omapl138/GE423Dev/trunk/f28027/common/v126/DSP2802x_common/source/DSP2802x_Gpio.c" \
+"C:/dan/omapl138/GE423Dev/trunk/f28027/common/v126/DSP2802x_common/source/DSP2802x_I2C.c" \
+"C:/dan/omapl138/GE423Dev/trunk/f28027/common/v126/DSP2802x_common/source/DSP2802x_PieCtrl.c" \
+"C:/dan/omapl138/GE423Dev/trunk/f28027/common/v126/DSP2802x_common/source/DSP2802x_Sci.c" \
+"C:/dan/omapl138/GE423Dev/trunk/f28027/common/v126/DSP2802x_common/source/DSP2802x_Spi.c" \
+"C:/dan/omapl138/GE423Dev/trunk/f28027/common/v126/DSP2802x_common/source/DSP2802x_SysCtrl.c" \
+"./asctec_ultrasonic_piccolocfg_c.c" \
+"C:/dan/omapl138/GE423Dev/trunk/f28027/COECSL/coecsl.c" \
+"C:/dan/omapl138/GE423Dev/trunk/f28027/COECSL/smallprintf.c" \
+"C:/dan/omapl138/GE423Dev/trunk/asctec_ultrasonic_piccolo/user_asctec_ultrasonic_piccolo.c" 
+
+ASM_SRCS__QUOTED += \
+"C:/dan/omapl138/GE423Dev/trunk/f28027/common/v126/DSP2802x_common/source/DSP2802x_CSMPasswords.asm" \
+"C:/dan/omapl138/GE423Dev/trunk/f28027/common/v126/DSP2802x_common/source/DSP2802x_CodeStartBranch.asm" \
+"C:/dan/omapl138/GE423Dev/trunk/f28027/common/v126/DSP2802x_common/source/DSP2802x_usDelay.asm" 
+
+GEN_CMDS__FLAG += \
+-l"./asctec_ultrasonic_piccolocfg.cmd" 
+
+S??_SRCS__QUOTED += \
+"./asctec_ultrasonic_piccolocfg.s??" 
+
+S??_OBJS__QUOTED += \
+"asctec_ultrasonic_piccolocfg.obj" 
+
+

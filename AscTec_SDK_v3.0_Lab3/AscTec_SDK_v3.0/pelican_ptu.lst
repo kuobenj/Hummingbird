@@ -203,10 +203,10 @@
  134 011c 00000000 	.LFE2:
  136              		.bss
  137              		.align	2
- 138 0009 000000   	cam_angle_pitch.1624:
+ 138 0009 000000   	cam_angle_pitch.1626:
  139              		.space	4
  140 000c 00000000 		.align	2
- 141              	ptu_cnt.1620:
+ 141              	ptu_cnt.1622:
  142              		.space	4
  143 0010 00000000 		.text
  144              		.align	2
@@ -489,13 +489,13 @@
  140:pelican_ptu.c **** 		}
  141:pelican_ptu.c **** 	}
  142:pelican_ptu.c **** }
- 366              	_cnt.1620
+ 366              	_cnt.1622
  367 03f4 0CD04BE2 		.word	PTU_enable_plain_ch7_to_servo
  368 03f8 00689DE8 		.word	RO_RC_Data
  369 03fc 1EFF2FE1 		.word	IMU_CalcData
  370              		.word	274877907
  371              		.word	CAMERA_Commands
- 372              		.word	cam_angle_pitch.1624
+ 372              		.word	cam_angle_pitch.1626
  373 0400 10000000 	.LFE3:
  375 0408 00000000 		.align	2
  376 040c 00000000 		.global	SERVO_pitch_move
@@ -687,14 +687,14 @@
  536              		SERVO_roll_move, .-SERVO_roll_move
  537 05cc 0CD04BE2 		.bss
  538 05d0 00689DE8 		.align	2
- 539 05d4 1EFF2FE1 	reset_timeout_pitch.1728:
+ 539 05d4 1EFF2FE1 	reset_timeout_pitch.1730:
  540              		.space	4
- 541              	pitch_offset_changed.1727:
+ 541              	pitch_offset_changed.1729:
  542              		.space	1
  543 05d8 00000000 		.align	2
- 544 05dc 67666666 	reset_timeout_roll.1723:
+ 544 05dc 67666666 	reset_timeout_roll.1725:
  545 05e0 6B298274 		.space	4
- 546              	roll_offset_changed.1722:
+ 546              	roll_offset_changed.1724:
  547              		.space	1
  548              		.text
  549              		.align	2
@@ -1042,17 +1042,17 @@
  813              	lign	2
  814 08d8 44309FE5 	.L76:
  815 08dc 0030D3E5 		.word	LL_1khz_attitude_data
- 816 08e0 000053E3 		.word	reset_timeout_roll.1723
+ 816 08e0 000053E3 		.word	reset_timeout_roll.1725
  817 08e4 0400000A 		.word	715827883
  251:pelican_ptu.c **** 				{
  252:pelican_ptu.c **** 					pitch_offset_changed=0;
  818              	d	PTU_cam_angle_roll_offset
- 819 08e8 34309FE5 		.word	roll_offset_changed.1722
- 820 08ec 0020A0E3 		.word	reset_timeout_pitch.1728
+ 819 08e8 34309FE5 		.word	roll_offset_changed.1724
+ 820 08ec 0020A0E3 		.word	reset_timeout_pitch.1730
  821 08f0 0020C3E5 		.word	PTU_cam_angle_pitch_offset
  253:pelican_ptu.c **** 
  254:pelican_ptu.c **** 					lpc_aci_SavePara();
- 822              	rd	pitch_offset_changed.1727
+ 822              	rd	pitch_offset_changed.1729
  823 08f4 FEFFFFEB 	.LFE6:
  255:pelican_ptu.c **** 					lpc_aci_WriteParatoFlash();
  824              	size	PTU_update_middle_positions_by_stick, .-PTU_update_middle_positions_by_stick
@@ -1088,33 +1088,33 @@
  993              	.LLST1:
 DEFINED SYMBOLS
                             *ABS*:00000000 pelican_ptu.c
-C:\Users\bkuo\AppData\Local\Temp/ccEbkaaa.s:15     .bss:00000000 PTU_cam_angle_roll_offset
+C:\Users\bkuo\AppData\Local\Temp/ccMDsaaa.s:15     .bss:00000000 PTU_cam_angle_roll_offset
                              .bss:00000000 $d
-C:\Users\bkuo\AppData\Local\Temp/ccEbkaaa.s:21     .bss:00000004 PTU_cam_angle_pitch_offset
-C:\Users\bkuo\AppData\Local\Temp/ccEbkaaa.s:26     .bss:00000008 PTU_enable_plain_ch7_to_servo
-C:\Users\bkuo\AppData\Local\Temp/ccEbkaaa.s:32     .text:00000000 PTU_init
-C:\Users\bkuo\AppData\Local\Temp/ccEbkaaa.s:39     .text:00000000 $a
-C:\Users\bkuo\AppData\Local\Temp/ccEbkaaa.s:133    .text:00000118 $d
+C:\Users\bkuo\AppData\Local\Temp/ccMDsaaa.s:21     .bss:00000004 PTU_cam_angle_pitch_offset
+C:\Users\bkuo\AppData\Local\Temp/ccMDsaaa.s:26     .bss:00000008 PTU_enable_plain_ch7_to_servo
+C:\Users\bkuo\AppData\Local\Temp/ccMDsaaa.s:32     .text:00000000 PTU_init
+C:\Users\bkuo\AppData\Local\Temp/ccMDsaaa.s:39     .text:00000000 $a
+C:\Users\bkuo\AppData\Local\Temp/ccMDsaaa.s:133    .text:00000118 $d
                             *COM*:00000020 CAMERA_ptu
-C:\Users\bkuo\AppData\Local\Temp/ccEbkaaa.s:139    .bss:0000000c cam_angle_pitch.1624
-C:\Users\bkuo\AppData\Local\Temp/ccEbkaaa.s:142    .bss:00000010 ptu_cnt.1620
-C:\Users\bkuo\AppData\Local\Temp/ccEbkaaa.s:148    .text:00000120 PTU_update
-C:\Users\bkuo\AppData\Local\Temp/ccEbkaaa.s:154    .text:00000120 $a
-C:\Users\bkuo\AppData\Local\Temp/ccEbkaaa.s:563    .text:000005e4 PTU_update_middle_positions_by_stick
-C:\Users\bkuo\AppData\Local\Temp/ccEbkaaa.s:385    .text:0000041c SERVO_pitch_move
-C:\Users\bkuo\AppData\Local\Temp/ccEbkaaa.s:469    .text:00000504 SERVO_roll_move
-C:\Users\bkuo\AppData\Local\Temp/ccEbkaaa.s:373    .text:00000400 $d
+C:\Users\bkuo\AppData\Local\Temp/ccMDsaaa.s:139    .bss:0000000c cam_angle_pitch.1626
+C:\Users\bkuo\AppData\Local\Temp/ccMDsaaa.s:142    .bss:00000010 ptu_cnt.1622
+C:\Users\bkuo\AppData\Local\Temp/ccMDsaaa.s:148    .text:00000120 PTU_update
+C:\Users\bkuo\AppData\Local\Temp/ccMDsaaa.s:154    .text:00000120 $a
+C:\Users\bkuo\AppData\Local\Temp/ccMDsaaa.s:563    .text:000005e4 PTU_update_middle_positions_by_stick
+C:\Users\bkuo\AppData\Local\Temp/ccMDsaaa.s:385    .text:0000041c SERVO_pitch_move
+C:\Users\bkuo\AppData\Local\Temp/ccMDsaaa.s:469    .text:00000504 SERVO_roll_move
+C:\Users\bkuo\AppData\Local\Temp/ccMDsaaa.s:373    .text:00000400 $d
                             *COM*:0000000c CAMERA_Commands
-C:\Users\bkuo\AppData\Local\Temp/ccEbkaaa.s:391    .text:0000041c $a
-C:\Users\bkuo\AppData\Local\Temp/ccEbkaaa.s:461    .text:000004f8 $d
-C:\Users\bkuo\AppData\Local\Temp/ccEbkaaa.s:475    .text:00000504 $a
-C:\Users\bkuo\AppData\Local\Temp/ccEbkaaa.s:543    .text:000005d8 $d
-C:\Users\bkuo\AppData\Local\Temp/ccEbkaaa.s:550    .bss:00000014 reset_timeout_pitch.1728
-C:\Users\bkuo\AppData\Local\Temp/ccEbkaaa.s:552    .bss:00000018 pitch_offset_changed.1727
-C:\Users\bkuo\AppData\Local\Temp/ccEbkaaa.s:555    .bss:0000001c reset_timeout_roll.1723
-C:\Users\bkuo\AppData\Local\Temp/ccEbkaaa.s:557    .bss:00000020 roll_offset_changed.1722
-C:\Users\bkuo\AppData\Local\Temp/ccEbkaaa.s:569    .text:000005e4 $a
-C:\Users\bkuo\AppData\Local\Temp/ccEbkaaa.s:834    .text:00000908 $d
+C:\Users\bkuo\AppData\Local\Temp/ccMDsaaa.s:391    .text:0000041c $a
+C:\Users\bkuo\AppData\Local\Temp/ccMDsaaa.s:461    .text:000004f8 $d
+C:\Users\bkuo\AppData\Local\Temp/ccMDsaaa.s:475    .text:00000504 $a
+C:\Users\bkuo\AppData\Local\Temp/ccMDsaaa.s:543    .text:000005d8 $d
+C:\Users\bkuo\AppData\Local\Temp/ccMDsaaa.s:550    .bss:00000014 reset_timeout_pitch.1730
+C:\Users\bkuo\AppData\Local\Temp/ccMDsaaa.s:552    .bss:00000018 pitch_offset_changed.1729
+C:\Users\bkuo\AppData\Local\Temp/ccMDsaaa.s:555    .bss:0000001c reset_timeout_roll.1725
+C:\Users\bkuo\AppData\Local\Temp/ccMDsaaa.s:557    .bss:00000020 roll_offset_changed.1724
+C:\Users\bkuo\AppData\Local\Temp/ccMDsaaa.s:569    .text:000005e4 $a
+C:\Users\bkuo\AppData\Local\Temp/ccMDsaaa.s:834    .text:00000908 $d
                             *COM*:00000004 GPS_timeout
                             *COM*:00000001 SYSTEM_initialized
 

@@ -93,6 +93,10 @@ extern int GotMagnet;
 extern int USMaxBot_range1;
 // End Dan Block Add
 
+//Ben Kuo Add
+extern short Ben_thrust;
+//End Ben Kuo Add
+
 void timer0ISR(void) __irq
 {
   T0IR = 0x01;      //Clear the timer 0 interrupt
@@ -373,6 +377,7 @@ void ACISDK(void)
 	// Start Added Ben Kuo
 	//USMaxBot_range1 is the ultra sonic
 	aciPublishVariable(&USMaxBot_range1, VARTYPE_INT32, 0x0608, "range_read", "Range Sensor", "not sure yet");
+	aciPublishCommand(&(Ben_thrust), VARTYPE_UINT16 , 0x0518, "Thrust_send", "Thrust Command we send", "UL");
 	// End Added Ben Kuo
 	// Commands
 #else

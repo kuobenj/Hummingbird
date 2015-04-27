@@ -710,7 +710,7 @@
  134 0104 D9FFFFEA 	.L16:
  135              		.align	2
  136              	.L15:
- 137              		.word	spi_chksum.2292
+ 137              		.word	spi_chksum.2294
  138 0108 12000000 		.word	SPIWRData
  139 010c 00000000 		.word	LL_1khz_control_input
  140 0110 00000000 		.word	SPIWR_num_bytes
@@ -1694,7 +1694,7 @@
  1120              	.L104:
  1121              		.word	data_sent_to_LL
  1122 09ec 00000000 		.word	gpsDataOkTrigger
- 1123 09f0 00000000 		.word	pageselect.2095
+ 1123 09f0 00000000 		.word	pageselect.2097
  1124 09f4 21000000 		.word	LL_1khz_control_input
  1125 09f8 00000000 		.word	WO_SDK
  1126 09fc 00000000 		.word	declinationAvailable
@@ -1704,8 +1704,8 @@
  1130 0a0c 00000000 		.word	emergencyModeUpdate
  1131 0a10 00000000 		.word	emergencyMode
  1132 0a14 00000000 		.word	WO_Direct_Individual_Motor_Control
- 1133 0a18 00000000 		.word	jetiValuePartialSyncPending.2097
- 1134 0a1c 20000000 		.word	jetiSyncState.2103
+ 1133 0a18 00000000 		.word	jetiValuePartialSyncPending.2099
+ 1134 0a1c 20000000 		.word	jetiSyncState.2105
  1135 0a20 17000000 		.word	WO_CTRL_Input
  1136 0a24 00000000 		.word	estimatedInclination
  1137 0a28 00000000 		.word	WO_Direct_Motor_Control
@@ -1718,10 +1718,10 @@
  1144 0a44 20000000 		.word	jetiName+8
  1145 0a48 08000000 		.word	jetiAlarm
  1146 0a4c 00000000 		.word	jetiAlarmType
- 1147 0a50 00000000 		.word	jetiSensorCnt.2104
+ 1147 0a50 00000000 		.word	jetiSensorCnt.2106
  1148 0a54 16000000 		.word	jetiValues
- 1149 0a58 00000000 		.word	jetiSensorValUpdateTimeout.2106
- 1150 0a5c 14000000 		.word	jetiSensorValCnt.2105
+ 1149 0a58 00000000 		.word	jetiSensorValUpdateTimeout.2108
+ 1150 0a5c 14000000 		.word	jetiSensorValCnt.2107
  1151 0a60 15000000 		.word	jetiDisplayText
  1152 0a64 00000000 		.word	jetiDisplayText+4
  1153 0a68 04000000 		.word	jetiDisplayText+8
@@ -1738,8 +1738,8 @@
  1164 0a94 00000000 		.word	wpCtrlWpCmdUpdated
  1165 0a98 00000000 		.word	wpCtrlWpCmd
  1166 0a9c 00000000 		.word	buildInfo
- 1167 0aa0 00000000 		.word	transmitPtr.2098
- 1168 0aa4 1C000000 		.word	transmitCnt.2099
+ 1167 0aa0 00000000 		.word	transmitPtr.2100
+ 1168 0aa4 1C000000 		.word	transmitCnt.2101
  1169 0aa8 18000000 		.word	wpToLL
  1170 0aac 00000000 		.word	wpCtrlNavStatus
  1171 0ab0 00000000 	.LFE3:
@@ -2116,7 +2116,7 @@
  1544 0e08 00000000 		.word	wpCtrlDistToWp
  1545 0e0c 00000000 		.word	wpCtrlAckTrigger
  1546 0e10 00000000 		.word	fireflyLedEnabled
- 1547 0e14 00000000 		.word	oldKey.1988
+ 1547 0e14 00000000 		.word	oldKey.1990
  1548 0e18 22000000 		.word	emergencyModeUpdate
  1549 0e1c 00000000 		.word	emergencyMode
  1550 0e20 00000000 	.LBE8:
@@ -2676,11 +2676,11 @@
  2060 12a8 0030C015 	.L219:
  2061              		.align	2
  2062 12ac 0030C005 	.L218:
- 2063 12b0 F4FEFFEA 		.word	SPI_syncstate.2326
- 2064              		.word	SPI_rxptr.2328
+ 2063 12b0 F4FEFFEA 		.word	SPI_syncstate.2328
+ 2064              		.word	SPI_rxptr.2330
  2065              		.word	LL_1khz_attitude_data
- 2066              		.word	SPI_rxcount.2327
- 2067 12b4 11000000 		.word	incoming_page.2329
+ 2066              		.word	SPI_rxcount.2329
+ 2067 12b4 11000000 		.word	incoming_page.2331
  2068 12b8 0C000000 		.word	gpsDataOkTrigger
  2069 12bc 00000000 		.word	IMU_CalcData
  2070 12c0 10000000 		.word	RO_ALL_Data
@@ -2691,7 +2691,7 @@
  2075 12d4 00000000 		.word	wpCtrlDistToWp
  2076 12d8 00000000 		.word	wpCtrlAckTrigger
  2077 12dc 00000000 		.word	fireflyLedEnabled
- 2078 12e0 00000000 		.word	oldKey.1988
+ 2078 12e0 00000000 		.word	oldKey.1990
  2079 12e4 00000000 		.word	emergencyModeUpdate
  2080 12e8 00000000 		.word	emergencyMode
  2081 12ec 00000000 	.LBE21:
@@ -2723,37 +2723,37 @@
  2120              		.global	transmitBuildInfoTrigger
  2123 0008 0000     	transmitBuildInfoTrigger:
  2124              		.space	1
- 2125              	incoming_page.2329:
+ 2125              	incoming_page.2331:
  2126              		.space	1
  2127              		.align	2
- 2128 000a 00       	SPI_rxptr.2328:
+ 2128 000a 00       	SPI_rxptr.2330:
  2129              		.space	4
- 2130 000b 00       	SPI_rxcount.2327:
+ 2130 000b 00       	SPI_rxcount.2329:
  2131              		.space	1
- 2132              	SPI_syncstate.2326:
+ 2132              	SPI_syncstate.2328:
  2133 000c 00000000 		.space	1
  2134              		.align	1
- 2135 0010 00       	spi_chksum.2292:
+ 2135 0010 00       	spi_chksum.2294:
  2136              		.space	2
- 2137 0011 00       	jetiSensorValUpdateTimeout.2106:
+ 2137 0011 00       	jetiSensorValUpdateTimeout.2108:
  2138              		.space	1
- 2139              	jetiSensorValCnt.2105:
+ 2139              	jetiSensorValCnt.2107:
  2140 0012 0000     		.space	1
- 2141              	jetiSensorCnt.2104:
+ 2141              	jetiSensorCnt.2106:
  2142 0014 00       		.space	1
- 2143              	jetiSyncState.2103:
+ 2143              	jetiSyncState.2105:
  2144 0015 00       		.space	1
  2145              		.align	1
- 2146 0016 00       	transmitCnt.2099:
+ 2146 0016 00       	transmitCnt.2101:
  2147              		.space	2
  2148 0017 00       		.align	2
- 2149              	transmitPtr.2098:
+ 2149              	transmitPtr.2100:
  2150              		.space	4
- 2151 0018 0000     	jetiValuePartialSyncPending.2097:
+ 2151 0018 0000     	jetiValuePartialSyncPending.2099:
  2152 001a 0000     		.space	1
- 2153              	pageselect.2095:
+ 2153              	pageselect.2097:
  2154 001c 00000000 		.space	1
- 2155              	oldKey.1988:
+ 2155              	oldKey.1990:
  2156 0020 00       		.space	1
  2157              		.comm	GPS_timeout,4,4
  2158 0021 00       		.comm	SYSTEM_initialized,1,1
@@ -2767,49 +2767,49 @@
  2296              		.4byte	.LFB4-.Ltext0
 DEFINED SYMBOLS
                             *ABS*:00000000 LL_HL_comm.c
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:13     .text:00000000 LL_write_ctrl_data
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:22     .text:00000000 $a
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:138    .text:00000108 $d
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:2139   .bss:00000012 spi_chksum.2292
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:13     .text:00000000 LL_write_ctrl_data
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:22     .text:00000000 $a
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:138    .text:00000108 $d
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:2139   .bss:00000012 spi_chksum.2294
                             *COM*:00000038 LL_1khz_control_input
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:148    .text:0000011c HL2LL_write_cycle
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:154    .text:0000011c $a
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:387    .text:00000334 $d
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:396    .text:0000034c $a
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:1122   .text:000009ec $d
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:2157   .bss:00000021 pageselect.2095
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:2127   .bss:0000000a transmitBuildInfoTrigger
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:2155   .bss:00000020 jetiValuePartialSyncPending.2097
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:2147   .bss:00000017 jetiSyncState.2103
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:2145   .bss:00000016 jetiSensorCnt.2104
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:2141   .bss:00000014 jetiSensorValUpdateTimeout.2106
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:2143   .bss:00000015 jetiSensorValCnt.2105
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:2105   .bss:00000003 wpCtrlWpCmdUpdated
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:2100   .bss:00000002 wpCtrlWpCmd
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:2153   .bss:0000001c transmitPtr.2098
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:2150   .bss:00000018 transmitCnt.2099
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:148    .text:0000011c HL2LL_write_cycle
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:154    .text:0000011c $a
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:387    .text:00000334 $d
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:396    .text:0000034c $a
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:1122   .text:000009ec $d
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:2157   .bss:00000021 pageselect.2097
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:2127   .bss:0000000a transmitBuildInfoTrigger
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:2155   .bss:00000020 jetiValuePartialSyncPending.2099
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:2147   .bss:00000017 jetiSyncState.2105
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:2145   .bss:00000016 jetiSensorCnt.2106
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:2141   .bss:00000014 jetiSensorValUpdateTimeout.2108
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:2143   .bss:00000015 jetiSensorValCnt.2107
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:2105   .bss:00000003 wpCtrlWpCmdUpdated
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:2100   .bss:00000002 wpCtrlWpCmd
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:2153   .bss:0000001c transmitPtr.2100
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:2150   .bss:00000018 transmitCnt.2101
                             *COM*:0000001c wpToLL
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:2116   .bss:00000006 wpCtrlNavStatus
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:1177   .text:00000ab4 SSP_data_distribution_HL
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:1183   .text:00000ab4 $a
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:1396   .text:00000c78 $d
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:1413   .text:00000cb0 $a
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:1537   .text:00000dec $d
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:2116   .bss:00000006 wpCtrlNavStatus
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:1177   .text:00000ab4 SSP_data_distribution_HL
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:1183   .text:00000ab4 $a
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:1396   .text:00000c78 $d
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:1413   .text:00000cb0 $a
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:1537   .text:00000dec $d
                             *COM*:0000005c LL_1khz_attitude_data
                             *COM*:00000001 SYSTEM_initialized
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:2122   .bss:00000008 wpCtrlDistToWp
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:2110   .bss:00000004 wpCtrlAckTrigger
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:2159   .bss:00000022 oldKey.1988
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:1557   .text:00000e24 SSP_rx_handler_HL
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:1564   .text:00000e24 $a
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:1923   .text:00001148 $d
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:1939   .text:00001180 $a
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:2067   .text:000012b4 $d
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:2136   .bss:00000011 SPI_syncstate.2326
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:2132   .bss:0000000c SPI_rxptr.2328
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:2134   .bss:00000010 SPI_rxcount.2327
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:2129   .bss:0000000b incoming_page.2329
-C:\Users\bkuo\AppData\Local\Temp/ccaUaaaa.s:2095   .bss:00000000 SSP_ack
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:2122   .bss:00000008 wpCtrlDistToWp
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:2110   .bss:00000004 wpCtrlAckTrigger
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:2159   .bss:00000022 oldKey.1990
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:1557   .text:00000e24 SSP_rx_handler_HL
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:1564   .text:00000e24 $a
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:1923   .text:00001148 $d
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:1939   .text:00001180 $a
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:2067   .text:000012b4 $d
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:2136   .bss:00000011 SPI_syncstate.2328
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:2132   .bss:0000000c SPI_rxptr.2330
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:2134   .bss:00000010 SPI_rxcount.2329
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:2129   .bss:0000000b incoming_page.2331
+C:\Users\bkuo\AppData\Local\Temp/ccKoqaaa.s:2095   .bss:00000000 SSP_ack
                             *COM*:00000004 GPS_timeout
 
 UNDEFINED SYMBOLS

@@ -1,0 +1,6 @@
+//-l asctec_ultrasonic_piccolocfg.cmd
+/* *** DSP/BIOS CODE *** */
+
+/* To run program from flash */
+-l C:\dan\omapl138\GE423Dev\f28027\COECSL\F28027_FLASH_BIOS.cmd
+

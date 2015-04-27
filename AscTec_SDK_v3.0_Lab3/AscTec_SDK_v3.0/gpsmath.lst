@@ -146,10 +146,10 @@
  167              		.byte	0x5d
 DEFINED SYMBOLS
                             *ABS*:00000000 gpsmath.c
-C:\Users\bkuo\AppData\Local\Temp/ccSSfaaa.s:16     .text:00000000 xy2latlon
-C:\Users\bkuo\AppData\Local\Temp/ccSSfaaa.s:24     .text:00000000 $a
-C:\Users\bkuo\AppData\Local\Temp/ccSSfaaa.s:100    .text:000000f0 $d
-C:\Users\bkuo\AppData\Local\Temp/ccSSfaaa.s:112    .bss:00000000 gpsDataOkTrigger
+C:\Users\bkuo\AppData\Local\Temp/cc80naaa.s:16     .text:00000000 xy2latlon
+C:\Users\bkuo\AppData\Local\Temp/cc80naaa.s:24     .text:00000000 $a
+C:\Users\bkuo\AppData\Local\Temp/cc80naaa.s:100    .text:000000f0 $d
+C:\Users\bkuo\AppData\Local\Temp/cc80naaa.s:112    .bss:00000000 gpsDataOkTrigger
                             *COM*:0000002c GPS_Data
                             *COM*:0000002c gps_data_temp
 

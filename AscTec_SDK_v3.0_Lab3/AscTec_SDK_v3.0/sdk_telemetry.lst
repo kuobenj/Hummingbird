@@ -897,7 +897,7 @@
  631              	.L64:
  632 0508 FEFFFFEB 		.align	2
  633 050c F4FFFFEA 	.L63:
- 634              		.word	displayState.1972
+ 634              		.word	displayState.1974
  635              		.word	RO_ALL_Data
  636              		.word	wpExampleActive
  637 0510 0400A0E3 	.LFE3:
@@ -1187,7 +1187,7 @@
  860 077c 910382E0 	.L90:
  861 0780 2223A0E1 		.align	2
  862 0784 641062E2 	.L89:
- 863              		.word	first.2040
+ 863              		.word	first.2042
  864              		.word	LL_1khz_attitude_data
  865 0788 640051E3 		.word	1717986919
  866 078c 6410A0C3 		.word	GPS_Data
@@ -1195,15 +1195,15 @@
  868              		.word	1125899907
  869              		.word	1374389535
  870              		.word	HL_Status
- 871 0794 0000A0E3 		.word	jetiDisplayUpdateCnt.2041
+ 871 0794 0000A0E3 		.word	jetiDisplayUpdateCnt.2043
  872 0798 0010A0E1 		.word	-1061109567
  873 079c FEFFFFEB 	.LFE5:
  875              		.bss
- 876              	jetiDisplayUpdateCnt.2041:
+ 876              	jetiDisplayUpdateCnt.2043:
  877 07a4 013083E2 		.space	1
- 878 07a8 0030C2E5 	first.2040:
+ 878 07a8 0030C2E5 	first.2042:
  879              		.space	1
- 880 07ac FEFFFFEB 	displayState.1972:
+ 880 07ac FEFFFFEB 	displayState.1974:
  881 07b0 63FFFFEA 		.space	1
  882              		.comm	GPS_timeout,4,4
  883              		.comm	SYSTEM_initialized,1,1
@@ -1238,25 +1238,25 @@
  1007              		.byte	0x50
 DEFINED SYMBOLS
                             *ABS*:00000000 sdk_telemetry.c
-C:\Users\bkuo\AppData\Local\Temp/ccWIdaaa.s:48     .text:00000000 SDK_jetiAscTecExampleUpdateDisplay
-C:\Users\bkuo\AppData\Local\Temp/ccWIdaaa.s:56     .text:00000000 $a
-C:\Users\bkuo\AppData\Local\Temp/ccWIdaaa.s:67     .text:00000018 $d
-C:\Users\bkuo\AppData\Local\Temp/ccWIdaaa.s:76     .text:00000034 $a
-C:\Users\bkuo\AppData\Local\Temp/ccWIdaaa.s:186    .text:00000120 $d
-C:\Users\bkuo\AppData\Local\Temp/ccWIdaaa.s:276    .text:00000160 SDK_jetiAscTecExampleInit
-C:\Users\bkuo\AppData\Local\Temp/ccWIdaaa.s:282    .text:00000160 $a
-C:\Users\bkuo\AppData\Local\Temp/ccWIdaaa.s:445    .text:0000033c $d
-C:\Users\bkuo\AppData\Local\Temp/ccWIdaaa.s:472    .text:00000394 SDK_jetiAscTecExampleKeyChange
-C:\Users\bkuo\AppData\Local\Temp/ccWIdaaa.s:479    .text:00000394 $a
-C:\Users\bkuo\AppData\Local\Temp/ccWIdaaa.s:492    .text:000003b0 $d
-C:\Users\bkuo\AppData\Local\Temp/ccWIdaaa.s:501    .text:000003cc $a
-C:\Users\bkuo\AppData\Local\Temp/ccWIdaaa.s:647    .text:00000524 $d
-C:\Users\bkuo\AppData\Local\Temp/ccWIdaaa.s:908    .bss:00000002 displayState.1972
-C:\Users\bkuo\AppData\Local\Temp/ccWIdaaa.s:655    .text:00000530 SDK_jetiAscTecExampleRun
-C:\Users\bkuo\AppData\Local\Temp/ccWIdaaa.s:661    .text:00000530 $a
-C:\Users\bkuo\AppData\Local\Temp/ccWIdaaa.s:891    .text:000007c4 $d
-C:\Users\bkuo\AppData\Local\Temp/ccWIdaaa.s:906    .bss:00000001 first.2040
-C:\Users\bkuo\AppData\Local\Temp/ccWIdaaa.s:904    .bss:00000000 jetiDisplayUpdateCnt.2041
+C:\Users\bkuo\AppData\Local\Temp/cc0Qqaaa.s:48     .text:00000000 SDK_jetiAscTecExampleUpdateDisplay
+C:\Users\bkuo\AppData\Local\Temp/cc0Qqaaa.s:56     .text:00000000 $a
+C:\Users\bkuo\AppData\Local\Temp/cc0Qqaaa.s:67     .text:00000018 $d
+C:\Users\bkuo\AppData\Local\Temp/cc0Qqaaa.s:76     .text:00000034 $a
+C:\Users\bkuo\AppData\Local\Temp/cc0Qqaaa.s:186    .text:00000120 $d
+C:\Users\bkuo\AppData\Local\Temp/cc0Qqaaa.s:276    .text:00000160 SDK_jetiAscTecExampleInit
+C:\Users\bkuo\AppData\Local\Temp/cc0Qqaaa.s:282    .text:00000160 $a
+C:\Users\bkuo\AppData\Local\Temp/cc0Qqaaa.s:445    .text:0000033c $d
+C:\Users\bkuo\AppData\Local\Temp/cc0Qqaaa.s:472    .text:00000394 SDK_jetiAscTecExampleKeyChange
+C:\Users\bkuo\AppData\Local\Temp/cc0Qqaaa.s:479    .text:00000394 $a
+C:\Users\bkuo\AppData\Local\Temp/cc0Qqaaa.s:492    .text:000003b0 $d
+C:\Users\bkuo\AppData\Local\Temp/cc0Qqaaa.s:501    .text:000003cc $a
+C:\Users\bkuo\AppData\Local\Temp/cc0Qqaaa.s:647    .text:00000524 $d
+C:\Users\bkuo\AppData\Local\Temp/cc0Qqaaa.s:908    .bss:00000002 displayState.1974
+C:\Users\bkuo\AppData\Local\Temp/cc0Qqaaa.s:655    .text:00000530 SDK_jetiAscTecExampleRun
+C:\Users\bkuo\AppData\Local\Temp/cc0Qqaaa.s:661    .text:00000530 $a
+C:\Users\bkuo\AppData\Local\Temp/cc0Qqaaa.s:891    .text:000007c4 $d
+C:\Users\bkuo\AppData\Local\Temp/cc0Qqaaa.s:906    .bss:00000001 first.2042
+C:\Users\bkuo\AppData\Local\Temp/cc0Qqaaa.s:904    .bss:00000000 jetiDisplayUpdateCnt.2043
                             *COM*:00000004 GPS_timeout
                             *COM*:00000001 SYSTEM_initialized
 

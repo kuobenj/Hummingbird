@@ -1560,15 +1560,15 @@
  1179 0a9c B6314BE1 		.bss
  444:uart.c        ****        ptr++;
  1180              	
- 1181 0aa0 14301BE5 	content.2163:
+ 1181 0aa0 14301BE5 	content.2165:
  1182 0aa4 013083E2 		.space	4
  1183 0aa8 14300BE5 		.align	2
- 1184              	write_pointer.2162:
+ 1184              	write_pointer.2164:
  1185 0aac 10301BE5 		.space	4
  1186 0ab0 013083E2 		.align	2
- 1187 0ab4 10300BE5 	read_pointer.2161:
+ 1187 0ab4 10300BE5 	read_pointer.2163:
  1188              		.space	4
- 1189 0ab8 B0225BE1 	buffer.2160:
+ 1189 0ab8 B0225BE1 	buffer.2162:
  1190 0abc 10301BE5 		.space	384
  1191 0ac0 030052E1 		.text
  1192 0ac4 EDFFFFCA 		.align	2
@@ -1785,25 +1785,25 @@
  1354              	4:
  1355 0c68 48309FE5 		.align	2
  1356 0c6c 003093E5 	.L143:
- 1357 0c70 000053E3 		.word	content.2163
- 1358 0c74 0200000A 		.word	write_pointer.2162
- 1359 0c78 0030A0E3 		.word	buffer.2160
- 1360 0c7c 24300BE5 		.word	read_pointer.2161
+ 1357 0c70 000053E3 		.word	content.2165
+ 1358 0c74 0200000A 		.word	write_pointer.2164
+ 1359 0c78 0030A0E3 		.word	buffer.2162
+ 1360 0c7c 24300BE5 		.word	read_pointer.2163
  1361 0c80 070000EA 	.LFE18:
  491:uart.c        ****           else return(RINGBUFFERSIZE-11);
  1363              	lign	2
- 1364 0c84 5D3FA0E3 	content.2217:
+ 1364 0c84 5D3FA0E3 	content.2219:
  1365 0c88 24300BE5 		.space	4
  1366 0c8c 24301BE5 		.align	2
- 1367 0c90 013083E2 	write_pointer.2216:
+ 1367 0c90 013083E2 	write_pointer.2218:
  1368 0c94 24300BE5 		.space	4
  1369 0c98 010000EA 		.align	2
- 1370              	read_pointer.2215:
+ 1370              	read_pointer.2217:
  492:uart.c        ****         }
  493:uart.c        **** 
  494:uart.c        **** 	return(0);
  1371              	4
- 1372 0c9c 0030A0E3 	buffer.2214:
+ 1372 0c9c 0030A0E3 	buffer.2216:
  1373 0ca0 24300BE5 		.space	384
  1374              		.text
  1375 0ca4 24301BE5 		.align	2
@@ -2015,12 +2015,12 @@
  535:uart.c        ****         else if(rw==RBFREE)
  1538              	gn	2
  1539 0e48 18305BE5 	.L168:
- 1540 0e4c 020053E3 		.word	content.2217
- 1541 0e50 0C00001A 		.word	write_pointer.2216
+ 1540 0e4c 020053E3 		.word	content.2219
+ 1541 0e50 0C00001A 		.word	write_pointer.2218
  536:uart.c        ****         {
  537:uart.c        ****           if(content) return 0;
- 1542              	rd	buffer.2214
- 1543 0e54 48309FE5 		.word	read_pointer.2215
+ 1542              	rd	buffer.2216
+ 1543 0e54 48309FE5 		.word	read_pointer.2217
  1544 0e58 003093E5 	.LFE19:
  1546 0e60 0200000A 		.comm	GPS_timeout,4,4
  1547 0e64 0030A0E3 		.comm	SYSTEM_initialized,1,1
@@ -2073,64 +2073,64 @@
  2057              		.sleb128 4
 DEFINED SYMBOLS
                             *ABS*:00000000 uart.c
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:14     .bss:00000000 data_requested
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:14     .bss:00000000 data_requested
                              .bss:00000000 $d
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:19     .bss:00000001 chksum_to_check
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:25     .data:00000000 chksum_trigger
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:31     .bss:00000002 transmission_running
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:22     .bss:00000002 $d
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:36     .bss:00000003 transmission1_running
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:41     .bss:00000004 trigger_transmission
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:46     .bss:00000005 baudrate1_change
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:51     .bss:00000006 UART_syncstate
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:56     .bss:00000007 UART1_syncstate
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:62     .bss:00000008 UART_rxcount
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:68     .bss:0000000c UART1_rxcount
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:73     .bss:00000010 UART_CalibDoneFlag
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:75     .bss:00000011 rb_busy
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:81     .data:00000001 startstring
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:88     .data:00000004 stopstring
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:96     .text:00000000 uart1ISR
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:103    .text:00000000 $a
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:1406   .text:00000cc8 ringbuffer1
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:592    .text:0000051c UART1WriteChar
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:175    .text:000000cc $d
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:181    .text:000000d0 uart0ISR
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:187    .text:000000d0 $a
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:553    .text:000004cc UARTWriteChar
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:416    .text:00000370 $d
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:423    .text:00000374 UARTInitialize
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:429    .text:00000374 $a
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:488    .text:00000420 UART1Initialize
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:631    .text:0000056c UARTReadChar
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:667    .text:000005b4 UART1ReadChar
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:703    .text:000005fc __putchar
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:740    .text:00000640 UART_send
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:815    .text:000006fc UART1_send
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:875    .text:00000790 UART_send_ringbuffer
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:1218   .text:00000adc ringbuffer
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:919    .text:000007f4 $d
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:925    .text:000007f8 UART1_send_ringbuffer
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:931    .text:000007f8 $a
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:969    .text:0000085c $d
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:975    .text:00000860 UART_SendPacket
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:981    .text:00000860 $a
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:1143   .text:00000a48 crc16
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:1057   .text:00000950 $d
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:1064   .text:00000958 crc_update
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:1070   .text:00000958 $a
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:78     .bss:00000012 $d
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:1204   .bss:00000014 content.2163
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:1207   .bss:00000018 write_pointer.2162
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:1210   .bss:0000001c read_pointer.2161
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:1212   .bss:00000020 buffer.2160
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:1384   .text:00000cb8 $d
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:1392   .bss:000001a0 content.2217
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:1395   .bss:000001a4 write_pointer.2216
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:1398   .bss:000001a8 read_pointer.2215
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:1400   .bss:000001ac buffer.2214
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:1412   .text:00000cc8 $a
-C:\Users\bkuo\AppData\Local\Temp/cc23gaaa.s:1572   .text:00000ea4 $d
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:19     .bss:00000001 chksum_to_check
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:25     .data:00000000 chksum_trigger
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:31     .bss:00000002 transmission_running
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:22     .bss:00000002 $d
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:36     .bss:00000003 transmission1_running
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:41     .bss:00000004 trigger_transmission
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:46     .bss:00000005 baudrate1_change
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:51     .bss:00000006 UART_syncstate
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:56     .bss:00000007 UART1_syncstate
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:62     .bss:00000008 UART_rxcount
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:68     .bss:0000000c UART1_rxcount
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:73     .bss:00000010 UART_CalibDoneFlag
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:75     .bss:00000011 rb_busy
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:81     .data:00000001 startstring
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:88     .data:00000004 stopstring
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:96     .text:00000000 uart1ISR
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:103    .text:00000000 $a
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:1406   .text:00000cc8 ringbuffer1
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:592    .text:0000051c UART1WriteChar
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:175    .text:000000cc $d
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:181    .text:000000d0 uart0ISR
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:187    .text:000000d0 $a
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:553    .text:000004cc UARTWriteChar
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:416    .text:00000370 $d
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:423    .text:00000374 UARTInitialize
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:429    .text:00000374 $a
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:488    .text:00000420 UART1Initialize
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:631    .text:0000056c UARTReadChar
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:667    .text:000005b4 UART1ReadChar
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:703    .text:000005fc __putchar
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:740    .text:00000640 UART_send
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:815    .text:000006fc UART1_send
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:875    .text:00000790 UART_send_ringbuffer
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:1218   .text:00000adc ringbuffer
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:919    .text:000007f4 $d
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:925    .text:000007f8 UART1_send_ringbuffer
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:931    .text:000007f8 $a
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:969    .text:0000085c $d
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:975    .text:00000860 UART_SendPacket
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:981    .text:00000860 $a
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:1143   .text:00000a48 crc16
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:1057   .text:00000950 $d
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:1064   .text:00000958 crc_update
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:1070   .text:00000958 $a
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:78     .bss:00000012 $d
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:1204   .bss:00000014 content.2165
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:1207   .bss:00000018 write_pointer.2164
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:1210   .bss:0000001c read_pointer.2163
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:1212   .bss:00000020 buffer.2162
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:1384   .text:00000cb8 $d
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:1392   .bss:000001a0 content.2219
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:1395   .bss:000001a4 write_pointer.2218
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:1398   .bss:000001a8 read_pointer.2217
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:1400   .bss:000001ac buffer.2216
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:1412   .text:00000cc8 $a
+C:\Users\bkuo\AppData\Local\Temp/ccKYqaaa.s:1572   .text:00000ea4 $d
                             *COM*:00000004 GPS_timeout
                             *COM*:00000001 SYSTEM_initialized
                             *COM*:00000010 send_buffer

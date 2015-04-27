@@ -53,6 +53,7 @@ float dt;
 //Benjamin Kuo Additions for Usonics
 extern int USMaxBot_range1;
 int USMaxBot_range1_old;
+short Ben_thrust = 0;
 
 //End Benjamin Kuo Additions
 /*------------- End Globals --------------*/
@@ -70,20 +71,26 @@ void lab(void)
 	// Desired Position
 	x_nom[0] = 0.0;		// x/North (m)
 	x_nom[1] = 0.0;		// y/East (m)
-	x_nom[2] = -1.0;	// z/Down (m)
+	//x_nom[2] = -1.0;	// z/Down (m)
+
+	//new hight scale is based on inches
+	x_nom[2] = 36;
+
 	x_nom[3] = 0.0;		// yaw (rad)
 
 	// Velocity Estimation	
 	VelocityEst();
 
 	// Lab 3
-	lab3();
+	//lab3();
 
 	// Lab 2
 	//lab2();
 
 	// Convert Controller Outputs to Motor Inputs
-	Command();
+	//Command();
+	Bens_Control_Law();
+	Bens_Command();
 	
 }
 /*----------------------------------------------------------------------*/
@@ -155,7 +162,7 @@ void VelocityEst() {
 }
 /*-------- End Velocity Estimator --------*/
 
-
+//HAS BEEN EDITTED BUT NO LONGER USING THIS
 /*-------------- Controller --------------*/
 /*-------------- Lab 3 --------------*/
 void lab3() {
@@ -190,7 +197,7 @@ void lab3() {
 
 	//USonic Gains
 	float U_Kp_z = -4.3112;
-	float U_Kd_z = -2.4473;
+	float U_Kd_z = 0.0;//-2.4473;
 	float U_Ki_z = 0.0;
 
 	// Outer Loop PD
@@ -356,6 +363,38 @@ void Command() {
 	///////////////////////////////////////
 }
 /*-------------- End Command -------------*/
+
+/*----------------Ben's Control Law ---------------*/
+void Bens_Control_Law() {
+
+}
+/*-------------- End Ben's Command -------------*/
+
+/*----------------Ben's Command ---------------*/
+void Bens_Command() {
+	/////////////// Controller Settings ////////////
+	WO_SDK.ctrl_mode=0x02;  //0x00: direct individual motor control (individual commands for motors 0...3)
+				//0x01: direct motor control using standard output mapping: commands are interpreted as pitch, roll, yaw 
+				//      and thrust inputs; no attitude controller active
+				//0x02: attitude and throttle control: commands are input for standard attitude controller
+				//0x03: GPS waypoint control
+
+	WO_SDK.ctrl_enabled=1;	//0: disable control by HL processor
+				//1: enable control by HL processor
+
+
+	//We're no longer using Direct Motor Commands because Asctec's own attitude controller is better.
+	WO_CTRL_Input.ctrl=0x08;	//0x08: enable throttle control by HL. Height control and GPS are deactivated!!
+								//pitch, roll and yaw are still commanded via the remote control
+	//WO_CTRL_Input.thrust=400;	//10% throttle command
+	WO_CTRL_Input.thrust=(short) Ben_thrust;	//Proportional throttle command
+
+	//
+	//Note to self, We'll start testing around the thrust value of 1700
+	//This was done by inspection from Dan Block and Ben Kuo
+	//
+}
+/*-------------- End Ben's Command -------------*/
 
 /*----------------------------------------------------------------------*/
 /*---------------------------- End Helpers -----------------------------*/
