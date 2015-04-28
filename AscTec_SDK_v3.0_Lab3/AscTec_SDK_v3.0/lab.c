@@ -52,8 +52,17 @@ float dt;
 
 //Benjamin Kuo Additions for Usonics
 extern int USMaxBot_range1;
-int USMaxBot_range1_old;
+
 short Ben_thrust = 0;
+
+	//USonic Gains
+	float U_Kp_z = -50;
+	float U_Kd_z = -20;
+	float U_Ki_z = 0.0;
+
+int usonic_error = 0;
+int usonic_error_old = 0;
+
 
 //End Benjamin Kuo Additions
 /*------------- End Globals --------------*/
@@ -195,11 +204,6 @@ void lab3() {
 	float Kd_z = -2.4473;
 	float Ki_z = 0.0;
 
-	//USonic Gains
-	float U_Kp_z = -4.3112;
-	float U_Kd_z = 0.0;//-2.4473;
-	float U_Ki_z = 0.0;
-
 	// Outer Loop PD
 	float a_x;
 	float a_y;
@@ -208,8 +212,8 @@ void lab3() {
 	pitch_desired = 0;//a_x*cos(real_mocap.dThetaz)-a_y*sin(real_mocap.dThetaz);
 	roll_desired = 0;//a_x*sin(real_mocap.dThetaz)+a_y*cos(real_mocap.dThetaz);
 	yaw_desired = 0;//x_nom[3];
-	cnt_u[3] = U_Kp_z*(x_nom[2]-USMaxBot_range1)-U_Kd_z*(USMaxBot_range1 - USMaxBot_range1_old)*1000+mass*9.81+U_Ki_z*errorcum[2];// I believe it said this was executed at 1kHz
-	USMaxBot_range1_old = USMaxBot_range1;
+	//cnt_u[3] = U_Kp_z*(x_nom[2]-USMaxBot_range1)-U_Kd_z*(USMaxBot_range1 - USMaxBot_range1_old)*1000+mass*9.81+U_Ki_z*errorcum[2];// I believe it said this was executed at 1kHz
+	//USMaxBot_range1_old = USMaxBot_range1;
 	// INNER LOOP
 		// Hummingbird
 	float Ktx_P = 1.0;
@@ -366,7 +370,21 @@ void Command() {
 
 /*----------------Ben's Control Law ---------------*/
 void Bens_Control_Law() {
+	short setpoint = 36;
+	int Usonic_local = 10;
 
+	if (USMaxBot_range1 > 70)
+		Usonic_local = 70;
+	else if(USMaxBot_range1 < 10)
+		Usonic_local = 10;
+	else
+		Usonic_local = USMaxBot_range1;
+
+	usonic_error =(setpoint-USonic_local);
+
+	Ben_thrust = U_Kp_z*usonic_error+U_Kd_z*(usonic_error-usonic_error_old)+1700;
+
+	usonic_error_old = usonic_error;
 }
 /*-------------- End Ben's Command -------------*/
 

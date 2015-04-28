@@ -1,2 +1,2 @@
-max_number_of_requested_commands: 1
-max_number_of_requested_commands: 1
+Variable Table Length: 4313152
+max_number_of_requested_variables: 5
