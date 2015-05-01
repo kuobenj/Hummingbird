@@ -94,7 +94,7 @@ extern int USMaxBot_range1;
 // End Dan Block Add
 
 //Ben Kuo Add
-//extern short Ben_thrust;
+extern short Ben_thrust;
 extern float U_Kp_z;
 //End Ben Kuo Add
 
@@ -379,6 +379,7 @@ void ACISDK(void)
 	//USMaxBot_range1 is the ultra sonic
 	aciPublishVariable(&USMaxBot_range1, VARTYPE_INT32, 0x0608, "range_read", "Range Sensor", "inches");
 	aciPublishVariable(&Ben_thrust, VARTYPE_INT32, 0x0518, "Ben_thrust", "Thrust output", "not sure yet");
+	aciPublishVariable(&RO_ALL_Data.fusion_dheight, VARTYPE_INT32, 0x0305, "DataFusionHeight", "DataFusionHeight", "mm");
 	//aciPublishCommand(&(Ben_thrust), VARTYPE_UINT16 , 0x0518, "Thrust_send", "Thrust Command we send", "UL");
 	//aciPublishCommand(&U_Kp_z, VARTYPE_SINGLE , 0x0518, "Thrust Gain", "For Tuning the Gain for Hovering", "UL");
 	// End Added Ben Kuo

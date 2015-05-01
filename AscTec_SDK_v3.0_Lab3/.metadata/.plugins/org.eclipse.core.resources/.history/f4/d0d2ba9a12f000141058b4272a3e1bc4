@@ -57,7 +57,7 @@ short Ben_thrust = 0;
 
 	//USonic Gains
 	float U_Kp_z = -50;
-	float U_Kd_z = 0.0;//-20;
+	float U_Kd_z = -20;
 	float U_Ki_z = 0.0;
 
 int usonic_error = 0;

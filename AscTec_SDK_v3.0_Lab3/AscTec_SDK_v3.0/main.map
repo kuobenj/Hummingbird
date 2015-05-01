@@ -348,7 +348,7 @@ LOAD c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/l
 LOAD c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a
 END GROUP
 
-.text           0x00000000    0x1e01c
+.text           0x00000000    0x1e06c
  *(.vectorg)
  .vectorg       0x00000000       0x98 Common_WinARM/src/Startup.o
                 0x00000050                __IRQ_Wrapper
@@ -432,790 +432,790 @@ END GROUP
                 0x00003abc                aciTxRingBufferByteAvailable
  .text          0x00006460      0x1bc buildInfoSetup.o
                 0x00006460                generateBuildInfo
- .text          0x0000661c      0xbf8 main.o
+ .text          0x0000661c      0xc30 main.o
                 0x0000661c                timer0ISR
                 0x00006a8c                mainloop
                 0x00006704                main
                 0x00006e98                ACISDK
- .text          0x00007214       0x8c hardware.o
-                0x00007214                LED
- .text          0x000072a0      0x5b8 system.o
-                0x000074a8                init_timer0
-                0x0000763c                init_spi1
-                0x00007550                PWM_Init
-                0x00007400                init_ports
-                0x000072a0                init
-                0x00007604                init_spi
-                0x00007328                init_interrupts
-                0x00007810                delay
-                0x00007758                processorClockFrequency
-                0x00007718                pll_feed
-                0x000076d8                pll_init
-                0x00007778                peripheralClockFrequency
- .text          0x00007858      0xeb4 uart.o
-                0x00007d24                UARTWriteChar
-                0x00007c78                UART1Initialize
-                0x00007fe8                UART_send_ringbuffer
-                0x00007e54                __putchar
-                0x00007dc4                UARTReadChar
-                0x00007e0c                UART1ReadChar
-                0x00007858                uart1ISR
-                0x00007e98                UART_send
-                0x000082a0                crc16
-                0x000081b0                crc_update
-                0x00008520                ringbuffer1
-                0x00007928                uart0ISR
-                0x000080b8                UART_SendPacket
-                0x00008334                ringbuffer
-                0x00007bcc                UARTInitialize
-                0x00007d74                UART1WriteChar
-                0x00008050                UART1_send_ringbuffer
-                0x00007f54                UART1_send
- .text          0x0000870c      0x2b4 syscalls.o
-                0x000088b4                _lseek_r
-                0x000088e8                _fstat_r
-                0x00008924                isatty
-                0x0000894c                _sbrk_r
-                0x0000870c                _read_r
-                0x00008888                _close_r
-                0x000087ec                _write_r
- .text          0x000089c0      0x750 i2c.o
-                0x00008e5c                I2C0_send_motordata
-                0x00009080                I2CEngine
-                0x000089c0                I2C0MasterHandler
-                0x00008f08                I2CStart
-                0x00008f9c                I2CStop
-                0x00008ff8                I2CInit
- .text          0x00009110     0x1048 i2c1.o
-                0x00009404                fireFlyLedHandler
-                0x00009110                I2C1MasterHandler
-                0x00009f40                I2C1_setRGBLed
-                0x0000a12c                I2C1State
-                0x0000a0b8                I2C1Engine
-                0x0000a044                I2C1Init
- .text          0x0000a158      0x2d8 Common_WinARM/src/irq.o
-                0x0000a244                install_irq
-                0x0000a338                uninstall_irq
-                0x0000a180                init_VIC
- .text          0x0000a430      0x3ec adc.o
-                0x0000a740                ADC0getSamplingResults
-                0x0000a430                ADCInit
-                0x0000a5f4                ADC1Read
-                0x0000a4b8                ADC0Read
-                0x0000a6fc                ADC0triggerSampling
- .text          0x0000a81c      0x420 ssp.o
-                0x0000aa34                LL_write
-                0x0000a9f4                LL_write_init
-                0x0000a81c                SSPHandler
- .text          0x0000ac3c      0x928 pelican_ptu.o
-                0x0000ac3c                PTU_init
-                0x0000b140                SERVO_roll_move
-                0x0000b220                PTU_update_middle_positions_by_stick
-                0x0000ad5c                PTU_update
-                0x0000b058                SERVO_pitch_move
- .text          0x0000b564     0x1090 jetiTelemetry.o
-                0x0000c0a8                jetiSetValueDate
-                0x0000b6ac                jetiSetDeviceName
-                0x0000bbf8                jetiSetValue6B
-                0x0000b910                jetiSetValue30B
-                0x0000ba80                jetiSetValue22B
-                0x0000b7ec                jetiDeactivateValue
-                0x0000bee0                jetiSetValueTime
-                0x0000c29c                jetiSetTextDisplay
-                0x0000b608                jetiSetAlarm
-                0x0000bd68                jetiSetValue14B
-                0x0000b868                jetiSetDecimalPoint
-                0x0000b5a8                jetiCheckForKeyChange
-                0x0000b564                jetiSetKeyChanged
-                0x0000b764                jetiActivateValue
-                0x0000c3e8                jetiInitValue
- .text          0x0000c5f4      0x69c LPC2k_ee.o
-                0x0000cc08                enter_isp
-                0x0000c5f4                ee_erase
-                0x0000c954                ee_read
-                0x0000c730                ee_write
-                0x0000ca4c                ee_count
-                0x0000c9e4                ee_readn
-                0x0000cac0                ee_locate
- .text          0x0000cc90     0x14cc lab.o
-                0x0000cc90                lab
-                0x0000ccf0                VelocityEst
-                0x0000d920                lab2
-                0x0000da5c                Command
-                0x0000d208                lab3
-                0x0000dfac                Bens_Control_Law
-                0x0000e104                Bens_Command
- .text          0x0000e15c      0xfbc Utilites.o
-                0x0000e3e0                matrix_scalar_mult
-                0x0000e550                matrix_transpose
-                0x0000ed74                cofactors
-                0x0000e4bc                vector_scalar_mult
-                0x0000e8dc                determinant
-                0x0000e2dc                matrix_add
-                0x0000e61c                matrix_multiply
-                0x0000ec10                vector_copy
-                0x0000efd8                inverse
-                0x0000e7b0                vector_multiply
-                0x0000e230                vector_add
-                0x0000ec90                make_identity
-                0x0000e15c                angle_diff
- .text          0x0000f118       0x20 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memcpy.o)
-                0x0000f118                memcpy
- .text          0x0000f138       0x84 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(sprintf.o)
-                0x0000f17c                _sprintf_r
-                0x0000f138                sprintf
- .text          0x0000f1bc       0x10 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(strcpy.o)
-                0x0000f1bc                strcpy
- .text          0x0000f1cc       0x10 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(strlen.o)
-                0x0000f1cc                strlen
- .text          0x0000f1dc     0x1460 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(vfprintf.o)
-                0x0000f1fc                _vfprintf_r
-                0x0001061c                vfprintf
- .text          0x0001063c       0x50 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wcrtomb.o)
-                0x0001063c                _wcrtomb_r
-                0x0001066c                wcrtomb
- .text          0x0001068c       0xd8 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wcsrtombs.o)
-                0x0001068c                _wcsrtombs_r
-                0x0001073c                wcsrtombs
- .text          0x00010764      0x2b0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wctomb_r.o)
-                0x00010764                _wctomb_r
- .text          0x00010a14       0x94 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wsetup.o)
-                0x00010a14                __swsetup
- .text          0x00010aa8      0xd30 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(dtoa.o)
-                0x00010bdc                _dtoa_r
- .text          0x000117d8       0x88 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fflush.o)
-                0x000117d8                fflush
- .text          0x00011860      0x1b0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(findfp.o)
-                0x00011898                __sinit
-                0x00011930                __sfmoreglue
-                0x0001191c                _cleanup
-                0x0001190c                _cleanup_r
-                0x00011980                __fp_lock_all
-                0x000118f4                __sfp_lock_acquire
-                0x00011998                __sfp
-                0x00011900                __sinit_lock_release
-                0x00011968                __fp_unlock_all
-                0x000118f8                __sfp_lock_release
-                0x000118fc                __sinit_lock_acquire
- .text          0x00011a10      0x248 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(freer.o)
-                0x00011ab0                _free_r
-                0x00011a10                _malloc_trim_r
- .text          0x00011c58      0x25c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fvwrite.o)
-                0x00011c58                __sfvwrite
- .text          0x00011eb4       0xb4 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fwalk.o)
-                0x00011f10                _fwalk
-                0x00011eb4                _fwalk_reent
- .text          0x00011f68        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(impure.o)
- .text          0x00011f68       0x78 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(locale.o)
-                0x00011f7c                _setlocale_r
-                0x00011f68                __locale_charset
-                0x00011f74                _localeconv_r
-                0x00011fbc                setlocale
-                0x00011fd8                localeconv
- .text          0x00011fe0       0xd8 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(makebuf.o)
-                0x00011fe0                __smakebuf
- .text          0x000120b8      0x4ac c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mallocr.o)
-                0x000120b8                _malloc_r
- .text          0x00012564       0x18 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memchr.o)
-                0x00012564                memchr
- .text          0x0001257c       0x38 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memmove.o)
-                0x0001257c                memmove
- .text          0x000125b4       0x10 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memset.o)
-                0x000125b4                memset
- .text          0x000125c4        0x8 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mlock.o)
-                0x000125c8                __malloc_unlock
-                0x000125c4                __malloc_lock
- .text          0x000125cc      0x834 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mprec.o)
-                0x0001283c                _mprec_log10
-                0x000125e4                _hi0bits
-                0x00012880                _Balloc
-                0x000128dc                _d2b
-                0x00012b20                _multiply
-                0x000127e8                _ratio
-                0x00012d7c                _s2b
-                0x00012c4c                _i2b
-                0x0001262c                _lo0bits
-                0x00012698                __mcmp
-                0x00012cf0                _pow5mult
-                0x000126d8                _ulp
-                0x00012728                _b2d
-                0x00012c64                _multadd
-                0x000129b0                __mdiff
-                0x00012a90                _lshift
-                0x000125cc                _Bfree
- .text          0x00012e00      0x308 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(reallocr.o)
-                0x00012e00                _realloc_r
- .text          0x00013108       0x2c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(s_isinf.o)
-                0x00013108                isinf
- .text          0x00013134       0x24 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(s_isnan.o)
-                0x00013134                isnan
- .text          0x00013158       0xd0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(stdio.o)
-                0x00013170                __sseek
-                0x000131f0                __sread
-                0x00013158                __sclose
-                0x000131ac                __swrite
- .text          0x00013228       0x18 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(strcmp.o)
-                0x00013228                strcmp
- .text          0x00013240       0x5c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(callocr.o)
-                0x00013240                _calloc_r
- .text          0x0001329c       0xb8 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fclose.o)
-                0x0001329c                _fclose_r
-                0x0001333c                fclose
- .text          0x00013354       0x8c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_udivsi3.o)
-                0x00013354                __udivsi3
-                0x00013354                __aeabi_uidiv
-                0x000133d0                __aeabi_uidivmod
- .text          0x000133e0       0xa4 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_divsi3.o)
-                0x000133e0                __aeabi_idiv
-                0x000133e0                __divsi3
-                0x00013474                __aeabi_idivmod
- .text          0x00013484       0xc8 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_umodsi3.o)
-                0x00013484                __umodsi3
- .text          0x0001354c       0xd8 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_modsi3.o)
-                0x0001354c                __modsi3
- .text          0x00013624        0x4 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_dvmd_tls.o)
-                0x00013624                __aeabi_ldiv0
-                0x00013624                __div0
-                0x00013624                __aeabi_idiv0
- .text          0x00013628      0x430 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_addsubdf3.o)
-                0x000139ec                __floatdidf
-                0x0001396c                __floatsidf
-                0x00013944                __aeabi_ui2d
-                0x00013628                __aeabi_drsub
-                0x00013998                __extendsfdf2
-                0x00013634                __adddf3
-                0x00013944                __floatunsidf
-                0x00013634                __aeabi_dadd
-                0x000139d8                __aeabi_ul2d
-                0x00013630                __aeabi_dsub
-                0x000139d8                __floatundidf
-                0x0001396c                __aeabi_i2d
-                0x000139ec                __aeabi_l2d
-                0x00013998                __aeabi_f2d
-                0x00013630                __subdf3
- .text          0x00013a58      0x49c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_muldivdf3.o)
-                0x00013ce8                __aeabi_ddiv
-                0x00013a58                __aeabi_dmul
-                0x00013ce8                __divdf3
-                0x00013a58                __muldf3
- .text          0x00013ef4      0x140 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_cmpdf2.o)
-                0x00013fec                __aeabi_dcmple
-                0x00013f04                __cmpdf2
-                0x00013f04                __eqdf2
-                0x00013ef4                __gtdf2
-                0x00013fa4                __aeabi_cdcmple
-                0x00013f88                __aeabi_cdrcmple
-                0x00013efc                __ltdf2
-                0x00013fd4                __aeabi_dcmplt
-                0x00013efc                __ledf2
-                0x0001401c                __aeabi_dcmpgt
-                0x00014004                __aeabi_dcmpge
-                0x00013f04                __nedf2
-                0x00013fbc                __aeabi_dcmpeq
-                0x00013fa4                __aeabi_cdcmpeq
-                0x00013ef4                __gedf2
- .text          0x00014034       0x5c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixdfsi.o)
-                0x00014034                __fixdfsi
-                0x00014034                __aeabi_d2iz
- .text          0x00014090       0xa0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_truncdfsf2.o)
-                0x00014090                __aeabi_d2f
-                0x00014090                __truncdfsf2
- .text          0x00014130      0x2ac c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_addsubsf3.o)
-                0x0001413c                __aeabi_fadd
-                0x00014138                __subsf3
-                0x00014300                __aeabi_i2f
-                0x00014138                __aeabi_fsub
-                0x00014330                __floatdisf
-                0x00014300                __floatsisf
-                0x00014320                __floatundisf
-                0x000142f8                __aeabi_ui2f
-                0x00014330                __aeabi_l2f
-                0x00014320                __aeabi_ul2f
-                0x00014130                __aeabi_frsub
-                0x000142f8                __floatunsisf
-                0x0001413c                __addsf3
- .text          0x000143dc      0x2f8 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_muldivsf3.o)
-                0x00014574                __divsf3
-                0x00014574                __aeabi_fdiv
-                0x000143dc                __mulsf3
-                0x000143dc                __aeabi_fmul
- .text          0x000146d4      0x110 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_cmpsf2.o)
-                0x000147cc                __aeabi_fcmpgt
-                0x000146dc                __lesf2
-                0x000146e4                __nesf2
-                0x000147b4                __aeabi_fcmpge
-                0x000146d4                __gtsf2
-                0x0001479c                __aeabi_fcmple
-                0x000146e4                __eqsf2
-                0x000146e4                __cmpsf2
-                0x000146dc                __ltsf2
-                0x00014754                __aeabi_cfcmple
-                0x000146d4                __gesf2
-                0x0001476c                __aeabi_fcmpeq
-                0x00014744                __aeabi_cfrcmple
-                0x00014784                __aeabi_fcmplt
-                0x00014754                __aeabi_cfcmpeq
- .text          0x000147e4       0x5c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixsfsi.o)
-                0x000147e4                __fixsfsi
-                0x000147e4                __aeabi_f2iz
- .text          0x00014840       0x54 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixunssfsi.o)
-                0x00014840                __aeabi_f2uiz
-                0x00014840                __fixunssfsi
- .text          0x00014894     0x3250 ./\libdeclination.a(declination.o)
-                0x00017340                geomg1
-                0x000173b0                getDeclination
-                0x000172d8                geomag
- .text          0x00017ae4     0x1e88 ./\libublox.a(ublox.o)
-                0x0001860c                uBloxReceiveHandler
-                0x00017cfc                pollMessageRate
-                0x00018cd0                uBloxReceiveEngine
-                0x00017e54                uBloxHandleMessage
-                0x00017db8                uBloxResetConfiguration
-                0x00017d54                setMessageRate
-                0x00017ae4                uBloxSendMessage
- .text          0x0001996c       0xa8 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_cos.o)
-                0x0001996c                cos
- .text          0x00019a14       0xac c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_sin.o)
-                0x00019a14                sin
- .text          0x00019ac0       0xc0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_atan2.o)
-                0x00019ac0                atan2
- .text          0x00019b80      0x33c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_pow.o)
-                0x00019b80                pow
- .text          0x00019ebc       0xb8 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_sqrt.o)
-                0x00019ebc                sqrt
- .text          0x00019f74       0xc0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(wf_fmod.o)
-                0x00019f74                fmodf
- .text          0x0001a034      0x2dc c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(wf_pow.o)
-                0x0001a034                powf
- .text          0x0001a310      0x20c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_atan2.o)
-                0x0001a310                __ieee754_atan2
- .text          0x0001a51c      0xb0c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_pow.o)
-                0x0001a51c                __ieee754_pow
- .text          0x0001b028      0x420 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_rem_pio2.o)
-                0x0001b028                __ieee754_rem_pio2
- .text          0x0001b448      0x1a0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_sqrt.o)
-                0x0001b448                __ieee754_sqrt
- .text          0x0001b5e8      0x128 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_fmod.o)
-                0x0001b5e8                __ieee754_fmodf
- .text          0x0001b710      0x720 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_pow.o)
-                0x0001b710                __ieee754_powf
- .text          0x0001be30       0xb4 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_sqrt.o)
-                0x0001be30                __ieee754_sqrtf
- .text          0x0001bee4      0x264 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_cos.o)
-                0x0001bee4                __kernel_cos
- .text          0x0001c148      0x744 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_rem_pio2.o)
-                0x0001c148                __kernel_rem_pio2
- .text          0x0001c88c      0x178 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_sin.o)
-                0x0001c88c                __kernel_sin
- .text          0x0001ca04      0x35c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_atan.o)
-                0x0001ca04                atan
- .text          0x0001cd60       0x18 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_fabs.o)
-                0x0001cd60                fabs
- .text          0x0001cd78       0x1c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_finite.o)
-                0x0001cd78                finite
- .text          0x0001cd94      0x12c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_floor.o)
-                0x0001cd94                floor
- .text          0x0001cec0        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_lib_ver.o)
- .text          0x0001cec0        0x4 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_matherr.o)
-                0x0001cec0                matherr
- .text          0x0001cec4      0x14c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_rint.o)
-                0x0001cec4                rint
- .text          0x0001d010      0x110 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_scalbn.o)
-                0x0001d010                scalbn
- .text          0x0001d120        0xc c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_fabs.o)
-                0x0001d120                fabsf
- .text          0x0001d12c       0x1c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_finite.o)
-                0x0001d12c                finitef
- .text          0x0001d148       0x18 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_isnan.o)
-                0x0001d148                isnanf
- .text          0x0001d160       0xc0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_scalbn.o)
-                0x0001d160                scalbnf
- .text          0x0001d220       0x24 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_copysign.o)
-                0x0001d220                copysign
- .text          0x0001d244       0x14 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_copysign.o)
-                0x0001d244                copysignf
- .text          0x0001d258        0xc c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libg.a(errno.o)
-                0x0001d258                __errno
+ .text          0x0000724c       0x8c hardware.o
+                0x0000724c                LED
+ .text          0x000072d8      0x5b8 system.o
+                0x000074e0                init_timer0
+                0x00007674                init_spi1
+                0x00007588                PWM_Init
+                0x00007438                init_ports
+                0x000072d8                init
+                0x0000763c                init_spi
+                0x00007360                init_interrupts
+                0x00007848                delay
+                0x00007790                processorClockFrequency
+                0x00007750                pll_feed
+                0x00007710                pll_init
+                0x000077b0                peripheralClockFrequency
+ .text          0x00007890      0xeb4 uart.o
+                0x00007d5c                UARTWriteChar
+                0x00007cb0                UART1Initialize
+                0x00008020                UART_send_ringbuffer
+                0x00007e8c                __putchar
+                0x00007dfc                UARTReadChar
+                0x00007e44                UART1ReadChar
+                0x00007890                uart1ISR
+                0x00007ed0                UART_send
+                0x000082d8                crc16
+                0x000081e8                crc_update
+                0x00008558                ringbuffer1
+                0x00007960                uart0ISR
+                0x000080f0                UART_SendPacket
+                0x0000836c                ringbuffer
+                0x00007c04                UARTInitialize
+                0x00007dac                UART1WriteChar
+                0x00008088                UART1_send_ringbuffer
+                0x00007f8c                UART1_send
+ .text          0x00008744      0x2b4 syscalls.o
+                0x000088ec                _lseek_r
+                0x00008920                _fstat_r
+                0x0000895c                isatty
+                0x00008984                _sbrk_r
+                0x00008744                _read_r
+                0x000088c0                _close_r
+                0x00008824                _write_r
+ .text          0x000089f8      0x750 i2c.o
+                0x00008e94                I2C0_send_motordata
+                0x000090b8                I2CEngine
+                0x000089f8                I2C0MasterHandler
+                0x00008f40                I2CStart
+                0x00008fd4                I2CStop
+                0x00009030                I2CInit
+ .text          0x00009148     0x1048 i2c1.o
+                0x0000943c                fireFlyLedHandler
+                0x00009148                I2C1MasterHandler
+                0x00009f78                I2C1_setRGBLed
+                0x0000a164                I2C1State
+                0x0000a0f0                I2C1Engine
+                0x0000a07c                I2C1Init
+ .text          0x0000a190      0x2d8 Common_WinARM/src/irq.o
+                0x0000a27c                install_irq
+                0x0000a370                uninstall_irq
+                0x0000a1b8                init_VIC
+ .text          0x0000a468      0x3ec adc.o
+                0x0000a778                ADC0getSamplingResults
+                0x0000a468                ADCInit
+                0x0000a62c                ADC1Read
+                0x0000a4f0                ADC0Read
+                0x0000a734                ADC0triggerSampling
+ .text          0x0000a854      0x420 ssp.o
+                0x0000aa6c                LL_write
+                0x0000aa2c                LL_write_init
+                0x0000a854                SSPHandler
+ .text          0x0000ac74      0x928 pelican_ptu.o
+                0x0000ac74                PTU_init
+                0x0000b178                SERVO_roll_move
+                0x0000b258                PTU_update_middle_positions_by_stick
+                0x0000ad94                PTU_update
+                0x0000b090                SERVO_pitch_move
+ .text          0x0000b59c     0x1090 jetiTelemetry.o
+                0x0000c0e0                jetiSetValueDate
+                0x0000b6e4                jetiSetDeviceName
+                0x0000bc30                jetiSetValue6B
+                0x0000b948                jetiSetValue30B
+                0x0000bab8                jetiSetValue22B
+                0x0000b824                jetiDeactivateValue
+                0x0000bf18                jetiSetValueTime
+                0x0000c2d4                jetiSetTextDisplay
+                0x0000b640                jetiSetAlarm
+                0x0000bda0                jetiSetValue14B
+                0x0000b8a0                jetiSetDecimalPoint
+                0x0000b5e0                jetiCheckForKeyChange
+                0x0000b59c                jetiSetKeyChanged
+                0x0000b79c                jetiActivateValue
+                0x0000c420                jetiInitValue
+ .text          0x0000c62c      0x69c LPC2k_ee.o
+                0x0000cc40                enter_isp
+                0x0000c62c                ee_erase
+                0x0000c98c                ee_read
+                0x0000c768                ee_write
+                0x0000ca84                ee_count
+                0x0000ca1c                ee_readn
+                0x0000caf8                ee_locate
+ .text          0x0000ccc8     0x14c8 lab.o
+                0x0000ccc8                lab
+                0x0000cd28                VelocityEst
+                0x0000d958                lab2
+                0x0000da94                Command
+                0x0000d240                lab3
+                0x0000dfe4                Bens_Control_Law
+                0x0000e138                Bens_Command
+ .text          0x0000e190      0xfbc Utilites.o
+                0x0000e414                matrix_scalar_mult
+                0x0000e584                matrix_transpose
+                0x0000eda8                cofactors
+                0x0000e4f0                vector_scalar_mult
+                0x0000e910                determinant
+                0x0000e310                matrix_add
+                0x0000e650                matrix_multiply
+                0x0000ec44                vector_copy
+                0x0000f00c                inverse
+                0x0000e7e4                vector_multiply
+                0x0000e264                vector_add
+                0x0000ecc4                make_identity
+                0x0000e190                angle_diff
+ .text          0x0000f14c       0x20 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memcpy.o)
+                0x0000f14c                memcpy
+ .text          0x0000f16c       0x84 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(sprintf.o)
+                0x0000f1b0                _sprintf_r
+                0x0000f16c                sprintf
+ .text          0x0000f1f0       0x10 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(strcpy.o)
+                0x0000f1f0                strcpy
+ .text          0x0000f200       0x10 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(strlen.o)
+                0x0000f200                strlen
+ .text          0x0000f210     0x1460 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(vfprintf.o)
+                0x0000f230                _vfprintf_r
+                0x00010650                vfprintf
+ .text          0x00010670       0x50 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wcrtomb.o)
+                0x00010670                _wcrtomb_r
+                0x000106a0                wcrtomb
+ .text          0x000106c0       0xd8 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wcsrtombs.o)
+                0x000106c0                _wcsrtombs_r
+                0x00010770                wcsrtombs
+ .text          0x00010798      0x2b0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wctomb_r.o)
+                0x00010798                _wctomb_r
+ .text          0x00010a48       0x94 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wsetup.o)
+                0x00010a48                __swsetup
+ .text          0x00010adc      0xd30 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(dtoa.o)
+                0x00010c10                _dtoa_r
+ .text          0x0001180c       0x88 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fflush.o)
+                0x0001180c                fflush
+ .text          0x00011894      0x1b0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(findfp.o)
+                0x000118cc                __sinit
+                0x00011964                __sfmoreglue
+                0x00011950                _cleanup
+                0x00011940                _cleanup_r
+                0x000119b4                __fp_lock_all
+                0x00011928                __sfp_lock_acquire
+                0x000119cc                __sfp
+                0x00011934                __sinit_lock_release
+                0x0001199c                __fp_unlock_all
+                0x0001192c                __sfp_lock_release
+                0x00011930                __sinit_lock_acquire
+ .text          0x00011a44      0x248 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(freer.o)
+                0x00011ae4                _free_r
+                0x00011a44                _malloc_trim_r
+ .text          0x00011c8c      0x25c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fvwrite.o)
+                0x00011c8c                __sfvwrite
+ .text          0x00011ee8       0xb4 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fwalk.o)
+                0x00011f44                _fwalk
+                0x00011ee8                _fwalk_reent
+ .text          0x00011f9c        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(impure.o)
+ .text          0x00011f9c       0x78 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(locale.o)
+                0x00011fb0                _setlocale_r
+                0x00011f9c                __locale_charset
+                0x00011fa8                _localeconv_r
+                0x00011ff0                setlocale
+                0x0001200c                localeconv
+ .text          0x00012014       0xd8 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(makebuf.o)
+                0x00012014                __smakebuf
+ .text          0x000120ec      0x4ac c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mallocr.o)
+                0x000120ec                _malloc_r
+ .text          0x00012598       0x18 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memchr.o)
+                0x00012598                memchr
+ .text          0x000125b0       0x38 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memmove.o)
+                0x000125b0                memmove
+ .text          0x000125e8       0x10 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memset.o)
+                0x000125e8                memset
+ .text          0x000125f8        0x8 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mlock.o)
+                0x000125fc                __malloc_unlock
+                0x000125f8                __malloc_lock
+ .text          0x00012600      0x834 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mprec.o)
+                0x00012870                _mprec_log10
+                0x00012618                _hi0bits
+                0x000128b4                _Balloc
+                0x00012910                _d2b
+                0x00012b54                _multiply
+                0x0001281c                _ratio
+                0x00012db0                _s2b
+                0x00012c80                _i2b
+                0x00012660                _lo0bits
+                0x000126cc                __mcmp
+                0x00012d24                _pow5mult
+                0x0001270c                _ulp
+                0x0001275c                _b2d
+                0x00012c98                _multadd
+                0x000129e4                __mdiff
+                0x00012ac4                _lshift
+                0x00012600                _Bfree
+ .text          0x00012e34      0x308 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(reallocr.o)
+                0x00012e34                _realloc_r
+ .text          0x0001313c       0x2c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(s_isinf.o)
+                0x0001313c                isinf
+ .text          0x00013168       0x24 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(s_isnan.o)
+                0x00013168                isnan
+ .text          0x0001318c       0xd0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(stdio.o)
+                0x000131a4                __sseek
+                0x00013224                __sread
+                0x0001318c                __sclose
+                0x000131e0                __swrite
+ .text          0x0001325c       0x18 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(strcmp.o)
+                0x0001325c                strcmp
+ .text          0x00013274       0x5c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(callocr.o)
+                0x00013274                _calloc_r
+ .text          0x000132d0       0xb8 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fclose.o)
+                0x000132d0                _fclose_r
+                0x00013370                fclose
+ .text          0x00013388       0x8c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_udivsi3.o)
+                0x00013388                __udivsi3
+                0x00013388                __aeabi_uidiv
+                0x00013404                __aeabi_uidivmod
+ .text          0x00013414       0xa4 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_divsi3.o)
+                0x00013414                __aeabi_idiv
+                0x00013414                __divsi3
+                0x000134a8                __aeabi_idivmod
+ .text          0x000134b8       0xc8 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_umodsi3.o)
+                0x000134b8                __umodsi3
+ .text          0x00013580       0xd8 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_modsi3.o)
+                0x00013580                __modsi3
+ .text          0x00013658        0x4 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_dvmd_tls.o)
+                0x00013658                __aeabi_ldiv0
+                0x00013658                __div0
+                0x00013658                __aeabi_idiv0
+ .text          0x0001365c      0x430 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_addsubdf3.o)
+                0x00013a20                __floatdidf
+                0x000139a0                __floatsidf
+                0x00013978                __aeabi_ui2d
+                0x0001365c                __aeabi_drsub
+                0x000139cc                __extendsfdf2
+                0x00013668                __adddf3
+                0x00013978                __floatunsidf
+                0x00013668                __aeabi_dadd
+                0x00013a0c                __aeabi_ul2d
+                0x00013664                __aeabi_dsub
+                0x00013a0c                __floatundidf
+                0x000139a0                __aeabi_i2d
+                0x00013a20                __aeabi_l2d
+                0x000139cc                __aeabi_f2d
+                0x00013664                __subdf3
+ .text          0x00013a8c      0x49c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_muldivdf3.o)
+                0x00013d1c                __aeabi_ddiv
+                0x00013a8c                __aeabi_dmul
+                0x00013d1c                __divdf3
+                0x00013a8c                __muldf3
+ .text          0x00013f28      0x140 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_cmpdf2.o)
+                0x00014020                __aeabi_dcmple
+                0x00013f38                __cmpdf2
+                0x00013f38                __eqdf2
+                0x00013f28                __gtdf2
+                0x00013fd8                __aeabi_cdcmple
+                0x00013fbc                __aeabi_cdrcmple
+                0x00013f30                __ltdf2
+                0x00014008                __aeabi_dcmplt
+                0x00013f30                __ledf2
+                0x00014050                __aeabi_dcmpgt
+                0x00014038                __aeabi_dcmpge
+                0x00013f38                __nedf2
+                0x00013ff0                __aeabi_dcmpeq
+                0x00013fd8                __aeabi_cdcmpeq
+                0x00013f28                __gedf2
+ .text          0x00014068       0x5c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixdfsi.o)
+                0x00014068                __fixdfsi
+                0x00014068                __aeabi_d2iz
+ .text          0x000140c4       0xa0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_truncdfsf2.o)
+                0x000140c4                __aeabi_d2f
+                0x000140c4                __truncdfsf2
+ .text          0x00014164      0x2ac c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_addsubsf3.o)
+                0x00014170                __aeabi_fadd
+                0x0001416c                __subsf3
+                0x00014334                __aeabi_i2f
+                0x0001416c                __aeabi_fsub
+                0x00014364                __floatdisf
+                0x00014334                __floatsisf
+                0x00014354                __floatundisf
+                0x0001432c                __aeabi_ui2f
+                0x00014364                __aeabi_l2f
+                0x00014354                __aeabi_ul2f
+                0x00014164                __aeabi_frsub
+                0x0001432c                __floatunsisf
+                0x00014170                __addsf3
+ .text          0x00014410      0x2f8 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_muldivsf3.o)
+                0x000145a8                __divsf3
+                0x000145a8                __aeabi_fdiv
+                0x00014410                __mulsf3
+                0x00014410                __aeabi_fmul
+ .text          0x00014708      0x110 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_cmpsf2.o)
+                0x00014800                __aeabi_fcmpgt
+                0x00014710                __lesf2
+                0x00014718                __nesf2
+                0x000147e8                __aeabi_fcmpge
+                0x00014708                __gtsf2
+                0x000147d0                __aeabi_fcmple
+                0x00014718                __eqsf2
+                0x00014718                __cmpsf2
+                0x00014710                __ltsf2
+                0x00014788                __aeabi_cfcmple
+                0x00014708                __gesf2
+                0x000147a0                __aeabi_fcmpeq
+                0x00014778                __aeabi_cfrcmple
+                0x000147b8                __aeabi_fcmplt
+                0x00014788                __aeabi_cfcmpeq
+ .text          0x00014818       0x5c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixsfsi.o)
+                0x00014818                __fixsfsi
+                0x00014818                __aeabi_f2iz
+ .text          0x00014874       0x54 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixunssfsi.o)
+                0x00014874                __aeabi_f2uiz
+                0x00014874                __fixunssfsi
+ .text          0x000148c8     0x3250 ./\libdeclination.a(declination.o)
+                0x00017374                geomg1
+                0x000173e4                getDeclination
+                0x0001730c                geomag
+ .text          0x00017b18     0x1e88 ./\libublox.a(ublox.o)
+                0x00018640                uBloxReceiveHandler
+                0x00017d30                pollMessageRate
+                0x00018d04                uBloxReceiveEngine
+                0x00017e88                uBloxHandleMessage
+                0x00017dec                uBloxResetConfiguration
+                0x00017d88                setMessageRate
+                0x00017b18                uBloxSendMessage
+ .text          0x000199a0       0xa8 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_cos.o)
+                0x000199a0                cos
+ .text          0x00019a48       0xac c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_sin.o)
+                0x00019a48                sin
+ .text          0x00019af4       0xc0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_atan2.o)
+                0x00019af4                atan2
+ .text          0x00019bb4      0x33c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_pow.o)
+                0x00019bb4                pow
+ .text          0x00019ef0       0xb8 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_sqrt.o)
+                0x00019ef0                sqrt
+ .text          0x00019fa8       0xc0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(wf_fmod.o)
+                0x00019fa8                fmodf
+ .text          0x0001a068      0x2dc c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(wf_pow.o)
+                0x0001a068                powf
+ .text          0x0001a344      0x20c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_atan2.o)
+                0x0001a344                __ieee754_atan2
+ .text          0x0001a550      0xb0c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_pow.o)
+                0x0001a550                __ieee754_pow
+ .text          0x0001b05c      0x420 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_rem_pio2.o)
+                0x0001b05c                __ieee754_rem_pio2
+ .text          0x0001b47c      0x1a0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_sqrt.o)
+                0x0001b47c                __ieee754_sqrt
+ .text          0x0001b61c      0x128 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_fmod.o)
+                0x0001b61c                __ieee754_fmodf
+ .text          0x0001b744      0x720 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_pow.o)
+                0x0001b744                __ieee754_powf
+ .text          0x0001be64       0xb4 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_sqrt.o)
+                0x0001be64                __ieee754_sqrtf
+ .text          0x0001bf18      0x264 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_cos.o)
+                0x0001bf18                __kernel_cos
+ .text          0x0001c17c      0x744 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_rem_pio2.o)
+                0x0001c17c                __kernel_rem_pio2
+ .text          0x0001c8c0      0x178 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_sin.o)
+                0x0001c8c0                __kernel_sin
+ .text          0x0001ca38      0x35c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_atan.o)
+                0x0001ca38                atan
+ .text          0x0001cd94       0x18 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_fabs.o)
+                0x0001cd94                fabs
+ .text          0x0001cdac       0x1c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_finite.o)
+                0x0001cdac                finite
+ .text          0x0001cdc8      0x12c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_floor.o)
+                0x0001cdc8                floor
+ .text          0x0001cef4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_lib_ver.o)
+ .text          0x0001cef4        0x4 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_matherr.o)
+                0x0001cef4                matherr
+ .text          0x0001cef8      0x14c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_rint.o)
+                0x0001cef8                rint
+ .text          0x0001d044      0x110 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_scalbn.o)
+                0x0001d044                scalbn
+ .text          0x0001d154        0xc c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_fabs.o)
+                0x0001d154                fabsf
+ .text          0x0001d160       0x1c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_finite.o)
+                0x0001d160                finitef
+ .text          0x0001d17c       0x18 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_isnan.o)
+                0x0001d17c                isnanf
+ .text          0x0001d194       0xc0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_scalbn.o)
+                0x0001d194                scalbnf
+ .text          0x0001d254       0x24 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_copysign.o)
+                0x0001d254                copysign
+ .text          0x0001d278       0x14 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_copysign.o)
+                0x0001d278                copysignf
+ .text          0x0001d28c        0xc c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libg.a(errno.o)
+                0x0001d28c                __errno
  *(.gnu.linkonce.t.*)
  *(.glue_7)
- .glue_7        0x0001d264        0x0 Common_WinARM/src/Startup.o
- .glue_7        0x0001d264        0x0 Common_WinARM/src/swi_handler.o
- .glue_7        0x0001d264        0x0 LL_HL_comm.o
- .glue_7        0x0001d264        0x0 mymath.o
- .glue_7        0x0001d264        0x0 gpsmath.o
- .glue_7        0x0001d264        0x0 sdk.o
- .glue_7        0x0001d264        0x0 sdk_telemetry.o
- .glue_7        0x0001d264        0x0 buzzer.o
- .glue_7        0x0001d264        0x0 lpc_aci_eeprom.o
- .glue_7        0x0001d264        0x0 asctecCommIntfOnboard.o
- .glue_7        0x0001d264        0x0 buildInfoSetup.o
- .glue_7        0x0001d264        0x0 main.o
- .glue_7        0x0001d264        0x0 hardware.o
- .glue_7        0x0001d264        0x0 system.o
- .glue_7        0x0001d264        0x0 uart.o
- .glue_7        0x0001d264        0x0 syscalls.o
- .glue_7        0x0001d264        0x0 i2c.o
- .glue_7        0x0001d264        0x0 i2c1.o
- .glue_7        0x0001d264        0x0 Common_WinARM/src/irq.o
- .glue_7        0x0001d264        0x0 adc.o
- .glue_7        0x0001d264        0x0 ssp.o
- .glue_7        0x0001d264        0x0 pelican_ptu.o
- .glue_7        0x0001d264        0x0 jetiTelemetry.o
- .glue_7        0x0001d264        0x0 LPC2k_ee.o
- .glue_7        0x0001d264        0x0 lab.o
- .glue_7        0x0001d264        0x0 Utilites.o
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memcpy.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(sprintf.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(strcpy.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(strlen.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(vfprintf.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wcrtomb.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wcsrtombs.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wctomb_r.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wsetup.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(dtoa.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fflush.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(findfp.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(freer.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fvwrite.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fwalk.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(impure.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(locale.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(makebuf.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mallocr.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memchr.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memmove.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memset.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mlock.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mprec.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(reallocr.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(s_isinf.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(s_isnan.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(stdio.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(strcmp.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(callocr.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fclose.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_udivsi3.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_divsi3.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_umodsi3.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_modsi3.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_dvmd_tls.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_addsubdf3.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_muldivdf3.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_cmpdf2.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixdfsi.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_truncdfsf2.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_addsubsf3.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_muldivsf3.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_cmpsf2.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixsfsi.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixunssfsi.o)
- .glue_7        0x0001d264        0x0 ./\libdeclination.a(declination.o)
- .glue_7        0x0001d264        0x0 ./\libublox.a(ublox.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_cos.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_sin.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_atan2.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_pow.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_sqrt.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(wf_fmod.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(wf_pow.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_atan2.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_pow.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_rem_pio2.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_sqrt.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_fmod.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_pow.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_sqrt.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_cos.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_rem_pio2.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_sin.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_atan.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_fabs.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_finite.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_floor.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_lib_ver.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_matherr.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_rint.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_scalbn.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_fabs.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_finite.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_isnan.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_scalbn.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_copysign.o)
- .glue_7        0x0001d264        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_copysign.o)
- .glue_7        0x0001d264       0x9c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libg.a(errno.o)
-                0x0001d2ac                __strcpy_from_arm
-                0x0001d2f4                __atan2_from_arm
-                0x0001d2a0                __strlen_from_arm
-                0x0001d27c                __cos_from_arm
-                0x0001d2dc                __powf_from_arm
-                0x0001d294                ____udivsi3_from_arm
-                0x0001d288                __sprintf_from_arm
-                0x0001d270                ____divsi3_from_arm
-                0x0001d264                __memcpy_from_arm
-                0x0001d2e8                __sin_from_arm
-                0x0001d2c4                __fmodf_from_arm
-                0x0001d2b8                __sqrt_from_arm
-                0x0001d2d0                __pow_from_arm
+ .glue_7        0x0001d298        0x0 Common_WinARM/src/Startup.o
+ .glue_7        0x0001d298        0x0 Common_WinARM/src/swi_handler.o
+ .glue_7        0x0001d298        0x0 LL_HL_comm.o
+ .glue_7        0x0001d298        0x0 mymath.o
+ .glue_7        0x0001d298        0x0 gpsmath.o
+ .glue_7        0x0001d298        0x0 sdk.o
+ .glue_7        0x0001d298        0x0 sdk_telemetry.o
+ .glue_7        0x0001d298        0x0 buzzer.o
+ .glue_7        0x0001d298        0x0 lpc_aci_eeprom.o
+ .glue_7        0x0001d298        0x0 asctecCommIntfOnboard.o
+ .glue_7        0x0001d298        0x0 buildInfoSetup.o
+ .glue_7        0x0001d298        0x0 main.o
+ .glue_7        0x0001d298        0x0 hardware.o
+ .glue_7        0x0001d298        0x0 system.o
+ .glue_7        0x0001d298        0x0 uart.o
+ .glue_7        0x0001d298        0x0 syscalls.o
+ .glue_7        0x0001d298        0x0 i2c.o
+ .glue_7        0x0001d298        0x0 i2c1.o
+ .glue_7        0x0001d298        0x0 Common_WinARM/src/irq.o
+ .glue_7        0x0001d298        0x0 adc.o
+ .glue_7        0x0001d298        0x0 ssp.o
+ .glue_7        0x0001d298        0x0 pelican_ptu.o
+ .glue_7        0x0001d298        0x0 jetiTelemetry.o
+ .glue_7        0x0001d298        0x0 LPC2k_ee.o
+ .glue_7        0x0001d298        0x0 lab.o
+ .glue_7        0x0001d298        0x0 Utilites.o
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memcpy.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(sprintf.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(strcpy.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(strlen.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(vfprintf.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wcrtomb.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wcsrtombs.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wctomb_r.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wsetup.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(dtoa.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fflush.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(findfp.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(freer.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fvwrite.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fwalk.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(impure.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(locale.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(makebuf.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mallocr.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memchr.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memmove.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memset.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mlock.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mprec.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(reallocr.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(s_isinf.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(s_isnan.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(stdio.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(strcmp.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(callocr.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fclose.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_udivsi3.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_divsi3.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_umodsi3.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_modsi3.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_dvmd_tls.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_addsubdf3.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_muldivdf3.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_cmpdf2.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixdfsi.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_truncdfsf2.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_addsubsf3.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_muldivsf3.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_cmpsf2.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixsfsi.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixunssfsi.o)
+ .glue_7        0x0001d298        0x0 ./\libdeclination.a(declination.o)
+ .glue_7        0x0001d298        0x0 ./\libublox.a(ublox.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_cos.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_sin.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_atan2.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_pow.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_sqrt.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(wf_fmod.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(wf_pow.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_atan2.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_pow.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_rem_pio2.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_sqrt.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_fmod.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_pow.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_sqrt.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_cos.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_rem_pio2.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_sin.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_atan.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_fabs.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_finite.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_floor.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_lib_ver.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_matherr.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_rint.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_scalbn.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_fabs.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_finite.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_isnan.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_scalbn.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_copysign.o)
+ .glue_7        0x0001d298        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_copysign.o)
+ .glue_7        0x0001d298       0x9c c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libg.a(errno.o)
+                0x0001d2e0                __strcpy_from_arm
+                0x0001d328                __atan2_from_arm
+                0x0001d2d4                __strlen_from_arm
+                0x0001d2b0                __cos_from_arm
+                0x0001d310                __powf_from_arm
+                0x0001d2c8                ____udivsi3_from_arm
+                0x0001d2bc                __sprintf_from_arm
+                0x0001d2a4                ____divsi3_from_arm
+                0x0001d298                __memcpy_from_arm
+                0x0001d31c                __sin_from_arm
+                0x0001d2f8                __fmodf_from_arm
+                0x0001d2ec                __sqrt_from_arm
+                0x0001d304                __pow_from_arm
  *(.glue_7t)
- .glue_7t       0x0001d300        0x0 Common_WinARM/src/Startup.o
- .glue_7t       0x0001d300        0x0 Common_WinARM/src/swi_handler.o
- .glue_7t       0x0001d300        0x0 LL_HL_comm.o
- .glue_7t       0x0001d300        0x0 mymath.o
- .glue_7t       0x0001d300        0x0 gpsmath.o
- .glue_7t       0x0001d300        0x0 sdk.o
- .glue_7t       0x0001d300        0x0 sdk_telemetry.o
- .glue_7t       0x0001d300        0x0 buzzer.o
- .glue_7t       0x0001d300        0x0 lpc_aci_eeprom.o
- .glue_7t       0x0001d300        0x0 asctecCommIntfOnboard.o
- .glue_7t       0x0001d300        0x0 buildInfoSetup.o
- .glue_7t       0x0001d300        0x0 main.o
- .glue_7t       0x0001d300        0x0 hardware.o
- .glue_7t       0x0001d300        0x0 system.o
- .glue_7t       0x0001d300        0x0 uart.o
- .glue_7t       0x0001d300        0x0 syscalls.o
- .glue_7t       0x0001d300        0x0 i2c.o
- .glue_7t       0x0001d300        0x0 i2c1.o
- .glue_7t       0x0001d300        0x0 Common_WinARM/src/irq.o
- .glue_7t       0x0001d300        0x0 adc.o
- .glue_7t       0x0001d300        0x0 ssp.o
- .glue_7t       0x0001d300        0x0 pelican_ptu.o
- .glue_7t       0x0001d300        0x0 jetiTelemetry.o
- .glue_7t       0x0001d300        0x0 LPC2k_ee.o
- .glue_7t       0x0001d300        0x0 lab.o
- .glue_7t       0x0001d300        0x0 Utilites.o
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memcpy.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(sprintf.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(strcpy.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(strlen.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(vfprintf.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wcrtomb.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wcsrtombs.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wctomb_r.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wsetup.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(dtoa.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fflush.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(findfp.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(freer.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fvwrite.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fwalk.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(impure.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(locale.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(makebuf.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mallocr.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memchr.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memmove.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memset.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mlock.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mprec.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(reallocr.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(s_isinf.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(s_isnan.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(stdio.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(strcmp.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(callocr.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fclose.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_udivsi3.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_divsi3.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_umodsi3.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_modsi3.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_dvmd_tls.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_addsubdf3.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_muldivdf3.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_cmpdf2.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixdfsi.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_truncdfsf2.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_addsubsf3.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_muldivsf3.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_cmpsf2.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixsfsi.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixunssfsi.o)
- .glue_7t       0x0001d300        0x0 ./\libdeclination.a(declination.o)
- .glue_7t       0x0001d300        0x0 ./\libublox.a(ublox.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_cos.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_sin.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_atan2.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_pow.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_sqrt.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(wf_fmod.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(wf_pow.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_atan2.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_pow.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_rem_pio2.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_sqrt.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_fmod.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_pow.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_sqrt.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_cos.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_rem_pio2.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_sin.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_atan.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_fabs.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_finite.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_floor.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_lib_ver.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_matherr.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_rint.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_scalbn.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_fabs.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_finite.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_isnan.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_scalbn.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_copysign.o)
- .glue_7t       0x0001d300        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_copysign.o)
- .glue_7t       0x0001d300       0xf0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libg.a(errno.o)
-                0x0001d35c                ___sbrk_r_change_to_arm
-                0x0001d388                ___read_r_from_thumb
-                0x0001d3e8                ____lesf2_from_thumb
-                0x0001d348                ____gtdf2_from_thumb
-                0x0001d3c0                ____divsf3_from_thumb
-                0x0001d328                ____subdf3_from_thumb
-                0x0001d304                ____ltdf2_change_to_arm
-                0x0001d394                ____eqsf2_change_to_arm
-                0x0001d3b8                ____ledf2_from_thumb
-                0x0001d3cc                ____addsf3_change_to_arm
-                0x0001d32c                ____subdf3_change_to_arm
-                0x0001d3d8                ____floatsisf_from_thumb
-                0x0001d398                ____extendsfdf2_from_thumb
-                0x0001d354                ____gedf2_change_to_arm
-                0x0001d360                ___fstat_r_from_thumb
-                0x0001d36c                __isatty_change_to_arm
-                0x0001d310                ____eqdf2_from_thumb
-                0x0001d374                ___close_r_change_to_arm
-                0x0001d38c                ___read_r_change_to_arm
-                0x0001d3a8                ____ltsf2_from_thumb
-                0x0001d338                ____fixdfsi_from_thumb
-                0x0001d344                ____divdf3_change_to_arm
-                0x0001d3ec                ____lesf2_change_to_arm
-                0x0001d350                ____gedf2_from_thumb
-                0x0001d364                ___fstat_r_change_to_arm
-                0x0001d3a0                ____truncdfsf2_from_thumb
-                0x0001d334                ____muldf3_change_to_arm
-                0x0001d37c                ___lseek_r_change_to_arm
-                0x0001d3c4                ____divsf3_change_to_arm
-                0x0001d33c                ____fixdfsi_change_to_arm
-                0x0001d340                ____divdf3_from_thumb
-                0x0001d3e0                ____gtsf2_from_thumb
-                0x0001d3b4                ____mulsf3_change_to_arm
-                0x0001d324                ____adddf3_change_to_arm
-                0x0001d34c                ____gtdf2_change_to_arm
-                0x0001d384                ___write_r_change_to_arm
-                0x0001d378                ___lseek_r_from_thumb
-                0x0001d3a4                ____truncdfsf2_change_to_arm
-                0x0001d39c                ____extendsfdf2_change_to_arm
-                0x0001d318                ____floatsidf_from_thumb
-                0x0001d300                ____ltdf2_from_thumb
-                0x0001d3dc                ____floatsisf_change_to_arm
-                0x0001d30c                ____nedf2_change_to_arm
-                0x0001d3d0                ____subsf3_from_thumb
-                0x0001d320                ____adddf3_from_thumb
-                0x0001d370                ___close_r_from_thumb
-                0x0001d3e4                ____gtsf2_change_to_arm
-                0x0001d314                ____eqdf2_change_to_arm
-                0x0001d3ac                ____ltsf2_change_to_arm
-                0x0001d3b0                ____mulsf3_from_thumb
-                0x0001d3c8                ____addsf3_from_thumb
-                0x0001d358                ___sbrk_r_from_thumb
-                0x0001d330                ____muldf3_from_thumb
-                0x0001d390                ____eqsf2_from_thumb
-                0x0001d3d4                ____subsf3_change_to_arm
-                0x0001d308                ____nedf2_from_thumb
-                0x0001d3bc                ____ledf2_change_to_arm
-                0x0001d380                ___write_r_from_thumb
-                0x0001d31c                ____floatsidf_change_to_arm
-                0x0001d368                __isatty_from_thumb
+ .glue_7t       0x0001d334        0x0 Common_WinARM/src/Startup.o
+ .glue_7t       0x0001d334        0x0 Common_WinARM/src/swi_handler.o
+ .glue_7t       0x0001d334        0x0 LL_HL_comm.o
+ .glue_7t       0x0001d334        0x0 mymath.o
+ .glue_7t       0x0001d334        0x0 gpsmath.o
+ .glue_7t       0x0001d334        0x0 sdk.o
+ .glue_7t       0x0001d334        0x0 sdk_telemetry.o
+ .glue_7t       0x0001d334        0x0 buzzer.o
+ .glue_7t       0x0001d334        0x0 lpc_aci_eeprom.o
+ .glue_7t       0x0001d334        0x0 asctecCommIntfOnboard.o
+ .glue_7t       0x0001d334        0x0 buildInfoSetup.o
+ .glue_7t       0x0001d334        0x0 main.o
+ .glue_7t       0x0001d334        0x0 hardware.o
+ .glue_7t       0x0001d334        0x0 system.o
+ .glue_7t       0x0001d334        0x0 uart.o
+ .glue_7t       0x0001d334        0x0 syscalls.o
+ .glue_7t       0x0001d334        0x0 i2c.o
+ .glue_7t       0x0001d334        0x0 i2c1.o
+ .glue_7t       0x0001d334        0x0 Common_WinARM/src/irq.o
+ .glue_7t       0x0001d334        0x0 adc.o
+ .glue_7t       0x0001d334        0x0 ssp.o
+ .glue_7t       0x0001d334        0x0 pelican_ptu.o
+ .glue_7t       0x0001d334        0x0 jetiTelemetry.o
+ .glue_7t       0x0001d334        0x0 LPC2k_ee.o
+ .glue_7t       0x0001d334        0x0 lab.o
+ .glue_7t       0x0001d334        0x0 Utilites.o
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memcpy.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(sprintf.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(strcpy.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(strlen.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(vfprintf.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wcrtomb.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wcsrtombs.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wctomb_r.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wsetup.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(dtoa.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fflush.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(findfp.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(freer.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fvwrite.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fwalk.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(impure.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(locale.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(makebuf.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mallocr.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memchr.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memmove.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memset.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mlock.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mprec.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(reallocr.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(s_isinf.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(s_isnan.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(stdio.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(strcmp.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(callocr.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fclose.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_udivsi3.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_divsi3.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_umodsi3.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_modsi3.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_dvmd_tls.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_addsubdf3.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_muldivdf3.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_cmpdf2.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixdfsi.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_truncdfsf2.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_addsubsf3.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_muldivsf3.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_cmpsf2.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixsfsi.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixunssfsi.o)
+ .glue_7t       0x0001d334        0x0 ./\libdeclination.a(declination.o)
+ .glue_7t       0x0001d334        0x0 ./\libublox.a(ublox.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_cos.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_sin.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_atan2.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_pow.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_sqrt.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(wf_fmod.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(wf_pow.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_atan2.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_pow.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_rem_pio2.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_sqrt.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_fmod.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_pow.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_sqrt.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_cos.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_rem_pio2.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_sin.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_atan.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_fabs.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_finite.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_floor.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_lib_ver.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_matherr.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_rint.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_scalbn.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_fabs.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_finite.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_isnan.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_scalbn.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_copysign.o)
+ .glue_7t       0x0001d334        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_copysign.o)
+ .glue_7t       0x0001d334       0xf0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libg.a(errno.o)
+                0x0001d390                ___sbrk_r_change_to_arm
+                0x0001d3bc                ___read_r_from_thumb
+                0x0001d41c                ____lesf2_from_thumb
+                0x0001d37c                ____gtdf2_from_thumb
+                0x0001d3f4                ____divsf3_from_thumb
+                0x0001d35c                ____subdf3_from_thumb
+                0x0001d338                ____ltdf2_change_to_arm
+                0x0001d3c8                ____eqsf2_change_to_arm
+                0x0001d3ec                ____ledf2_from_thumb
+                0x0001d400                ____addsf3_change_to_arm
+                0x0001d360                ____subdf3_change_to_arm
+                0x0001d40c                ____floatsisf_from_thumb
+                0x0001d3cc                ____extendsfdf2_from_thumb
+                0x0001d388                ____gedf2_change_to_arm
+                0x0001d394                ___fstat_r_from_thumb
+                0x0001d3a0                __isatty_change_to_arm
+                0x0001d344                ____eqdf2_from_thumb
+                0x0001d3a8                ___close_r_change_to_arm
+                0x0001d3c0                ___read_r_change_to_arm
+                0x0001d3dc                ____ltsf2_from_thumb
+                0x0001d36c                ____fixdfsi_from_thumb
+                0x0001d378                ____divdf3_change_to_arm
+                0x0001d420                ____lesf2_change_to_arm
+                0x0001d384                ____gedf2_from_thumb
+                0x0001d398                ___fstat_r_change_to_arm
+                0x0001d3d4                ____truncdfsf2_from_thumb
+                0x0001d368                ____muldf3_change_to_arm
+                0x0001d3b0                ___lseek_r_change_to_arm
+                0x0001d3f8                ____divsf3_change_to_arm
+                0x0001d370                ____fixdfsi_change_to_arm
+                0x0001d374                ____divdf3_from_thumb
+                0x0001d414                ____gtsf2_from_thumb
+                0x0001d3e8                ____mulsf3_change_to_arm
+                0x0001d358                ____adddf3_change_to_arm
+                0x0001d380                ____gtdf2_change_to_arm
+                0x0001d3b8                ___write_r_change_to_arm
+                0x0001d3ac                ___lseek_r_from_thumb
+                0x0001d3d8                ____truncdfsf2_change_to_arm
+                0x0001d3d0                ____extendsfdf2_change_to_arm
+                0x0001d34c                ____floatsidf_from_thumb
+                0x0001d334                ____ltdf2_from_thumb
+                0x0001d410                ____floatsisf_change_to_arm
+                0x0001d340                ____nedf2_change_to_arm
+                0x0001d404                ____subsf3_from_thumb
+                0x0001d354                ____adddf3_from_thumb
+                0x0001d3a4                ___close_r_from_thumb
+                0x0001d418                ____gtsf2_change_to_arm
+                0x0001d348                ____eqdf2_change_to_arm
+                0x0001d3e0                ____ltsf2_change_to_arm
+                0x0001d3e4                ____mulsf3_from_thumb
+                0x0001d3fc                ____addsf3_from_thumb
+                0x0001d38c                ___sbrk_r_from_thumb
+                0x0001d364                ____muldf3_from_thumb
+                0x0001d3c4                ____eqsf2_from_thumb
+                0x0001d408                ____subsf3_change_to_arm
+                0x0001d33c                ____nedf2_from_thumb
+                0x0001d3f0                ____ledf2_change_to_arm
+                0x0001d3b4                ___write_r_from_thumb
+                0x0001d350                ____floatsidf_change_to_arm
+                0x0001d39c                __isatty_from_thumb
  *(.gcc_except_table)
  *(.rodata)
- .rodata        0x0001d3f0        0x6 asctecCommIntfOnboard.o
- .rodata        0x0001d3f6       0x24 buildInfoSetup.o
- *fill*         0x0001d41a        0x2 00
- .rodata        0x0001d41c      0x2d4 main.o
- .rodata        0x0001d6f0      0x184 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(vfprintf.o)
- .rodata        0x0001d874       0x18 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(dtoa.o)
- .rodata        0x0001d88c        0x4 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(impure.o)
-                0x0001d88c                _global_impure_ptr
- .rodata        0x0001d890       0x34 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(locale.o)
- .rodata        0x0001d8c4      0x124 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mprec.o)
-                0x0001d9b4                __mprec_tinytens
-                0x0001d8c4                __mprec_tens
-                0x0001d98c                __mprec_bigtens
- .rodata        0x0001d9e8       0xe2 ./\libublox.a(ublox.o)
- *fill*         0x0001daca        0x2 00
- .rodata        0x0001dacc       0x30 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_pow.o)
- .rodata        0x0001dafc      0x188 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_rem_pio2.o)
- .rodata        0x0001dc84        0x8 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_fmod.o)
- .rodata        0x0001dc8c       0x18 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_pow.o)
- .rodata        0x0001dca4       0x50 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_rem_pio2.o)
- .rodata        0x0001dcf4       0x40 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_atan.o)
- .rodata        0x0001dd34        0x4 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_lib_ver.o)
-                0x0001dd34                __fdlib_version
- .rodata        0x0001dd38       0x10 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_rint.o)
+ .rodata        0x0001d424        0x6 asctecCommIntfOnboard.o
+ .rodata        0x0001d42a       0x24 buildInfoSetup.o
+ *fill*         0x0001d44e        0x2 00
+ .rodata        0x0001d450      0x2f0 main.o
+ .rodata        0x0001d740      0x184 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(vfprintf.o)
+ .rodata        0x0001d8c4       0x18 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(dtoa.o)
+ .rodata        0x0001d8dc        0x4 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(impure.o)
+                0x0001d8dc                _global_impure_ptr
+ .rodata        0x0001d8e0       0x34 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(locale.o)
+ .rodata        0x0001d914      0x124 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mprec.o)
+                0x0001da04                __mprec_tinytens
+                0x0001d914                __mprec_tens
+                0x0001d9dc                __mprec_bigtens
+ .rodata        0x0001da38       0xe2 ./\libublox.a(ublox.o)
+ *fill*         0x0001db1a        0x2 00
+ .rodata        0x0001db1c       0x30 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_pow.o)
+ .rodata        0x0001db4c      0x188 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_rem_pio2.o)
+ .rodata        0x0001dcd4        0x8 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_fmod.o)
+ .rodata        0x0001dcdc       0x18 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_pow.o)
+ .rodata        0x0001dcf4       0x50 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_rem_pio2.o)
+ .rodata        0x0001dd44       0x40 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_atan.o)
+ .rodata        0x0001dd84        0x4 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_lib_ver.o)
+                0x0001dd84                __fdlib_version
+ .rodata        0x0001dd88       0x10 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_rint.o)
  *(.rodata*)
  .rodata.str1.4
-                0x0001dd48      0x1ff sdk_telemetry.o
+                0x0001dd98      0x1ff sdk_telemetry.o
                                 0x204 (size before relaxing)
- *fill*         0x0001df47        0x1 00
+ *fill*         0x0001df97        0x1 00
  .rodata.str1.4
-                0x0001df48        0xc buildInfoSetup.o
+                0x0001df98        0xc buildInfoSetup.o
  .rodata.str1.4
-                0x0001df54       0x63 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(vfprintf.o)
+                0x0001dfa4       0x63 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(vfprintf.o)
                                  0x64 (size before relaxing)
- *fill*         0x0001dfb7        0x1 00
+ *fill*         0x0001e007        0x1 00
  .rodata.str1.4
-                0x0001dfb8       0x1e c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wctomb_r.o)
+                0x0001e008       0x1e c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wctomb_r.o)
                                  0x20 (size before relaxing)
- *fill*         0x0001dfd6        0x2 00
+ *fill*         0x0001e026        0x2 00
  .rodata.str1.4
-                0x0001dfd8       0x10 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(dtoa.o)
+                0x0001e028       0x10 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(dtoa.o)
                                  0x14 (size before relaxing)
  .rodata.str1.4
-                0x0001dfe8        0x2 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(impure.o)
+                0x0001e038        0x2 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(impure.o)
                                   0x4 (size before relaxing)
- *fill*         0x0001dfea        0x2 00
+ *fill*         0x0001e03a        0x2 00
  .rodata.str1.4
-                0x0001dfec        0xb c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(locale.o)
+                0x0001e03c        0xb c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(locale.o)
                                  0x18 (size before relaxing)
- *fill*         0x0001dff7        0x1 00
+ *fill*         0x0001e047        0x1 00
  .rodata.str1.4
-                0x0001dff8        0x6 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_atan2.o)
+                0x0001e048        0x6 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_atan2.o)
                                   0x8 (size before relaxing)
- *fill*         0x0001dffe        0x2 00
+ *fill*         0x0001e04e        0x2 00
  .rodata.str1.4
-                0x0001e000        0x4 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_pow.o)
+                0x0001e050        0x4 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_pow.o)
  .rodata.str1.4
-                0x0001e004        0x5 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_sqrt.o)
+                0x0001e054        0x5 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_sqrt.o)
                                   0x8 (size before relaxing)
- *fill*         0x0001e009        0x3 00
+ *fill*         0x0001e059        0x3 00
  .rodata.str1.4
-                0x0001e00c        0x6 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(wf_fmod.o)
+                0x0001e05c        0x6 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(wf_fmod.o)
                                   0x8 (size before relaxing)
- *fill*         0x0001e012        0x2 00
+ *fill*         0x0001e062        0x2 00
  .rodata.str1.4
-                0x0001e014        0x8 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(wf_pow.o)
+                0x0001e064        0x8 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(wf_pow.o)
  *(.gnu.linkonce.r.*)
-                0x0001e01c                . = ALIGN (0x4)
-                0x0001e01c                . = ALIGN (0x4)
+                0x0001e06c                . = ALIGN (0x4)
+                0x0001e06c                . = ALIGN (0x4)
 
-.ctors          0x0001e01c        0x0
-                0x0001e01c                PROVIDE (__ctors_start__, .)
+.ctors          0x0001e06c        0x0
+                0x0001e06c                PROVIDE (__ctors_start__, .)
  *(SORT(.ctors.*))
  *(.ctors)
-                0x0001e01c                . = ALIGN (0x4)
-                0x0001e01c                PROVIDE (__ctors_end__, .)
-                0x0001e01c                . = ALIGN (0x4)
+                0x0001e06c                . = ALIGN (0x4)
+                0x0001e06c                PROVIDE (__ctors_end__, .)
+                0x0001e06c                . = ALIGN (0x4)
 
-.dtors          0x0001e01c        0x0
-                0x0001e01c                PROVIDE (__dtors_start__, .)
+.dtors          0x0001e06c        0x0
+                0x0001e06c                PROVIDE (__dtors_start__, .)
  *(SORT(.dtors.*))
  *(.dtors)
-                0x0001e01c                . = ALIGN (0x4)
-                0x0001e01c                PROVIDE (__dtors_end__, .)
-                0x0001e01c                . = ALIGN (0x4)
-                0x0001e01c                . = ALIGN (0x4)
-                0x0001e01c                _etext = .
-                0x0001e01c                PROVIDE (etext, .)
+                0x0001e06c                . = ALIGN (0x4)
+                0x0001e06c                PROVIDE (__dtors_end__, .)
+                0x0001e06c                . = ALIGN (0x4)
+                0x0001e06c                . = ALIGN (0x4)
+                0x0001e06c                _etext = .
+                0x0001e06c                PROVIDE (etext, .)
 
-.data           0x40000000      0xdd8 load address 0x0001e01c
+.data           0x40000000      0xdd4 load address 0x0001e06c
                 0x40000000                _data = .
  *(.vectmapped)
                 0x40000000                . = ALIGN (0x4)
@@ -1268,9 +1268,8 @@ END GROUP
  .data          0x40000039        0x0 jetiTelemetry.o
  .data          0x40000039        0x0 LPC2k_ee.o
  *fill*         0x40000039        0x3 00
- .data          0x4000003c       0x24 lab.o
+ .data          0x4000003c       0x20 lab.o
                 0x40000040                kF
-                0x4000005c                U_Kd_z
                 0x40000054                g
                 0x40000048                l
                 0x4000004c                MAXPHI2
@@ -1278,232 +1277,233 @@ END GROUP
                 0x40000058                U_Kp_z
                 0x40000050                MINPHI2
                 0x4000003c                mass
- .data          0x40000060        0x0 Utilites.o
- .data          0x40000060        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memcpy.o)
- .data          0x40000060        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(sprintf.o)
- .data          0x40000060        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(strcpy.o)
- .data          0x40000060        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(strlen.o)
- .data          0x40000060        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(vfprintf.o)
- .data          0x40000060        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wcrtomb.o)
- .data          0x40000060        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wcsrtombs.o)
- .data          0x40000060        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wctomb_r.o)
- .data          0x40000060        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wsetup.o)
- .data          0x40000060        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(dtoa.o)
- .data          0x40000060        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fflush.o)
- .data          0x40000060        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(findfp.o)
- .data          0x40000060        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(freer.o)
- .data          0x40000060        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fvwrite.o)
- .data          0x40000060        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fwalk.o)
- .data          0x40000060      0x404 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(impure.o)
-                0x40000060                _impure_ptr
- .data          0x40000464       0x10 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(locale.o)
-                0x40000464                __mb_cur_max
-                0x40000468                __lc_ctype
- .data          0x40000474        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(makebuf.o)
- .data          0x40000474      0x410 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mallocr.o)
-                0x40000880                __malloc_sbrk_base
-                0x40000474                __malloc_av_
-                0x4000087c                __malloc_trim_threshold
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memchr.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memmove.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memset.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mlock.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mprec.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(reallocr.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(s_isinf.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(s_isnan.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(stdio.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(strcmp.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(callocr.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fclose.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_udivsi3.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_divsi3.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_umodsi3.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_modsi3.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_dvmd_tls.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_addsubdf3.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_muldivdf3.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_cmpdf2.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixdfsi.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_truncdfsf2.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_addsubsf3.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_muldivsf3.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_cmpsf2.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixsfsi.o)
- .data          0x40000884        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixunssfsi.o)
- .data          0x40000884      0x54c ./\libdeclination.a(declination.o)
- .data          0x40000dd0        0x8 ./\libublox.a(ublox.o)
-                0x40000dd0                gpsLEDTrigger
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_cos.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_sin.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_atan2.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_pow.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_sqrt.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(wf_fmod.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(wf_pow.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_atan2.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_pow.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_rem_pio2.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_sqrt.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_fmod.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_pow.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_sqrt.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_cos.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_rem_pio2.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_sin.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_atan.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_fabs.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_finite.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_floor.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_lib_ver.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_matherr.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_rint.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_scalbn.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_fabs.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_finite.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_isnan.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_scalbn.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_copysign.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_copysign.o)
- .data          0x40000dd8        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libg.a(errno.o)
+ .data          0x4000005c        0x0 Utilites.o
+ .data          0x4000005c        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memcpy.o)
+ .data          0x4000005c        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(sprintf.o)
+ .data          0x4000005c        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(strcpy.o)
+ .data          0x4000005c        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(strlen.o)
+ .data          0x4000005c        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(vfprintf.o)
+ .data          0x4000005c        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wcrtomb.o)
+ .data          0x4000005c        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wcsrtombs.o)
+ .data          0x4000005c        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wctomb_r.o)
+ .data          0x4000005c        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(wsetup.o)
+ .data          0x4000005c        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(dtoa.o)
+ .data          0x4000005c        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fflush.o)
+ .data          0x4000005c        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(findfp.o)
+ .data          0x4000005c        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(freer.o)
+ .data          0x4000005c        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fvwrite.o)
+ .data          0x4000005c        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fwalk.o)
+ .data          0x4000005c      0x404 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(impure.o)
+                0x4000005c                _impure_ptr
+ .data          0x40000460       0x10 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(locale.o)
+                0x40000460                __mb_cur_max
+                0x40000464                __lc_ctype
+ .data          0x40000470        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(makebuf.o)
+ .data          0x40000470      0x410 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mallocr.o)
+                0x4000087c                __malloc_sbrk_base
+                0x40000470                __malloc_av_
+                0x40000878                __malloc_trim_threshold
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memchr.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memmove.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(memset.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mlock.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(mprec.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(reallocr.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(s_isinf.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(s_isnan.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(stdio.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(strcmp.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(callocr.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libc.a(fclose.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_udivsi3.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_divsi3.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_umodsi3.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_modsi3.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_dvmd_tls.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_addsubdf3.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_muldivdf3.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_cmpdf2.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixdfsi.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_truncdfsf2.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_addsubsf3.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_muldivsf3.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_cmpsf2.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixsfsi.o)
+ .data          0x40000880        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixunssfsi.o)
+ .data          0x40000880      0x54c ./\libdeclination.a(declination.o)
+ .data          0x40000dcc        0x8 ./\libublox.a(ublox.o)
+                0x40000dcc                gpsLEDTrigger
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_cos.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_sin.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_atan2.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_pow.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(w_sqrt.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(wf_fmod.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(wf_pow.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_atan2.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_pow.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_rem_pio2.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(e_sqrt.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_fmod.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_pow.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(ef_sqrt.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_cos.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_rem_pio2.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(k_sin.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_atan.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_fabs.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_finite.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_floor.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_lib_ver.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_matherr.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_rint.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_scalbn.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_fabs.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_finite.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_isnan.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_scalbn.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(s_copysign.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libm.a(sf_copysign.o)
+ .data          0x40000dd4        0x0 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/../../../../arm-elf/lib/thumb/interwork\libg.a(errno.o)
  *(.data.*)
  *(.gnu.linkonce.d*)
-                0x40000dd8                . = ALIGN (0x4)
-                0x40000dd8                . = ALIGN (0x4)
-                0x40000dd8                _edata = .
-                0x40000dd8                PROVIDE (edata, .)
+                0x40000dd4                . = ALIGN (0x4)
+                0x40000dd4                . = ALIGN (0x4)
+                0x40000dd4                _edata = .
+                0x40000dd4                PROVIDE (edata, .)
 
-.bss            0x40000dd8     0x4a44
-                0x40000dd8                __bss_start = .
-                0x40000dd8                __bss_start__ = .
+.bss            0x40000dd4     0x4a48
+                0x40000dd4                __bss_start = .
+                0x40000dd4                __bss_start__ = .
  *(.bss)
- .bss           0x40000dd8        0x0 Common_WinARM/src/Startup.o
- .bss           0x40000dd8        0x0 Common_WinARM/src/swi_handler.o
- .bss           0x40000dd8       0x24 LL_HL_comm.o
-                0x40000de2                transmitBuildInfoTrigger
-                0x40000dde                wpCtrlNavStatus
-                0x40000ddc                wpCtrlAckTrigger
-                0x40000ddb                wpCtrlWpCmdUpdated
-                0x40000de0                wpCtrlDistToWp
-                0x40000dda                wpCtrlWpCmd
-                0x40000dd8                SSP_ack
- .bss           0x40000dfc        0x0 mymath.o
- .bss           0x40000dfc        0x4 gpsmath.o
-                0x40000dfc                gpsDataOkTrigger
- .bss           0x40000e00       0x64 sdk.o
-                0x40000e24                SwitchTimer
-                0x40000e14                f28027_ready
-                0x40000e28                readSwitchbit
-                0x40000e04                my_sdkloop_counter
-                0x40000e08                UsonicTimer
-                0x40000e3c                SPItxSize
-                0x40000e18                UsonicData
-                0x40000e2c                MagnetSwitch
-                0x40000e38                SPItxCount
-                0x40000e10                SPI0command
-                0x40000e01                wpExampleActive
-                0x40000e34                GotMagnet
-                0x40000e44                testcount
-                0x40000e40                numMissedTx
-                0x40000e0c                SPI0data
-                0x40000e30                NewMagnetSwitch
-                0x40000e02                emergencyModeUpdate
-                0x40000e1c                NewUsonicData
-                0x40000e00                wpExampleWpNr
-                0x40000e20                USMaxBot_range1
- .bss           0x40000e64        0x3 sdk_telemetry.o
- *fill*         0x40000e67        0x1 00
- .bss           0x40000e68       0x14 buzzer.o
- .bss           0x40000e7c        0x4 lpc_aci_eeprom.o
-                0x40000e7c                anz_param_saved
- .bss           0x40000e80       0x74 asctecCommIntfOnboard.o
-                0x40000ecc                aciHeartBeatCnt
-                0x40000ed8                aciAddDatatoFlashCallback
-                0x40000e84                aciListCmdCount
-                0x40000eae                aciParPacketMagicCode
-                0x40000ee8                aciSendSingleCount
-                0x40000ed4                aciReadWriteEndCallback
-                0x40000ea2                aciCmdPacketMagicCode
-                0x40000edc                aciReadParafromFlashCallback
-                0x40000ece                aciInhibitPacketTransmission
-                0x40000e80                aciListVarCount
-                0x40000ea5                aciCmdPacketWithACK
-                0x40000eca                aciTxRingBufferReadPtr
-                0x40000ea8                aciCmdPacketSendAck
-                0x40000eea                aciSendSingleNextBufferCount
-                0x40000ebc                aciEngineRateCounter
-                0x40000eab                aciCmdPacketReceived
-                0x40000ed0                aciReadWriteStartCallback
-                0x40000e88                aciListParCount
-                0x40000e90                aciVarPacketCurrentSize
-                0x40000eba                aciParamSaveIt
-                0x40000eb1                aciParPacketSendAck
-                0x40000e96                aciVarPacketNumberOfVars
-                0x40000ec8                aciTxRingBufferWritePtr
-                0x40000e8c                aciVarPacketMagicCode
-                0x40000e9c                aciVarPacketUpdated
-                0x40000ee4                aciWriteParatoFlashCallback
-                0x40000eb4                aciParamPacketReceived
-                0x40000eb7                aciParPacketRequest
-                0x40000ee0                aciSaveParaCallback
- .bss           0x40000ef4        0x0 buildInfoSetup.o
- .bss           0x40000ef4       0x28 main.o
-                0x40000f04                GPS_timeout
-                0x40000ef8                cnt
-                0x40000efc                mainloop_cnt
-                0x40000f0d                fireflyLedEnabled
-                0x40000ef4                int_cnt
-                0x40000f0c                SYSTEM_initialized
-                0x40000f08                trigger_cnt
-                0x40000f00                mainloop_trigger
-                0x40000f0e                mainloop_overflows
- .bss           0x40000f1c        0x0 hardware.o
- .bss           0x40000f1c        0x0 system.o
- .bss           0x40000f1c      0x32c uart.o
-                0x40000f23                UART1_syncstate
-                0x40000f21                baudrate1_change
-                0x40000f1e                transmission_running
-                0x40000f20                trigger_transmission
-                0x40000f28                UART1_rxcount
-                0x40000f1c                data_requested
-                0x40000f1d                chksum_to_check
-                0x40000f24                UART_rxcount
-                0x40000f22                UART_syncstate
-                0x40000f1f                transmission1_running
-                0x40000f2c                UART_CalibDoneFlag
- .bss           0x40001248        0x4 syscalls.o
- .bss           0x4000124c       0x14 i2c.o
-                0x40001258                RdIndex
-                0x4000124c                I2CMasterState
-                0x40001250                I2CSlaveState
-                0x40001254                I2CCount
-                0x4000125c                WrIndex
- .bss           0x40001260       0x14 i2c1.o
-                0x40001268                WrIndex1
-                0x40001264                I2C1Count
-                0x40001260                I2C1MasterState
-                0x4000126c                lastI2c1Error
- .bss           0x40001274        0x0 Common_WinARM/src/irq.o
- .bss           0x40001274        0x8 adc.o
-                0x40001278                ADC1IntDone
-                0x40001274                ADC0IntDone
- .bss           0x4000127c        0x4 ssp.o
-                0x4000127c                SSP_trans_cnt
- .bss           0x40001280       0x24 pelican_ptu.o
-                0x40001288                PTU_enable_plain_ch7_to_servo
-                0x40001280                PTU_cam_angle_roll_offset
-                0x40001284                PTU_cam_angle_pitch_offset
- .bss           0x400012a4        0x5 jetiTelemetry.o
-                0x400012a6                jetiTriggerTextSync
-                0x400012a8                jetiKey
-                0x400012a5                jetiAlarmType
-                0x400012a7                jetiKeyChanged
-                0x400012a4                jetiAlarm
- .bss           0x400012a9        0x0 LPC2k_ee.o
- *fill*         0x400012a9        0x3 00
- .bss           0x400012ac       0x10 lab.o
+ .bss           0x40000dd4        0x0 Common_WinARM/src/Startup.o
+ .bss           0x40000dd4        0x0 Common_WinARM/src/swi_handler.o
+ .bss           0x40000dd4       0x24 LL_HL_comm.o
+                0x40000dde                transmitBuildInfoTrigger
+                0x40000dda                wpCtrlNavStatus
+                0x40000dd8                wpCtrlAckTrigger
+                0x40000dd7                wpCtrlWpCmdUpdated
+                0x40000ddc                wpCtrlDistToWp
+                0x40000dd6                wpCtrlWpCmd
+                0x40000dd4                SSP_ack
+ .bss           0x40000df8        0x0 mymath.o
+ .bss           0x40000df8        0x4 gpsmath.o
+                0x40000df8                gpsDataOkTrigger
+ .bss           0x40000dfc       0x64 sdk.o
+                0x40000e20                SwitchTimer
+                0x40000e10                f28027_ready
+                0x40000e24                readSwitchbit
+                0x40000e00                my_sdkloop_counter
+                0x40000e04                UsonicTimer
+                0x40000e38                SPItxSize
+                0x40000e14                UsonicData
+                0x40000e28                MagnetSwitch
+                0x40000e34                SPItxCount
+                0x40000e0c                SPI0command
+                0x40000dfd                wpExampleActive
+                0x40000e30                GotMagnet
+                0x40000e40                testcount
+                0x40000e3c                numMissedTx
+                0x40000e08                SPI0data
+                0x40000e2c                NewMagnetSwitch
+                0x40000dfe                emergencyModeUpdate
+                0x40000e18                NewUsonicData
+                0x40000dfc                wpExampleWpNr
+                0x40000e1c                USMaxBot_range1
+ .bss           0x40000e60        0x3 sdk_telemetry.o
+ *fill*         0x40000e63        0x1 00
+ .bss           0x40000e64       0x14 buzzer.o
+ .bss           0x40000e78        0x4 lpc_aci_eeprom.o
+                0x40000e78                anz_param_saved
+ .bss           0x40000e7c       0x74 asctecCommIntfOnboard.o
+                0x40000ec8                aciHeartBeatCnt
+                0x40000ed4                aciAddDatatoFlashCallback
+                0x40000e80                aciListCmdCount
+                0x40000eaa                aciParPacketMagicCode
+                0x40000ee4                aciSendSingleCount
+                0x40000ed0                aciReadWriteEndCallback
+                0x40000e9e                aciCmdPacketMagicCode
+                0x40000ed8                aciReadParafromFlashCallback
+                0x40000eca                aciInhibitPacketTransmission
+                0x40000e7c                aciListVarCount
+                0x40000ea1                aciCmdPacketWithACK
+                0x40000ec6                aciTxRingBufferReadPtr
+                0x40000ea4                aciCmdPacketSendAck
+                0x40000ee6                aciSendSingleNextBufferCount
+                0x40000eb8                aciEngineRateCounter
+                0x40000ea7                aciCmdPacketReceived
+                0x40000ecc                aciReadWriteStartCallback
+                0x40000e84                aciListParCount
+                0x40000e8c                aciVarPacketCurrentSize
+                0x40000eb6                aciParamSaveIt
+                0x40000ead                aciParPacketSendAck
+                0x40000e92                aciVarPacketNumberOfVars
+                0x40000ec4                aciTxRingBufferWritePtr
+                0x40000e88                aciVarPacketMagicCode
+                0x40000e98                aciVarPacketUpdated
+                0x40000ee0                aciWriteParatoFlashCallback
+                0x40000eb0                aciParamPacketReceived
+                0x40000eb3                aciParPacketRequest
+                0x40000edc                aciSaveParaCallback
+ .bss           0x40000ef0        0x0 buildInfoSetup.o
+ .bss           0x40000ef0       0x28 main.o
+                0x40000f00                GPS_timeout
+                0x40000ef4                cnt
+                0x40000ef8                mainloop_cnt
+                0x40000f09                fireflyLedEnabled
+                0x40000ef0                int_cnt
+                0x40000f08                SYSTEM_initialized
+                0x40000f04                trigger_cnt
+                0x40000efc                mainloop_trigger
+                0x40000f0a                mainloop_overflows
+ .bss           0x40000f18        0x0 hardware.o
+ .bss           0x40000f18        0x0 system.o
+ .bss           0x40000f18      0x32c uart.o
+                0x40000f1f                UART1_syncstate
+                0x40000f1d                baudrate1_change
+                0x40000f1a                transmission_running
+                0x40000f1c                trigger_transmission
+                0x40000f24                UART1_rxcount
+                0x40000f18                data_requested
+                0x40000f19                chksum_to_check
+                0x40000f20                UART_rxcount
+                0x40000f1e                UART_syncstate
+                0x40000f1b                transmission1_running
+                0x40000f28                UART_CalibDoneFlag
+ .bss           0x40001244        0x4 syscalls.o
+ .bss           0x40001248       0x14 i2c.o
+                0x40001254                RdIndex
+                0x40001248                I2CMasterState
+                0x4000124c                I2CSlaveState
+                0x40001250                I2CCount
+                0x40001258                WrIndex
+ .bss           0x4000125c       0x14 i2c1.o
+                0x40001264                WrIndex1
+                0x40001260                I2C1Count
+                0x4000125c                I2C1MasterState
+                0x40001268                lastI2c1Error
+ .bss           0x40001270        0x0 Common_WinARM/src/irq.o
+ .bss           0x40001270        0x8 adc.o
+                0x40001274                ADC1IntDone
+                0x40001270                ADC0IntDone
+ .bss           0x40001278        0x4 ssp.o
+                0x40001278                SSP_trans_cnt
+ .bss           0x4000127c       0x24 pelican_ptu.o
+                0x40001284                PTU_enable_plain_ch7_to_servo
+                0x4000127c                PTU_cam_angle_roll_offset
+                0x40001280                PTU_cam_angle_pitch_offset
+ .bss           0x400012a0        0x5 jetiTelemetry.o
+                0x400012a2                jetiTriggerTextSync
+                0x400012a4                jetiKey
+                0x400012a1                jetiAlarmType
+                0x400012a3                jetiKeyChanged
+                0x400012a0                jetiAlarm
+ .bss           0x400012a5        0x0 LPC2k_ee.o
+ *fill*         0x400012a5        0x3 00
+ .bss           0x400012a8       0x14 lab.o
                 0x400012b0                U_Ki_z
-                0x400012ac                Ben_thrust
+                0x400012ac                U_Kd_z
+                0x400012a8                Ben_thrust
                 0x400012b4                usonic_error
                 0x400012b8                usonic_error_old
  .bss           0x400012bc        0x0 Utilites.o
@@ -2013,7 +2013,7 @@ END GROUP
  .debug_pubnames
                 0x000022ed       0xf6 Utilites.o
 
-.debug_info     0x00000000     0xbfe9
+.debug_info     0x00000000     0xc089
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000       0x6f Common_WinARM/src/Startup.o
  .debug_info    0x0000006f       0x73 Common_WinARM/src/swi_handler.o
@@ -2026,36 +2026,36 @@ END GROUP
  .debug_info    0x00002e7d      0x2ec lpc_aci_eeprom.o
  .debug_info    0x00003169     0x12f3 asctecCommIntfOnboard.o
  .debug_info    0x0000445c      0x1cb buildInfoSetup.o
- .debug_info    0x00004627     0x1805 main.o
- .debug_info    0x00005e2c      0x13c hardware.o
- .debug_info    0x00005f68      0x2f4 system.o
- .debug_info    0x0000625c      0x9cb uart.o
- .debug_info    0x00006c27     0x1021 syscalls.o
- .debug_info    0x00007c48      0x30a i2c.o
- .debug_info    0x00007f52      0x88b i2c1.o
- .debug_info    0x000087dd      0x1cc Common_WinARM/src/irq.o
- .debug_info    0x000089a9      0x2fb adc.o
- .debug_info    0x00008ca4      0x2eb ssp.o
- .debug_info    0x00008f8f      0xad0 pelican_ptu.o
- .debug_info    0x00009a5f      0x7a6 jetiTelemetry.o
- .debug_info    0x0000a205      0x3da LPC2k_ee.o
- .debug_info    0x0000a5df      0xc04 lab.o
- .debug_info    0x0000b1e3      0x744 Utilites.o
- .debug_info    0x0000b927       0x74 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_udivsi3.o)
- .debug_info    0x0000b99b       0x74 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_divsi3.o)
- .debug_info    0x0000ba0f       0x74 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_umodsi3.o)
- .debug_info    0x0000ba83       0x74 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_modsi3.o)
- .debug_info    0x0000baf7       0x74 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_dvmd_tls.o)
- .debug_info    0x0000bb6b       0x73 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_addsubdf3.o)
- .debug_info    0x0000bbde       0x73 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_muldivdf3.o)
- .debug_info    0x0000bc51       0x73 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_cmpdf2.o)
- .debug_info    0x0000bcc4       0x73 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixdfsi.o)
- .debug_info    0x0000bd37       0x73 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_truncdfsf2.o)
- .debug_info    0x0000bdaa       0x73 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_addsubsf3.o)
- .debug_info    0x0000be1d       0x73 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_muldivsf3.o)
- .debug_info    0x0000be90       0x73 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_cmpsf2.o)
- .debug_info    0x0000bf03       0x73 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixsfsi.o)
- .debug_info    0x0000bf76       0x73 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixunssfsi.o)
+ .debug_info    0x00004627     0x18a5 main.o
+ .debug_info    0x00005ecc      0x13c hardware.o
+ .debug_info    0x00006008      0x2f4 system.o
+ .debug_info    0x000062fc      0x9cb uart.o
+ .debug_info    0x00006cc7     0x1021 syscalls.o
+ .debug_info    0x00007ce8      0x30a i2c.o
+ .debug_info    0x00007ff2      0x88b i2c1.o
+ .debug_info    0x0000887d      0x1cc Common_WinARM/src/irq.o
+ .debug_info    0x00008a49      0x2fb adc.o
+ .debug_info    0x00008d44      0x2eb ssp.o
+ .debug_info    0x0000902f      0xad0 pelican_ptu.o
+ .debug_info    0x00009aff      0x7a6 jetiTelemetry.o
+ .debug_info    0x0000a2a5      0x3da LPC2k_ee.o
+ .debug_info    0x0000a67f      0xc04 lab.o
+ .debug_info    0x0000b283      0x744 Utilites.o
+ .debug_info    0x0000b9c7       0x74 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_udivsi3.o)
+ .debug_info    0x0000ba3b       0x74 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_divsi3.o)
+ .debug_info    0x0000baaf       0x74 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_umodsi3.o)
+ .debug_info    0x0000bb23       0x74 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_modsi3.o)
+ .debug_info    0x0000bb97       0x74 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_dvmd_tls.o)
+ .debug_info    0x0000bc0b       0x73 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_addsubdf3.o)
+ .debug_info    0x0000bc7e       0x73 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_muldivdf3.o)
+ .debug_info    0x0000bcf1       0x73 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_cmpdf2.o)
+ .debug_info    0x0000bd64       0x73 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixdfsi.o)
+ .debug_info    0x0000bdd7       0x73 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_truncdfsf2.o)
+ .debug_info    0x0000be4a       0x73 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_addsubsf3.o)
+ .debug_info    0x0000bebd       0x73 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_muldivsf3.o)
+ .debug_info    0x0000bf30       0x73 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_cmpsf2.o)
+ .debug_info    0x0000bfa3       0x73 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixsfsi.o)
+ .debug_info    0x0000c016       0x73 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixunssfsi.o)
 
 .debug_abbrev   0x00000000     0x1c2c
  *(.debug_abbrev)
@@ -2101,7 +2101,7 @@ END GROUP
  .debug_abbrev  0x00001c04       0x14 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixsfsi.o)
  .debug_abbrev  0x00001c18       0x14 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixunssfsi.o)
 
-.debug_line     0x00000000     0x2e41
+.debug_line     0x00000000     0x2e43
  *(.debug_line)
  .debug_line    0x00000000       0xcf Common_WinARM/src/Startup.o
  .debug_line    0x000000cf       0xa6 Common_WinARM/src/swi_handler.o
@@ -2114,36 +2114,36 @@ END GROUP
  .debug_line    0x00000d1c      0x113 lpc_aci_eeprom.o
  .debug_line    0x00000e2f      0x680 asctecCommIntfOnboard.o
  .debug_line    0x000014af       0x94 buildInfoSetup.o
- .debug_line    0x00001543      0x1b4 main.o
- .debug_line    0x000016f7       0x4b hardware.o
- .debug_line    0x00001742       0xb0 system.o
- .debug_line    0x000017f2      0x120 uart.o
- .debug_line    0x00001912      0x19d syscalls.o
- .debug_line    0x00001aaf       0xc4 i2c.o
- .debug_line    0x00001b73      0x1a4 i2c1.o
- .debug_line    0x00001d17       0x84 Common_WinARM/src/irq.o
- .debug_line    0x00001d9b       0x78 adc.o
- .debug_line    0x00001e13       0x7d ssp.o
- .debug_line    0x00001e90       0xe3 pelican_ptu.o
- .debug_line    0x00001f73      0x121 jetiTelemetry.o
- .debug_line    0x00002094       0xb5 LPC2k_ee.o
- .debug_line    0x00002149      0x193 lab.o
- .debug_line    0x000022dc       0xe2 Utilites.o
- .debug_line    0x000023be       0x76 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_udivsi3.o)
- .debug_line    0x00002434       0x82 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_divsi3.o)
- .debug_line    0x000024b6       0x6e c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_umodsi3.o)
- .debug_line    0x00002524       0x77 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_modsi3.o)
- .debug_line    0x0000259b       0x60 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_dvmd_tls.o)
- .debug_line    0x000025fb      0x168 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_addsubdf3.o)
- .debug_line    0x00002763      0x17d c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_muldivdf3.o)
- .debug_line    0x000028e0       0xaa c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_cmpdf2.o)
- .debug_line    0x0000298a       0x75 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixdfsi.o)
- .debug_line    0x000029ff       0x86 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_truncdfsf2.o)
- .debug_line    0x00002a85      0x116 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_addsubsf3.o)
- .debug_line    0x00002b9b      0x120 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_muldivsf3.o)
- .debug_line    0x00002cbb       0x9e c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_cmpsf2.o)
- .debug_line    0x00002d59       0x75 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixsfsi.o)
- .debug_line    0x00002dce       0x73 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixunssfsi.o)
+ .debug_line    0x00001543      0x1b6 main.o
+ .debug_line    0x000016f9       0x4b hardware.o
+ .debug_line    0x00001744       0xb0 system.o
+ .debug_line    0x000017f4      0x120 uart.o
+ .debug_line    0x00001914      0x19d syscalls.o
+ .debug_line    0x00001ab1       0xc4 i2c.o
+ .debug_line    0x00001b75      0x1a4 i2c1.o
+ .debug_line    0x00001d19       0x84 Common_WinARM/src/irq.o
+ .debug_line    0x00001d9d       0x78 adc.o
+ .debug_line    0x00001e15       0x7d ssp.o
+ .debug_line    0x00001e92       0xe3 pelican_ptu.o
+ .debug_line    0x00001f75      0x121 jetiTelemetry.o
+ .debug_line    0x00002096       0xb5 LPC2k_ee.o
+ .debug_line    0x0000214b      0x193 lab.o
+ .debug_line    0x000022de       0xe2 Utilites.o
+ .debug_line    0x000023c0       0x76 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_udivsi3.o)
+ .debug_line    0x00002436       0x82 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_divsi3.o)
+ .debug_line    0x000024b8       0x6e c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_umodsi3.o)
+ .debug_line    0x00002526       0x77 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_modsi3.o)
+ .debug_line    0x0000259d       0x60 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_dvmd_tls.o)
+ .debug_line    0x000025fd      0x168 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_addsubdf3.o)
+ .debug_line    0x00002765      0x17d c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_muldivdf3.o)
+ .debug_line    0x000028e2       0xaa c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_cmpdf2.o)
+ .debug_line    0x0000298c       0x75 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixdfsi.o)
+ .debug_line    0x00002a01       0x86 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_truncdfsf2.o)
+ .debug_line    0x00002a87      0x116 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_addsubsf3.o)
+ .debug_line    0x00002b9d      0x120 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_muldivsf3.o)
+ .debug_line    0x00002cbd       0x9e c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_cmpsf2.o)
+ .debug_line    0x00002d5b       0x75 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixsfsi.o)
+ .debug_line    0x00002dd0       0x73 c:/asctec_arm_sdk/winarm/bin/../lib/gcc/arm-elf/4.1.1/thumb/interwork\libgcc.a(_fixunssfsi.o)
 
 .debug_frame    0x00000000     0x1690
  *(.debug_frame)
@@ -2278,6 +2278,7 @@ ADCInit                                           adc.o
 ALARM_battery_warning_voltage_high                buzzer.o
 ALARM_battery_warning_voltage_low                 buzzer.o
 Ben_thrust                                        lab.o
+                                                  main.o
 Bens_Command                                      lab.o
 Bens_Control_Law                                  lab.o
 CAMERA_Commands                                   pelican_ptu.o
@@ -2485,7 +2486,6 @@ USMaxBot_range1                                   sdk.o
 U_Kd_z                                            lab.o
 U_Ki_z                                            lab.o
 U_Kp_z                                            lab.o
-                                                  main.o
 UsonicData                                        sdk.o
 UsonicTimer                                       sdk.o
 VelEstX                                           lab.o
