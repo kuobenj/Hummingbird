@@ -38,30 +38,44 @@
   61              		.data
   62              		.align	2
   65              	U_Kp_z:
-  66 001c 000048C2 		.word	-1035468800
+  66 001c 000020C2 		.word	-1038090240
   67              		.global	U_Kd_z
-  68              		.bss
-  69 0002 0000     		.align	2
-  72              	U_Kd_z:
-  73 0004 00000000 		.space	4
-  74              		.global	U_Ki_z
-  75              		.align	2
+  68              		.align	2
+  71              	U_Kd_z:
+  72 0020 00000040 		.word	1073741824
+  73              		.global	U_Ki_z
+  74              		.bss
+  75 0002 0000     		.align	2
   78              	U_Ki_z:
-  79 0008 00000000 		.space	4
-  80              		.global	usonic_error
-  81              		.align	2
-  84              	usonic_error:
-  85 000c 00000000 		.space	4
-  86              		.global	usonic_error_old
-  87              		.align	2
-  90              	usonic_error_old:
-  91 0010 00000000 		.space	4
-  92              		.text
-  93              		.align	2
-  94              		.global	lab
-  96              	lab:
-  97              	.LFB2:
-  98              		.file 1 "lab.c"
+  79 0004 00000000 		.space	4
+  80              		.global	setpoint
+  81              		.data
+  82              		.align	1
+  85              	setpoint:
+  86 0024 1E00     		.short	30
+  87              		.global	usonic_error
+  88 0026 0000     		.bss
+  89              		.align	2
+  92              	usonic_error:
+  93 0008 00000000 		.space	4
+  94              		.global	usonic_error_old
+  95              		.align	2
+  98              	usonic_error_old:
+  99 000c 00000000 		.space	4
+ 100              		.global	landing_flag
+ 101              		.align	1
+ 104              	landing_flag:
+ 105 0010 0000     		.space	2
+ 106              		.global	clock_divider
+ 107 0012 0000     		.align	2
+ 110              	clock_divider:
+ 111 0014 00000000 		.space	4
+ 112              		.text
+ 113              		.align	2
+ 114              		.global	lab
+ 116              	lab:
+ 117              	.LFB2:
+ 118              		.file 1 "lab.c"
    1:lab.c         **** /*
    2:lab.c         ****  * lab.c
    3:lab.c         ****  *
@@ -120,2055 +134,2198 @@
   56:lab.c         **** short Ben_thrust = 0;
   57:lab.c         **** 
   58:lab.c         **** 	//USonic Gains
-  59:lab.c         **** 	float U_Kp_z = -50;
-  60:lab.c         **** 	float U_Kd_z = 0.0;//-20;
+  59:lab.c         **** 	float U_Kp_z = -40.0;
+  60:lab.c         **** 	float U_Kd_z = 2.0;//-20;
   61:lab.c         **** 	float U_Ki_z = 0.0;
   62:lab.c         **** 
-  63:lab.c         **** int usonic_error = 0;
-  64:lab.c         **** int usonic_error_old = 0;
-  65:lab.c         **** 
-  66:lab.c         **** 
-  67:lab.c         **** //End Benjamin Kuo Additions
-  68:lab.c         **** /*------------- End Globals --------------*/
+  63:lab.c         **** 	short setpoint = 30;
+  64:lab.c         **** 
+  65:lab.c         **** int usonic_error = 0;
+  66:lab.c         **** int usonic_error_old = 0;
+  67:lab.c         **** short landing_flag = 0;
+  68:lab.c         **** long clock_divider = 0;
   69:lab.c         **** 
-  70:lab.c         **** /*----------------------------------------------------------------------*/
-  71:lab.c         **** /*---------------------------- End Preamble ----------------------------*/
-  72:lab.c         **** /*----------------------------------------------------------------------*/
+  70:lab.c         **** 
+  71:lab.c         **** //End Benjamin Kuo Additions
+  72:lab.c         **** /*------------- End Globals --------------*/
   73:lab.c         **** 
-  74:lab.c         **** 
-  75:lab.c         **** /*----------------------------------------------------------------------*/
-  76:lab.c         **** /*------------------ Main Loop (called at 1 kHz) -----------------------*/
-  77:lab.c         **** /*----------------------------------------------------------------------*/
-  78:lab.c         **** void lab(void)
-  79:lab.c         **** {
-  99              	d = 1, uses_anonymous_args = 0
- 100              		mov	ip, sp
- 101              	.LCFI0:
- 102              		stmfd	sp!, {fp, ip, lr, pc}
- 103 0000 0DC0A0E1 	.LCFI1:
- 104              		sub	fp, ip, #4
- 105 0004 00D82DE9 	.LCFI2:
- 106              		.loc 1 81 0
- 107 0008 04B04CE2 		ldr	r2, .L3
- 108              		ldr	r3, .L3+4	@ float
-  80:lab.c         **** st (m)
-  81:lab.c         **** 	//x_nom[2] = -1.0;	// z/Down (m)
- 109              	r2, #0]	@ float
- 110 000c 40209FE5 		.loc 1 82 0
- 111 0010 40309FE5 		ldr	r2, .L3
- 112 0014 003082E5 		ldr	r3, .L3+4	@ float
-  82:lab.c         **** //new hight scale is based on inches
- 113              		r3, [r2, #4]	@ float
- 114 0018 34209FE5 		.loc 1 86 0
- 115 001c 34309FE5 		ldr	r2, .L3
- 116 0020 043082E5 		ldr	r3, .L3+8	@ float
-  83:lab.c         **** x_nom[2] = 36;
-  84:lab.c         **** 
-  85:lab.c         **** 	x_nom[3] = 0.0;		// yaw (rad)
-  86:lab.c         **** 
- 117              		r3, [r2, #8]	@ float
- 118 0024 28209FE5 		.loc 1 88 0
- 119 0028 2C309FE5 		ldr	r2, .L3
- 120 002c 083082E5 		ldr	r3, .L3+4	@ float
-  87:lab.c         **** Velocity Estimation	
-  88:lab.c         **** 	VelocityEst();
- 121              		r3, [r2, #12]	@ float
- 122 0030 1C209FE5 		.loc 1 91 0
- 123 0034 1C309FE5 		bl	VelocityEst
- 124 0038 0C3082E5 		.loc 1 101 0
-  89:lab.c         **** // Lab 3
-  90:lab.c         **** 	//lab3();
-  91:lab.c         **** 
- 125              	Bens_Control_Law
- 126 003c FEFFFFEB 		.loc 1 102 0
-  92:lab.c         ****  Lab 2
-  93:lab.c         **** 	//lab2();
-  94:lab.c         **** 
-  95:lab.c         **** 	// Convert Controller Outputs to Motor Inputs
-  96:lab.c         **** 	//Command();
-  97:lab.c         **** 	Bens_Control_Law();
-  98:lab.c         **** 	Bens_Command();
-  99:lab.c         **** 	
- 100:lab.c         **** }
- 101:lab.c         **** /*----------------------------------------------------------------------*/
- 127              	l	Bens_Command
- 128 0040 FEFFFFEB 		.loc 1 104 0
- 102:lab.c         **** -------- End Main Loop (called at 1 kHz) ---------------------*/
- 129              	ub	sp, fp, #12
- 130 0044 FEFFFFEB 		ldmfd	sp, {fp, sp, lr}
- 103:lab.c         **** *----------------------------------------------------------------------*/
- 104:lab.c         **** 
- 131              	x	lr
- 132 0048 0CD04BE2 	.L4:
- 133 004c 00689DE8 		.align	2
- 134 0050 1EFF2FE1 	.L3:
- 135              		.word	x_nom
- 136              		.word	0
- 137              		.word	1108344832
- 138 0054 00000000 	.LFE2:
- 140 005c 00001042 		.global	__nesf2
- 141              		.global	__subsf3
- 142              		.global	__extendsfdf2
- 143              		.global	__divdf3
- 144              		.global	__truncdfsf2
- 145              		.global	__mulsf3
- 146              		.global	__subdf3
- 147              		.global	__muldf3
- 148              		.global	__adddf3
- 149              		.align	2
- 150              		.global	VelocityEst
- 152              	VelocityEst:
- 153              	.LFB3:
- 154              		.loc 1 113 0
- 155              		@ Function supports interworking.
- 156              		@ args = 0, pretend = 0, frame = 4
- 105:lab.c         **** ----------------------------------------------------------------------*/
- 106:lab.c         **** /*------------------------------ Helpers -------------------------------*/
- 107:lab.c         **** /*----------------------------------------------------------------------*/
- 108:lab.c         **** /*---------- Velocity Estimator ----------*/
- 109:lab.c         **** void VelocityEst() {
- 110:lab.c         **** 
- 111:lab.c         **** 	// Velocity Estimation
- 112:lab.c         **** 	if (initialize == 0)
- 113:lab.c         **** 	{
- 157              	anonymous_args = 0
- 158              		mov	ip, sp
- 159              	.LCFI3:
- 160              		stmfd	sp!, {r4, r5, r6, r7, r8, fp, ip, lr, pc}
- 161 0060 0DC0A0E1 	.LCFI4:
- 162              		sub	fp, ip, #4
- 163 0064 F0D92DE9 	.LCFI5:
- 164              		sub	sp, sp, #4
- 165 0068 04B04CE2 	.LCFI6:
- 166              		.loc 1 116 0
- 167 006c 04D04DE2 		ldr	r3, .L16
- 168              		ldr	r3, [r3, #0]
- 114:lab.c         **** ialization
- 115:lab.c         **** 		mocap.dX = real_mocap.dX;
- 116:lab.c         **** 		mocap.dY = real_mocap.dY;
- 169              		bne	.L6
- 170 0070 90309FE5 		.loc 1 119 0
- 171 0074 003093E5 		ldr	r3, .L16+36
- 172 0078 000053E3 		ldr	r2, [r3, #8]	@ float
- 173 007c 2F00001A 		ldr	r3, .L16+40
- 117:lab.c         **** ocap.dZ = real_mocap.dZ;
- 118:lab.c         **** 		mocap.dVx = 0.0;
- 119:lab.c         **** 		mocap.dVy = 0.0;
- 174              	r2, [r3, #8]	@ float
- 175 0080 A4309FE5 		.loc 1 120 0
- 176 0084 082093E5 		ldr	r3, .L16+36
- 177 0088 A0309FE5 		ldr	r2, [r3, #12]	@ float
- 178 008c 082083E5 		ldr	r3, .L16+40
- 120:lab.c         **** ocap.dVz = 0.0;
- 179              	r2, [r3, #12]	@ float
- 180 0090 94309FE5 		.loc 1 121 0
- 181 0094 0C2093E5 		ldr	r3, .L16+36
- 182 0098 90309FE5 		ldr	r2, [r3, #16]	@ float
- 183 009c 0C2083E5 		ldr	r3, .L16+40
- 121:lab.c         **** 		// End Initialization if first packet from MoCap received
- 184              	r2, [r3, #16]	@ float
- 185 00a0 84309FE5 		.loc 1 122 0
- 186 00a4 102093E5 		ldr	r2, .L16+40
- 187 00a8 80309FE5 		ldr	r3, .L16+4	@ float
- 188 00ac 102083E5 		str	r3, [r2, #20]	@ float
- 122:lab.c         **** 	if (real_mocap.dX != 0.0)
- 189              	 1 123 0
- 190 00b0 78209FE5 		ldr	r2, .L16+40
- 191 00b4 50309FE5 		ldr	r3, .L16+4	@ float
- 192 00b8 143082E5 		str	r3, [r2, #24]	@ float
- 123:lab.c         **** 	{		
- 193              	c 1 124 0
- 194 00bc 6C209FE5 		ldr	r2, .L16+40
- 195 00c0 44309FE5 		ldr	r3, .L16+4	@ float
- 196 00c4 183082E5 		str	r3, [r2, #28]	@ float
- 124:lab.c         **** 		initialize = 1;
- 197              	c 1 127 0
- 198 00c8 60209FE5 		ldr	r3, .L16+36
- 199 00cc 38309FE5 		ldr	r3, [r3, #8]	@ float
- 200 00d0 1C3082E5 		mov	r0, r3
- 125:lab.c         **** 	}
- 126:lab.c         **** 	}
- 127:lab.c         **** 	else 
- 201              		r1, .L16+4	@ float
- 202 00d4 50309FE5 		bl	__nesf2
- 203 00d8 083093E5 		mov	r3, r0
- 204 00dc 0300A0E1 		cmp	r3, #0
- 205 00e0 24109FE5 		bne	.L10
- 206 00e4 FEFFFFEB 		b	.L15
- 207 00e8 0030A0E1 	.L10:
- 208 00ec 000053E3 		.loc 1 129 0
- 209 00f0 0000001A 		ldr	r2, .L16
- 210 00f4 1C0100EA 		mov	r3, #1
- 211              		str	r3, [r2, #0]
- 128:lab.c         **** 		// Update velocity estimate at 100 Hz
- 129:lab.c         **** 		if (velocityEstHolder == 0)
- 212              	7:
- 213 00f8 08209FE5 		.align	2
- 214 00fc 0130A0E3 	.L16:
- 215 0100 003082E5 		.word	initialize
- 216 0104 180100EA 		.word	0
- 217              		.word	1045220557
- 218              		.word	previousXMeas
- 219              		.word	previousYMeas
- 220 0108 00000000 		.word	previousZMeas
- 221 010c 00000000 		.word	VelEstX
- 222 0110 CDCC4C3E 		.word	VelEstY
- 223 0114 00000000 		.word	VelEstZ
- 224 0118 00000000 		.word	real_mocap
- 225 011c 00000000 		.word	mocap
- 226 0120 00000000 		.word	velocityEstHolder
- 227 0124 00000000 		.word	1065646817
- 228 0128 00000000 		.word	1202590843
- 229 012c 00000000 	.L6:
- 230 0130 00000000 		.loc 1 135 0
- 231 0134 00000000 		ldr	r3, .L16+44
- 232 0138 E17A843F 		ldr	r3, [r3, #0]
- 233 013c 7B14AE47 		cmp	r3, #0
- 234              		bne	.L12
- 130:lab.c         **** {			
- 131:lab.c         **** 			/*----- Low Pass Filtering -----*/
- 132:lab.c         **** 			// Low Pass Filter Gain
- 133:lab.c         **** 			float alpha = 0.2;
- 134:lab.c         **** 
- 135:lab.c         **** 			// Finite Difference Velocity Estimation
- 235              	dr	r3, .L16+8	@ float
- 236 0140 14301FE5 		str	r3, [fp, #-36]	@ float
- 237 0144 003093E5 		.loc 1 142 0
- 238 0148 000053E3 		ldr	r3, .L16+36
- 239 014c FA00001A 		ldr	r2, [r3, #8]	@ float
- 240              		ldr	r3, .L16+12
- 136:lab.c         **** EstX = (real_mocap.dX - previousXMeas)/0.01;
- 137:lab.c         **** 			VelEstY = (real_mocap.dY - previousYMeas)/0.01;
- 138:lab.c         **** 			VelEstZ = (real_mocap.dZ - previousZMeas)/0.01;
- 139:lab.c         **** 
- 241              	3, [r3, #0]	@ float
- 242 0150 48301FE5 		mov	r0, r2
- 243 0154 24300BE5 		mov	r1, r3
- 140:lab.c         **** / Save Current MoCap Measurement as Previous Measurement
- 141:lab.c         **** 			previousXMeas = real_mocap.dX;
- 142:lab.c         **** 			previousYMeas = real_mocap.dY;			
- 244              		__subsf3
- 245 0158 34301FE5 		mov	r3, r0
- 246 015c 082093E5 		mov	r0, r3
- 247 0160 54301FE5 		bl	__extendsfdf2
- 248 0164 003093E5 		mov	r3, r0
- 249 0168 0200A0E1 		mov	r4, r1
- 250 016c 0310A0E1 		mov	r0, r3
- 251 0170 FEFFFFEB 		mov	r1, r4
- 252 0174 0030A0E1 		adr	r2, .L16+48
- 253 0178 0300A0E1 		ldmia	r2, {r2-r3}
- 254 017c FEFFFFEB 		bl	__divdf3
- 255 0180 0030A0E1 		mov	r3, r0
- 256 0184 0140A0E1 		mov	r4, r1
- 257 0188 0300A0E1 		mov	r0, r3
- 258 018c 0410A0E1 		mov	r1, r4
- 259 0190 60204FE2 		bl	__truncdfsf2
- 260 0194 0C0092E8 		mov	r2, r0
- 261 0198 FEFFFFEB 		ldr	r3, .L16+24
- 262 019c 0030A0E1 		str	r2, [r3, #0]	@ float
- 263 01a0 0140A0E1 		.loc 1 143 0
- 264 01a4 0300A0E1 		ldr	r3, .L16+36
- 265 01a8 0410A0E1 		ldr	r2, [r3, #12]	@ float
- 266 01ac FEFFFFEB 		ldr	r3, .L16+16
- 267 01b0 0020A0E1 		ldr	r3, [r3, #0]	@ float
- 268 01b4 9C301FE5 		mov	r0, r2
- 269 01b8 002083E5 		mov	r1, r3
- 143:lab.c         **** previousZMeas = real_mocap.dZ;
- 270              	mov	r0, r3
- 271 01bc 98301FE5 		bl	__extendsfdf2
- 272 01c0 0C2093E5 		mov	r3, r0
- 273 01c4 B4301FE5 		mov	r4, r1
- 274 01c8 003093E5 		mov	r0, r3
- 275 01cc 0200A0E1 		mov	r1, r4
- 276 01d0 0310A0E1 		adr	r2, .L16+48
- 277 01d4 FEFFFFEB 		ldmia	r2, {r2-r3}
- 278 01d8 0030A0E1 		bl	__divdf3
- 279 01dc 0300A0E1 		mov	r3, r0
- 280 01e0 FEFFFFEB 		mov	r4, r1
- 281 01e4 0030A0E1 		mov	r0, r3
- 282 01e8 0140A0E1 		mov	r1, r4
- 283 01ec 0300A0E1 		bl	__truncdfsf2
- 284 01f0 0410A0E1 		mov	r2, r0
- 285 01f4 C4204FE2 		ldr	r3, .L16+28
- 286 01f8 0C0092E8 		str	r2, [r3, #0]	@ float
- 287 01fc FEFFFFEB 		.loc 1 144 0
- 288 0200 0030A0E1 		ldr	r3, .L16+36
- 289 0204 0140A0E1 		ldr	r2, [r3, #16]	@ float
- 290 0208 0300A0E1 		ldr	r3, .L16+20
- 291 020c 0410A0E1 		ldr	r3, [r3, #0]	@ float
- 292 0210 FEFFFFEB 		mov	r0, r2
- 293 0214 0020A0E1 		mov	r1, r3
- 294 0218 FC301FE5 		bl	__subsf3
- 295 021c 002083E5 		mov	r3, r0
- 144:lab.c         **** 			// Low Pass Filter
- 296              	df2
- 297 0220 FC301FE5 		mov	r3, r0
- 298 0224 102093E5 		mov	r4, r1
- 299 0228 14311FE5 		mov	r0, r3
- 300 022c 003093E5 		mov	r1, r4
- 301 0230 0200A0E1 		adr	r2, .L16+48
- 302 0234 0310A0E1 		ldmia	r2, {r2-r3}
- 303 0238 FEFFFFEB 		bl	__divdf3
- 304 023c 0030A0E1 		mov	r3, r0
- 305 0240 0300A0E1 		mov	r4, r1
- 306 0244 FEFFFFEB 		mov	r0, r3
- 307 0248 0030A0E1 		mov	r1, r4
- 308 024c 0140A0E1 		bl	__truncdfsf2
- 309 0250 0300A0E1 		mov	r2, r0
- 310 0254 0410A0E1 		ldr	r3, .L16+32
- 311 0258 4A2F4FE2 		str	r2, [r3, #0]	@ float
- 312 025c 0C0092E8 		.loc 1 147 0
- 313 0260 FEFFFFEB 		ldr	r3, .L16+36
- 314 0264 0030A0E1 		ldr	r2, [r3, #8]	@ float
- 315 0268 0140A0E1 		ldr	r3, .L16+12
- 316 026c 0300A0E1 		str	r2, [r3, #0]	@ float
- 317 0270 0410A0E1 		.loc 1 148 0
- 318 0274 FEFFFFEB 		ldr	r3, .L16+36
- 319 0278 0020A0E1 		ldr	r2, [r3, #12]	@ float
- 320 027c 5C311FE5 		ldr	r3, .L16+16
- 321 0280 002083E5 		str	r2, [r3, #0]	@ float
- 145:lab.c         **** 		mocap.dVx = alpha*VelEstX+(1.0-alpha)*mocap.dVx;
- 146:lab.c         **** 			mocap.dVy = alpha*VelEstY+(1.0-alpha)*mocap.dVy;
- 147:lab.c         **** 			mocap.dVz = alpha*VelEstZ+(1.0-alpha)*mocap.dVz;
- 322              	6+36
- 323 0284 60311FE5 		ldr	r2, [r3, #16]	@ float
- 324 0288 082093E5 		ldr	r3, .L16+20
- 325 028c 80311FE5 		str	r2, [r3, #0]	@ float
- 326 0290 002083E5 		.loc 1 152 0
- 148:lab.c         **** 	// Set Position
- 327              	r3, .L16+24
- 328 0294 70311FE5 		ldr	r3, [r3, #0]	@ float
- 329 0298 0C2093E5 		mov	r0, r3
- 330 029c 8C311FE5 		ldr	r1, [fp, #-36]	@ float
- 331 02a0 002083E5 		bl	__mulsf3
- 149:lab.c         **** 		mocap.dX = real_mocap.dX;
- 332              	r3, r0
- 333 02a4 80311FE5 		mov	r0, r3
- 334 02a8 102093E5 		bl	__extendsfdf2
- 335 02ac 98311FE5 		mov	r7, r0
- 336 02b0 002083E5 		mov	r8, r1
- 150:lab.c         **** 		mocap.dY = real_mocap.dY;
- 151:lab.c         **** 			mocap.dZ = real_mocap.dZ;
- 152:lab.c         **** 			
- 337              	r0, [fp, #-36]	@ float
- 338 02b4 9C311FE5 		bl	__extendsfdf2
- 339 02b8 003093E5 		mov	r3, r0
- 340 02bc 0300A0E1 		mov	r4, r1
- 341 02c0 24101BE5 		mov	r0, #1069547520
- 342 02c4 FEFFFFEB 		add	r0, r0, #3145728
- 343 02c8 0030A0E1 		mov	r1, #0
- 344 02cc 0300A0E1 		mov	r2, r3
- 345 02d0 FEFFFFEB 		mov	r3, r4
- 346 02d4 0070A0E1 		bl	__subdf3
- 347 02d8 0180A0E1 		mov	r3, r0
- 348 02dc 24001BE5 		mov	r4, r1
- 349 02e0 FEFFFFEB 		mov	r5, r3
- 350 02e4 0030A0E1 		mov	r6, r4
- 351 02e8 0140A0E1 		ldr	r3, .L16+40
- 352 02ec FF05A0E3 		ldr	r3, [r3, #20]	@ float
- 353 02f0 030680E2 		mov	r0, r3
- 354 02f4 0010A0E3 		bl	__extendsfdf2
- 355 02f8 0320A0E1 		mov	r3, r0
- 356 02fc 0430A0E1 		mov	r4, r1
- 357 0300 FEFFFFEB 		mov	r0, r5
- 358 0304 0030A0E1 		mov	r1, r6
- 359 0308 0140A0E1 		mov	r2, r3
- 360 030c 0350A0E1 		mov	r3, r4
- 361 0310 0460A0E1 		bl	__muldf3
- 362 0314 EC311FE5 		mov	r3, r0
- 363 0318 143093E5 		mov	r4, r1
- 364 031c 0300A0E1 		mov	r0, r7
- 365 0320 FEFFFFEB 		mov	r1, r8
- 366 0324 0030A0E1 		mov	r2, r3
- 367 0328 0140A0E1 		mov	r3, r4
- 368 032c 0500A0E1 		bl	__adddf3
- 369 0330 0610A0E1 		mov	r3, r0
- 370 0334 0320A0E1 		mov	r4, r1
- 371 0338 0430A0E1 		mov	r0, r3
- 372 033c FEFFFFEB 		mov	r1, r4
- 373 0340 0030A0E1 		bl	__truncdfsf2
- 374 0344 0140A0E1 		mov	r2, r0
- 375 0348 0700A0E1 		ldr	r3, .L16+40
- 376 034c 0810A0E1 		str	r2, [r3, #20]	@ float
- 377 0350 0320A0E1 		.loc 1 153 0
- 378 0354 0430A0E1 		ldr	r3, .L16+28
- 379 0358 FEFFFFEB 		ldr	r3, [r3, #0]	@ float
- 380 035c 0030A0E1 		mov	r0, r3
- 381 0360 0140A0E1 		ldr	r1, [fp, #-36]	@ float
- 382 0364 0300A0E1 		bl	__mulsf3
- 383 0368 0410A0E1 		mov	r3, r0
- 384 036c FEFFFFEB 		mov	r0, r3
- 385 0370 0020A0E1 		bl	__extendsfdf2
- 386 0374 4C321FE5 		mov	r7, r0
- 387 0378 142083E5 		mov	r8, r1
- 153:lab.c         **** /*--- End Low Pass Filtering ---*/
- 388              	r3, r0
- 389 037c 60321FE5 		mov	r4, r1
- 390 0380 003093E5 		mov	r0, #1069547520
- 391 0384 0300A0E1 		add	r0, r0, #3145728
- 392 0388 24101BE5 		mov	r1, #0
- 393 038c FEFFFFEB 		mov	r2, r3
- 394 0390 0030A0E1 		mov	r3, r4
- 395 0394 0300A0E1 		bl	__subdf3
- 396 0398 FEFFFFEB 		mov	r3, r0
- 397 039c 0070A0E1 		mov	r4, r1
- 398 03a0 0180A0E1 		mov	r5, r3
- 399 03a4 24001BE5 		mov	r6, r4
- 400 03a8 FEFFFFEB 		ldr	r3, .L16+40
- 401 03ac 0030A0E1 		ldr	r3, [r3, #24]	@ float
- 402 03b0 0140A0E1 		mov	r0, r3
- 403 03b4 FF05A0E3 		bl	__extendsfdf2
- 404 03b8 030680E2 		mov	r3, r0
- 405 03bc 0010A0E3 		mov	r4, r1
- 406 03c0 0320A0E1 		mov	r0, r5
- 407 03c4 0430A0E1 		mov	r1, r6
- 408 03c8 FEFFFFEB 		mov	r2, r3
- 409 03cc 0030A0E1 		mov	r3, r4
- 410 03d0 0140A0E1 		bl	__muldf3
- 411 03d4 0350A0E1 		mov	r3, r0
- 412 03d8 0460A0E1 		mov	r4, r1
- 413 03dc B4321FE5 		mov	r0, r7
- 414 03e0 183093E5 		mov	r1, r8
- 415 03e4 0300A0E1 		mov	r2, r3
- 416 03e8 FEFFFFEB 		mov	r3, r4
- 417 03ec 0030A0E1 		bl	__adddf3
- 418 03f0 0140A0E1 		mov	r3, r0
- 419 03f4 0500A0E1 		mov	r4, r1
- 420 03f8 0610A0E1 		mov	r0, r3
- 421 03fc 0320A0E1 		mov	r1, r4
- 422 0400 0430A0E1 		bl	__truncdfsf2
- 423 0404 FEFFFFEB 		mov	r2, r0
- 424 0408 0030A0E1 		ldr	r3, .L16+40
- 425 040c 0140A0E1 		str	r2, [r3, #24]	@ float
- 426 0410 0700A0E1 		.loc 1 154 0
- 427 0414 0810A0E1 		ldr	r3, .L16+32
- 428 0418 0320A0E1 		ldr	r3, [r3, #0]	@ float
- 429 041c 0430A0E1 		mov	r0, r3
- 430 0420 FEFFFFEB 		ldr	r1, [fp, #-36]	@ float
- 431 0424 0030A0E1 		bl	__mulsf3
- 432 0428 0140A0E1 		mov	r3, r0
- 433 042c 0300A0E1 		mov	r0, r3
- 434 0430 0410A0E1 		bl	__extendsfdf2
- 435 0434 FEFFFFEB 		mov	r7, r0
- 436 0438 0020A0E1 		mov	r8, r1
- 437 043c 14331FE5 		ldr	r0, [fp, #-36]	@ float
- 438 0440 182083E5 		bl	__extendsfdf2
- 154:lab.c         **** 	}
- 439              	0, r0, #3145728
- 440 0444 24331FE5 		mov	r1, #0
- 441 0448 003093E5 		mov	r2, r3
- 442 044c 0300A0E1 		mov	r3, r4
- 443 0450 24101BE5 		bl	__subdf3
- 444 0454 FEFFFFEB 		mov	r3, r0
- 445 0458 0030A0E1 		mov	r4, r1
- 446 045c 0300A0E1 		mov	r5, r3
- 447 0460 FEFFFFEB 		mov	r6, r4
- 448 0464 0070A0E1 		ldr	r3, .L16+40
- 449 0468 0180A0E1 		ldr	r3, [r3, #28]	@ float
- 450 046c 24001BE5 		mov	r0, r3
- 451 0470 FEFFFFEB 		bl	__extendsfdf2
- 452 0474 0030A0E1 		mov	r3, r0
- 453 0478 0140A0E1 		mov	r4, r1
- 454 047c FF05A0E3 		mov	r0, r5
- 455 0480 030680E2 		mov	r1, r6
- 456 0484 0010A0E3 		mov	r2, r3
- 457 0488 0320A0E1 		mov	r3, r4
- 458 048c 0430A0E1 		bl	__muldf3
- 459 0490 FEFFFFEB 		mov	r3, r0
- 460 0494 0030A0E1 		mov	r4, r1
- 461 0498 0140A0E1 		mov	r0, r7
- 462 049c 0350A0E1 		mov	r1, r8
- 463 04a0 0460A0E1 		mov	r2, r3
- 464 04a4 7C331FE5 		mov	r3, r4
- 465 04a8 1C3093E5 		bl	__adddf3
- 466 04ac 0300A0E1 		mov	r3, r0
- 467 04b0 FEFFFFEB 		mov	r4, r1
- 468 04b4 0030A0E1 		mov	r0, r3
- 469 04b8 0140A0E1 		mov	r1, r4
- 470 04bc 0500A0E1 		bl	__truncdfsf2
- 471 04c0 0610A0E1 		mov	r2, r0
- 472 04c4 0320A0E1 		ldr	r3, .L16+40
- 473 04c8 0430A0E1 		str	r2, [r3, #28]	@ float
- 474 04cc FEFFFFEB 		.loc 1 157 0
- 475 04d0 0030A0E1 		ldr	r3, .L16+36
- 476 04d4 0140A0E1 		ldr	r2, [r3, #8]	@ float
- 477 04d8 0700A0E1 		ldr	r3, .L16+40
- 478 04dc 0810A0E1 		str	r2, [r3, #8]	@ float
- 479 04e0 0320A0E1 		.loc 1 158 0
- 480 04e4 0430A0E1 		ldr	r3, .L16+36
- 481 04e8 FEFFFFEB 		ldr	r2, [r3, #12]	@ float
- 482 04ec 0030A0E1 		ldr	r3, .L16+40
- 483 04f0 0140A0E1 		str	r2, [r3, #12]	@ float
- 484 04f4 0300A0E1 		.loc 1 159 0
- 485 04f8 0410A0E1 		ldr	r3, .L16+36
- 486 04fc FEFFFFEB 		ldr	r2, [r3, #16]	@ float
- 487 0500 0020A0E1 		ldr	r3, .L16+40
- 488 0504 DC331FE5 		str	r2, [r3, #16]	@ float
- 489 0508 1C2083E5 	.L12:
- 155:lab.c         **** 	
- 156:lab.c         **** 		// Handling to update velocity estimate at 100 Hz
- 157:lab.c         **** 		velocityEstHolder++;
- 490              	 #0]
- 491 050c E8331FE5 		add	r2, r3, #1
- 492 0510 082093E5 		ldr	r3, .L16+44
- 493 0514 EC331FE5 		str	r2, [r3, #0]
- 494 0518 082083E5 		.loc 1 166 0
- 158:lab.c         **** f (velocityEstHolder == 10)
- 495              	r3, .L16+44
- 496 051c F8331FE5 		ldr	r3, [r3, #0]
- 497 0520 0C2093E5 		cmp	r3, #10
- 498 0524 FC331FE5 		bne	.L15
- 499 0528 0C2083E5 		.loc 1 168 0
- 159:lab.c         **** 	{
- 500              	r2, .L16+44
- 501 052c 08341FE5 		mov	r3, #0
- 502 0530 102093E5 		str	r3, [r2, #0]
- 503 0534 0C341FE5 	.L15:
- 504 0538 102083E5 		.loc 1 171 0
- 505              		sub	sp, fp, #32
- 506              		ldmfd	sp, {r4, r5, r6, r7, r8, fp, sp, lr}
- 160:lab.c         **** 		velocityEstHolder = 0;
- 161:lab.c         **** 		}
- 162:lab.c         **** 	}
- 163:lab.c         **** }
- 164:lab.c         **** /*-------- End Velocity Estimator --------*/
- 165:lab.c         **** 
- 507              	.LFE3:
- 509 0540 003093E5 		.global	__addsf3
- 510 0544 012083E2 		.global	__gtsf2
- 511 0548 1C341FE5 		.global	__ltsf2
- 512 054c 002083E5 		.align	2
- 166:lab.c         **** BEEN EDITTED BUT NO LONGER USING THIS
- 513              	al	lab3
- 515 0554 003093E5 	lab3:
- 516 0558 0A0053E3 	.LFB4:
- 517 055c 0200001A 		.loc 1 177 0
- 167:lab.c         **** *-------------- Controller --------------*/
- 168:lab.c         **** /*-------------- Lab 3 --------------*/
- 518              	nction supports interworking.
- 519 0560 34241FE5 		@ args = 0, pretend = 0, frame = 68
- 520 0564 0030A0E3 		@ frame_needed = 1, uses_anonymous_args = 0
- 521 0568 003082E5 		mov	ip, sp
- 522              	.LCFI7:
- 169:lab.c         **** id lab3() {
- 170:lab.c         **** 	
- 171:lab.c         **** 	// Error Update (for integral control)	
- 523              	d	sp!, {r4, r5, r6, fp, ip, lr, pc}
- 524 056c 20D04BE2 	.LCFI8:
- 525 0570 F0699DE8 		sub	fp, ip, #4
- 526 0574 1EFF2FE1 	.LCFI9:
- 527              		sub	sp, sp, #68
- 528              	.LCFI10:
- 529              		.loc 1 180 0
- 530              		ldr	r3, .L43+8
- 531              		ldr	r3, [r3, #0]
- 532              		cmp	r3, #1
- 533              		bne	.L19
- 534              		.loc 1 181 0
- 535              		ldr	r3, .L43+12
- 536              		ldr	r3, [r3, #0]
- 172:lab.c         ****  (takeoff2 == 1) {
- 173:lab.c         **** 		if (IntegralHolder == 0) {
- 174:lab.c         **** 			errorcum[0] = (x_nom[0]-mocap.dX)*0.02 + errorcum[0];
- 175:lab.c         **** 			errorcum[1] = (x_nom[1]-mocap.dY)*0.02 + errorcum[1];
- 176:lab.c         **** 			errorcum[2] = (x_nom[2]-mocap.dZ)*0.02 + errorcum[2];
- 177:lab.c         **** 		}
- 537              	ne	.L21
- 538              		.loc 1 182 0
- 539              		ldr	r3, .L43+16
- 540              		ldr	r2, [r3, #0]	@ float
- 541 0578 0DC0A0E1 		ldr	r3, .L43+20
- 542              		ldr	r3, [r3, #8]	@ float
- 543 057c 70D82DE9 		mov	r0, r2
- 544              		mov	r1, r3
- 545 0580 04B04CE2 		bl	__subsf3
- 546              		mov	r3, r0
- 547 0584 44D04DE2 		mov	r0, r3
- 548              		bl	__extendsfdf2
- 178:lab.c         **** egralHolder++;
- 179:lab.c         **** 		if (IntegralHolder == 10) {
- 180:lab.c         **** 			IntegralHolder = 0;
- 549              		mov	r4, r1
- 550 0588 54349FE5 		mov	r0, r3
- 551 058c 003093E5 		mov	r1, r4
- 552 0590 010053E3 		adr	r2, .L43
- 553 0594 8700001A 		ldmia	r2, {r2-r3}
- 181:lab.c         **** 
- 554              	_muldf3
- 555 0598 48349FE5 		mov	r3, r0
- 556 059c 003093E5 		mov	r4, r1
- 557 05a0 000053E3 		mov	r5, r3
- 558 05a4 7700001A 		mov	r6, r4
- 182:lab.c         **** 	}
- 559              	r3, .L43+104
- 560 05a8 3C349FE5 		ldr	r3, [r3, #0]	@ float
- 561 05ac 002093E5 		mov	r0, r3
- 562 05b0 38349FE5 		bl	__extendsfdf2
- 563 05b4 083093E5 		mov	r3, r0
- 564 05b8 0200A0E1 		mov	r4, r1
- 565 05bc 0310A0E1 		mov	r0, r5
- 566 05c0 FEFFFFEB 		mov	r1, r6
- 567 05c4 0030A0E1 		mov	r2, r3
- 568 05c8 0300A0E1 		mov	r3, r4
- 569 05cc FEFFFFEB 		bl	__adddf3
- 570 05d0 0030A0E1 		mov	r3, r0
- 571 05d4 0140A0E1 		mov	r4, r1
- 572 05d8 0300A0E1 		mov	r0, r3
- 573 05dc 0410A0E1 		mov	r1, r4
- 574 05e0 FD2F8FE2 		bl	__truncdfsf2
- 575 05e4 0C0092E8 		mov	r2, r0
- 576 05e8 FEFFFFEB 		ldr	r3, .L43+104
- 577 05ec 0030A0E1 		str	r2, [r3, #0]	@ float
- 578 05f0 0140A0E1 		.loc 1 183 0
- 579 05f4 0350A0E1 		ldr	r3, .L43+16
- 580 05f8 0460A0E1 		ldr	r2, [r3, #4]	@ float
- 581 05fc 40349FE5 		ldr	r3, .L43+20
- 582 0600 003093E5 		ldr	r3, [r3, #12]	@ float
- 583 0604 0300A0E1 		mov	r0, r2
- 584 0608 FEFFFFEB 		mov	r1, r3
- 585 060c 0030A0E1 		bl	__subsf3
- 586 0610 0140A0E1 		mov	r3, r0
- 587 0614 0500A0E1 		mov	r0, r3
- 588 0618 0610A0E1 		bl	__extendsfdf2
- 589 061c 0320A0E1 		mov	r3, r0
- 590 0620 0430A0E1 		mov	r4, r1
- 591 0624 FEFFFFEB 		mov	r0, r3
- 592 0628 0030A0E1 		mov	r1, r4
- 593 062c 0140A0E1 		adr	r2, .L43
- 594 0630 0300A0E1 		ldmia	r2, {r2-r3}
- 595 0634 0410A0E1 		bl	__muldf3
- 596 0638 FEFFFFEB 		mov	r3, r0
- 597 063c 0020A0E1 		mov	r4, r1
- 598 0640 FC339FE5 		mov	r5, r3
- 599 0644 002083E5 		mov	r6, r4
- 183:lab.c         **** 
- 600              	at
- 601 0648 9C339FE5 		mov	r0, r3
- 602 064c 042093E5 		bl	__extendsfdf2
- 603 0650 98339FE5 		mov	r3, r0
- 604 0654 0C3093E5 		mov	r4, r1
- 605 0658 0200A0E1 		mov	r0, r5
- 606 065c 0310A0E1 		mov	r1, r6
- 607 0660 FEFFFFEB 		mov	r2, r3
- 608 0664 0030A0E1 		mov	r3, r4
- 609 0668 0300A0E1 		bl	__adddf3
- 610 066c FEFFFFEB 		mov	r3, r0
- 611 0670 0030A0E1 		mov	r4, r1
- 612 0674 0140A0E1 		mov	r0, r3
- 613 0678 0300A0E1 		mov	r1, r4
- 614 067c 0410A0E1 		bl	__truncdfsf2
- 615 0680 D52F8FE2 		mov	r2, r0
- 616 0684 0C0092E8 		ldr	r3, .L43+104
- 617 0688 FEFFFFEB 		str	r2, [r3, #4]	@ float
- 618 068c 0030A0E1 		.loc 1 184 0
- 619 0690 0140A0E1 		ldr	r3, .L43+16
- 620 0694 0350A0E1 		ldr	r2, [r3, #8]	@ float
- 621 0698 0460A0E1 		ldr	r3, .L43+20
- 622 069c A0339FE5 		ldr	r3, [r3, #16]	@ float
- 623 06a0 043093E5 		mov	r0, r2
- 624 06a4 0300A0E1 		mov	r1, r3
- 625 06a8 FEFFFFEB 		bl	__subsf3
- 626 06ac 0030A0E1 		mov	r3, r0
- 627 06b0 0140A0E1 		mov	r0, r3
- 628 06b4 0500A0E1 		bl	__extendsfdf2
- 629 06b8 0610A0E1 		mov	r3, r0
- 630 06bc 0320A0E1 		mov	r4, r1
- 631 06c0 0430A0E1 		mov	r0, r3
- 632 06c4 FEFFFFEB 		mov	r1, r4
- 633 06c8 0030A0E1 		adr	r2, .L43
- 634 06cc 0140A0E1 		ldmia	r2, {r2-r3}
- 635 06d0 0300A0E1 		bl	__muldf3
- 636 06d4 0410A0E1 		mov	r3, r0
- 637 06d8 FEFFFFEB 		mov	r4, r1
- 638 06dc 0020A0E1 		mov	r5, r3
- 639 06e0 5C339FE5 		mov	r6, r4
- 640 06e4 042083E5 		ldr	r3, .L43+104
- 184:lab.c         **** 	// OUTER LOOP
- 641              		__extendsfdf2
- 642 06e8 FC329FE5 		mov	r3, r0
- 643 06ec 082093E5 		mov	r4, r1
- 644 06f0 F8329FE5 		mov	r0, r5
- 645 06f4 103093E5 		mov	r1, r6
- 646 06f8 0200A0E1 		mov	r2, r3
- 647 06fc 0310A0E1 		mov	r3, r4
- 648 0700 FEFFFFEB 		bl	__adddf3
- 649 0704 0030A0E1 		mov	r3, r0
- 650 0708 0300A0E1 		mov	r4, r1
- 651 070c FEFFFFEB 		mov	r0, r3
- 652 0710 0030A0E1 		mov	r1, r4
- 653 0714 0140A0E1 		bl	__truncdfsf2
- 654 0718 0300A0E1 		mov	r2, r0
- 655 071c 0410A0E1 		ldr	r3, .L43+104
- 656 0720 AD2F8FE2 		str	r2, [r3, #8]	@ float
- 657 0724 0C0092E8 	.L21:
- 658 0728 FEFFFFEB 		.loc 1 187 0
- 659 072c 0030A0E1 		ldr	r3, .L43+12
- 660 0730 0140A0E1 		ldr	r3, [r3, #0]
- 661 0734 0350A0E1 		add	r2, r3, #1
- 662 0738 0460A0E1 		ldr	r3, .L43+12
- 663 073c 00339FE5 		str	r2, [r3, #0]
- 664 0740 083093E5 		.loc 1 188 0
- 665 0744 0300A0E1 		ldr	r3, .L43+12
- 666 0748 FEFFFFEB 		ldr	r3, [r3, #0]
- 667 074c 0030A0E1 		cmp	r3, #10
- 668 0750 0140A0E1 		bne	.L19
- 669 0754 0500A0E1 		.loc 1 189 0
- 670 0758 0610A0E1 		ldr	r2, .L43+12
- 671 075c 0320A0E1 		mov	r3, #0
- 672 0760 0430A0E1 		str	r3, [r2, #0]
- 673 0764 FEFFFFEB 	.L19:
- 674 0768 0030A0E1 		.loc 1 197 0
- 675 076c 0140A0E1 		ldr	r3, .L43+24	@ float
- 676 0770 0300A0E1 		str	r3, [fp, #-92]	@ float
- 677 0774 0410A0E1 		.loc 1 198 0
- 678 0778 FEFFFFEB 		ldr	r3, .L43+28	@ float
- 679 077c 0020A0E1 		str	r3, [fp, #-88]	@ float
- 680 0780 BC329FE5 		.loc 1 199 0
- 681 0784 082083E5 		ldr	r3, .L43+32	@ float
- 682              		str	r3, [fp, #-84]	@ float
- 185:lab.c         **** 	// Hummingbird
- 186:lab.c         **** 	
- 187:lab.c         **** 	float Kp_x = -0.1952;
- 683              	r	r3, [fp, #-80]	@ float
- 684 0788 58329FE5 		.loc 1 201 0
- 685 078c 003093E5 		ldr	r3, .L43+40	@ float
- 686 0790 012083E2 		str	r3, [fp, #-76]	@ float
- 687 0794 4C329FE5 		.loc 1 202 0
- 688 0798 002083E5 		ldr	r3, .L43+32	@ float
- 188:lab.c         **** oat Kd_x = -0.2446;
- 689              	3, [fp, #-72]	@ float
- 690 079c 44329FE5 		.loc 1 203 0
- 691 07a0 003093E5 		ldr	r3, .L43+44	@ float
- 692 07a4 0A0053E3 		str	r3, [fp, #-68]	@ float
- 693 07a8 0200001A 		.loc 1 204 0
- 189:lab.c         **** float Ki_x = 0.0;
- 694              	r3, .L43+48	@ float
- 695 07ac 34229FE5 		str	r3, [fp, #-64]	@ float
- 696 07b0 0030A0E3 		.loc 1 205 0
- 697 07b4 003082E5 		ldr	r3, .L43+32	@ float
- 698              		str	r3, [fp, #-60]	@ float
- 190:lab.c         **** float Kp_y = 0.1952;
- 191:lab.c         **** 	float Kd_y = 0.2446;
- 192:lab.c         **** 	float Ki_y = 0.0;
- 193:lab.c         **** 	float Kp_z = -4.3112;
- 194:lab.c         **** 	float Kd_z = -2.4473;
- 195:lab.c         **** 	float Ki_z = 0.0;
- 196:lab.c         **** 
- 197:lab.c         **** 	// Outer Loop PD
- 699              	 1 210 0
- 700 07b8 34329FE5 		ldr	r3, .L43+16
- 701 07bc 5C300BE5 		ldr	r2, [r3, #0]	@ float
- 198:lab.c         **** _x;
- 702              	r	r3, .L43+20
- 703 07c0 30329FE5 		ldr	r3, [r3, #8]	@ float
- 704 07c4 58300BE5 		mov	r0, r2
- 199:lab.c         **** float a_y;
- 705              	v	r1, r3
- 706 07c8 2C329FE5 		bl	__subsf3
- 707 07cc 54300BE5 		mov	r3, r0
- 200:lab.c         **** a_x = Kp_x*(x_nom[0]-mocap.dX)-Kd_x*mocap.dVx+Ki_x*errorcum[0];
- 708              	v	r0, r3
- 709 07d0 28329FE5 		ldr	r1, [fp, #-92]	@ float
- 710 07d4 50300BE5 		bl	__mulsf3
- 201:lab.c         **** a_y = Kp_y*(x_nom[1]-mocap.dY)-Kd_y*mocap.dVy+Ki_y*errorcum[1];
- 711              	v	r3, r0
- 712 07d8 24329FE5 		mov	r4, r3
- 713 07dc 4C300BE5 		ldr	r3, .L43+20
- 202:lab.c         **** pitch_desired = 0;//a_x*cos(real_mocap.dThetaz)-a_y*sin(real_mocap.dThetaz);
- 714              	r	r3, [r3, #20]	@ float
- 715 07e0 14329FE5 		mov	r0, r3
- 716 07e4 48300BE5 		ldr	r1, [fp, #-88]	@ float
- 203:lab.c         **** roll_desired = 0;//a_x*sin(real_mocap.dThetaz)+a_y*cos(real_mocap.dThetaz);
- 717              		__mulsf3
- 718 07e8 18329FE5 		mov	r3, r0
- 719 07ec 44300BE5 		mov	r0, r4
- 204:lab.c         **** yaw_desired = 0;//x_nom[3];
- 720              	v	r1, r3
- 721 07f0 14329FE5 		bl	__subsf3
- 722 07f4 40300BE5 		mov	r3, r0
- 205:lab.c         **** //cnt_u[3] = U_Kp_z*(x_nom[2]-USMaxBot_range1)-U_Kd_z*(USMaxBot_range1 - USMaxBot_range1_old)*1000+
- 723              	v	r4, r3
- 724 07f8 FC319FE5 		ldr	r3, .L43+104
- 725 07fc 3C300BE5 		ldr	r3, [r3, #0]	@ float
- 206:lab.c         **** //USMaxBot_range1_old = USMaxBot_range1;
- 207:lab.c         **** 	// INNER LOOP
- 208:lab.c         **** 		// Hummingbird
- 209:lab.c         **** 	float Ktx_P = 1.0;
- 210:lab.c         **** 	float Ktx_D = 0.3;
- 726              	v	r0, r3
- 727 0800 E4319FE5 		ldr	r1, [fp, #-84]	@ float
- 728 0804 002093E5 		bl	__mulsf3
- 729 0808 E0319FE5 		mov	r3, r0
- 730 080c 083093E5 		mov	r0, r4
- 731 0810 0200A0E1 		mov	r1, r3
- 732 0814 0310A0E1 		bl	__addsf3
- 733 0818 FEFFFFEB 		mov	r3, r0
- 734 081c 0030A0E1 		str	r3, [fp, #-56]	@ float
- 735 0820 0300A0E1 		.loc 1 211 0
- 736 0824 5C101BE5 		ldr	r3, .L43+16
- 737 0828 FEFFFFEB 		ldr	r2, [r3, #4]	@ float
- 738 082c 0030A0E1 		ldr	r3, .L43+20
- 739 0830 0340A0E1 		ldr	r3, [r3, #12]	@ float
- 740 0834 B4319FE5 		mov	r0, r2
- 741 0838 143093E5 		mov	r1, r3
- 742 083c 0300A0E1 		bl	__subsf3
- 743 0840 58101BE5 		mov	r3, r0
- 744 0844 FEFFFFEB 		mov	r0, r3
- 745 0848 0030A0E1 		ldr	r1, [fp, #-80]	@ float
- 746 084c 0400A0E1 		bl	__mulsf3
- 747 0850 0310A0E1 		mov	r3, r0
- 748 0854 FEFFFFEB 		mov	r4, r3
- 749 0858 0030A0E1 		ldr	r3, .L43+20
- 750 085c 0340A0E1 		ldr	r3, [r3, #24]	@ float
- 751 0860 DC319FE5 		mov	r0, r3
- 752 0864 003093E5 		ldr	r1, [fp, #-76]	@ float
- 753 0868 0300A0E1 		bl	__mulsf3
- 754 086c 54101BE5 		mov	r3, r0
- 755 0870 FEFFFFEB 		mov	r0, r4
- 756 0874 0030A0E1 		mov	r1, r3
- 757 0878 0400A0E1 		bl	__subsf3
- 758 087c 0310A0E1 		mov	r3, r0
- 759 0880 FEFFFFEB 		mov	r4, r3
- 760 0884 0030A0E1 		ldr	r3, .L43+104
- 761 0888 38300BE5 		ldr	r3, [r3, #4]	@ float
- 211:lab.c         **** t Kty_P = 1.0;	
- 762              	oat
- 763 088c 58319FE5 		bl	__mulsf3
- 764 0890 042093E5 		mov	r3, r0
- 765 0894 54319FE5 		mov	r0, r4
- 766 0898 0C3093E5 		mov	r1, r3
- 767 089c 0200A0E1 		bl	__addsf3
- 768 08a0 0310A0E1 		mov	r3, r0
- 769 08a4 FEFFFFEB 		str	r3, [fp, #-52]	@ float
- 770 08a8 0030A0E1 		.loc 1 212 0
- 771 08ac 0300A0E1 		ldr	r2, .L43+52
- 772 08b0 50101BE5 		ldr	r3, .L43+32	@ float
- 773 08b4 FEFFFFEB 		str	r3, [r2, #0]	@ float
- 774 08b8 0030A0E1 		.loc 1 213 0
- 775 08bc 0340A0E1 		ldr	r2, .L43+56
- 776 08c0 28319FE5 		ldr	r3, .L43+32	@ float
- 777 08c4 183093E5 		str	r3, [r2, #0]	@ float
- 778 08c8 0300A0E1 		.loc 1 214 0
- 779 08cc 4C101BE5 		ldr	r2, .L43+76
- 780 08d0 FEFFFFEB 		ldr	r3, .L43+32	@ float
- 781 08d4 0030A0E1 		str	r3, [r2, #0]	@ float
- 782 08d8 0400A0E1 		.loc 1 219 0
- 783 08dc 0310A0E1 		ldr	r3, .L43+60	@ float
- 784 08e0 FEFFFFEB 		str	r3, [fp, #-48]	@ float
- 785 08e4 0030A0E1 		.loc 1 220 0
- 786 08e8 0340A0E1 		ldr	r3, .L43+64	@ float
- 787 08ec 50319FE5 		str	r3, [fp, #-44]	@ float
- 788 08f0 043093E5 		.loc 1 221 0
- 789 08f4 0300A0E1 		ldr	r3, .L43+60	@ float
- 790 08f8 48101BE5 		str	r3, [fp, #-40]	@ float
- 791 08fc FEFFFFEB 		.loc 1 222 0
- 792 0900 0030A0E1 		ldr	r3, .L43+64	@ float
- 793 0904 0400A0E1 		str	r3, [fp, #-36]	@ float
- 794 0908 0310A0E1 		.loc 1 223 0
- 795 090c FEFFFFEB 		ldr	r3, .L43+68	@ float
- 796 0910 0030A0E1 		str	r3, [fp, #-32]	@ float
- 797 0914 34300BE5 		.loc 1 224 0
- 212:lab.c         **** float Kty_D = 0.3;	
- 798              	p, #-28]	@ float
- 799 0918 F0209FE5 		.loc 1 229 0
- 800 091c D8309FE5 		ldr	r3, .L43+56
- 801 0920 003082E5 		ldr	r2, [r3, #0]	@ float
- 213:lab.c         **** float Ktz_P = 0.08;	
- 802              		r3, .L43+80
- 803 0924 E8209FE5 		ldr	r3, [r3, #4]	@ float
- 804 0928 CC309FE5 		mov	r0, r2
- 805 092c 003082E5 		mov	r1, r3
- 214:lab.c         **** float Ktz_D = 0.04;
- 806              	__subsf3
- 807 0930 F0209FE5 		mov	r3, r0
- 808 0934 C0309FE5 		mov	r0, r3
- 809 0938 003082E5 		ldr	r1, [fp, #-48]	@ float
- 215:lab.c         **** 	
- 216:lab.c         **** 
- 217:lab.c         **** 
- 218:lab.c         **** 	// Inner Loop PD
- 219:lab.c         **** 	cnt_u[0] = Ktx_P*(roll_desired-imusensor.dThetax)-Ktx_D*(imusensor.dOmegax);
- 810              	__mulsf3
- 811 093c D4309FE5 		mov	r3, r0
- 812 0940 30300BE5 		mov	r4, r3
- 220:lab.c         **** u[1] = Kty_P*(pitch_desired-imusensor.dThetay)-Kty_D*(imusensor.dOmegay);
- 813              	r	r3, .L43+80
- 814 0944 D0309FE5 		ldr	r3, [r3, #28]	@ float
- 815 0948 2C300BE5 		mov	r0, r3
- 221:lab.c         **** 	// Yaw Control with out Compass/MoCap correction
- 816              	r	r1, [fp, #-44]	@ float
- 817 094c C4309FE5 		bl	__mulsf3
- 818 0950 28300BE5 		mov	r3, r0
- 222:lab.c         **** cnt_u[2] = Ktz_P*(yaw_desired-imusensor.dThetaz)-Ktz_D*(imusensor.dOmegaz);
- 819              	v	r0, r4
- 820 0954 C0309FE5 		mov	r1, r3
- 821 0958 24300BE5 		bl	__subsf3
- 223:lab.c         **** 	// For Keeping data
- 822              	v	r3, r0
- 823 095c BC309FE5 		mov	r2, r3
- 824 0960 20300BE5 		ldr	r3, .L43+84
- 224:lab.c         **** u.u1 = cnt_u[0];
- 825              	r	r2, [r3, #0]	@ float
- 826 0964 B8309FE5 		.loc 1 230 0
- 827 0968 1C300BE5 		ldr	r3, .L43+52
- 225:lab.c         **** u.u2 = cnt_u[1];
- 226:lab.c         **** 	u.u3 = cnt_u[2];
- 227:lab.c         **** 	u.u4 = cnt_u[3];
- 228:lab.c         **** 
- 229:lab.c         **** 	// Integral anti-windup
- 828              	.L44
- 829 096c A0309FE5 	.L45:
- 830 0970 002093E5 		.align	2
- 831 0974 B0309FE5 	.L43:
- 832 0978 043093E5 		.word	1066695393
- 833 097c 0200A0E1 		.word	1202590843
- 834 0980 0310A0E1 		.word	takeoff2
- 835 0984 FEFFFFEB 		.word	IntegralHolder
- 836 0988 0030A0E1 		.word	x_nom
- 837 098c 0300A0E1 		.word	mocap
- 838 0990 30101BE5 		.word	-1102585214
- 839 0994 FEFFFFEB 		.word	-1099270036
- 840 0998 0030A0E1 		.word	0
- 841 099c 0340A0E1 		.word	1044898434
- 842 09a0 84309FE5 		.word	1048213612
- 843 09a4 1C3093E5 		.word	-1064700582
- 844 09a8 0300A0E1 		.word	-1071865712
- 845 09ac 2C101BE5 		.word	pitch_desired
- 846 09b0 FEFFFFEB 		.word	roll_desired
- 847 09b4 0030A0E1 		.word	1065353216
- 848 09b8 0400A0E1 		.word	1050253722
- 849 09bc 0310A0E1 		.word	1034147594
- 850 09c0 FEFFFFEB 		.word	1025758986
- 851 09c4 0030A0E1 		.word	yaw_desired
- 852 09c8 0320A0E1 		.word	imusensor
- 853 09cc 5C309FE5 		.word	cnt_u
- 854 09d0 002083E5 		.word	u
- 230:lab.c         **** x-position anti-windup
- 855              	084227584
- 856 09d4 34309FE5 		.word	1075838976
- 857 09d8 1B0000EA 		.word	errorcum
- 858              		.word	-1071644672
- 859              	.L44:
- 860              		ldr	r2, [r3, #0]	@ float
- 861 09dc E17A943F 		ldr	r3, .L43+80
- 862 09e0 7B14AE47 		ldr	r3, [r3, #8]	@ float
- 863 09e4 00000000 		mov	r0, r2
- 864 09e8 00000000 		mov	r1, r3
- 865 09ec 00000000 		bl	__subsf3
- 866 09f0 00000000 		mov	r3, r0
- 867 09f4 82E247BE 		mov	r0, r3
- 868 09f8 6C787ABE 		ldr	r1, [fp, #-40]	@ float
- 869 09fc 00000000 		bl	__mulsf3
- 870 0a00 82E2473E 		mov	r3, r0
- 871 0a04 6C787A3E 		mov	r4, r3
- 872 0a08 5AF589C0 		ldr	r3, .L43+80
- 873 0a0c 90A01CC0 		ldr	r3, [r3, #32]	@ float
- 874 0a10 00000000 		mov	r0, r3
- 875 0a14 00000000 		ldr	r1, [fp, #-36]	@ float
- 876 0a18 0000803F 		bl	__mulsf3
- 877 0a1c 9A99993E 		mov	r3, r0
- 878 0a20 0AD7A33D 		mov	r0, r4
- 879 0a24 0AD7233D 		mov	r1, r3
- 880 0a28 00000000 		bl	__subsf3
- 881 0a2c 00000000 		mov	r3, r0
- 882 0a30 00000000 		mov	r2, r3
- 883 0a34 00000000 		ldr	r3, .L43+84
- 884 0a38 0000603F 		str	r2, [r3, #4]	@ float
- 885 0a3c 000060BF 		.loc 1 232 0
- 886 0a40 00002040 		ldr	r3, .L43+76
- 887 0a44 00000000 		ldr	r2, [r3, #0]	@ float
- 888 0a48 000020C0 		ldr	r3, .L43+80
- 889              		ldr	r3, [r3, #12]	@ float
- 890 0a4c 002093E5 		mov	r0, r2
- 891 0a50 2C301FE5 		mov	r1, r3
- 892 0a54 083093E5 		bl	__subsf3
- 893 0a58 0200A0E1 		mov	r3, r0
- 894 0a5c 0310A0E1 		mov	r0, r3
- 895 0a60 FEFFFFEB 		ldr	r1, [fp, #-32]	@ float
- 896 0a64 0030A0E1 		bl	__mulsf3
- 897 0a68 0300A0E1 		mov	r3, r0
- 898 0a6c 28101BE5 		mov	r4, r3
- 899 0a70 FEFFFFEB 		ldr	r3, .L43+80
- 900 0a74 0030A0E1 		ldr	r3, [r3, #36]	@ float
- 901 0a78 0340A0E1 		mov	r0, r3
- 902 0a7c 58301FE5 		ldr	r1, [fp, #-28]	@ float
- 903 0a80 203093E5 		bl	__mulsf3
- 904 0a84 0300A0E1 		mov	r3, r0
- 905 0a88 24101BE5 		mov	r0, r4
- 906 0a8c FEFFFFEB 		mov	r1, r3
- 907 0a90 0030A0E1 		bl	__subsf3
- 908 0a94 0400A0E1 		mov	r3, r0
- 909 0a98 0310A0E1 		mov	r2, r3
- 910 0a9c FEFFFFEB 		ldr	r3, .L43+84
- 911 0aa0 0030A0E1 		str	r2, [r3, #8]	@ float
- 912 0aa4 0320A0E1 		.loc 1 235 0
- 913 0aa8 80301FE5 		ldr	r3, .L43+84
- 914 0aac 042083E5 		ldr	r2, [r3, #0]	@ float
- 231:lab.c         **** if (errorcum[0] > 0.875) {
- 232:lab.c         **** 		errorcum[0] = 0.875;
- 915              	r	r3, .L43+84
- 916 0ab0 90301FE5 		ldr	r2, [r3, #4]	@ float
- 917 0ab4 002093E5 		ldr	r3, .L43+88
- 918 0ab8 94301FE5 		str	r2, [r3, #4]	@ float
- 919 0abc 0C3093E5 		.loc 1 237 0
- 920 0ac0 0200A0E1 		ldr	r3, .L43+84
- 921 0ac4 0310A0E1 		ldr	r2, [r3, #8]	@ float
- 922 0ac8 FEFFFFEB 		ldr	r3, .L43+88
- 923 0acc 0030A0E1 		str	r2, [r3, #8]	@ float
- 924 0ad0 0300A0E1 		.loc 1 238 0
- 925 0ad4 20101BE5 		ldr	r3, .L43+84
- 926 0ad8 FEFFFFEB 		ldr	r2, [r3, #12]	@ float
- 927 0adc 0030A0E1 		ldr	r3, .L43+88
- 928 0ae0 0340A0E1 		str	r2, [r3, #12]	@ float
- 929 0ae4 C0301FE5 		.loc 1 242 0
- 930 0ae8 243093E5 		ldr	r3, .L43+104
- 931 0aec 0300A0E1 		ldr	r3, [r3, #0]	@ float
- 932 0af0 1C101BE5 		mov	r0, r3
- 933 0af4 FEFFFFEB 		ldr	r1, .L43+92	@ float
- 934 0af8 0030A0E1 		bl	__gtsf2
- 935 0afc 0400A0E1 		mov	r3, r0
- 936 0b00 0310A0E1 		cmp	r3, #0
- 937 0b04 FEFFFFEB 		bgt	.L26
- 938 0b08 0030A0E1 		b	.L24
- 939 0b0c 0320A0E1 	.L26:
- 940 0b10 E8301FE5 		.loc 1 243 0
- 941 0b14 082083E5 		ldr	r2, .L43+104
- 233:lab.c         **** 	
- 234:lab.c         **** 	else if (errorcum[0] < -0.875) {
- 235:lab.c         **** 		errorcum[0] = -0.875;
- 942              	tr	r3, [r2, #0]	@ float
- 943 0b18 F0301FE5 		b	.L27
- 944 0b1c 002093E5 	.L24:
- 945 0b20 F4301FE5 		.loc 1 245 0
- 946 0b24 002083E5 		ldr	r3, .L43+104
- 236:lab.c         **** 
- 947              	r3, [r3, #0]	@ float
- 948 0b28 00311FE5 		mov	r0, r3
- 949 0b2c 042093E5 		ldr	r1, .L43+96	@ float
- 950 0b30 04311FE5 		bl	__ltsf2
- 951 0b34 042083E5 		mov	r3, r0
- 237:lab.c         **** 		// y-position anti-windup
- 952              	r3, #0
- 953 0b38 10311FE5 		blt	.L29
- 954 0b3c 082093E5 		b	.L27
- 955 0b40 14311FE5 	.L29:
- 956 0b44 082083E5 		.loc 1 246 0
- 238:lab.c         **** if (errorcum[1] > 0.875) {
- 957              	r2, .L43+104
- 958 0b48 20311FE5 		ldr	r3, .L43+96	@ float
- 959 0b4c 0C2093E5 		str	r3, [r2, #0]	@ float
- 960 0b50 24311FE5 	.L27:
- 961 0b54 0C2083E5 		.loc 1 250 0
- 239:lab.c         **** 	errorcum[1] = 0.875;
- 240:lab.c         **** 	}
- 241:lab.c         **** 	else if (errorcum[1] < -0.875) {
- 242:lab.c         **** 		errorcum[1] = -0.875;
- 962              	r3, .L43+104
- 963 0b58 1C311FE5 		ldr	r3, [r3, #4]	@ float
- 964 0b5c 003093E5 		mov	r0, r3
- 965 0b60 0300A0E1 		ldr	r1, .L43+92	@ float
- 966 0b64 34111FE5 		bl	__gtsf2
- 967 0b68 FEFFFFEB 		mov	r3, r0
- 968 0b6c 0030A0E1 		cmp	r3, #0
- 969 0b70 000053E3 		bgt	.L32
- 970 0b74 000000CA 		b	.L30
- 971 0b78 030000EA 	.L32:
- 972              		.loc 1 251 0
- 243:lab.c         **** 		// z-position anti-windup
- 973              	43+104
- 974 0b7c 40211FE5 		ldr	r3, .L43+92	@ float
- 975 0b80 50311FE5 		str	r3, [r2, #4]	@ float
- 976 0b84 003082E5 		b	.L33
- 977 0b88 0B0000EA 	.L30:
- 978              		.loc 1 253 0
- 244:lab.c         **** if (errorcum[2] > 2.5) {
- 245:lab.c         **** 		errorcum[2] = 2.5;
- 979              	3, .L43+104
- 980 0b8c 50311FE5 		ldr	r3, [r3, #4]	@ float
- 981 0b90 003093E5 		mov	r0, r3
- 982 0b94 0300A0E1 		ldr	r1, .L43+96	@ float
- 983 0b98 64111FE5 		bl	__ltsf2
- 984 0b9c FEFFFFEB 		mov	r3, r0
- 985 0ba0 0030A0E1 		cmp	r3, #0
- 986 0ba4 000053E3 		blt	.L35
- 987 0ba8 000000BA 		b	.L33
- 988 0bac 020000EA 	.L35:
- 989              		.loc 1 254 0
- 246:lab.c         **** 
- 990              	43+104
- 991 0bb0 74211FE5 		ldr	r3, .L43+96	@ float
- 992 0bb4 80311FE5 		str	r3, [r2, #4]	@ float
- 993 0bb8 003082E5 	.L33:
- 994              		.loc 1 258 0
- 247:lab.c         **** 	else if (errorcum[2] < -2.5) {
- 248:lab.c         **** 		errorcum[2] = -2.5;
- 249:lab.c         **** 	}
- 250:lab.c         **** }	
- 995              	r3, .L43+104
- 996 0bbc 80311FE5 		ldr	r3, [r3, #8]	@ float
- 997 0bc0 043093E5 		mov	r0, r3
- 998 0bc4 0300A0E1 		ldr	r1, .L43+100	@ float
- 999 0bc8 98111FE5 		bl	__gtsf2
- 1000 0bcc FEFFFFEB 		mov	r3, r0
- 1001 0bd0 0030A0E1 		cmp	r3, #0
- 1002 0bd4 000053E3 		bgt	.L38
- 1003 0bd8 000000CA 		b	.L36
- 1004 0bdc 030000EA 	.L38:
- 1005              		.loc 1 259 0
- 251:lab.c         **** ---------- End Lab 3 ------------*/
- 1006              	43+104
- 1007 0be0 A4211FE5 		ldr	r3, .L43+100	@ float
- 1008 0be4 B4311FE5 		str	r3, [r2, #8]	@ float
- 1009 0be8 043082E5 		b	.L42
- 1010 0bec 0B0000EA 	.L36:
- 1011              		.loc 1 261 0
- 252:lab.c         **** /*-------------- Lab 2 --------------*/
- 253:lab.c         **** void lab2() {
- 1012              	3, .L43+104
- 1013 0bf0 B4311FE5 		ldr	r3, [r3, #8]	@ float
- 1014 0bf4 043093E5 		mov	r0, r3
- 1015 0bf8 0300A0E1 		ldr	r1, .L43+108	@ float
- 1016 0bfc C8111FE5 		bl	__ltsf2
- 1017 0c00 FEFFFFEB 		mov	r3, r0
- 1018 0c04 0030A0E1 		cmp	r3, #0
- 1019 0c08 000053E3 		blt	.L41
- 1020 0c0c 000000BA 		b	.L42
- 1021 0c10 020000EA 	.L41:
- 1022              		.loc 1 262 0
- 254:lab.c         **** 	// Desired	
- 1023              	43+104
- 1024 0c14 D8211FE5 		ldr	r3, .L43+108	@ float
- 1025 0c18 E4311FE5 		str	r3, [r2, #8]	@ float
- 1026 0c1c 043082E5 	.L42:
- 1027              		.loc 1 264 0
- 255:lab.c         **** pitch_desired = 0.0;
- 256:lab.c         **** 	
- 257:lab.c         **** 	// INNER LOOP
- 258:lab.c         **** 		// Hummingbird
- 1028              	sp, fp, #24
- 1029 0c20 E4311FE5 		ldmfd	sp, {r4, r5, r6, fp, sp, lr}
- 1030 0c24 083093E5 		bx	lr
- 1031 0c28 0300A0E1 	.LFE4:
- 1033 0c30 FEFFFFEB 		.align	2
- 1034 0c34 0030A0E1 		.global	lab2
- 1036 0c3c 000000CA 	lab2:
- 1037 0c40 030000EA 	.LFB5:
- 1038              		.loc 1 268 0
- 259:lab.c         **** at Ktx_P = 1.0;	// Proportional Roll
- 1039              	 supports interworking.
- 1040 0c44 08221FE5 		@ args = 0, pretend = 0, frame = 24
- 1041 0c48 10321FE5 		@ frame_needed = 1, uses_anonymous_args = 0
- 1042 0c4c 083082E5 		mov	ip, sp
- 1043 0c50 0B0000EA 	.LCFI11:
- 1044              		stmfd	sp!, {r4, fp, ip, lr, pc}
- 260:lab.c         **** float Ktx_D = 0.3;	// Derivative Roll
- 261:lab.c         **** 	float Kty_P = 1.0;	// Proportional Pitch
- 1045              	2:
- 1046 0c54 18321FE5 		sub	fp, ip, #4
- 1047 0c58 083093E5 	.LCFI13:
- 1048 0c5c 0300A0E1 		sub	sp, sp, #24
- 1049 0c60 20121FE5 	.LCFI14:
- 1050 0c64 FEFFFFEB 		.loc 1 271 0
- 1051 0c68 0030A0E1 		ldr	r2, .L48
- 1052 0c6c 000053E3 		ldr	r3, .L48+4	@ float
- 1053 0c70 000000BA 		str	r3, [r2, #0]	@ float
- 1054 0c74 020000EA 		.loc 1 275 0
- 1055              		ldr	r3, .L48+8	@ float
- 262:lab.c         **** loat Kty_D = 0.3;	// Derivative Pitch
- 1056              	p, #-40]	@ float
- 1057 0c78 3C221FE5 		.loc 1 276 0
- 1058 0c7c 3C321FE5 		ldr	r3, .L48+12	@ float
- 1059 0c80 083082E5 		str	r3, [fp, #-36]	@ float
- 1060              		.loc 1 277 0
- 263:lab.c         **** float Ktz_P = 0.08;	// Proportional Yaw
- 264:lab.c         **** 	float Ktz_D = 0.04;	// Derivative Yaw
- 1061              	r3, .L48+8	@ float
- 1062 0c84 18D04BE2 		str	r3, [fp, #-32]	@ float
- 1063 0c88 70689DE8 		.loc 1 278 0
- 1064 0c8c 1EFF2FE1 		ldr	r3, .L48+12	@ float
- 1065              		str	r3, [fp, #-28]	@ float
- 1066              		.loc 1 279 0
- 1067              		ldr	r3, .L48+16	@ float
- 1068              		str	r3, [fp, #-24]	@ float
- 1069              		.loc 1 280 0
- 1070              		ldr	r3, .L48+20	@ float
- 1071              		str	r3, [fp, #-20]	@ float
- 265:lab.c         **** 
- 266:lab.c         **** 	// Inner Loop PD 
- 267:lab.c         **** 	// Note: Lab 2 only tests Pitch control. Do not uncomment roll and yaw lines.
- 268:lab.c         **** 	cnt_u[0] = 0.0; // Ktx_P*(roll_desired-imusensor.dThetax)-Ktx_D*(imusensor.dOmegax);
- 1072              	 0
- 1073              		ldr	r2, .L48+24
- 1074              		ldr	r3, .L48+4	@ float
- 1075              		str	r3, [r2, #0]	@ float
- 1076 0c90 0DC0A0E1 		.loc 1 285 0
- 1077              		ldr	r3, .L48
- 1078 0c94 10D82DE9 		ldr	r2, [r3, #0]	@ float
- 1079              		ldr	r3, .L48+28
- 1080 0c98 04B04CE2 		ldr	r3, [r3, #8]	@ float
- 1081              		mov	r0, r2
- 1082 0c9c 18D04DE2 		mov	r1, r3
- 1083              		bl	__subsf3
- 269:lab.c         **** t_u[1] = Kty_P*(pitch_desired-imusensor.dThetay)-Kty_D*(imusensor.dOmegay);
- 270:lab.c         **** 	cnt_u[2] = 0.0;//Ktz_P*(yaw_desired-imusensor.dThetaz)-Ktz_D*(imusensor.dOmegaz);
- 271:lab.c         **** 
- 1084              		mov	r0, r3
- 1085 0ca0 00219FE5 		ldr	r1, [fp, #-32]	@ float
- 1086 0ca4 00319FE5 		bl	__mulsf3
- 1087 0ca8 003082E5 		mov	r3, r0
- 272:lab.c         ****  For Keeping data
- 273:lab.c         **** 	u.u1 = cnt_u[0];
- 274:lab.c         **** 	u.u2 = cnt_u[1];
- 275:lab.c         **** 	u.u3 = cnt_u[2];
- 1088              		r4, r3
- 1089 0cac FC309FE5 		ldr	r3, .L48+28
- 1090 0cb0 28300BE5 		ldr	r3, [r3, #32]	@ float
- 276:lab.c         **** 4 = cnt_u[3];
- 1091              	v	r0, r3
- 1092 0cb4 F8309FE5 		ldr	r1, [fp, #-28]	@ float
- 1093 0cb8 24300BE5 		bl	__mulsf3
- 277:lab.c         **** 
- 1094              	v	r3, r0
- 1095 0cbc EC309FE5 		mov	r0, r4
- 1096 0cc0 20300BE5 		mov	r1, r3
- 278:lab.c         **** /*------------ End Lab 2 ------------*/
- 1097              		__subsf3
- 1098 0cc4 E8309FE5 		mov	r3, r0
- 1099 0cc8 1C300BE5 		mov	r2, r3
- 279:lab.c         **** *------------ End Controller ------------*/
- 1100              	r	r3, .L48+24
- 1101 0ccc E4309FE5 		str	r2, [r3, #4]	@ float
- 1102 0cd0 18300BE5 		.loc 1 286 0
- 280:lab.c         **** /*---------------- Command ---------------*/
- 1103              	r	r2, .L48+24
- 1104 0cd4 E0309FE5 		ldr	r3, .L48+4	@ float
- 1105 0cd8 14300BE5 		str	r3, [r2, #8]	@ float
- 281:lab.c         **** oid Command() {
- 282:lab.c         **** 	/////////////// Controller Settings ////////////
- 283:lab.c         **** 	WO_SDK.ctrl_mode=0x00;  //0x00: direct individual motor control (individual commands for motors 0.
- 284:lab.c         **** 				//0x01: direct motor control using standard output mapping: commands are interpreted as pitch, 
- 1106              	oc 1 289 0
- 1107 0cdc DC209FE5 		ldr	r3, .L48+24
- 1108 0ce0 C4309FE5 		ldr	r2, [r3, #0]	@ float
- 1109 0ce4 003082E5 		ldr	r3, .L48+32
- 285:lab.c         **** //      and thrust inputs; no attitude controller active
- 1110              		r2, [r3, #0]	@ float
- 1111 0ce8 B8309FE5 		.loc 1 290 0
- 1112 0cec 002093E5 		ldr	r3, .L48+24
- 1113 0cf0 CC309FE5 		ldr	r2, [r3, #4]	@ float
- 1114 0cf4 083093E5 		ldr	r3, .L48+32
- 1115 0cf8 0200A0E1 		str	r2, [r3, #4]	@ float
- 1116 0cfc 0310A0E1 		.loc 1 291 0
- 1117 0d00 FEFFFFEB 		ldr	r3, .L48+24
- 1118 0d04 0030A0E1 		ldr	r2, [r3, #8]	@ float
- 1119 0d08 0300A0E1 		ldr	r3, .L48+32
- 1120 0d0c 20101BE5 		str	r2, [r3, #8]	@ float
- 1121 0d10 FEFFFFEB 		.loc 1 292 0
- 1122 0d14 0030A0E1 		ldr	r3, .L48+24
- 1123 0d18 0340A0E1 		ldr	r2, [r3, #12]	@ float
- 1124 0d1c A0309FE5 		ldr	r3, .L48+32
- 1125 0d20 203093E5 		str	r2, [r3, #12]	@ float
- 1126 0d24 0300A0E1 		.loc 1 293 0
- 1127 0d28 1C101BE5 		sub	sp, fp, #16
- 1128 0d2c FEFFFFEB 		ldmfd	sp, {r4, fp, sp, lr}
- 1129 0d30 0030A0E1 		bx	lr
- 1130 0d34 0400A0E1 	.L49:
- 1131 0d38 0310A0E1 		.align	2
- 1132 0d3c FEFFFFEB 	.L48:
- 1133 0d40 0030A0E1 		.word	pitch_desired
- 1134 0d44 0320A0E1 		.word	0
- 1135 0d48 70309FE5 		.word	1065353216
- 1136 0d4c 042083E5 		.word	1050253722
- 286:lab.c         **** t mapping: commands are interpreted as pitch, roll, yaw 
- 1137              	25758986
- 1138 0d50 68209FE5 		.word	cnt_u
- 1139 0d54 50309FE5 		.word	imusensor
- 1140 0d58 083082E5 		.word	u
- 287:lab.c         **** 			//      and thrust inputs; no attitude controller active
- 288:lab.c         **** 				//0x02: attitude and throttle control: commands are input for standard attitude controller
- 289:lab.c         **** 				//0x03: GPS waypoint control
- 1141              	5:
- 1143 0d60 002093E5 		.global	__fixunssfsi
- 1144 0d64 5C309FE5 		.align	2
- 1145 0d68 002083E5 		.global	Command
- 290:lab.c         **** attitude and throttle control: commands are input for standard attitude controller
- 1146              	e	Command, %function
- 1147 0d6c 4C309FE5 	Command:
- 1148 0d70 042093E5 	.LFB6:
- 1149 0d74 4C309FE5 		.loc 1 298 0
- 1150 0d78 042083E5 		@ Function supports interworking.
- 291:lab.c         **** ude controller active
- 1151              	gs = 0, pretend = 0, frame = 16
- 1152 0d7c 3C309FE5 		@ frame_needed = 1, uses_anonymous_args = 0
- 1153 0d80 082093E5 		mov	ip, sp
- 1154 0d84 3C309FE5 	.LCFI15:
- 1155 0d88 082083E5 		stmfd	sp!, {r4, r5, r6, fp, ip, lr, pc}
- 292:lab.c         **** t mapping: commands are interpreted as pitch, roll, yaw 
- 1156              	16:
- 1157 0d8c 2C309FE5 		sub	fp, ip, #4
- 1158 0d90 0C2093E5 	.LCFI17:
- 1159 0d94 2C309FE5 		sub	sp, sp, #24
- 1160 0d98 0C2083E5 	.LCFI18:
- 293:lab.c         **** 			//      and thrust inputs; no attitude controller active
- 1161              	 1 300 0
- 1162 0d9c 10D04BE2 		ldr	r2, .L67+16
- 1163 0da0 10689DE8 		mov	r3, #0
- 1164 0da4 1EFF2FE1 		strb	r3, [r2, #0]
- 1165              		.loc 1 306 0
- 1166              		ldr	r2, .L67+16
- 1167              		mov	r3, #1
- 1168 0da8 00000000 		strb	r3, [r2, #1]
- 1169 0dac 00000000 		.loc 1 312 0
- 1170 0db0 0000803F 		ldr	r3, .L67+20
- 1171 0db4 9A99993E 		ldr	r3, [r3, #0]	@ float
- 1172 0db8 0AD7A33D 		mov	r0, r3
- 1173 0dbc 0AD7233D 		bl	__extendsfdf2
- 1174 0dc0 00000000 		mov	r3, r0
- 1175 0dc4 00000000 		mov	r4, r1
- 1176 0dc8 00000000 		mov	r0, r3
- 1177              		mov	r1, r4
- 1178              		mov	r2, r3
- 1179              		mov	r3, r4
- 1180              		bl	__adddf3
- 1181              		mov	r3, r0
- 1182              		mov	r4, r1
- 1183              		mov	r5, r3
- 1184              		mov	r6, r4
- 294:lab.c         **** t mapping: commands are interpreted as pitch, roll, yaw 
- 295:lab.c         **** 				//      and thrust inputs; no attitude controller active
- 296:lab.c         **** 				//0x02: attitude and throttle control: commands are input for standard attitude controller
- 297:lab.c         **** 				//0x03: GPS waypoint control
- 298:lab.c         **** 
- 1185              	, [r3, #0]	@ float
- 1186              		mov	r0, r3
- 1187              		bl	__extendsfdf2
- 1188              		mov	r3, r0
- 1189 0dcc 0DC0A0E1 		mov	r4, r1
- 1190              		mov	r0, r5
- 1191 0dd0 70D82DE9 		mov	r1, r6
- 1192              		mov	r2, r3
- 1193 0dd4 04B04CE2 		mov	r3, r4
- 1194              		bl	__muldf3
- 1195 0dd8 18D04DE2 		mov	r3, r0
- 1196              		mov	r4, r1
- 299:lab.c         **** DK.ctrl_enabled=1;	//0: disable control by HL processor
- 300:lab.c         **** 				//1: enable control by HL processor
- 1197              	69547520
- 1198 0ddc FC249FE5 		add	r0, r0, #3145728
- 1199 0de0 0030A0E3 		mov	r1, #0
- 1200 0de4 0030C2E5 		mov	r2, r3
- 301:lab.c         **** nt control
- 302:lab.c         **** 
- 303:lab.c         **** 	WO_SDK.ctrl_enabled=1;	//0: disable control by HL processor
- 304:lab.c         **** 				//1: enable control by HL processor
- 305:lab.c         **** 	////////////////////////////////////////////////
- 306:lab.c         **** 
- 1201              		r3, r4
- 1202 0de8 F0249FE5 		bl	__divdf3
- 1203 0dec 0130A0E3 		mov	r3, r0
- 1204 0df0 0130C2E5 		mov	r4, r1
- 307:lab.c         **** rol by HL processor
- 308:lab.c         **** 				//1: enable control by HL processor
- 309:lab.c         **** 	////////////////////////////////////////////////
+  74:lab.c         **** /*----------------------------------------------------------------------*/
+  75:lab.c         **** /*---------------------------- End Preamble ----------------------------*/
+  76:lab.c         **** /*----------------------------------------------------------------------*/
+  77:lab.c         **** 
+  78:lab.c         **** 
+  79:lab.c         **** /*----------------------------------------------------------------------*/
+  80:lab.c         **** /*------------------ Main Loop (called at 1 kHz) -----------------------*/
+  81:lab.c         **** /*----------------------------------------------------------------------*/
+  82:lab.c         **** void lab(void)
+  83:lab.c         **** {
+ 119              	s_args = 0
+ 120              		mov	ip, sp
+ 121              	.LCFI0:
+ 122              		stmfd	sp!, {fp, ip, lr, pc}
+ 123 0000 0DC0A0E1 	.LCFI1:
+ 124              		sub	fp, ip, #4
+ 125 0004 00D82DE9 	.LCFI2:
+ 126              		.loc 1 85 0
+ 127 0008 04B04CE2 		ldr	r2, .L3
+ 128              		ldr	r3, .L3+4	@ float
+  84:lab.c         **** m)
+  85:lab.c         **** 	//x_nom[2] = -1.0;	// z/Down (m)
+ 129              	r2, #0]	@ float
+ 130 000c 40209FE5 		.loc 1 86 0
+ 131 0010 40309FE5 		ldr	r2, .L3
+ 132 0014 003082E5 		ldr	r3, .L3+4	@ float
+  86:lab.c         **** //new hight scale is based on inches
+ 133              		r3, [r2, #4]	@ float
+ 134 0018 34209FE5 		.loc 1 90 0
+ 135 001c 34309FE5 		ldr	r2, .L3
+ 136 0020 043082E5 		ldr	r3, .L3+8	@ float
+  87:lab.c         **** x_nom[2] = 36;
+  88:lab.c         **** 
+  89:lab.c         **** 	x_nom[3] = 0.0;		// yaw (rad)
+  90:lab.c         **** 
+ 137              		r3, [r2, #8]	@ float
+ 138 0024 28209FE5 		.loc 1 92 0
+ 139 0028 2C309FE5 		ldr	r2, .L3
+ 140 002c 083082E5 		ldr	r3, .L3+4	@ float
+  91:lab.c         **** Velocity Estimation	
+  92:lab.c         **** 	VelocityEst();
+ 141              		r3, [r2, #12]	@ float
+ 142 0030 1C209FE5 		.loc 1 95 0
+ 143 0034 1C309FE5 		bl	VelocityEst
+ 144 0038 0C3082E5 		.loc 1 105 0
+  93:lab.c         **** // Lab 3
+  94:lab.c         **** 	//lab3();
+  95:lab.c         **** 
+ 145              	Bens_Control_Law
+ 146 003c FEFFFFEB 		.loc 1 106 0
+  96:lab.c         ****  Lab 2
+  97:lab.c         **** 	//lab2();
+  98:lab.c         **** 
+  99:lab.c         **** 	// Convert Controller Outputs to Motor Inputs
+ 100:lab.c         **** 	//Command();
+ 101:lab.c         **** 	Bens_Control_Law();
+ 102:lab.c         **** 	Bens_Command();
+ 103:lab.c         **** 	
+ 104:lab.c         **** }
+ 105:lab.c         **** /*----------------------------------------------------------------------*/
+ 147              	l	Bens_Command
+ 148 0040 FEFFFFEB 		.loc 1 108 0
+ 106:lab.c         **** -------- End Main Loop (called at 1 kHz) ---------------------*/
+ 149              	ub	sp, fp, #12
+ 150 0044 FEFFFFEB 		ldmfd	sp, {fp, sp, lr}
+ 107:lab.c         **** *----------------------------------------------------------------------*/
+ 108:lab.c         **** 
+ 151              	x	lr
+ 152 0048 0CD04BE2 	.L4:
+ 153 004c 00689DE8 		.align	2
+ 154 0050 1EFF2FE1 	.L3:
+ 155              		.word	x_nom
+ 156              		.word	0
+ 157              		.word	1108344832
+ 158 0054 00000000 	.LFE2:
+ 160 005c 00001042 		.global	__nesf2
+ 161              		.global	__subsf3
+ 162              		.global	__extendsfdf2
+ 163              		.global	__divdf3
+ 164              		.global	__truncdfsf2
+ 165              		.global	__mulsf3
+ 166              		.global	__subdf3
+ 167              		.global	__muldf3
+ 168              		.global	__adddf3
+ 169              		.align	2
+ 170              		.global	VelocityEst
+ 172              	VelocityEst:
+ 173              	.LFB3:
+ 174              		.loc 1 117 0
+ 175              		@ Function supports interworking.
+ 176              		@ args = 0, pretend = 0, frame = 4
+ 109:lab.c         **** ----------------------------------------------------------------------*/
+ 110:lab.c         **** /*------------------------------ Helpers -------------------------------*/
+ 111:lab.c         **** /*----------------------------------------------------------------------*/
+ 112:lab.c         **** /*---------- Velocity Estimator ----------*/
+ 113:lab.c         **** void VelocityEst() {
+ 114:lab.c         **** 
+ 115:lab.c         **** 	// Velocity Estimation
+ 116:lab.c         **** 	if (initialize == 0)
+ 117:lab.c         **** 	{
+ 177              	anonymous_args = 0
+ 178              		mov	ip, sp
+ 179              	.LCFI3:
+ 180              		stmfd	sp!, {r4, r5, r6, r7, r8, fp, ip, lr, pc}
+ 181 0060 0DC0A0E1 	.LCFI4:
+ 182              		sub	fp, ip, #4
+ 183 0064 F0D92DE9 	.LCFI5:
+ 184              		sub	sp, sp, #4
+ 185 0068 04B04CE2 	.LCFI6:
+ 186              		.loc 1 120 0
+ 187 006c 04D04DE2 		ldr	r3, .L16
+ 188              		ldr	r3, [r3, #0]
+ 118:lab.c         **** ialization
+ 119:lab.c         **** 		mocap.dX = real_mocap.dX;
+ 120:lab.c         **** 		mocap.dY = real_mocap.dY;
+ 189              		bne	.L6
+ 190 0070 90309FE5 		.loc 1 123 0
+ 191 0074 003093E5 		ldr	r3, .L16+36
+ 192 0078 000053E3 		ldr	r2, [r3, #8]	@ float
+ 193 007c 2F00001A 		ldr	r3, .L16+40
+ 121:lab.c         **** ocap.dZ = real_mocap.dZ;
+ 122:lab.c         **** 		mocap.dVx = 0.0;
+ 123:lab.c         **** 		mocap.dVy = 0.0;
+ 194              	r2, [r3, #8]	@ float
+ 195 0080 A4309FE5 		.loc 1 124 0
+ 196 0084 082093E5 		ldr	r3, .L16+36
+ 197 0088 A0309FE5 		ldr	r2, [r3, #12]	@ float
+ 198 008c 082083E5 		ldr	r3, .L16+40
+ 124:lab.c         **** ocap.dVz = 0.0;
+ 199              	r2, [r3, #12]	@ float
+ 200 0090 94309FE5 		.loc 1 125 0
+ 201 0094 0C2093E5 		ldr	r3, .L16+36
+ 202 0098 90309FE5 		ldr	r2, [r3, #16]	@ float
+ 203 009c 0C2083E5 		ldr	r3, .L16+40
+ 125:lab.c         **** 		// End Initialization if first packet from MoCap received
+ 204              	r2, [r3, #16]	@ float
+ 205 00a0 84309FE5 		.loc 1 126 0
+ 206 00a4 102093E5 		ldr	r2, .L16+40
+ 207 00a8 80309FE5 		ldr	r3, .L16+4	@ float
+ 208 00ac 102083E5 		str	r3, [r2, #20]	@ float
+ 126:lab.c         **** 	if (real_mocap.dX != 0.0)
+ 209              	 1 127 0
+ 210 00b0 78209FE5 		ldr	r2, .L16+40
+ 211 00b4 50309FE5 		ldr	r3, .L16+4	@ float
+ 212 00b8 143082E5 		str	r3, [r2, #24]	@ float
+ 127:lab.c         **** 	{		
+ 213              	c 1 128 0
+ 214 00bc 6C209FE5 		ldr	r2, .L16+40
+ 215 00c0 44309FE5 		ldr	r3, .L16+4	@ float
+ 216 00c4 183082E5 		str	r3, [r2, #28]	@ float
+ 128:lab.c         **** 		initialize = 1;
+ 217              	c 1 131 0
+ 218 00c8 60209FE5 		ldr	r3, .L16+36
+ 219 00cc 38309FE5 		ldr	r3, [r3, #8]	@ float
+ 220 00d0 1C3082E5 		mov	r0, r3
+ 129:lab.c         **** 	}
+ 130:lab.c         **** 	}
+ 131:lab.c         **** 	else 
+ 221              		r1, .L16+4	@ float
+ 222 00d4 50309FE5 		bl	__nesf2
+ 223 00d8 083093E5 		mov	r3, r0
+ 224 00dc 0300A0E1 		cmp	r3, #0
+ 225 00e0 24109FE5 		bne	.L10
+ 226 00e4 FEFFFFEB 		b	.L15
+ 227 00e8 0030A0E1 	.L10:
+ 228 00ec 000053E3 		.loc 1 133 0
+ 229 00f0 0000001A 		ldr	r2, .L16
+ 230 00f4 1C0100EA 		mov	r3, #1
+ 231              		str	r3, [r2, #0]
+ 132:lab.c         **** 		// Update velocity estimate at 100 Hz
+ 133:lab.c         **** 		if (velocityEstHolder == 0)
+ 232              	7:
+ 233 00f8 08209FE5 		.align	2
+ 234 00fc 0130A0E3 	.L16:
+ 235 0100 003082E5 		.word	initialize
+ 236 0104 180100EA 		.word	0
+ 237              		.word	1045220557
+ 238              		.word	previousXMeas
+ 239              		.word	previousYMeas
+ 240 0108 00000000 		.word	previousZMeas
+ 241 010c 00000000 		.word	VelEstX
+ 242 0110 CDCC4C3E 		.word	VelEstY
+ 243 0114 00000000 		.word	VelEstZ
+ 244 0118 00000000 		.word	real_mocap
+ 245 011c 00000000 		.word	mocap
+ 246 0120 00000000 		.word	velocityEstHolder
+ 247 0124 00000000 		.word	1065646817
+ 248 0128 00000000 		.word	1202590843
+ 249 012c 00000000 	.L6:
+ 250 0130 00000000 		.loc 1 139 0
+ 251 0134 00000000 		ldr	r3, .L16+44
+ 252 0138 E17A843F 		ldr	r3, [r3, #0]
+ 253 013c 7B14AE47 		cmp	r3, #0
+ 254              		bne	.L12
+ 134:lab.c         **** {			
+ 135:lab.c         **** 			/*----- Low Pass Filtering -----*/
+ 136:lab.c         **** 			// Low Pass Filter Gain
+ 137:lab.c         **** 			float alpha = 0.2;
+ 138:lab.c         **** 
+ 139:lab.c         **** 			// Finite Difference Velocity Estimation
+ 255              	dr	r3, .L16+8	@ float
+ 256 0140 14301FE5 		str	r3, [fp, #-36]	@ float
+ 257 0144 003093E5 		.loc 1 146 0
+ 258 0148 000053E3 		ldr	r3, .L16+36
+ 259 014c FA00001A 		ldr	r2, [r3, #8]	@ float
+ 260              		ldr	r3, .L16+12
+ 140:lab.c         **** EstX = (real_mocap.dX - previousXMeas)/0.01;
+ 141:lab.c         **** 			VelEstY = (real_mocap.dY - previousYMeas)/0.01;
+ 142:lab.c         **** 			VelEstZ = (real_mocap.dZ - previousZMeas)/0.01;
+ 143:lab.c         **** 
+ 261              	3, [r3, #0]	@ float
+ 262 0150 48301FE5 		mov	r0, r2
+ 263 0154 24300BE5 		mov	r1, r3
+ 144:lab.c         **** / Save Current MoCap Measurement as Previous Measurement
+ 145:lab.c         **** 			previousXMeas = real_mocap.dX;
+ 146:lab.c         **** 			previousYMeas = real_mocap.dY;			
+ 264              		__subsf3
+ 265 0158 34301FE5 		mov	r3, r0
+ 266 015c 082093E5 		mov	r0, r3
+ 267 0160 54301FE5 		bl	__extendsfdf2
+ 268 0164 003093E5 		mov	r3, r0
+ 269 0168 0200A0E1 		mov	r4, r1
+ 270 016c 0310A0E1 		mov	r0, r3
+ 271 0170 FEFFFFEB 		mov	r1, r4
+ 272 0174 0030A0E1 		adr	r2, .L16+48
+ 273 0178 0300A0E1 		ldmia	r2, {r2-r3}
+ 274 017c FEFFFFEB 		bl	__divdf3
+ 275 0180 0030A0E1 		mov	r3, r0
+ 276 0184 0140A0E1 		mov	r4, r1
+ 277 0188 0300A0E1 		mov	r0, r3
+ 278 018c 0410A0E1 		mov	r1, r4
+ 279 0190 60204FE2 		bl	__truncdfsf2
+ 280 0194 0C0092E8 		mov	r2, r0
+ 281 0198 FEFFFFEB 		ldr	r3, .L16+24
+ 282 019c 0030A0E1 		str	r2, [r3, #0]	@ float
+ 283 01a0 0140A0E1 		.loc 1 147 0
+ 284 01a4 0300A0E1 		ldr	r3, .L16+36
+ 285 01a8 0410A0E1 		ldr	r2, [r3, #12]	@ float
+ 286 01ac FEFFFFEB 		ldr	r3, .L16+16
+ 287 01b0 0020A0E1 		ldr	r3, [r3, #0]	@ float
+ 288 01b4 9C301FE5 		mov	r0, r2
+ 289 01b8 002083E5 		mov	r1, r3
+ 147:lab.c         **** previousZMeas = real_mocap.dZ;
+ 290              	mov	r0, r3
+ 291 01bc 98301FE5 		bl	__extendsfdf2
+ 292 01c0 0C2093E5 		mov	r3, r0
+ 293 01c4 B4301FE5 		mov	r4, r1
+ 294 01c8 003093E5 		mov	r0, r3
+ 295 01cc 0200A0E1 		mov	r1, r4
+ 296 01d0 0310A0E1 		adr	r2, .L16+48
+ 297 01d4 FEFFFFEB 		ldmia	r2, {r2-r3}
+ 298 01d8 0030A0E1 		bl	__divdf3
+ 299 01dc 0300A0E1 		mov	r3, r0
+ 300 01e0 FEFFFFEB 		mov	r4, r1
+ 301 01e4 0030A0E1 		mov	r0, r3
+ 302 01e8 0140A0E1 		mov	r1, r4
+ 303 01ec 0300A0E1 		bl	__truncdfsf2
+ 304 01f0 0410A0E1 		mov	r2, r0
+ 305 01f4 C4204FE2 		ldr	r3, .L16+28
+ 306 01f8 0C0092E8 		str	r2, [r3, #0]	@ float
+ 307 01fc FEFFFFEB 		.loc 1 148 0
+ 308 0200 0030A0E1 		ldr	r3, .L16+36
+ 309 0204 0140A0E1 		ldr	r2, [r3, #16]	@ float
+ 310 0208 0300A0E1 		ldr	r3, .L16+20
+ 311 020c 0410A0E1 		ldr	r3, [r3, #0]	@ float
+ 312 0210 FEFFFFEB 		mov	r0, r2
+ 313 0214 0020A0E1 		mov	r1, r3
+ 314 0218 FC301FE5 		bl	__subsf3
+ 315 021c 002083E5 		mov	r3, r0
+ 148:lab.c         **** 			// Low Pass Filter
+ 316              	df2
+ 317 0220 FC301FE5 		mov	r3, r0
+ 318 0224 102093E5 		mov	r4, r1
+ 319 0228 14311FE5 		mov	r0, r3
+ 320 022c 003093E5 		mov	r1, r4
+ 321 0230 0200A0E1 		adr	r2, .L16+48
+ 322 0234 0310A0E1 		ldmia	r2, {r2-r3}
+ 323 0238 FEFFFFEB 		bl	__divdf3
+ 324 023c 0030A0E1 		mov	r3, r0
+ 325 0240 0300A0E1 		mov	r4, r1
+ 326 0244 FEFFFFEB 		mov	r0, r3
+ 327 0248 0030A0E1 		mov	r1, r4
+ 328 024c 0140A0E1 		bl	__truncdfsf2
+ 329 0250 0300A0E1 		mov	r2, r0
+ 330 0254 0410A0E1 		ldr	r3, .L16+32
+ 331 0258 4A2F4FE2 		str	r2, [r3, #0]	@ float
+ 332 025c 0C0092E8 		.loc 1 151 0
+ 333 0260 FEFFFFEB 		ldr	r3, .L16+36
+ 334 0264 0030A0E1 		ldr	r2, [r3, #8]	@ float
+ 335 0268 0140A0E1 		ldr	r3, .L16+12
+ 336 026c 0300A0E1 		str	r2, [r3, #0]	@ float
+ 337 0270 0410A0E1 		.loc 1 152 0
+ 338 0274 FEFFFFEB 		ldr	r3, .L16+36
+ 339 0278 0020A0E1 		ldr	r2, [r3, #12]	@ float
+ 340 027c 5C311FE5 		ldr	r3, .L16+16
+ 341 0280 002083E5 		str	r2, [r3, #0]	@ float
+ 149:lab.c         **** 		mocap.dVx = alpha*VelEstX+(1.0-alpha)*mocap.dVx;
+ 150:lab.c         **** 			mocap.dVy = alpha*VelEstY+(1.0-alpha)*mocap.dVy;
+ 151:lab.c         **** 			mocap.dVz = alpha*VelEstZ+(1.0-alpha)*mocap.dVz;
+ 342              	6+36
+ 343 0284 60311FE5 		ldr	r2, [r3, #16]	@ float
+ 344 0288 082093E5 		ldr	r3, .L16+20
+ 345 028c 80311FE5 		str	r2, [r3, #0]	@ float
+ 346 0290 002083E5 		.loc 1 156 0
+ 152:lab.c         **** 	// Set Position
+ 347              	r3, .L16+24
+ 348 0294 70311FE5 		ldr	r3, [r3, #0]	@ float
+ 349 0298 0C2093E5 		mov	r0, r3
+ 350 029c 8C311FE5 		ldr	r1, [fp, #-36]	@ float
+ 351 02a0 002083E5 		bl	__mulsf3
+ 153:lab.c         **** 		mocap.dX = real_mocap.dX;
+ 352              	r3, r0
+ 353 02a4 80311FE5 		mov	r0, r3
+ 354 02a8 102093E5 		bl	__extendsfdf2
+ 355 02ac 98311FE5 		mov	r7, r0
+ 356 02b0 002083E5 		mov	r8, r1
+ 154:lab.c         **** 		mocap.dY = real_mocap.dY;
+ 155:lab.c         **** 			mocap.dZ = real_mocap.dZ;
+ 156:lab.c         **** 			
+ 357              	r0, [fp, #-36]	@ float
+ 358 02b4 9C311FE5 		bl	__extendsfdf2
+ 359 02b8 003093E5 		mov	r3, r0
+ 360 02bc 0300A0E1 		mov	r4, r1
+ 361 02c0 24101BE5 		mov	r0, #1069547520
+ 362 02c4 FEFFFFEB 		add	r0, r0, #3145728
+ 363 02c8 0030A0E1 		mov	r1, #0
+ 364 02cc 0300A0E1 		mov	r2, r3
+ 365 02d0 FEFFFFEB 		mov	r3, r4
+ 366 02d4 0070A0E1 		bl	__subdf3
+ 367 02d8 0180A0E1 		mov	r3, r0
+ 368 02dc 24001BE5 		mov	r4, r1
+ 369 02e0 FEFFFFEB 		mov	r5, r3
+ 370 02e4 0030A0E1 		mov	r6, r4
+ 371 02e8 0140A0E1 		ldr	r3, .L16+40
+ 372 02ec FF05A0E3 		ldr	r3, [r3, #20]	@ float
+ 373 02f0 030680E2 		mov	r0, r3
+ 374 02f4 0010A0E3 		bl	__extendsfdf2
+ 375 02f8 0320A0E1 		mov	r3, r0
+ 376 02fc 0430A0E1 		mov	r4, r1
+ 377 0300 FEFFFFEB 		mov	r0, r5
+ 378 0304 0030A0E1 		mov	r1, r6
+ 379 0308 0140A0E1 		mov	r2, r3
+ 380 030c 0350A0E1 		mov	r3, r4
+ 381 0310 0460A0E1 		bl	__muldf3
+ 382 0314 EC311FE5 		mov	r3, r0
+ 383 0318 143093E5 		mov	r4, r1
+ 384 031c 0300A0E1 		mov	r0, r7
+ 385 0320 FEFFFFEB 		mov	r1, r8
+ 386 0324 0030A0E1 		mov	r2, r3
+ 387 0328 0140A0E1 		mov	r3, r4
+ 388 032c 0500A0E1 		bl	__adddf3
+ 389 0330 0610A0E1 		mov	r3, r0
+ 390 0334 0320A0E1 		mov	r4, r1
+ 391 0338 0430A0E1 		mov	r0, r3
+ 392 033c FEFFFFEB 		mov	r1, r4
+ 393 0340 0030A0E1 		bl	__truncdfsf2
+ 394 0344 0140A0E1 		mov	r2, r0
+ 395 0348 0700A0E1 		ldr	r3, .L16+40
+ 396 034c 0810A0E1 		str	r2, [r3, #20]	@ float
+ 397 0350 0320A0E1 		.loc 1 157 0
+ 398 0354 0430A0E1 		ldr	r3, .L16+28
+ 399 0358 FEFFFFEB 		ldr	r3, [r3, #0]	@ float
+ 400 035c 0030A0E1 		mov	r0, r3
+ 401 0360 0140A0E1 		ldr	r1, [fp, #-36]	@ float
+ 402 0364 0300A0E1 		bl	__mulsf3
+ 403 0368 0410A0E1 		mov	r3, r0
+ 404 036c FEFFFFEB 		mov	r0, r3
+ 405 0370 0020A0E1 		bl	__extendsfdf2
+ 406 0374 4C321FE5 		mov	r7, r0
+ 407 0378 142083E5 		mov	r8, r1
+ 157:lab.c         **** /*--- End Low Pass Filtering ---*/
+ 408              	r3, r0
+ 409 037c 60321FE5 		mov	r4, r1
+ 410 0380 003093E5 		mov	r0, #1069547520
+ 411 0384 0300A0E1 		add	r0, r0, #3145728
+ 412 0388 24101BE5 		mov	r1, #0
+ 413 038c FEFFFFEB 		mov	r2, r3
+ 414 0390 0030A0E1 		mov	r3, r4
+ 415 0394 0300A0E1 		bl	__subdf3
+ 416 0398 FEFFFFEB 		mov	r3, r0
+ 417 039c 0070A0E1 		mov	r4, r1
+ 418 03a0 0180A0E1 		mov	r5, r3
+ 419 03a4 24001BE5 		mov	r6, r4
+ 420 03a8 FEFFFFEB 		ldr	r3, .L16+40
+ 421 03ac 0030A0E1 		ldr	r3, [r3, #24]	@ float
+ 422 03b0 0140A0E1 		mov	r0, r3
+ 423 03b4 FF05A0E3 		bl	__extendsfdf2
+ 424 03b8 030680E2 		mov	r3, r0
+ 425 03bc 0010A0E3 		mov	r4, r1
+ 426 03c0 0320A0E1 		mov	r0, r5
+ 427 03c4 0430A0E1 		mov	r1, r6
+ 428 03c8 FEFFFFEB 		mov	r2, r3
+ 429 03cc 0030A0E1 		mov	r3, r4
+ 430 03d0 0140A0E1 		bl	__muldf3
+ 431 03d4 0350A0E1 		mov	r3, r0
+ 432 03d8 0460A0E1 		mov	r4, r1
+ 433 03dc B4321FE5 		mov	r0, r7
+ 434 03e0 183093E5 		mov	r1, r8
+ 435 03e4 0300A0E1 		mov	r2, r3
+ 436 03e8 FEFFFFEB 		mov	r3, r4
+ 437 03ec 0030A0E1 		bl	__adddf3
+ 438 03f0 0140A0E1 		mov	r3, r0
+ 439 03f4 0500A0E1 		mov	r4, r1
+ 440 03f8 0610A0E1 		mov	r0, r3
+ 441 03fc 0320A0E1 		mov	r1, r4
+ 442 0400 0430A0E1 		bl	__truncdfsf2
+ 443 0404 FEFFFFEB 		mov	r2, r0
+ 444 0408 0030A0E1 		ldr	r3, .L16+40
+ 445 040c 0140A0E1 		str	r2, [r3, #24]	@ float
+ 446 0410 0700A0E1 		.loc 1 158 0
+ 447 0414 0810A0E1 		ldr	r3, .L16+32
+ 448 0418 0320A0E1 		ldr	r3, [r3, #0]	@ float
+ 449 041c 0430A0E1 		mov	r0, r3
+ 450 0420 FEFFFFEB 		ldr	r1, [fp, #-36]	@ float
+ 451 0424 0030A0E1 		bl	__mulsf3
+ 452 0428 0140A0E1 		mov	r3, r0
+ 453 042c 0300A0E1 		mov	r0, r3
+ 454 0430 0410A0E1 		bl	__extendsfdf2
+ 455 0434 FEFFFFEB 		mov	r7, r0
+ 456 0438 0020A0E1 		mov	r8, r1
+ 457 043c 14331FE5 		ldr	r0, [fp, #-36]	@ float
+ 458 0440 182083E5 		bl	__extendsfdf2
+ 158:lab.c         **** 	}
+ 459              	0, r0, #3145728
+ 460 0444 24331FE5 		mov	r1, #0
+ 461 0448 003093E5 		mov	r2, r3
+ 462 044c 0300A0E1 		mov	r3, r4
+ 463 0450 24101BE5 		bl	__subdf3
+ 464 0454 FEFFFFEB 		mov	r3, r0
+ 465 0458 0030A0E1 		mov	r4, r1
+ 466 045c 0300A0E1 		mov	r5, r3
+ 467 0460 FEFFFFEB 		mov	r6, r4
+ 468 0464 0070A0E1 		ldr	r3, .L16+40
+ 469 0468 0180A0E1 		ldr	r3, [r3, #28]	@ float
+ 470 046c 24001BE5 		mov	r0, r3
+ 471 0470 FEFFFFEB 		bl	__extendsfdf2
+ 472 0474 0030A0E1 		mov	r3, r0
+ 473 0478 0140A0E1 		mov	r4, r1
+ 474 047c FF05A0E3 		mov	r0, r5
+ 475 0480 030680E2 		mov	r1, r6
+ 476 0484 0010A0E3 		mov	r2, r3
+ 477 0488 0320A0E1 		mov	r3, r4
+ 478 048c 0430A0E1 		bl	__muldf3
+ 479 0490 FEFFFFEB 		mov	r3, r0
+ 480 0494 0030A0E1 		mov	r4, r1
+ 481 0498 0140A0E1 		mov	r0, r7
+ 482 049c 0350A0E1 		mov	r1, r8
+ 483 04a0 0460A0E1 		mov	r2, r3
+ 484 04a4 7C331FE5 		mov	r3, r4
+ 485 04a8 1C3093E5 		bl	__adddf3
+ 486 04ac 0300A0E1 		mov	r3, r0
+ 487 04b0 FEFFFFEB 		mov	r4, r1
+ 488 04b4 0030A0E1 		mov	r0, r3
+ 489 04b8 0140A0E1 		mov	r1, r4
+ 490 04bc 0500A0E1 		bl	__truncdfsf2
+ 491 04c0 0610A0E1 		mov	r2, r0
+ 492 04c4 0320A0E1 		ldr	r3, .L16+40
+ 493 04c8 0430A0E1 		str	r2, [r3, #28]	@ float
+ 494 04cc FEFFFFEB 		.loc 1 161 0
+ 495 04d0 0030A0E1 		ldr	r3, .L16+36
+ 496 04d4 0140A0E1 		ldr	r2, [r3, #8]	@ float
+ 497 04d8 0700A0E1 		ldr	r3, .L16+40
+ 498 04dc 0810A0E1 		str	r2, [r3, #8]	@ float
+ 499 04e0 0320A0E1 		.loc 1 162 0
+ 500 04e4 0430A0E1 		ldr	r3, .L16+36
+ 501 04e8 FEFFFFEB 		ldr	r2, [r3, #12]	@ float
+ 502 04ec 0030A0E1 		ldr	r3, .L16+40
+ 503 04f0 0140A0E1 		str	r2, [r3, #12]	@ float
+ 504 04f4 0300A0E1 		.loc 1 163 0
+ 505 04f8 0410A0E1 		ldr	r3, .L16+36
+ 506 04fc FEFFFFEB 		ldr	r2, [r3, #16]	@ float
+ 507 0500 0020A0E1 		ldr	r3, .L16+40
+ 508 0504 DC331FE5 		str	r2, [r3, #16]	@ float
+ 509 0508 1C2083E5 	.L12:
+ 159:lab.c         **** 	
+ 160:lab.c         **** 		// Handling to update velocity estimate at 100 Hz
+ 161:lab.c         **** 		velocityEstHolder++;
+ 510              	 #0]
+ 511 050c E8331FE5 		add	r2, r3, #1
+ 512 0510 082093E5 		ldr	r3, .L16+44
+ 513 0514 EC331FE5 		str	r2, [r3, #0]
+ 514 0518 082083E5 		.loc 1 170 0
+ 162:lab.c         **** f (velocityEstHolder == 10)
+ 515              	r3, .L16+44
+ 516 051c F8331FE5 		ldr	r3, [r3, #0]
+ 517 0520 0C2093E5 		cmp	r3, #10
+ 518 0524 FC331FE5 		bne	.L15
+ 519 0528 0C2083E5 		.loc 1 172 0
+ 163:lab.c         **** 	{
+ 520              	r2, .L16+44
+ 521 052c 08341FE5 		mov	r3, #0
+ 522 0530 102093E5 		str	r3, [r2, #0]
+ 523 0534 0C341FE5 	.L15:
+ 524 0538 102083E5 		.loc 1 175 0
+ 525              		sub	sp, fp, #32
+ 526              		ldmfd	sp, {r4, r5, r6, r7, r8, fp, sp, lr}
+ 164:lab.c         **** 		velocityEstHolder = 0;
+ 165:lab.c         **** 		}
+ 166:lab.c         **** 	}
+ 167:lab.c         **** }
+ 168:lab.c         **** /*-------- End Velocity Estimator --------*/
+ 169:lab.c         **** 
+ 527              	.LFE3:
+ 529 0540 003093E5 		.global	__addsf3
+ 530 0544 012083E2 		.global	__gtsf2
+ 531 0548 1C341FE5 		.global	__ltsf2
+ 532 054c 002083E5 		.align	2
+ 170:lab.c         **** BEEN EDITTED BUT NO LONGER USING THIS
+ 533              	al	lab3
+ 535 0554 003093E5 	lab3:
+ 536 0558 0A0053E3 	.LFB4:
+ 537 055c 0200001A 		.loc 1 181 0
+ 171:lab.c         **** *-------------- Controller --------------*/
+ 172:lab.c         **** /*-------------- Lab 3 --------------*/
+ 538              	nction supports interworking.
+ 539 0560 34241FE5 		@ args = 0, pretend = 0, frame = 68
+ 540 0564 0030A0E3 		@ frame_needed = 1, uses_anonymous_args = 0
+ 541 0568 003082E5 		mov	ip, sp
+ 542              	.LCFI7:
+ 173:lab.c         **** id lab3() {
+ 174:lab.c         **** 	
+ 175:lab.c         **** 	// Error Update (for integral control)	
+ 543              	d	sp!, {r4, r5, r6, fp, ip, lr, pc}
+ 544 056c 20D04BE2 	.LCFI8:
+ 545 0570 F0699DE8 		sub	fp, ip, #4
+ 546 0574 1EFF2FE1 	.LCFI9:
+ 547              		sub	sp, sp, #68
+ 548              	.LCFI10:
+ 549              		.loc 1 184 0
+ 550              		ldr	r3, .L43+8
+ 551              		ldr	r3, [r3, #0]
+ 552              		cmp	r3, #1
+ 553              		bne	.L19
+ 554              		.loc 1 185 0
+ 555              		ldr	r3, .L43+12
+ 556              		ldr	r3, [r3, #0]
+ 176:lab.c         ****  (takeoff2 == 1) {
+ 177:lab.c         **** 		if (IntegralHolder == 0) {
+ 178:lab.c         **** 			errorcum[0] = (x_nom[0]-mocap.dX)*0.02 + errorcum[0];
+ 179:lab.c         **** 			errorcum[1] = (x_nom[1]-mocap.dY)*0.02 + errorcum[1];
+ 180:lab.c         **** 			errorcum[2] = (x_nom[2]-mocap.dZ)*0.02 + errorcum[2];
+ 181:lab.c         **** 		}
+ 557              	ne	.L21
+ 558              		.loc 1 186 0
+ 559              		ldr	r3, .L43+16
+ 560              		ldr	r2, [r3, #0]	@ float
+ 561 0578 0DC0A0E1 		ldr	r3, .L43+20
+ 562              		ldr	r3, [r3, #8]	@ float
+ 563 057c 70D82DE9 		mov	r0, r2
+ 564              		mov	r1, r3
+ 565 0580 04B04CE2 		bl	__subsf3
+ 566              		mov	r3, r0
+ 567 0584 44D04DE2 		mov	r0, r3
+ 568              		bl	__extendsfdf2
+ 182:lab.c         **** egralHolder++;
+ 183:lab.c         **** 		if (IntegralHolder == 10) {
+ 184:lab.c         **** 			IntegralHolder = 0;
+ 569              		mov	r4, r1
+ 570 0588 54349FE5 		mov	r0, r3
+ 571 058c 003093E5 		mov	r1, r4
+ 572 0590 010053E3 		adr	r2, .L43
+ 573 0594 8700001A 		ldmia	r2, {r2-r3}
+ 185:lab.c         **** 
+ 574              	_muldf3
+ 575 0598 48349FE5 		mov	r3, r0
+ 576 059c 003093E5 		mov	r4, r1
+ 577 05a0 000053E3 		mov	r5, r3
+ 578 05a4 7700001A 		mov	r6, r4
+ 186:lab.c         **** 	}
+ 579              	r3, .L43+104
+ 580 05a8 3C349FE5 		ldr	r3, [r3, #0]	@ float
+ 581 05ac 002093E5 		mov	r0, r3
+ 582 05b0 38349FE5 		bl	__extendsfdf2
+ 583 05b4 083093E5 		mov	r3, r0
+ 584 05b8 0200A0E1 		mov	r4, r1
+ 585 05bc 0310A0E1 		mov	r0, r5
+ 586 05c0 FEFFFFEB 		mov	r1, r6
+ 587 05c4 0030A0E1 		mov	r2, r3
+ 588 05c8 0300A0E1 		mov	r3, r4
+ 589 05cc FEFFFFEB 		bl	__adddf3
+ 590 05d0 0030A0E1 		mov	r3, r0
+ 591 05d4 0140A0E1 		mov	r4, r1
+ 592 05d8 0300A0E1 		mov	r0, r3
+ 593 05dc 0410A0E1 		mov	r1, r4
+ 594 05e0 FD2F8FE2 		bl	__truncdfsf2
+ 595 05e4 0C0092E8 		mov	r2, r0
+ 596 05e8 FEFFFFEB 		ldr	r3, .L43+104
+ 597 05ec 0030A0E1 		str	r2, [r3, #0]	@ float
+ 598 05f0 0140A0E1 		.loc 1 187 0
+ 599 05f4 0350A0E1 		ldr	r3, .L43+16
+ 600 05f8 0460A0E1 		ldr	r2, [r3, #4]	@ float
+ 601 05fc 40349FE5 		ldr	r3, .L43+20
+ 602 0600 003093E5 		ldr	r3, [r3, #12]	@ float
+ 603 0604 0300A0E1 		mov	r0, r2
+ 604 0608 FEFFFFEB 		mov	r1, r3
+ 605 060c 0030A0E1 		bl	__subsf3
+ 606 0610 0140A0E1 		mov	r3, r0
+ 607 0614 0500A0E1 		mov	r0, r3
+ 608 0618 0610A0E1 		bl	__extendsfdf2
+ 609 061c 0320A0E1 		mov	r3, r0
+ 610 0620 0430A0E1 		mov	r4, r1
+ 611 0624 FEFFFFEB 		mov	r0, r3
+ 612 0628 0030A0E1 		mov	r1, r4
+ 613 062c 0140A0E1 		adr	r2, .L43
+ 614 0630 0300A0E1 		ldmia	r2, {r2-r3}
+ 615 0634 0410A0E1 		bl	__muldf3
+ 616 0638 FEFFFFEB 		mov	r3, r0
+ 617 063c 0020A0E1 		mov	r4, r1
+ 618 0640 FC339FE5 		mov	r5, r3
+ 619 0644 002083E5 		mov	r6, r4
+ 187:lab.c         **** 
+ 620              	at
+ 621 0648 9C339FE5 		mov	r0, r3
+ 622 064c 042093E5 		bl	__extendsfdf2
+ 623 0650 98339FE5 		mov	r3, r0
+ 624 0654 0C3093E5 		mov	r4, r1
+ 625 0658 0200A0E1 		mov	r0, r5
+ 626 065c 0310A0E1 		mov	r1, r6
+ 627 0660 FEFFFFEB 		mov	r2, r3
+ 628 0664 0030A0E1 		mov	r3, r4
+ 629 0668 0300A0E1 		bl	__adddf3
+ 630 066c FEFFFFEB 		mov	r3, r0
+ 631 0670 0030A0E1 		mov	r4, r1
+ 632 0674 0140A0E1 		mov	r0, r3
+ 633 0678 0300A0E1 		mov	r1, r4
+ 634 067c 0410A0E1 		bl	__truncdfsf2
+ 635 0680 D52F8FE2 		mov	r2, r0
+ 636 0684 0C0092E8 		ldr	r3, .L43+104
+ 637 0688 FEFFFFEB 		str	r2, [r3, #4]	@ float
+ 638 068c 0030A0E1 		.loc 1 188 0
+ 639 0690 0140A0E1 		ldr	r3, .L43+16
+ 640 0694 0350A0E1 		ldr	r2, [r3, #8]	@ float
+ 641 0698 0460A0E1 		ldr	r3, .L43+20
+ 642 069c A0339FE5 		ldr	r3, [r3, #16]	@ float
+ 643 06a0 043093E5 		mov	r0, r2
+ 644 06a4 0300A0E1 		mov	r1, r3
+ 645 06a8 FEFFFFEB 		bl	__subsf3
+ 646 06ac 0030A0E1 		mov	r3, r0
+ 647 06b0 0140A0E1 		mov	r0, r3
+ 648 06b4 0500A0E1 		bl	__extendsfdf2
+ 649 06b8 0610A0E1 		mov	r3, r0
+ 650 06bc 0320A0E1 		mov	r4, r1
+ 651 06c0 0430A0E1 		mov	r0, r3
+ 652 06c4 FEFFFFEB 		mov	r1, r4
+ 653 06c8 0030A0E1 		adr	r2, .L43
+ 654 06cc 0140A0E1 		ldmia	r2, {r2-r3}
+ 655 06d0 0300A0E1 		bl	__muldf3
+ 656 06d4 0410A0E1 		mov	r3, r0
+ 657 06d8 FEFFFFEB 		mov	r4, r1
+ 658 06dc 0020A0E1 		mov	r5, r3
+ 659 06e0 5C339FE5 		mov	r6, r4
+ 660 06e4 042083E5 		ldr	r3, .L43+104
+ 188:lab.c         **** 	// OUTER LOOP
+ 661              		__extendsfdf2
+ 662 06e8 FC329FE5 		mov	r3, r0
+ 663 06ec 082093E5 		mov	r4, r1
+ 664 06f0 F8329FE5 		mov	r0, r5
+ 665 06f4 103093E5 		mov	r1, r6
+ 666 06f8 0200A0E1 		mov	r2, r3
+ 667 06fc 0310A0E1 		mov	r3, r4
+ 668 0700 FEFFFFEB 		bl	__adddf3
+ 669 0704 0030A0E1 		mov	r3, r0
+ 670 0708 0300A0E1 		mov	r4, r1
+ 671 070c FEFFFFEB 		mov	r0, r3
+ 672 0710 0030A0E1 		mov	r1, r4
+ 673 0714 0140A0E1 		bl	__truncdfsf2
+ 674 0718 0300A0E1 		mov	r2, r0
+ 675 071c 0410A0E1 		ldr	r3, .L43+104
+ 676 0720 AD2F8FE2 		str	r2, [r3, #8]	@ float
+ 677 0724 0C0092E8 	.L21:
+ 678 0728 FEFFFFEB 		.loc 1 191 0
+ 679 072c 0030A0E1 		ldr	r3, .L43+12
+ 680 0730 0140A0E1 		ldr	r3, [r3, #0]
+ 681 0734 0350A0E1 		add	r2, r3, #1
+ 682 0738 0460A0E1 		ldr	r3, .L43+12
+ 683 073c 00339FE5 		str	r2, [r3, #0]
+ 684 0740 083093E5 		.loc 1 192 0
+ 685 0744 0300A0E1 		ldr	r3, .L43+12
+ 686 0748 FEFFFFEB 		ldr	r3, [r3, #0]
+ 687 074c 0030A0E1 		cmp	r3, #10
+ 688 0750 0140A0E1 		bne	.L19
+ 689 0754 0500A0E1 		.loc 1 193 0
+ 690 0758 0610A0E1 		ldr	r2, .L43+12
+ 691 075c 0320A0E1 		mov	r3, #0
+ 692 0760 0430A0E1 		str	r3, [r2, #0]
+ 693 0764 FEFFFFEB 	.L19:
+ 694 0768 0030A0E1 		.loc 1 201 0
+ 695 076c 0140A0E1 		ldr	r3, .L43+24	@ float
+ 696 0770 0300A0E1 		str	r3, [fp, #-92]	@ float
+ 697 0774 0410A0E1 		.loc 1 202 0
+ 698 0778 FEFFFFEB 		ldr	r3, .L43+28	@ float
+ 699 077c 0020A0E1 		str	r3, [fp, #-88]	@ float
+ 700 0780 BC329FE5 		.loc 1 203 0
+ 701 0784 082083E5 		ldr	r3, .L43+32	@ float
+ 702              		str	r3, [fp, #-84]	@ float
+ 189:lab.c         **** 	// Hummingbird
+ 190:lab.c         **** 	
+ 191:lab.c         **** 	float Kp_x = -0.1952;
+ 703              	r	r3, [fp, #-80]	@ float
+ 704 0788 58329FE5 		.loc 1 205 0
+ 705 078c 003093E5 		ldr	r3, .L43+40	@ float
+ 706 0790 012083E2 		str	r3, [fp, #-76]	@ float
+ 707 0794 4C329FE5 		.loc 1 206 0
+ 708 0798 002083E5 		ldr	r3, .L43+32	@ float
+ 192:lab.c         **** oat Kd_x = -0.2446;
+ 709              	3, [fp, #-72]	@ float
+ 710 079c 44329FE5 		.loc 1 207 0
+ 711 07a0 003093E5 		ldr	r3, .L43+44	@ float
+ 712 07a4 0A0053E3 		str	r3, [fp, #-68]	@ float
+ 713 07a8 0200001A 		.loc 1 208 0
+ 193:lab.c         **** float Ki_x = 0.0;
+ 714              	r3, .L43+48	@ float
+ 715 07ac 34229FE5 		str	r3, [fp, #-64]	@ float
+ 716 07b0 0030A0E3 		.loc 1 209 0
+ 717 07b4 003082E5 		ldr	r3, .L43+32	@ float
+ 718              		str	r3, [fp, #-60]	@ float
+ 194:lab.c         **** float Kp_y = 0.1952;
+ 195:lab.c         **** 	float Kd_y = 0.2446;
+ 196:lab.c         **** 	float Ki_y = 0.0;
+ 197:lab.c         **** 	float Kp_z = -4.3112;
+ 198:lab.c         **** 	float Kd_z = -2.4473;
+ 199:lab.c         **** 	float Ki_z = 0.0;
+ 200:lab.c         **** 
+ 201:lab.c         **** 	// Outer Loop PD
+ 719              	 1 214 0
+ 720 07b8 34329FE5 		ldr	r3, .L43+16
+ 721 07bc 5C300BE5 		ldr	r2, [r3, #0]	@ float
+ 202:lab.c         **** _x;
+ 722              	r	r3, .L43+20
+ 723 07c0 30329FE5 		ldr	r3, [r3, #8]	@ float
+ 724 07c4 58300BE5 		mov	r0, r2
+ 203:lab.c         **** float a_y;
+ 725              	v	r1, r3
+ 726 07c8 2C329FE5 		bl	__subsf3
+ 727 07cc 54300BE5 		mov	r3, r0
+ 204:lab.c         **** a_x = Kp_x*(x_nom[0]-mocap.dX)-Kd_x*mocap.dVx+Ki_x*errorcum[0];
+ 728              	v	r0, r3
+ 729 07d0 28329FE5 		ldr	r1, [fp, #-92]	@ float
+ 730 07d4 50300BE5 		bl	__mulsf3
+ 205:lab.c         **** a_y = Kp_y*(x_nom[1]-mocap.dY)-Kd_y*mocap.dVy+Ki_y*errorcum[1];
+ 731              	v	r3, r0
+ 732 07d8 24329FE5 		mov	r4, r3
+ 733 07dc 4C300BE5 		ldr	r3, .L43+20
+ 206:lab.c         **** pitch_desired = 0;//a_x*cos(real_mocap.dThetaz)-a_y*sin(real_mocap.dThetaz);
+ 734              	r	r3, [r3, #20]	@ float
+ 735 07e0 14329FE5 		mov	r0, r3
+ 736 07e4 48300BE5 		ldr	r1, [fp, #-88]	@ float
+ 207:lab.c         **** roll_desired = 0;//a_x*sin(real_mocap.dThetaz)+a_y*cos(real_mocap.dThetaz);
+ 737              		__mulsf3
+ 738 07e8 18329FE5 		mov	r3, r0
+ 739 07ec 44300BE5 		mov	r0, r4
+ 208:lab.c         **** yaw_desired = 0;//x_nom[3];
+ 740              	v	r1, r3
+ 741 07f0 14329FE5 		bl	__subsf3
+ 742 07f4 40300BE5 		mov	r3, r0
+ 209:lab.c         **** //cnt_u[3] = U_Kp_z*(x_nom[2]-USMaxBot_range1)-U_Kd_z*(USMaxBot_range1 - USMaxBot_range1_old)*1000+
+ 743              	v	r4, r3
+ 744 07f8 FC319FE5 		ldr	r3, .L43+104
+ 745 07fc 3C300BE5 		ldr	r3, [r3, #0]	@ float
+ 210:lab.c         **** //USMaxBot_range1_old = USMaxBot_range1;
+ 211:lab.c         **** 	// INNER LOOP
+ 212:lab.c         **** 		// Hummingbird
+ 213:lab.c         **** 	float Ktx_P = 1.0;
+ 214:lab.c         **** 	float Ktx_D = 0.3;
+ 746              	v	r0, r3
+ 747 0800 E4319FE5 		ldr	r1, [fp, #-84]	@ float
+ 748 0804 002093E5 		bl	__mulsf3
+ 749 0808 E0319FE5 		mov	r3, r0
+ 750 080c 083093E5 		mov	r0, r4
+ 751 0810 0200A0E1 		mov	r1, r3
+ 752 0814 0310A0E1 		bl	__addsf3
+ 753 0818 FEFFFFEB 		mov	r3, r0
+ 754 081c 0030A0E1 		str	r3, [fp, #-56]	@ float
+ 755 0820 0300A0E1 		.loc 1 215 0
+ 756 0824 5C101BE5 		ldr	r3, .L43+16
+ 757 0828 FEFFFFEB 		ldr	r2, [r3, #4]	@ float
+ 758 082c 0030A0E1 		ldr	r3, .L43+20
+ 759 0830 0340A0E1 		ldr	r3, [r3, #12]	@ float
+ 760 0834 B4319FE5 		mov	r0, r2
+ 761 0838 143093E5 		mov	r1, r3
+ 762 083c 0300A0E1 		bl	__subsf3
+ 763 0840 58101BE5 		mov	r3, r0
+ 764 0844 FEFFFFEB 		mov	r0, r3
+ 765 0848 0030A0E1 		ldr	r1, [fp, #-80]	@ float
+ 766 084c 0400A0E1 		bl	__mulsf3
+ 767 0850 0310A0E1 		mov	r3, r0
+ 768 0854 FEFFFFEB 		mov	r4, r3
+ 769 0858 0030A0E1 		ldr	r3, .L43+20
+ 770 085c 0340A0E1 		ldr	r3, [r3, #24]	@ float
+ 771 0860 DC319FE5 		mov	r0, r3
+ 772 0864 003093E5 		ldr	r1, [fp, #-76]	@ float
+ 773 0868 0300A0E1 		bl	__mulsf3
+ 774 086c 54101BE5 		mov	r3, r0
+ 775 0870 FEFFFFEB 		mov	r0, r4
+ 776 0874 0030A0E1 		mov	r1, r3
+ 777 0878 0400A0E1 		bl	__subsf3
+ 778 087c 0310A0E1 		mov	r3, r0
+ 779 0880 FEFFFFEB 		mov	r4, r3
+ 780 0884 0030A0E1 		ldr	r3, .L43+104
+ 781 0888 38300BE5 		ldr	r3, [r3, #4]	@ float
+ 215:lab.c         **** t Kty_P = 1.0;	
+ 782              	oat
+ 783 088c 58319FE5 		bl	__mulsf3
+ 784 0890 042093E5 		mov	r3, r0
+ 785 0894 54319FE5 		mov	r0, r4
+ 786 0898 0C3093E5 		mov	r1, r3
+ 787 089c 0200A0E1 		bl	__addsf3
+ 788 08a0 0310A0E1 		mov	r3, r0
+ 789 08a4 FEFFFFEB 		str	r3, [fp, #-52]	@ float
+ 790 08a8 0030A0E1 		.loc 1 216 0
+ 791 08ac 0300A0E1 		ldr	r2, .L43+52
+ 792 08b0 50101BE5 		ldr	r3, .L43+32	@ float
+ 793 08b4 FEFFFFEB 		str	r3, [r2, #0]	@ float
+ 794 08b8 0030A0E1 		.loc 1 217 0
+ 795 08bc 0340A0E1 		ldr	r2, .L43+56
+ 796 08c0 28319FE5 		ldr	r3, .L43+32	@ float
+ 797 08c4 183093E5 		str	r3, [r2, #0]	@ float
+ 798 08c8 0300A0E1 		.loc 1 218 0
+ 799 08cc 4C101BE5 		ldr	r2, .L43+76
+ 800 08d0 FEFFFFEB 		ldr	r3, .L43+32	@ float
+ 801 08d4 0030A0E1 		str	r3, [r2, #0]	@ float
+ 802 08d8 0400A0E1 		.loc 1 223 0
+ 803 08dc 0310A0E1 		ldr	r3, .L43+60	@ float
+ 804 08e0 FEFFFFEB 		str	r3, [fp, #-48]	@ float
+ 805 08e4 0030A0E1 		.loc 1 224 0
+ 806 08e8 0340A0E1 		ldr	r3, .L43+64	@ float
+ 807 08ec 50319FE5 		str	r3, [fp, #-44]	@ float
+ 808 08f0 043093E5 		.loc 1 225 0
+ 809 08f4 0300A0E1 		ldr	r3, .L43+60	@ float
+ 810 08f8 48101BE5 		str	r3, [fp, #-40]	@ float
+ 811 08fc FEFFFFEB 		.loc 1 226 0
+ 812 0900 0030A0E1 		ldr	r3, .L43+64	@ float
+ 813 0904 0400A0E1 		str	r3, [fp, #-36]	@ float
+ 814 0908 0310A0E1 		.loc 1 227 0
+ 815 090c FEFFFFEB 		ldr	r3, .L43+68	@ float
+ 816 0910 0030A0E1 		str	r3, [fp, #-32]	@ float
+ 817 0914 34300BE5 		.loc 1 228 0
+ 216:lab.c         **** float Kty_D = 0.3;	
+ 818              	p, #-28]	@ float
+ 819 0918 F0209FE5 		.loc 1 233 0
+ 820 091c D8309FE5 		ldr	r3, .L43+56
+ 821 0920 003082E5 		ldr	r2, [r3, #0]	@ float
+ 217:lab.c         **** float Ktz_P = 0.08;	
+ 822              		r3, .L43+80
+ 823 0924 E8209FE5 		ldr	r3, [r3, #4]	@ float
+ 824 0928 CC309FE5 		mov	r0, r2
+ 825 092c 003082E5 		mov	r1, r3
+ 218:lab.c         **** float Ktz_D = 0.04;
+ 826              	__subsf3
+ 827 0930 F0209FE5 		mov	r3, r0
+ 828 0934 C0309FE5 		mov	r0, r3
+ 829 0938 003082E5 		ldr	r1, [fp, #-48]	@ float
+ 219:lab.c         **** 	
+ 220:lab.c         **** 
+ 221:lab.c         **** 
+ 222:lab.c         **** 	// Inner Loop PD
+ 223:lab.c         **** 	cnt_u[0] = Ktx_P*(roll_desired-imusensor.dThetax)-Ktx_D*(imusensor.dOmegax);
+ 830              	__mulsf3
+ 831 093c D4309FE5 		mov	r3, r0
+ 832 0940 30300BE5 		mov	r4, r3
+ 224:lab.c         **** u[1] = Kty_P*(pitch_desired-imusensor.dThetay)-Kty_D*(imusensor.dOmegay);
+ 833              	r	r3, .L43+80
+ 834 0944 D0309FE5 		ldr	r3, [r3, #28]	@ float
+ 835 0948 2C300BE5 		mov	r0, r3
+ 225:lab.c         **** 	// Yaw Control with out Compass/MoCap correction
+ 836              	r	r1, [fp, #-44]	@ float
+ 837 094c C4309FE5 		bl	__mulsf3
+ 838 0950 28300BE5 		mov	r3, r0
+ 226:lab.c         **** cnt_u[2] = Ktz_P*(yaw_desired-imusensor.dThetaz)-Ktz_D*(imusensor.dOmegaz);
+ 839              	v	r0, r4
+ 840 0954 C0309FE5 		mov	r1, r3
+ 841 0958 24300BE5 		bl	__subsf3
+ 227:lab.c         **** 	// For Keeping data
+ 842              	v	r3, r0
+ 843 095c BC309FE5 		mov	r2, r3
+ 844 0960 20300BE5 		ldr	r3, .L43+84
+ 228:lab.c         **** u.u1 = cnt_u[0];
+ 845              	r	r2, [r3, #0]	@ float
+ 846 0964 B8309FE5 		.loc 1 234 0
+ 847 0968 1C300BE5 		ldr	r3, .L43+52
+ 229:lab.c         **** u.u2 = cnt_u[1];
+ 230:lab.c         **** 	u.u3 = cnt_u[2];
+ 231:lab.c         **** 	u.u4 = cnt_u[3];
+ 232:lab.c         **** 
+ 233:lab.c         **** 	// Integral anti-windup
+ 848              	.L44
+ 849 096c A0309FE5 	.L45:
+ 850 0970 002093E5 		.align	2
+ 851 0974 B0309FE5 	.L43:
+ 852 0978 043093E5 		.word	1066695393
+ 853 097c 0200A0E1 		.word	1202590843
+ 854 0980 0310A0E1 		.word	takeoff2
+ 855 0984 FEFFFFEB 		.word	IntegralHolder
+ 856 0988 0030A0E1 		.word	x_nom
+ 857 098c 0300A0E1 		.word	mocap
+ 858 0990 30101BE5 		.word	-1102585214
+ 859 0994 FEFFFFEB 		.word	-1099270036
+ 860 0998 0030A0E1 		.word	0
+ 861 099c 0340A0E1 		.word	1044898434
+ 862 09a0 84309FE5 		.word	1048213612
+ 863 09a4 1C3093E5 		.word	-1064700582
+ 864 09a8 0300A0E1 		.word	-1071865712
+ 865 09ac 2C101BE5 		.word	pitch_desired
+ 866 09b0 FEFFFFEB 		.word	roll_desired
+ 867 09b4 0030A0E1 		.word	1065353216
+ 868 09b8 0400A0E1 		.word	1050253722
+ 869 09bc 0310A0E1 		.word	1034147594
+ 870 09c0 FEFFFFEB 		.word	1025758986
+ 871 09c4 0030A0E1 		.word	yaw_desired
+ 872 09c8 0320A0E1 		.word	imusensor
+ 873 09cc 5C309FE5 		.word	cnt_u
+ 874 09d0 002083E5 		.word	u
+ 234:lab.c         **** x-position anti-windup
+ 875              	084227584
+ 876 09d4 34309FE5 		.word	1075838976
+ 877 09d8 1B0000EA 		.word	errorcum
+ 878              		.word	-1071644672
+ 879              	.L44:
+ 880              		ldr	r2, [r3, #0]	@ float
+ 881 09dc E17A943F 		ldr	r3, .L43+80
+ 882 09e0 7B14AE47 		ldr	r3, [r3, #8]	@ float
+ 883 09e4 00000000 		mov	r0, r2
+ 884 09e8 00000000 		mov	r1, r3
+ 885 09ec 00000000 		bl	__subsf3
+ 886 09f0 00000000 		mov	r3, r0
+ 887 09f4 82E247BE 		mov	r0, r3
+ 888 09f8 6C787ABE 		ldr	r1, [fp, #-40]	@ float
+ 889 09fc 00000000 		bl	__mulsf3
+ 890 0a00 82E2473E 		mov	r3, r0
+ 891 0a04 6C787A3E 		mov	r4, r3
+ 892 0a08 5AF589C0 		ldr	r3, .L43+80
+ 893 0a0c 90A01CC0 		ldr	r3, [r3, #32]	@ float
+ 894 0a10 00000000 		mov	r0, r3
+ 895 0a14 00000000 		ldr	r1, [fp, #-36]	@ float
+ 896 0a18 0000803F 		bl	__mulsf3
+ 897 0a1c 9A99993E 		mov	r3, r0
+ 898 0a20 0AD7A33D 		mov	r0, r4
+ 899 0a24 0AD7233D 		mov	r1, r3
+ 900 0a28 00000000 		bl	__subsf3
+ 901 0a2c 00000000 		mov	r3, r0
+ 902 0a30 00000000 		mov	r2, r3
+ 903 0a34 00000000 		ldr	r3, .L43+84
+ 904 0a38 0000603F 		str	r2, [r3, #4]	@ float
+ 905 0a3c 000060BF 		.loc 1 236 0
+ 906 0a40 00002040 		ldr	r3, .L43+76
+ 907 0a44 00000000 		ldr	r2, [r3, #0]	@ float
+ 908 0a48 000020C0 		ldr	r3, .L43+80
+ 909              		ldr	r3, [r3, #12]	@ float
+ 910 0a4c 002093E5 		mov	r0, r2
+ 911 0a50 2C301FE5 		mov	r1, r3
+ 912 0a54 083093E5 		bl	__subsf3
+ 913 0a58 0200A0E1 		mov	r3, r0
+ 914 0a5c 0310A0E1 		mov	r0, r3
+ 915 0a60 FEFFFFEB 		ldr	r1, [fp, #-32]	@ float
+ 916 0a64 0030A0E1 		bl	__mulsf3
+ 917 0a68 0300A0E1 		mov	r3, r0
+ 918 0a6c 28101BE5 		mov	r4, r3
+ 919 0a70 FEFFFFEB 		ldr	r3, .L43+80
+ 920 0a74 0030A0E1 		ldr	r3, [r3, #36]	@ float
+ 921 0a78 0340A0E1 		mov	r0, r3
+ 922 0a7c 58301FE5 		ldr	r1, [fp, #-28]	@ float
+ 923 0a80 203093E5 		bl	__mulsf3
+ 924 0a84 0300A0E1 		mov	r3, r0
+ 925 0a88 24101BE5 		mov	r0, r4
+ 926 0a8c FEFFFFEB 		mov	r1, r3
+ 927 0a90 0030A0E1 		bl	__subsf3
+ 928 0a94 0400A0E1 		mov	r3, r0
+ 929 0a98 0310A0E1 		mov	r2, r3
+ 930 0a9c FEFFFFEB 		ldr	r3, .L43+84
+ 931 0aa0 0030A0E1 		str	r2, [r3, #8]	@ float
+ 932 0aa4 0320A0E1 		.loc 1 239 0
+ 933 0aa8 80301FE5 		ldr	r3, .L43+84
+ 934 0aac 042083E5 		ldr	r2, [r3, #0]	@ float
+ 235:lab.c         **** if (errorcum[0] > 0.875) {
+ 236:lab.c         **** 		errorcum[0] = 0.875;
+ 935              	r	r3, .L43+84
+ 936 0ab0 90301FE5 		ldr	r2, [r3, #4]	@ float
+ 937 0ab4 002093E5 		ldr	r3, .L43+88
+ 938 0ab8 94301FE5 		str	r2, [r3, #4]	@ float
+ 939 0abc 0C3093E5 		.loc 1 241 0
+ 940 0ac0 0200A0E1 		ldr	r3, .L43+84
+ 941 0ac4 0310A0E1 		ldr	r2, [r3, #8]	@ float
+ 942 0ac8 FEFFFFEB 		ldr	r3, .L43+88
+ 943 0acc 0030A0E1 		str	r2, [r3, #8]	@ float
+ 944 0ad0 0300A0E1 		.loc 1 242 0
+ 945 0ad4 20101BE5 		ldr	r3, .L43+84
+ 946 0ad8 FEFFFFEB 		ldr	r2, [r3, #12]	@ float
+ 947 0adc 0030A0E1 		ldr	r3, .L43+88
+ 948 0ae0 0340A0E1 		str	r2, [r3, #12]	@ float
+ 949 0ae4 C0301FE5 		.loc 1 246 0
+ 950 0ae8 243093E5 		ldr	r3, .L43+104
+ 951 0aec 0300A0E1 		ldr	r3, [r3, #0]	@ float
+ 952 0af0 1C101BE5 		mov	r0, r3
+ 953 0af4 FEFFFFEB 		ldr	r1, .L43+92	@ float
+ 954 0af8 0030A0E1 		bl	__gtsf2
+ 955 0afc 0400A0E1 		mov	r3, r0
+ 956 0b00 0310A0E1 		cmp	r3, #0
+ 957 0b04 FEFFFFEB 		bgt	.L26
+ 958 0b08 0030A0E1 		b	.L24
+ 959 0b0c 0320A0E1 	.L26:
+ 960 0b10 E8301FE5 		.loc 1 247 0
+ 961 0b14 082083E5 		ldr	r2, .L43+104
+ 237:lab.c         **** 	
+ 238:lab.c         **** 	else if (errorcum[0] < -0.875) {
+ 239:lab.c         **** 		errorcum[0] = -0.875;
+ 962              	tr	r3, [r2, #0]	@ float
+ 963 0b18 F0301FE5 		b	.L27
+ 964 0b1c 002093E5 	.L24:
+ 965 0b20 F4301FE5 		.loc 1 249 0
+ 966 0b24 002083E5 		ldr	r3, .L43+104
+ 240:lab.c         **** 
+ 967              	r3, [r3, #0]	@ float
+ 968 0b28 00311FE5 		mov	r0, r3
+ 969 0b2c 042093E5 		ldr	r1, .L43+96	@ float
+ 970 0b30 04311FE5 		bl	__ltsf2
+ 971 0b34 042083E5 		mov	r3, r0
+ 241:lab.c         **** 		// y-position anti-windup
+ 972              	r3, #0
+ 973 0b38 10311FE5 		blt	.L29
+ 974 0b3c 082093E5 		b	.L27
+ 975 0b40 14311FE5 	.L29:
+ 976 0b44 082083E5 		.loc 1 250 0
+ 242:lab.c         **** if (errorcum[1] > 0.875) {
+ 977              	r2, .L43+104
+ 978 0b48 20311FE5 		ldr	r3, .L43+96	@ float
+ 979 0b4c 0C2093E5 		str	r3, [r2, #0]	@ float
+ 980 0b50 24311FE5 	.L27:
+ 981 0b54 0C2083E5 		.loc 1 254 0
+ 243:lab.c         **** 	errorcum[1] = 0.875;
+ 244:lab.c         **** 	}
+ 245:lab.c         **** 	else if (errorcum[1] < -0.875) {
+ 246:lab.c         **** 		errorcum[1] = -0.875;
+ 982              	r3, .L43+104
+ 983 0b58 1C311FE5 		ldr	r3, [r3, #4]	@ float
+ 984 0b5c 003093E5 		mov	r0, r3
+ 985 0b60 0300A0E1 		ldr	r1, .L43+92	@ float
+ 986 0b64 34111FE5 		bl	__gtsf2
+ 987 0b68 FEFFFFEB 		mov	r3, r0
+ 988 0b6c 0030A0E1 		cmp	r3, #0
+ 989 0b70 000053E3 		bgt	.L32
+ 990 0b74 000000CA 		b	.L30
+ 991 0b78 030000EA 	.L32:
+ 992              		.loc 1 255 0
+ 247:lab.c         **** 		// z-position anti-windup
+ 993              	43+104
+ 994 0b7c 40211FE5 		ldr	r3, .L43+92	@ float
+ 995 0b80 50311FE5 		str	r3, [r2, #4]	@ float
+ 996 0b84 003082E5 		b	.L33
+ 997 0b88 0B0000EA 	.L30:
+ 998              		.loc 1 257 0
+ 248:lab.c         **** if (errorcum[2] > 2.5) {
+ 249:lab.c         **** 		errorcum[2] = 2.5;
+ 999              	3, .L43+104
+ 1000 0b8c 50311FE5 		ldr	r3, [r3, #4]	@ float
+ 1001 0b90 003093E5 		mov	r0, r3
+ 1002 0b94 0300A0E1 		ldr	r1, .L43+96	@ float
+ 1003 0b98 64111FE5 		bl	__ltsf2
+ 1004 0b9c FEFFFFEB 		mov	r3, r0
+ 1005 0ba0 0030A0E1 		cmp	r3, #0
+ 1006 0ba4 000053E3 		blt	.L35
+ 1007 0ba8 000000BA 		b	.L33
+ 1008 0bac 020000EA 	.L35:
+ 1009              		.loc 1 258 0
+ 250:lab.c         **** 
+ 1010              	43+104
+ 1011 0bb0 74211FE5 		ldr	r3, .L43+96	@ float
+ 1012 0bb4 80311FE5 		str	r3, [r2, #4]	@ float
+ 1013 0bb8 003082E5 	.L33:
+ 1014              		.loc 1 262 0
+ 251:lab.c         **** 	else if (errorcum[2] < -2.5) {
+ 252:lab.c         **** 		errorcum[2] = -2.5;
+ 253:lab.c         **** 	}
+ 254:lab.c         **** }	
+ 1015              	r3, .L43+104
+ 1016 0bbc 80311FE5 		ldr	r3, [r3, #8]	@ float
+ 1017 0bc0 043093E5 		mov	r0, r3
+ 1018 0bc4 0300A0E1 		ldr	r1, .L43+100	@ float
+ 1019 0bc8 98111FE5 		bl	__gtsf2
+ 1020 0bcc FEFFFFEB 		mov	r3, r0
+ 1021 0bd0 0030A0E1 		cmp	r3, #0
+ 1022 0bd4 000053E3 		bgt	.L38
+ 1023 0bd8 000000CA 		b	.L36
+ 1024 0bdc 030000EA 	.L38:
+ 1025              		.loc 1 263 0
+ 255:lab.c         **** ---------- End Lab 3 ------------*/
+ 1026              	43+104
+ 1027 0be0 A4211FE5 		ldr	r3, .L43+100	@ float
+ 1028 0be4 B4311FE5 		str	r3, [r2, #8]	@ float
+ 1029 0be8 043082E5 		b	.L42
+ 1030 0bec 0B0000EA 	.L36:
+ 1031              		.loc 1 265 0
+ 256:lab.c         **** /*-------------- Lab 2 --------------*/
+ 257:lab.c         **** void lab2() {
+ 1032              	3, .L43+104
+ 1033 0bf0 B4311FE5 		ldr	r3, [r3, #8]	@ float
+ 1034 0bf4 043093E5 		mov	r0, r3
+ 1035 0bf8 0300A0E1 		ldr	r1, .L43+108	@ float
+ 1036 0bfc C8111FE5 		bl	__ltsf2
+ 1037 0c00 FEFFFFEB 		mov	r3, r0
+ 1038 0c04 0030A0E1 		cmp	r3, #0
+ 1039 0c08 000053E3 		blt	.L41
+ 1040 0c0c 000000BA 		b	.L42
+ 1041 0c10 020000EA 	.L41:
+ 1042              		.loc 1 266 0
+ 258:lab.c         **** 	// Desired	
+ 1043              	43+104
+ 1044 0c14 D8211FE5 		ldr	r3, .L43+108	@ float
+ 1045 0c18 E4311FE5 		str	r3, [r2, #8]	@ float
+ 1046 0c1c 043082E5 	.L42:
+ 1047              		.loc 1 268 0
+ 259:lab.c         **** pitch_desired = 0.0;
+ 260:lab.c         **** 	
+ 261:lab.c         **** 	// INNER LOOP
+ 262:lab.c         **** 		// Hummingbird
+ 1048              	sp, fp, #24
+ 1049 0c20 E4311FE5 		ldmfd	sp, {r4, r5, r6, fp, sp, lr}
+ 1050 0c24 083093E5 		bx	lr
+ 1051 0c28 0300A0E1 	.LFE4:
+ 1053 0c30 FEFFFFEB 		.align	2
+ 1054 0c34 0030A0E1 		.global	lab2
+ 1056 0c3c 000000CA 	lab2:
+ 1057 0c40 030000EA 	.LFB5:
+ 1058              		.loc 1 272 0
+ 263:lab.c         **** at Ktx_P = 1.0;	// Proportional Roll
+ 1059              	 supports interworking.
+ 1060 0c44 08221FE5 		@ args = 0, pretend = 0, frame = 24
+ 1061 0c48 10321FE5 		@ frame_needed = 1, uses_anonymous_args = 0
+ 1062 0c4c 083082E5 		mov	ip, sp
+ 1063 0c50 0B0000EA 	.LCFI11:
+ 1064              		stmfd	sp!, {r4, fp, ip, lr, pc}
+ 264:lab.c         **** float Ktx_D = 0.3;	// Derivative Roll
+ 265:lab.c         **** 	float Kty_P = 1.0;	// Proportional Pitch
+ 1065              	2:
+ 1066 0c54 18321FE5 		sub	fp, ip, #4
+ 1067 0c58 083093E5 	.LCFI13:
+ 1068 0c5c 0300A0E1 		sub	sp, sp, #24
+ 1069 0c60 20121FE5 	.LCFI14:
+ 1070 0c64 FEFFFFEB 		.loc 1 275 0
+ 1071 0c68 0030A0E1 		ldr	r2, .L48
+ 1072 0c6c 000053E3 		ldr	r3, .L48+4	@ float
+ 1073 0c70 000000BA 		str	r3, [r2, #0]	@ float
+ 1074 0c74 020000EA 		.loc 1 279 0
+ 1075              		ldr	r3, .L48+8	@ float
+ 266:lab.c         **** loat Kty_D = 0.3;	// Derivative Pitch
+ 1076              	p, #-40]	@ float
+ 1077 0c78 3C221FE5 		.loc 1 280 0
+ 1078 0c7c 3C321FE5 		ldr	r3, .L48+12	@ float
+ 1079 0c80 083082E5 		str	r3, [fp, #-36]	@ float
+ 1080              		.loc 1 281 0
+ 267:lab.c         **** float Ktz_P = 0.08;	// Proportional Yaw
+ 268:lab.c         **** 	float Ktz_D = 0.04;	// Derivative Yaw
+ 1081              	r3, .L48+8	@ float
+ 1082 0c84 18D04BE2 		str	r3, [fp, #-32]	@ float
+ 1083 0c88 70689DE8 		.loc 1 282 0
+ 1084 0c8c 1EFF2FE1 		ldr	r3, .L48+12	@ float
+ 1085              		str	r3, [fp, #-28]	@ float
+ 1086              		.loc 1 283 0
+ 1087              		ldr	r3, .L48+16	@ float
+ 1088              		str	r3, [fp, #-24]	@ float
+ 1089              		.loc 1 284 0
+ 1090              		ldr	r3, .L48+20	@ float
+ 1091              		str	r3, [fp, #-20]	@ float
+ 269:lab.c         **** 
+ 270:lab.c         **** 	// Inner Loop PD 
+ 271:lab.c         **** 	// Note: Lab 2 only tests Pitch control. Do not uncomment roll and yaw lines.
+ 272:lab.c         **** 	cnt_u[0] = 0.0; // Ktx_P*(roll_desired-imusensor.dThetax)-Ktx_D*(imusensor.dOmegax);
+ 1092              	 0
+ 1093              		ldr	r2, .L48+24
+ 1094              		ldr	r3, .L48+4	@ float
+ 1095              		str	r3, [r2, #0]	@ float
+ 1096 0c90 0DC0A0E1 		.loc 1 289 0
+ 1097              		ldr	r3, .L48
+ 1098 0c94 10D82DE9 		ldr	r2, [r3, #0]	@ float
+ 1099              		ldr	r3, .L48+28
+ 1100 0c98 04B04CE2 		ldr	r3, [r3, #8]	@ float
+ 1101              		mov	r0, r2
+ 1102 0c9c 18D04DE2 		mov	r1, r3
+ 1103              		bl	__subsf3
+ 273:lab.c         **** t_u[1] = Kty_P*(pitch_desired-imusensor.dThetay)-Kty_D*(imusensor.dOmegay);
+ 274:lab.c         **** 	cnt_u[2] = 0.0;//Ktz_P*(yaw_desired-imusensor.dThetaz)-Ktz_D*(imusensor.dOmegaz);
+ 275:lab.c         **** 
+ 1104              		mov	r0, r3
+ 1105 0ca0 00219FE5 		ldr	r1, [fp, #-32]	@ float
+ 1106 0ca4 00319FE5 		bl	__mulsf3
+ 1107 0ca8 003082E5 		mov	r3, r0
+ 276:lab.c         ****  For Keeping data
+ 277:lab.c         **** 	u.u1 = cnt_u[0];
+ 278:lab.c         **** 	u.u2 = cnt_u[1];
+ 279:lab.c         **** 	u.u3 = cnt_u[2];
+ 1108              		r4, r3
+ 1109 0cac FC309FE5 		ldr	r3, .L48+28
+ 1110 0cb0 28300BE5 		ldr	r3, [r3, #32]	@ float
+ 280:lab.c         **** 4 = cnt_u[3];
+ 1111              	v	r0, r3
+ 1112 0cb4 F8309FE5 		ldr	r1, [fp, #-28]	@ float
+ 1113 0cb8 24300BE5 		bl	__mulsf3
+ 281:lab.c         **** 
+ 1114              	v	r3, r0
+ 1115 0cbc EC309FE5 		mov	r0, r4
+ 1116 0cc0 20300BE5 		mov	r1, r3
+ 282:lab.c         **** /*------------ End Lab 2 ------------*/
+ 1117              		__subsf3
+ 1118 0cc4 E8309FE5 		mov	r3, r0
+ 1119 0cc8 1C300BE5 		mov	r2, r3
+ 283:lab.c         **** *------------ End Controller ------------*/
+ 1120              	r	r3, .L48+24
+ 1121 0ccc E4309FE5 		str	r2, [r3, #4]	@ float
+ 1122 0cd0 18300BE5 		.loc 1 290 0
+ 284:lab.c         **** /*---------------- Command ---------------*/
+ 1123              	r	r2, .L48+24
+ 1124 0cd4 E0309FE5 		ldr	r3, .L48+4	@ float
+ 1125 0cd8 14300BE5 		str	r3, [r2, #8]	@ float
+ 285:lab.c         **** oid Command() {
+ 286:lab.c         **** 	/////////////// Controller Settings ////////////
+ 287:lab.c         **** 	WO_SDK.ctrl_mode=0x00;  //0x00: direct individual motor control (individual commands for motors 0.
+ 288:lab.c         **** 				//0x01: direct motor control using standard output mapping: commands are interpreted as pitch, 
+ 1126              	oc 1 293 0
+ 1127 0cdc DC209FE5 		ldr	r3, .L48+24
+ 1128 0ce0 C4309FE5 		ldr	r2, [r3, #0]	@ float
+ 1129 0ce4 003082E5 		ldr	r3, .L48+32
+ 289:lab.c         **** //      and thrust inputs; no attitude controller active
+ 1130              		r2, [r3, #0]	@ float
+ 1131 0ce8 B8309FE5 		.loc 1 294 0
+ 1132 0cec 002093E5 		ldr	r3, .L48+24
+ 1133 0cf0 CC309FE5 		ldr	r2, [r3, #4]	@ float
+ 1134 0cf4 083093E5 		ldr	r3, .L48+32
+ 1135 0cf8 0200A0E1 		str	r2, [r3, #4]	@ float
+ 1136 0cfc 0310A0E1 		.loc 1 295 0
+ 1137 0d00 FEFFFFEB 		ldr	r3, .L48+24
+ 1138 0d04 0030A0E1 		ldr	r2, [r3, #8]	@ float
+ 1139 0d08 0300A0E1 		ldr	r3, .L48+32
+ 1140 0d0c 20101BE5 		str	r2, [r3, #8]	@ float
+ 1141 0d10 FEFFFFEB 		.loc 1 296 0
+ 1142 0d14 0030A0E1 		ldr	r3, .L48+24
+ 1143 0d18 0340A0E1 		ldr	r2, [r3, #12]	@ float
+ 1144 0d1c A0309FE5 		ldr	r3, .L48+32
+ 1145 0d20 203093E5 		str	r2, [r3, #12]	@ float
+ 1146 0d24 0300A0E1 		.loc 1 297 0
+ 1147 0d28 1C101BE5 		sub	sp, fp, #16
+ 1148 0d2c FEFFFFEB 		ldmfd	sp, {r4, fp, sp, lr}
+ 1149 0d30 0030A0E1 		bx	lr
+ 1150 0d34 0400A0E1 	.L49:
+ 1151 0d38 0310A0E1 		.align	2
+ 1152 0d3c FEFFFFEB 	.L48:
+ 1153 0d40 0030A0E1 		.word	pitch_desired
+ 1154 0d44 0320A0E1 		.word	0
+ 1155 0d48 70309FE5 		.word	1065353216
+ 1156 0d4c 042083E5 		.word	1050253722
+ 290:lab.c         **** 			//0x02: attitude and throttle control: commands are input for standard attitude controller
+ 1157              	25758986
+ 1158 0d50 68209FE5 		.word	cnt_u
+ 1159 0d54 50309FE5 		.word	imusensor
+ 1160 0d58 083082E5 		.word	u
+ 291:lab.c         **** 			//0x03: GPS waypoint control
+ 292:lab.c         **** 
+ 293:lab.c         **** 	WO_SDK.ctrl_enabled=1;	//0: disable control by HL processor
+ 1161              	5:
+ 1163 0d60 002093E5 		.global	__fixunssfsi
+ 1164 0d64 5C309FE5 		.align	2
+ 1165 0d68 002083E5 		.global	Command
+ 294:lab.c         **** 	//1: enable control by HL processor
+ 1166              	e	Command, %function
+ 1167 0d6c 4C309FE5 	Command:
+ 1168 0d70 042093E5 	.LFB6:
+ 1169 0d74 4C309FE5 		.loc 1 302 0
+ 1170 0d78 042083E5 		@ Function supports interworking.
+ 295:lab.c         **** ////////////////////////////////////////////////
+ 1171              	gs = 0, pretend = 0, frame = 16
+ 1172 0d7c 3C309FE5 		@ frame_needed = 1, uses_anonymous_args = 0
+ 1173 0d80 082093E5 		mov	ip, sp
+ 1174 0d84 3C309FE5 	.LCFI15:
+ 1175 0d88 082083E5 		stmfd	sp!, {r4, r5, r6, fp, ip, lr, pc}
+ 296:lab.c         **** 	//////// Translate commanded torques and thrust into rotor speed and commands ////////////
+ 1176              	16:
+ 1177 0d8c 2C309FE5 		sub	fp, ip, #4
+ 1178 0d90 0C2093E5 	.LCFI17:
+ 1179 0d94 2C309FE5 		sub	sp, sp, #24
+ 1180 0d98 0C2083E5 	.LCFI18:
+ 297:lab.c         **** // NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 1181              	 1 304 0
+ 1182 0d9c 10D04BE2 		ldr	r2, .L67+16
+ 1183 0da0 10689DE8 		mov	r3, #0
+ 1184 0da4 1EFF2FE1 		strb	r3, [r2, #0]
+ 1185              		.loc 1 310 0
+ 1186              		ldr	r2, .L67+16
+ 1187              		mov	r3, #1
+ 1188 0da8 00000000 		strb	r3, [r2, #1]
+ 1189 0dac 00000000 		.loc 1 316 0
+ 1190 0db0 0000803F 		ldr	r3, .L67+20
+ 1191 0db4 9A99993E 		ldr	r3, [r3, #0]	@ float
+ 1192 0db8 0AD7A33D 		mov	r0, r3
+ 1193 0dbc 0AD7233D 		bl	__extendsfdf2
+ 1194 0dc0 00000000 		mov	r3, r0
+ 1195 0dc4 00000000 		mov	r4, r1
+ 1196 0dc8 00000000 		mov	r0, r3
+ 1197              		mov	r1, r4
+ 1198              		mov	r2, r3
+ 1199              		mov	r3, r4
+ 1200              		bl	__adddf3
+ 1201              		mov	r3, r0
+ 1202              		mov	r4, r1
+ 1203              		mov	r5, r3
+ 1204              		mov	r6, r4
+ 298:lab.c         **** d torques and thrust into rotor speed and commands ////////////
+ 299:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 300:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 301:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 302:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
+ 1205              	, [r3, #0]	@ float
+ 1206              		mov	r0, r3
+ 1207              		bl	__extendsfdf2
+ 1208              		mov	r3, r0
+ 1209 0dcc 0DC0A0E1 		mov	r4, r1
+ 1210              		mov	r0, r5
+ 1211 0dd0 70D82DE9 		mov	r1, r6
+ 1212              		mov	r2, r3
+ 1213 0dd4 04B04CE2 		mov	r3, r4
+ 1214              		bl	__muldf3
+ 1215 0dd8 18D04DE2 		mov	r3, r0
+ 1216              		mov	r4, r1
+ 303:lab.c         **** HAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 304:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 1217              	69547520
+ 1218 0ddc FC249FE5 		add	r0, r0, #3145728
+ 1219 0de0 0030A0E3 		mov	r1, #0
+ 1220 0de4 0030C2E5 		mov	r2, r3
+ 305:lab.c         **** peed and commands ////////////
+ 306:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 307:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 308:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 309:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
  310:lab.c         **** 
- 311:lab.c         **** 	//////// Translate commanded torques and thrust into rotor speed and commands ////////////
- 312:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
- 1205              		r0, r3
- 1206 0df4 E8349FE5 		mov	r1, r4
- 1207 0df8 003093E5 		bl	__truncdfsf2
- 1208 0dfc 0300A0E1 		mov	r3, r0
- 1209 0e00 FEFFFFEB 		str	r3, [fp, #-40]	@ float
- 1210 0e04 0030A0E1 		.loc 1 313 0
- 1211 0e08 0140A0E1 		ldr	r3, .L67+24
- 1212 0e0c 0300A0E1 		ldr	r3, [r3, #0]	@ float
- 1213 0e10 0410A0E1 		mov	r0, r3
- 1214 0e14 0320A0E1 		bl	__extendsfdf2
- 1215 0e18 0430A0E1 		mov	r3, r0
- 1216 0e1c FEFFFFEB 		mov	r4, r1
- 1217 0e20 0030A0E1 		mov	r0, r3
- 1218 0e24 0140A0E1 		mov	r1, r4
- 1219 0e28 0350A0E1 		mov	r2, #1073741824
- 1220 0e2c 0460A0E1 		add	r2, r2, #1048576
- 1221 0e30 B0349FE5 		mov	r3, #0
- 1222 0e34 003093E5 		bl	__muldf3
- 1223 0e38 0300A0E1 		mov	r3, r0
- 1224 0e3c FEFFFFEB 		mov	r4, r1
- 1225 0e40 0030A0E1 		mov	r0, #1069547520
- 1226 0e44 0140A0E1 		add	r0, r0, #3145728
- 1227 0e48 0500A0E1 		mov	r1, #0
- 1228 0e4c 0610A0E1 		mov	r2, r3
- 1229 0e50 0320A0E1 		mov	r3, r4
- 1230 0e54 0430A0E1 		bl	__divdf3
- 1231 0e58 FEFFFFEB 		mov	r3, r0
- 1232 0e5c 0030A0E1 		mov	r4, r1
- 1233 0e60 0140A0E1 		mov	r0, r3
- 1234 0e64 FF05A0E3 		mov	r1, r4
- 1235 0e68 030680E2 		bl	__truncdfsf2
- 1236 0e6c 0010A0E3 		mov	r3, r0
- 1237 0e70 0320A0E1 		str	r3, [fp, #-36]	@ float
- 1238 0e74 0430A0E1 		.loc 1 314 0
- 1239 0e78 FEFFFFEB 		ldr	r3, .L67+28
- 1240 0e7c 0030A0E1 		ldr	r3, [r3, #0]	@ float
- 1241 0e80 0140A0E1 		mov	r0, r3
- 1242 0e84 0300A0E1 		bl	__extendsfdf2
- 1243 0e88 0410A0E1 		mov	r3, r0
- 1244 0e8c FEFFFFEB 		mov	r4, r1
- 1245 0e90 0030A0E1 		mov	r0, r3
- 1246 0e94 28300BE5 		mov	r1, r4
- 313:lab.c         **** tor speed and commands ////////////
- 1247              	
- 1248 0e98 48349FE5 		mov	r3, #0
- 1249 0e9c 003093E5 		bl	__muldf3
- 1250 0ea0 0300A0E1 		mov	r3, r0
- 1251 0ea4 FEFFFFEB 		mov	r4, r1
- 1252 0ea8 0030A0E1 		mov	r0, #1069547520
- 1253 0eac 0140A0E1 		add	r0, r0, #3145728
- 1254 0eb0 0300A0E1 		mov	r1, #0
- 1255 0eb4 0410A0E1 		mov	r2, r3
- 1256 0eb8 0121A0E3 		mov	r3, r4
- 1257 0ebc 012682E2 		bl	__divdf3
- 1258 0ec0 0030A0E3 		mov	r3, r0
- 1259 0ec4 FEFFFFEB 		mov	r4, r1
- 1260 0ec8 0030A0E1 		mov	r0, r3
- 1261 0ecc 0140A0E1 		mov	r1, r4
- 1262 0ed0 FF05A0E3 		bl	__truncdfsf2
- 1263 0ed4 030680E2 		mov	r3, r0
- 1264 0ed8 0010A0E3 		str	r3, [fp, #-32]	@ float
- 1265 0edc 0320A0E1 		.loc 1 316 0
- 1266 0ee0 0430A0E1 		ldr	r2, .L67+32
- 1267 0ee4 FEFFFFEB 		ldr	r3, .L67+36	@ float
- 1268 0ee8 0030A0E1 		str	r3, [r2, #0]	@ float
- 1269 0eec 0140A0E1 		.loc 1 317 0
- 1270 0ef0 0300A0E1 		ldr	r2, .L67+32
- 1271 0ef4 0410A0E1 		ldr	r3, [fp, #-40]	@ float
- 1272 0ef8 FEFFFFEB 		str	r3, [r2, #4]	@ float
- 1273 0efc 0030A0E1 		.loc 1 318 0
- 1274 0f00 24300BE5 		ldr	r3, [fp, #-32]
- 314:lab.c         **** ////////////////
- 1275              	ldr	r3, .L67+32
- 1276 0f04 E0339FE5 		str	r2, [r3, #8]	@ float
- 1277 0f08 003093E5 		.loc 1 319 0
- 1278 0f0c 0300A0E1 		ldr	r2, .L67+32
- 1279 0f10 FEFFFFEB 		ldr	r3, [fp, #-36]	@ float
- 1280 0f14 0030A0E1 		str	r3, [r2, #12]	@ float
- 1281 0f18 0140A0E1 		.loc 1 320 0
- 1282 0f1c 0300A0E1 		ldr	r3, [fp, #-40]
- 1283 0f20 0410A0E1 		eor	r2, r3, #-2147483648
- 1284 0f24 0121A0E3 		ldr	r3, .L67+32
- 1285 0f28 012682E2 		str	r2, [r3, #16]	@ float
- 1286 0f2c 0030A0E3 		.loc 1 321 0
- 1287 0f30 FEFFFFEB 		ldr	r2, .L67+32
- 1288 0f34 0030A0E1 		ldr	r3, .L67+36	@ float
- 1289 0f38 0140A0E1 		str	r3, [r2, #20]	@ float
- 1290 0f3c FF05A0E3 		.loc 1 322 0
- 1291 0f40 030680E2 		ldr	r2, .L67+32
- 1292 0f44 0010A0E3 		ldr	r3, [fp, #-32]	@ float
- 1293 0f48 0320A0E1 		str	r3, [r2, #24]	@ float
- 1294 0f4c 0430A0E1 		.loc 1 323 0
- 1295 0f50 FEFFFFEB 		ldr	r2, .L67+32
- 1296 0f54 0030A0E1 		ldr	r3, [fp, #-36]	@ float
- 1297 0f58 0140A0E1 		str	r3, [r2, #28]	@ float
- 1298 0f5c 0300A0E1 		.loc 1 324 0
- 1299 0f60 0410A0E1 		ldr	r2, .L67+32
- 1300 0f64 FEFFFFEB 		ldr	r3, .L67+36	@ float
- 1301 0f68 0030A0E1 		str	r3, [r2, #32]	@ float
- 1302 0f6c 20300BE5 		.loc 1 325 0
- 315:lab.c         **** ntrol by HL processor
- 316:lab.c         **** 				//1: enable control by HL processor
- 1303              	 r3, #-2147483648
- 1304 0f70 78239FE5 		ldr	r3, .L67+32
- 1305 0f74 78339FE5 		str	r2, [r3, #36]	@ float
- 1306 0f78 003082E5 		.loc 1 326 0
- 317:lab.c         **** nt control
- 1307              		r3, [fp, #-32]
- 1308 0f7c 6C239FE5 		eor	r2, r3, #-2147483648
- 1309 0f80 28301BE5 		ldr	r3, .L67+32
- 1310 0f84 043082E5 		str	r2, [r3, #40]	@ float
- 318:lab.c         **** attitude and throttle control: commands are input for standard attitude controller
- 1311              	c 1 327 0
- 1312 0f88 20301BE5 		ldr	r2, .L67+32
- 1313 0f8c 022123E2 		ldr	r3, [fp, #-36]	@ float
- 1314 0f90 58339FE5 		str	r3, [r2, #44]	@ float
- 1315 0f94 082083E5 		.loc 1 328 0
- 319:lab.c         **** ude controller active
- 1316              	r2, .L67+32
- 1317 0f98 50239FE5 		ldr	r3, [fp, #-40]	@ float
- 1318 0f9c 24301BE5 		str	r3, [r2, #48]	@ float
- 1319 0fa0 0C3082E5 		.loc 1 329 0
- 320:lab.c         **** t mapping: commands are interpreted as pitch, roll, yaw 
- 1320              		r2, .L67+32
- 1321 0fa4 28301BE5 		ldr	r3, .L67+36	@ float
- 1322 0fa8 022123E2 		str	r3, [r2, #52]	@ float
- 1323 0fac 3C339FE5 		.loc 1 330 0
- 1324 0fb0 102083E5 		ldr	r2, .L67+32
- 321:lab.c         **** 			//      and thrust inputs; no attitude controller active
- 1325              	r3, [fp, #-32]	@ float
- 1326 0fb4 34239FE5 		str	r3, [r2, #56]	@ float
- 1327 0fb8 34339FE5 		.loc 1 331 0
- 1328 0fbc 143082E5 		ldr	r2, .L67+32
- 322:lab.c         **** t mapping: commands are interpreted as pitch, roll, yaw 
- 1329              		r3, [fp, #-36]	@ float
- 1330 0fc0 28239FE5 		str	r3, [r2, #60]	@ float
- 1331 0fc4 20301BE5 		.loc 1 333 0
- 1332 0fc8 183082E5 		ldr	r3, .L67+40
- 323:lab.c         **** 			//      and thrust inputs; no attitude controller active
- 1333              		r3, [sp, #0]
- 1334 0fcc 1C239FE5 		ldr	r3, .L67+44
- 1335 0fd0 24301BE5 		str	r3, [sp, #4]
- 1336 0fd4 1C3082E5 		mov	r0, #4
- 324:lab.c         **** t mapping: commands are interpreted as pitch, roll, yaw 
- 1337              		r1, #4
- 1338 0fd8 10239FE5 		mov	r2, #1
- 1339 0fdc 10339FE5 		ldr	r3, .L67+32
- 1340 0fe0 203082E5 		bl	matrix_multiply
- 325:lab.c         **** 			//      and thrust inputs; no attitude controller active
- 1341              	c 1 336 0
- 1342 0fe4 28301BE5 		mov	r3, #0
- 1343 0fe8 022123E2 		str	r3, [fp, #-28]
- 1344 0fec FC329FE5 		b	.L51
- 1345 0ff0 242083E5 	.L52:
- 326:lab.c         **** t mapping: commands are interpreted as pitch, roll, yaw 
- 1346              	 1 337 0
- 1347 0ff4 20301BE5 		ldr	r2, [fp, #-28]
- 1348 0ff8 022123E2 		ldr	r3, .L67+44
- 1349 0ffc EC329FE5 		ldr	r2, [r3, r2, asl #2]	@ float
- 1350 1000 282083E5 		ldr	r3, .L67+48
- 327:lab.c         **** 			//      and thrust inputs; no attitude controller active
- 1351              	r3, [r3, #0]	@ float
- 1352 1004 E4229FE5 		mov	r0, r2
- 1353 1008 24301BE5 		mov	r1, r3
- 1354 100c 2C3082E5 		bl	__gtsf2
- 328:lab.c         **** t mapping: commands are interpreted as pitch, roll, yaw 
- 1355              		r3, r0
- 1356 1010 D8229FE5 		cmp	r3, #0
- 1357 1014 28301BE5 		bgt	.L55
- 1358 1018 303082E5 		b	.L53
- 329:lab.c         **** 			//      and thrust inputs; no attitude controller active
- 1359              	:
- 1360 101c CC229FE5 		.loc 1 338 0
- 1361 1020 CC329FE5 		ldr	r1, [fp, #-28]
- 1362 1024 343082E5 		ldr	r3, .L67+48
- 330:lab.c         **** t mapping: commands are interpreted as pitch, roll, yaw 
- 1363              		r2, [r3, #0]	@ float
- 1364 1028 C0229FE5 		ldr	r3, .L67+44
- 1365 102c 20301BE5 		str	r2, [r3, r1, asl #2]	@ float
- 1366 1030 383082E5 		b	.L56
- 331:lab.c         **** 			//      and thrust inputs; no attitude controller active
- 1367              	:
- 1368 1034 B4229FE5 		.loc 1 340 0
- 1369 1038 24301BE5 		ldr	r2, [fp, #-28]
- 1370 103c 3C3082E5 		ldr	r3, .L67+44
- 332:lab.c         **** t mapping: commands are interpreted as pitch, roll, yaw 
- 333:lab.c         **** 				//      and thrust inputs; no attitude controller active
- 1371              		r2, [r3, r2, asl #2]	@ float
- 1372 1040 B0329FE5 		ldr	r3, .L67+52
- 1373 1044 00308DE5 		ldr	r3, [r3, #0]	@ float
- 1374 1048 AC329FE5 		mov	r0, r2
- 1375 104c 04308DE5 		mov	r1, r3
- 1376 1050 0400A0E3 		bl	__ltsf2
- 1377 1054 0410A0E3 		mov	r3, r0
- 1378 1058 0120A0E3 		cmp	r3, #0
- 1379 105c 8C329FE5 		blt	.L58
- 1380 1060 FEFFFFEB 		b	.L56
- 334:lab.c         **** 		//0x02: attitude and throttle control: commands are input for standard attitude controller
- 335:lab.c         **** 				//0x03: GPS waypoint control
- 336:lab.c         **** 
- 1381              	c 1 341 0
- 1382 1064 0030A0E3 		ldr	r1, [fp, #-28]
- 1383 1068 1C300BE5 		ldr	r3, .L67+52
- 1384 106c 710000EA 		ldr	r2, [r3, #0]	@ float
- 1385              		ldr	r3, .L67+44
- 337:lab.c         **** titude and throttle control: commands are input for standard attitude controller
- 1386              	r2, [r3, r1, asl #2]	@ float
- 1387 1070 1C201BE5 	.L56:
- 1388 1074 80329FE5 		.loc 1 343 0
- 1389 1078 022193E7 		ldr	r5, [fp, #-28]
- 1390 107c 7C329FE5 		ldr	r2, [fp, #-28]
- 1391 1080 003093E5 		ldr	r3, .L67+44
- 1392 1084 0200A0E1 		ldr	r3, [r3, r2, asl #2]	@ float
- 1393 1088 0310A0E1 		mov	r0, r3
- 1394 108c FEFFFFEB 		bl	__extendsfdf2
- 1395 1090 0030A0E1 		mov	r3, r0
- 1396 1094 000053E3 		mov	r4, r1
- 1397 1098 000000CA 		mov	r0, r3
- 1398 109c 050000EA 		mov	r1, r4
- 1399              		bl	sqrt
- 338:lab.c         **** ude controller active
- 1400              	ov	r4, r1
- 1401 10a0 1C101BE5 		mov	r0, r3
- 1402 10a4 54329FE5 		mov	r1, r4
- 1403 10a8 002093E5 		bl	__truncdfsf2
- 1404 10ac 48329FE5 		mov	r2, r0
- 1405 10b0 012183E7 		ldr	r3, .L67+56
- 1406 10b4 100000EA 		str	r2, [r3, r5, asl #2]	@ float
- 1407              		.loc 1 346 0
- 339:lab.c         **** t mapping: commands are interpreted as pitch, roll, yaw 
- 340:lab.c         **** 				//      and thrust inputs; no attitude controller active
- 1408              	 [fp, #-28]
- 1409 10b8 1C201BE5 		ldr	r2, [fp, #-28]
- 1410 10bc 38329FE5 		ldr	r3, .L67+56
- 1411 10c0 022193E7 		ldr	r3, [r3, r2, asl #2]	@ float
- 1412 10c4 38329FE5 		mov	r0, r3
- 1413 10c8 003093E5 		bl	__extendsfdf2
- 1414 10cc 0200A0E1 		mov	r3, r0
- 1415 10d0 0310A0E1 		mov	r4, r1
- 1416 10d4 FEFFFFEB 		mov	r0, r3
- 1417 10d8 0030A0E1 		mov	r1, r4
- 1418 10dc 000053E3 		adr	r2, .L67
- 1419 10e0 000000BA 		ldmia	r2, {r2-r3}
- 1420 10e4 040000EA 		bl	__muldf3
- 1421              		mov	r3, r0
- 341:lab.c         **** 		//0x02: attitude and throttle control: commands are input for standard attitude controller
- 1422              	ov	r0, r3
- 1423 10e8 1C101BE5 		mov	r1, r4
- 1424 10ec 10329FE5 		adr	r2, .L67+8
- 1425 10f0 002093E5 		ldmia	r2, {r2-r3}
- 1426 10f4 00329FE5 		bl	__subdf3
- 1427 10f8 012183E7 		mov	r3, r0
- 1428              		mov	r4, r1
- 342:lab.c         **** ude controller active
- 343:lab.c         **** 				//0x02: attitude and throttle control: commands are input for standard attitude controller
- 1429              	, r3
- 1430 10fc 1C501BE5 		mov	r1, r4
- 1431 1100 1C201BE5 		bl	__truncdfsf2
- 1432 1104 F0319FE5 		mov	r2, r0
- 1433 1108 023193E7 		ldr	r3, .L67+60
- 1434 110c 0300A0E1 		str	r2, [r3, r5, asl #2]	@ float
- 1435 1110 FEFFFFEB 		.loc 1 353 0
- 1436 1114 0030A0E1 		ldr	r2, [fp, #-28]
- 1437 1118 0140A0E1 		ldr	r3, .L67+60
- 1438 111c 0300A0E1 		ldr	r3, [r3, r2, asl #2]	@ float
- 1439 1120 0410A0E1 		mov	r0, r3
- 1440 1124 FEFFFFEB 		ldr	r1, .L67+64	@ float
- 1441 1128 0030A0E1 		bl	__ltsf2
- 1442 112c 0140A0E1 		mov	r3, r0
- 1443 1130 0300A0E1 		cmp	r3, #0
- 1444 1134 0410A0E1 		blt	.L61
- 1445 1138 FEFFFFEB 		b	.L59
- 1446 113c 0020A0E1 	.L61:
- 1447 1140 C0319FE5 		.loc 1 354 0
- 1448 1144 052183E7 		ldr	r1, [fp, #-28]
- 344:lab.c         **** ude controller active
- 345:lab.c         **** 				//0x02: attitude and throttle control: commands are input for standard attitude controller
- 346:lab.c         **** 				//0x03: GPS waypoint control
- 1449              	r	r3, .L67+64	@ float
- 1450 1148 1C501BE5 		str	r3, [r2, r1, asl #2]	@ float
- 1451 114c 1C201BE5 		b	.L62
- 1452 1150 B0319FE5 	.L59:
- 1453 1154 023193E7 		.loc 1 356 0
- 1454 1158 0300A0E1 		ldr	r2, [fp, #-28]
- 1455 115c FEFFFFEB 		ldr	r3, .L67+60
- 1456 1160 0030A0E1 		ldr	r3, [r3, r2, asl #2]	@ float
- 1457 1164 0140A0E1 		mov	r0, r3
- 1458 1168 0300A0E1 		ldr	r1, .L67+68	@ float
- 1459 116c 0410A0E1 		bl	__gtsf2
- 1460 1170 562F8FE2 		mov	r3, r0
- 1461 1174 0C0092E8 		cmp	r3, #0
- 1462 1178 FEFFFFEB 		bgt	.L64
- 1463 117c 0030A0E1 		b	.L62
- 1464 1180 0140A0E1 	.L64:
- 1465 1184 0300A0E1 		.loc 1 357 0
- 1466 1188 0410A0E1 		ldr	r1, [fp, #-28]
- 1467 118c 512F8FE2 		ldr	r2, .L67+60
- 1468 1190 0C0092E8 		ldr	r3, .L67+68	@ float
- 1469 1194 FEFFFFEB 		str	r3, [r2, r1, asl #2]	@ float
- 1470 1198 0030A0E1 	.L62:
- 1471 119c 0140A0E1 		.loc 1 336 0
- 1472 11a0 0300A0E1 		ldr	r3, [fp, #-28]
- 1473 11a4 0410A0E1 		add	r3, r3, #1
- 1474 11a8 FEFFFFEB 		str	r3, [fp, #-28]
- 1475 11ac 0020A0E1 	.L51:
- 1476 11b0 54319FE5 		ldr	r3, [fp, #-28]
- 1477 11b4 052183E7 		cmp	r3, #3
- 347:lab.c         **** attitude and throttle control: commands are input for standard attitude controller
- 348:lab.c         **** 				//0x03: GPS waypoint control
- 349:lab.c         **** 
- 350:lab.c         **** 	WO_SDK.ctrl_enabled=1;	//0: disable control by HL processor
- 351:lab.c         **** 				//1: enable control by HL processor
- 352:lab.c         **** 	////////////////////////////////////////////////
+ 1221              		r3, r4
+ 1222 0de8 F0249FE5 		bl	__divdf3
+ 1223 0dec 0130A0E3 		mov	r3, r0
+ 1224 0df0 0130C2E5 		mov	r4, r1
+ 311:lab.c         **** T CG IS IN THE SAME PLANE AS THE ROTORS
+ 312:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 313:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 314:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
+ 315:lab.c         **** 
+ 316:lab.c         **** 	Winv[0] = 0;
+ 1225              		r0, r3
+ 1226 0df4 E8349FE5 		mov	r1, r4
+ 1227 0df8 003093E5 		bl	__truncdfsf2
+ 1228 0dfc 0300A0E1 		mov	r3, r0
+ 1229 0e00 FEFFFFEB 		str	r3, [fp, #-40]	@ float
+ 1230 0e04 0030A0E1 		.loc 1 317 0
+ 1231 0e08 0140A0E1 		ldr	r3, .L67+24
+ 1232 0e0c 0300A0E1 		ldr	r3, [r3, #0]	@ float
+ 1233 0e10 0410A0E1 		mov	r0, r3
+ 1234 0e14 0320A0E1 		bl	__extendsfdf2
+ 1235 0e18 0430A0E1 		mov	r3, r0
+ 1236 0e1c FEFFFFEB 		mov	r4, r1
+ 1237 0e20 0030A0E1 		mov	r0, r3
+ 1238 0e24 0140A0E1 		mov	r1, r4
+ 1239 0e28 0350A0E1 		mov	r2, #1073741824
+ 1240 0e2c 0460A0E1 		add	r2, r2, #1048576
+ 1241 0e30 B0349FE5 		mov	r3, #0
+ 1242 0e34 003093E5 		bl	__muldf3
+ 1243 0e38 0300A0E1 		mov	r3, r0
+ 1244 0e3c FEFFFFEB 		mov	r4, r1
+ 1245 0e40 0030A0E1 		mov	r0, #1069547520
+ 1246 0e44 0140A0E1 		add	r0, r0, #3145728
+ 1247 0e48 0500A0E1 		mov	r1, #0
+ 1248 0e4c 0610A0E1 		mov	r2, r3
+ 1249 0e50 0320A0E1 		mov	r3, r4
+ 1250 0e54 0430A0E1 		bl	__divdf3
+ 1251 0e58 FEFFFFEB 		mov	r3, r0
+ 1252 0e5c 0030A0E1 		mov	r4, r1
+ 1253 0e60 0140A0E1 		mov	r0, r3
+ 1254 0e64 FF05A0E3 		mov	r1, r4
+ 1255 0e68 030680E2 		bl	__truncdfsf2
+ 1256 0e6c 0010A0E3 		mov	r3, r0
+ 1257 0e70 0320A0E1 		str	r3, [fp, #-36]	@ float
+ 1258 0e74 0430A0E1 		.loc 1 318 0
+ 1259 0e78 FEFFFFEB 		ldr	r3, .L67+28
+ 1260 0e7c 0030A0E1 		ldr	r3, [r3, #0]	@ float
+ 1261 0e80 0140A0E1 		mov	r0, r3
+ 1262 0e84 0300A0E1 		bl	__extendsfdf2
+ 1263 0e88 0410A0E1 		mov	r3, r0
+ 1264 0e8c FEFFFFEB 		mov	r4, r1
+ 1265 0e90 0030A0E1 		mov	r0, r3
+ 1266 0e94 28300BE5 		mov	r1, r4
+ 317:lab.c         **** SAME PLANE AS THE ROTORS
+ 1267              	
+ 1268 0e98 48349FE5 		mov	r3, #0
+ 1269 0e9c 003093E5 		bl	__muldf3
+ 1270 0ea0 0300A0E1 		mov	r3, r0
+ 1271 0ea4 FEFFFFEB 		mov	r4, r1
+ 1272 0ea8 0030A0E1 		mov	r0, #1069547520
+ 1273 0eac 0140A0E1 		add	r0, r0, #3145728
+ 1274 0eb0 0300A0E1 		mov	r1, #0
+ 1275 0eb4 0410A0E1 		mov	r2, r3
+ 1276 0eb8 0121A0E3 		mov	r3, r4
+ 1277 0ebc 012682E2 		bl	__divdf3
+ 1278 0ec0 0030A0E3 		mov	r3, r0
+ 1279 0ec4 FEFFFFEB 		mov	r4, r1
+ 1280 0ec8 0030A0E1 		mov	r0, r3
+ 1281 0ecc 0140A0E1 		mov	r1, r4
+ 1282 0ed0 FF05A0E3 		bl	__truncdfsf2
+ 1283 0ed4 030680E2 		mov	r3, r0
+ 1284 0ed8 0010A0E3 		str	r3, [fp, #-32]	@ float
+ 1285 0edc 0320A0E1 		.loc 1 320 0
+ 1286 0ee0 0430A0E1 		ldr	r2, .L67+32
+ 1287 0ee4 FEFFFFEB 		ldr	r3, .L67+36	@ float
+ 1288 0ee8 0030A0E1 		str	r3, [r2, #0]	@ float
+ 1289 0eec 0140A0E1 		.loc 1 321 0
+ 1290 0ef0 0300A0E1 		ldr	r2, .L67+32
+ 1291 0ef4 0410A0E1 		ldr	r3, [fp, #-40]	@ float
+ 1292 0ef8 FEFFFFEB 		str	r3, [r2, #4]	@ float
+ 1293 0efc 0030A0E1 		.loc 1 322 0
+ 1294 0f00 24300BE5 		ldr	r3, [fp, #-32]
+ 318:lab.c         **** d torques and thrust into rotor speed and commands ////////////
+ 1295              	ldr	r3, .L67+32
+ 1296 0f04 E0339FE5 		str	r2, [r3, #8]	@ float
+ 1297 0f08 003093E5 		.loc 1 323 0
+ 1298 0f0c 0300A0E1 		ldr	r2, .L67+32
+ 1299 0f10 FEFFFFEB 		ldr	r3, [fp, #-36]	@ float
+ 1300 0f14 0030A0E1 		str	r3, [r2, #12]	@ float
+ 1301 0f18 0140A0E1 		.loc 1 324 0
+ 1302 0f1c 0300A0E1 		ldr	r3, [fp, #-40]
+ 1303 0f20 0410A0E1 		eor	r2, r3, #-2147483648
+ 1304 0f24 0121A0E3 		ldr	r3, .L67+32
+ 1305 0f28 012682E2 		str	r2, [r3, #16]	@ float
+ 1306 0f2c 0030A0E3 		.loc 1 325 0
+ 1307 0f30 FEFFFFEB 		ldr	r2, .L67+32
+ 1308 0f34 0030A0E1 		ldr	r3, .L67+36	@ float
+ 1309 0f38 0140A0E1 		str	r3, [r2, #20]	@ float
+ 1310 0f3c FF05A0E3 		.loc 1 326 0
+ 1311 0f40 030680E2 		ldr	r2, .L67+32
+ 1312 0f44 0010A0E3 		ldr	r3, [fp, #-32]	@ float
+ 1313 0f48 0320A0E1 		str	r3, [r2, #24]	@ float
+ 1314 0f4c 0430A0E1 		.loc 1 327 0
+ 1315 0f50 FEFFFFEB 		ldr	r2, .L67+32
+ 1316 0f54 0030A0E1 		ldr	r3, [fp, #-36]	@ float
+ 1317 0f58 0140A0E1 		str	r3, [r2, #28]	@ float
+ 1318 0f5c 0300A0E1 		.loc 1 328 0
+ 1319 0f60 0410A0E1 		ldr	r2, .L67+32
+ 1320 0f64 FEFFFFEB 		ldr	r3, .L67+36	@ float
+ 1321 0f68 0030A0E1 		str	r3, [r2, #32]	@ float
+ 1322 0f6c 20300BE5 		.loc 1 329 0
+ 319:lab.c         **** ////////////////////////////////////////////
+ 320:lab.c         **** 
+ 1323              	 r3, #-2147483648
+ 1324 0f70 78239FE5 		ldr	r3, .L67+32
+ 1325 0f74 78339FE5 		str	r2, [r3, #36]	@ float
+ 1326 0f78 003082E5 		.loc 1 330 0
+ 321:lab.c         **** /////// Translate commanded torques and thrust into rotor speed and commands ////////////
+ 1327              		r3, [fp, #-32]
+ 1328 0f7c 6C239FE5 		eor	r2, r3, #-2147483648
+ 1329 0f80 28301BE5 		ldr	r3, .L67+32
+ 1330 0f84 043082E5 		str	r2, [r3, #40]	@ float
+ 322:lab.c         **** // NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 1331              	c 1 331 0
+ 1332 0f88 20301BE5 		ldr	r2, .L67+32
+ 1333 0f8c 022123E2 		ldr	r3, [fp, #-36]	@ float
+ 1334 0f90 58339FE5 		str	r3, [r2, #44]	@ float
+ 1335 0f94 082083E5 		.loc 1 332 0
+ 323:lab.c         **** d torques and thrust into rotor speed and commands ////////////
+ 1336              	r2, .L67+32
+ 1337 0f98 50239FE5 		ldr	r3, [fp, #-40]	@ float
+ 1338 0f9c 24301BE5 		str	r3, [r2, #48]	@ float
+ 1339 0fa0 0C3082E5 		.loc 1 333 0
+ 324:lab.c         **** ////////////////////////////////////////////
+ 1340              		r2, .L67+32
+ 1341 0fa4 28301BE5 		ldr	r3, .L67+36	@ float
+ 1342 0fa8 022123E2 		str	r3, [r2, #52]	@ float
+ 1343 0fac 3C339FE5 		.loc 1 334 0
+ 1344 0fb0 102083E5 		ldr	r2, .L67+32
+ 325:lab.c         **** 	//////// Translate commanded torques and thrust into rotor speed and commands ////////////
+ 1345              	r3, [fp, #-32]	@ float
+ 1346 0fb4 34239FE5 		str	r3, [r2, #56]	@ float
+ 1347 0fb8 34339FE5 		.loc 1 335 0
+ 1348 0fbc 143082E5 		ldr	r2, .L67+32
+ 326:lab.c         **** // NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 1349              		r3, [fp, #-36]	@ float
+ 1350 0fc0 28239FE5 		str	r3, [r2, #60]	@ float
+ 1351 0fc4 20301BE5 		.loc 1 337 0
+ 1352 0fc8 183082E5 		ldr	r3, .L67+40
+ 327:lab.c         **** d torques and thrust into rotor speed and commands ////////////
+ 1353              		r3, [sp, #0]
+ 1354 0fcc 1C239FE5 		ldr	r3, .L67+44
+ 1355 0fd0 24301BE5 		str	r3, [sp, #4]
+ 1356 0fd4 1C3082E5 		mov	r0, #4
+ 328:lab.c         **** ////////////////////////////////////////////
+ 1357              		r1, #4
+ 1358 0fd8 10239FE5 		mov	r2, #1
+ 1359 0fdc 10339FE5 		ldr	r3, .L67+32
+ 1360 0fe0 203082E5 		bl	matrix_multiply
+ 329:lab.c         **** 	//////// Translate commanded torques and thrust into rotor speed and commands ////////////
+ 1361              	c 1 340 0
+ 1362 0fe4 28301BE5 		mov	r3, #0
+ 1363 0fe8 022123E2 		str	r3, [fp, #-28]
+ 1364 0fec FC329FE5 		b	.L51
+ 1365 0ff0 242083E5 	.L52:
+ 330:lab.c         **** // NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 1366              	 1 341 0
+ 1367 0ff4 20301BE5 		ldr	r2, [fp, #-28]
+ 1368 0ff8 022123E2 		ldr	r3, .L67+44
+ 1369 0ffc EC329FE5 		ldr	r2, [r3, r2, asl #2]	@ float
+ 1370 1000 282083E5 		ldr	r3, .L67+48
+ 331:lab.c         **** d torques and thrust into rotor speed and commands ////////////
+ 1371              	r3, [r3, #0]	@ float
+ 1372 1004 E4229FE5 		mov	r0, r2
+ 1373 1008 24301BE5 		mov	r1, r3
+ 1374 100c 2C3082E5 		bl	__gtsf2
+ 332:lab.c         **** ////////////////////////////////////////////
+ 1375              		r3, r0
+ 1376 1010 D8229FE5 		cmp	r3, #0
+ 1377 1014 28301BE5 		bgt	.L55
+ 1378 1018 303082E5 		b	.L53
+ 333:lab.c         **** 	//////// Translate commanded torques and thrust into rotor speed and commands ////////////
+ 1379              	:
+ 1380 101c CC229FE5 		.loc 1 342 0
+ 1381 1020 CC329FE5 		ldr	r1, [fp, #-28]
+ 1382 1024 343082E5 		ldr	r3, .L67+48
+ 334:lab.c         **** // NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 1383              		r2, [r3, #0]	@ float
+ 1384 1028 C0229FE5 		ldr	r3, .L67+44
+ 1385 102c 20301BE5 		str	r2, [r3, r1, asl #2]	@ float
+ 1386 1030 383082E5 		b	.L56
+ 335:lab.c         **** d torques and thrust into rotor speed and commands ////////////
+ 1387              	:
+ 1388 1034 B4229FE5 		.loc 1 344 0
+ 1389 1038 24301BE5 		ldr	r2, [fp, #-28]
+ 1390 103c 3C3082E5 		ldr	r3, .L67+44
+ 336:lab.c         **** ////////////////////////////////////////////
+ 337:lab.c         **** 
+ 1391              		r2, [r3, r2, asl #2]	@ float
+ 1392 1040 B0329FE5 		ldr	r3, .L67+52
+ 1393 1044 00308DE5 		ldr	r3, [r3, #0]	@ float
+ 1394 1048 AC329FE5 		mov	r0, r2
+ 1395 104c 04308DE5 		mov	r1, r3
+ 1396 1050 0400A0E3 		bl	__ltsf2
+ 1397 1054 0410A0E3 		mov	r3, r0
+ 1398 1058 0120A0E3 		cmp	r3, #0
+ 1399 105c 8C329FE5 		blt	.L58
+ 1400 1060 FEFFFFEB 		b	.L56
+ 338:lab.c         **** /////// Translate commanded torques and thrust into rotor speed and commands ////////////
+ 339:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 340:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 1401              	c 1 345 0
+ 1402 1064 0030A0E3 		ldr	r1, [fp, #-28]
+ 1403 1068 1C300BE5 		ldr	r3, .L67+52
+ 1404 106c 710000EA 		ldr	r2, [r3, #0]	@ float
+ 1405              		ldr	r3, .L67+44
+ 341:lab.c         **** oat fourkF = 1.0/(4.0*kF);
+ 1406              	r2, [r3, r1, asl #2]	@ float
+ 1407 1070 1C201BE5 	.L56:
+ 1408 1074 80329FE5 		.loc 1 347 0
+ 1409 1078 022193E7 		ldr	r5, [fp, #-28]
+ 1410 107c 7C329FE5 		ldr	r2, [fp, #-28]
+ 1411 1080 003093E5 		ldr	r3, .L67+44
+ 1412 1084 0200A0E1 		ldr	r3, [r3, r2, asl #2]	@ float
+ 1413 1088 0310A0E1 		mov	r0, r3
+ 1414 108c FEFFFFEB 		bl	__extendsfdf2
+ 1415 1090 0030A0E1 		mov	r3, r0
+ 1416 1094 000053E3 		mov	r4, r1
+ 1417 1098 000000CA 		mov	r0, r3
+ 1418 109c 050000EA 		mov	r1, r4
+ 1419              		bl	sqrt
+ 342:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 1420              	ov	r4, r1
+ 1421 10a0 1C101BE5 		mov	r0, r3
+ 1422 10a4 54329FE5 		mov	r1, r4
+ 1423 10a8 002093E5 		bl	__truncdfsf2
+ 1424 10ac 48329FE5 		mov	r2, r0
+ 1425 10b0 012183E7 		ldr	r3, .L67+56
+ 1426 10b4 100000EA 		str	r2, [r3, r5, asl #2]	@ float
+ 1427              		.loc 1 350 0
+ 343:lab.c         **** d torques and thrust into rotor speed and commands ////////////
+ 344:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 1428              	 [fp, #-28]
+ 1429 10b8 1C201BE5 		ldr	r2, [fp, #-28]
+ 1430 10bc 38329FE5 		ldr	r3, .L67+56
+ 1431 10c0 022193E7 		ldr	r3, [r3, r2, asl #2]	@ float
+ 1432 10c4 38329FE5 		mov	r0, r3
+ 1433 10c8 003093E5 		bl	__extendsfdf2
+ 1434 10cc 0200A0E1 		mov	r3, r0
+ 1435 10d0 0310A0E1 		mov	r4, r1
+ 1436 10d4 FEFFFFEB 		mov	r0, r3
+ 1437 10d8 0030A0E1 		mov	r1, r4
+ 1438 10dc 000053E3 		adr	r2, .L67
+ 1439 10e0 000000BA 		ldmia	r2, {r2-r3}
+ 1440 10e4 040000EA 		bl	__muldf3
+ 1441              		mov	r3, r0
+ 345:lab.c         **** d torques and thrust into rotor speed and commands ////////////
+ 1442              	ov	r0, r3
+ 1443 10e8 1C101BE5 		mov	r1, r4
+ 1444 10ec 10329FE5 		adr	r2, .L67+8
+ 1445 10f0 002093E5 		ldmia	r2, {r2-r3}
+ 1446 10f4 00329FE5 		bl	__subdf3
+ 1447 10f8 012183E7 		mov	r3, r0
+ 1448              		mov	r4, r1
+ 346:lab.c         **** ////////////////////////////////////////////
+ 347:lab.c         **** 
+ 1449              	, r3
+ 1450 10fc 1C501BE5 		mov	r1, r4
+ 1451 1100 1C201BE5 		bl	__truncdfsf2
+ 1452 1104 F0319FE5 		mov	r2, r0
+ 1453 1108 023193E7 		ldr	r3, .L67+60
+ 1454 110c 0300A0E1 		str	r2, [r3, r5, asl #2]	@ float
+ 1455 1110 FEFFFFEB 		.loc 1 357 0
+ 1456 1114 0030A0E1 		ldr	r2, [fp, #-28]
+ 1457 1118 0140A0E1 		ldr	r3, .L67+60
+ 1458 111c 0300A0E1 		ldr	r3, [r3, r2, asl #2]	@ float
+ 1459 1120 0410A0E1 		mov	r0, r3
+ 1460 1124 FEFFFFEB 		ldr	r1, .L67+64	@ float
+ 1461 1128 0030A0E1 		bl	__ltsf2
+ 1462 112c 0140A0E1 		mov	r3, r0
+ 1463 1130 0300A0E1 		cmp	r3, #0
+ 1464 1134 0410A0E1 		blt	.L61
+ 1465 1138 FEFFFFEB 		b	.L59
+ 1466 113c 0020A0E1 	.L61:
+ 1467 1140 C0319FE5 		.loc 1 358 0
+ 1468 1144 052183E7 		ldr	r1, [fp, #-28]
+ 348:lab.c         **** /////// Translate commanded torques and thrust into rotor speed and commands ////////////
+ 349:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 350:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 1469              	r	r3, .L67+64	@ float
+ 1470 1148 1C501BE5 		str	r3, [r2, r1, asl #2]	@ float
+ 1471 114c 1C201BE5 		b	.L62
+ 1472 1150 B0319FE5 	.L59:
+ 1473 1154 023193E7 		.loc 1 360 0
+ 1474 1158 0300A0E1 		ldr	r2, [fp, #-28]
+ 1475 115c FEFFFFEB 		ldr	r3, .L67+60
+ 1476 1160 0030A0E1 		ldr	r3, [r3, r2, asl #2]	@ float
+ 1477 1164 0140A0E1 		mov	r0, r3
+ 1478 1168 0300A0E1 		ldr	r1, .L67+68	@ float
+ 1479 116c 0410A0E1 		bl	__gtsf2
+ 1480 1170 562F8FE2 		mov	r3, r0
+ 1481 1174 0C0092E8 		cmp	r3, #0
+ 1482 1178 FEFFFFEB 		bgt	.L64
+ 1483 117c 0030A0E1 		b	.L62
+ 1484 1180 0140A0E1 	.L64:
+ 1485 1184 0300A0E1 		.loc 1 361 0
+ 1486 1188 0410A0E1 		ldr	r1, [fp, #-28]
+ 1487 118c 512F8FE2 		ldr	r2, .L67+60
+ 1488 1190 0C0092E8 		ldr	r3, .L67+68	@ float
+ 1489 1194 FEFFFFEB 		str	r3, [r2, r1, asl #2]	@ float
+ 1490 1198 0030A0E1 	.L62:
+ 1491 119c 0140A0E1 		.loc 1 340 0
+ 1492 11a0 0300A0E1 		ldr	r3, [fp, #-28]
+ 1493 11a4 0410A0E1 		add	r3, r3, #1
+ 1494 11a8 FEFFFFEB 		str	r3, [fp, #-28]
+ 1495 11ac 0020A0E1 	.L51:
+ 1496 11b0 54319FE5 		ldr	r3, [fp, #-28]
+ 1497 11b4 052183E7 		cmp	r3, #3
+ 351:lab.c         **** oat fourkF = 1.0/(4.0*kF);
+ 352:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
  353:lab.c         **** 
- 1478              	r3, .L67+60
- 1479 11b8 1C201BE5 		ldr	r3, [r3, #0]	@ float
- 1480 11bc 48319FE5 		mov	r0, r3
- 1481 11c0 023193E7 		bl	__fixunssfsi
- 1482 11c4 0300A0E1 		mov	r3, r0
- 1483 11c8 40119FE5 		and	r3, r3, #255
- 1484 11cc FEFFFFEB 		ldr	r2, .L67+72
- 1485 11d0 0030A0E1 		strb	r3, [r2, #0]
- 1486 11d4 000053E3 		.loc 1 364 0
- 1487 11d8 000000BA 		ldr	r3, .L67+60
- 1488 11dc 040000EA 		ldr	r3, [r3, #4]	@ float
- 1489              		mov	r0, r3
- 354:lab.c         **** rol by HL processor
- 1490              	sfsi
- 1491 11e0 1C101BE5 		mov	r3, r0
- 1492 11e4 20219FE5 		and	r3, r3, #255
- 1493 11e8 20319FE5 		ldr	r2, .L67+72
- 1494 11ec 013182E7 		strb	r3, [r2, #3]
- 1495 11f0 0D0000EA 		.loc 1 365 0
- 1496              		ldr	r3, .L67+60
- 355:lab.c         **** ttitude controller
- 356:lab.c         **** 				//0x03: GPS waypoint control
- 1497              	, [r3, #8]	@ float
- 1498 11f4 1C201BE5 		mov	r0, r3
- 1499 11f8 0C319FE5 		bl	__fixunssfsi
- 1500 11fc 023193E7 		mov	r3, r0
- 1501 1200 0300A0E1 		and	r3, r3, #255
- 1502 1204 08119FE5 		ldr	r2, .L67+72
- 1503 1208 FEFFFFEB 		strb	r3, [r2, #1]
- 1504 120c 0030A0E1 		.loc 1 366 0
- 1505 1210 000053E3 		ldr	r3, .L67+60
- 1506 1214 000000CA 		ldr	r3, [r3, #12]	@ float
- 1507 1218 030000EA 		mov	r0, r3
- 1508              		bl	__fixunssfsi
- 357:lab.c         **** attitude and throttle control: commands are input for standard attitude controller
- 1509              		and	r3, r3, #255
- 1510 121c 1C101BE5 		ldr	r2, .L67+72
- 1511 1220 E4209FE5 		strb	r3, [r2, #2]
- 1512 1224 E8309FE5 		.loc 1 368 0
- 1513 1228 013182E7 		sub	sp, fp, #24
- 1514              		ldmfd	sp, {r4, r5, r6, fp, sp, lr}
- 1515              		bx	lr
- 1516 122c 1C301BE5 	.L68:
- 1517 1230 013083E2 		.align	2
- 1518 1234 1C300BE5 	.L67:
- 1519              		.word	1070499056
- 1520 1238 1C301BE5 		.word	-1792478831
- 1521 123c 030053E3 		.word	1077534565
- 1522 1240 8AFFFFDA 		.word	2001935796
- 358:lab.c         **** ude controller active
- 359:lab.c         **** 				//0x02: attitude and throttle control: commands are input for standard attitude controller
- 360:lab.c         **** 				//0x03: GPS waypoint control
- 361:lab.c         **** 
- 362:lab.c         **** 	WO_SDK.ctrl_enabled=1;	//0: disable control by HL processor
- 363:lab.c         **** 				//1: enable control by HL processor
- 1523              		.word	l
- 1524 1244 C0309FE5 		.word	kF
- 1525 1248 003093E5 		.word	kM
- 1526 124c 0300A0E1 		.word	Winv
- 1527 1250 FEFFFFEB 		.word	0
- 1528 1254 0030A0E1 		.word	cnt_u
- 1529 1258 FF3003E2 		.word	omega_cmd2
- 1530 125c B4209FE5 		.word	MAXPHI2
- 1531 1260 0030C2E5 		.word	MINPHI2
- 364:lab.c         **** nt control
- 1532              	ega_cmd
- 1533 1264 A0309FE5 		.word	cmd
- 1534 1268 043093E5 		.word	1065353216
- 1535 126c 0300A0E1 		.word	1128792064
- 1536 1270 FEFFFFEB 		.word	WO_Direct_Individual_Motor_Control
- 1537 1274 0030A0E1 	.LFE6:
- 1539 127c 94209FE5 		.global	__floatsisf
- 1540 1280 0330C2E5 		.global	__fixsfsi
- 365:lab.c         **** attitude and throttle control: commands are input for standard attitude controller
- 1541              	
- 1542 1284 80309FE5 		.global	Bens_Control_Law
- 1544 128c 0300A0E1 	Bens_Control_Law:
- 1545 1290 FEFFFFEB 	.LFB7:
- 1546 1294 0030A0E1 		.loc 1 372 0
- 1547 1298 FF3003E2 		@ Function supports interworking.
- 1548 129c 74209FE5 		@ args = 0, pretend = 0, frame = 8
- 1549 12a0 0130C2E5 		@ frame_needed = 1, uses_anonymous_args = 0
- 366:lab.c         **** ude controller active
- 1550              	 sp
- 1551 12a4 60309FE5 	.LCFI19:
- 1552 12a8 0C3093E5 		stmfd	sp!, {r4, fp, ip, lr, pc}
- 1553 12ac 0300A0E1 	.LCFI20:
- 1554 12b0 FEFFFFEB 		sub	fp, ip, #4
- 1555 12b4 0030A0E1 	.LCFI21:
- 1556 12b8 FF3003E2 		sub	sp, sp, #8
- 1557 12bc 54209FE5 	.LCFI22:
- 1558 12c0 0230C2E5 		.loc 1 373 0
- 367:lab.c         **** t mapping: commands are interpreted as pitch, roll, yaw 
- 368:lab.c         **** 				//      and thrust inputs; no attitude controller active
- 1559              	#36
- 1560 12c4 18D04BE2 		strh	r3, [fp, #-22]	@ movhi
- 1561 12c8 70689DE8 		.loc 1 374 0
- 1562 12cc 1EFF2FE1 		mov	r3, #10
- 1563              		str	r3, [fp, #-20]
- 1564              		.loc 1 376 0
- 1565              		ldr	r3, .L76
- 1566 12d0 F084CE3F 		ldr	r3, [r3, #0]
- 1567 12d4 91F12895 		cmp	r3, #70
- 1568 12d8 65DF3940 		ble	.L70
- 1569 12dc B41D5377 		.loc 1 377 0
- 1570 12e0 00000000 		mov	r3, #70
- 1571 12e4 00000000 		str	r3, [fp, #-20]
- 1572 12e8 00000000 		b	.L72
- 1573 12ec 00000000 	.L70:
- 1574 12f0 00000000 		.loc 1 378 0
- 1575 12f4 00000000 		ldr	r3, .L76
- 1576 12f8 00000000 		ldr	r3, [r3, #0]
- 1577 12fc 00000000 		cmp	r3, #9
- 1578 1300 00000000 		bgt	.L73
- 1579 1304 00000000 		.loc 1 379 0
- 1580 1308 00000000 		mov	r3, #10
- 1581 130c 00000000 		str	r3, [fp, #-20]
- 1582 1310 0000803F 		b	.L72
- 1583 1314 00004843 	.L73:
- 1584 1318 00000000 		.loc 1 381 0
- 1585              		ldr	r3, .L76
- 1586              		ldr	r3, [r3, #0]
- 1587              		str	r3, [fp, #-20]
- 1588              	.L72:
- 1589              		.loc 1 383 0
- 1590              		ldrsh	r2, [fp, #-22]
- 1591              		ldr	r3, [fp, #-20]
- 1592              		rsb	r2, r2, r3
- 1593              		ldr	r3, .L76+4
- 369:lab.c         **** 		//0x02: attitude and throttle control: commands are input for standard attitude controller
- 370:lab.c         **** 				//0x03: GPS waypoint control
- 371:lab.c         **** 
- 372:lab.c         **** 	WO_SDK.ctrl_enabled=1;	//0: disable control by HL processor
- 1594              	r	r3, .L76+4
- 1595              		ldr	r3, [r3, #0]
- 1596              		mov	r0, r3
- 1597              		bl	__floatsisf
- 1598 131c 0DC0A0E1 		mov	r2, r0
- 1599              		ldr	r3, .L76+8
- 1600 1320 10D82DE9 		ldr	r3, [r3, #0]	@ float
- 1601              		mov	r0, r2
- 1602 1324 04B04CE2 		mov	r1, r3
- 1603              		bl	__mulsf3
- 1604 1328 08D04DE2 		mov	r3, r0
- 1605              		mov	r4, r3
- 373:lab.c         **** ttitude controller
- 1606              	6+4
- 1607 132c 2430A0E3 		ldr	r2, [r3, #0]
- 1608 1330 B6314BE1 		ldr	r3, .L76+12
- 374:lab.c         **** ude controller active
- 1609              	r	r3, [r3, #0]
- 1610 1334 0A30A0E3 		rsb	r3, r3, r2
- 1611 1338 14300BE5 		mov	r0, r3
- 375:lab.c         **** t mapping: commands are interpreted as pitch, roll, yaw 
- 376:lab.c         **** 				//      and thrust inputs; no attitude controller active
- 1612              		__floatsisf
- 1613 133c 10319FE5 		mov	r2, r0
- 1614 1340 003093E5 		ldr	r3, .L76+16
- 1615 1344 460053E3 		ldr	r3, [r3, #0]	@ float
- 1616 1348 020000DA 		mov	r0, r2
- 377:lab.c         **** 		//0x02: attitude and throttle control: commands are input for standard attitude controller
- 1617              	r1, r3
- 1618 134c 4630A0E3 		bl	__mulsf3
- 1619 1350 14300BE5 		mov	r3, r0
- 1620 1354 090000EA 		mov	r0, r4
- 1621              		mov	r1, r3
- 378:lab.c         **** ude controller active
- 1622              	_addsf3
- 1623 1358 F4309FE5 		mov	r3, r0
- 1624 135c 003093E5 		mov	r0, r3
- 1625 1360 090053E3 		ldr	r1, .L76+20	@ float
- 1626 1364 020000CA 		bl	__addsf3
- 379:lab.c         **** t mapping: commands are interpreted as pitch, roll, yaw 
- 1627              	r3, r0
- 1628 1368 0A30A0E3 		mov	r0, r3
- 1629 136c 14300BE5 		bl	__fixsfsi
- 1630 1370 020000EA 		mov	r3, r0
- 1631              		mov	r3, r3, asl #16
- 380:lab.c         **** 			//      and thrust inputs; no attitude controller active
- 381:lab.c         **** 				//0x02: attitude and throttle control: commands are input for standard attitude controller
- 1632              	r2, r3, lsr #16
- 1633 1374 D8309FE5 		ldr	r3, .L76+24
- 1634 1378 003093E5 		strh	r2, [r3, #0]	@ movhi
- 1635 137c 14300BE5 		.loc 1 387 0
- 1636              		ldr	r3, .L76+4
- 382:lab.c         **** ude controller active
- 383:lab.c         **** 				//0x02: attitude and throttle control: commands are input for standard attitude controller
- 1637              	r2, [r3, #0]
- 1638 1380 F6215BE1 		ldr	r3, .L76+12
- 1639 1384 14301BE5 		str	r2, [r3, #0]
- 1640 1388 032062E0 		.loc 1 388 0
- 1641 138c C4309FE5 		sub	sp, fp, #16
- 1642 1390 002083E5 		ldmfd	sp, {r4, fp, sp, lr}
- 384:lab.c         **** ude controller active
- 385:lab.c         **** 				//0x02: attitude and throttle control: commands are input for standard attitude controller
- 1643              	
- 1644 1394 BC309FE5 	.L77:
- 1645 1398 003093E5 		.align	2
- 1646 139c 0300A0E1 	.L76:
- 1647 13a0 FEFFFFEB 		.word	USMaxBot_range1
- 1648 13a4 0020A0E1 		.word	usonic_error
- 1649 13a8 AC309FE5 		.word	U_Kp_z
- 1650 13ac 003093E5 		.word	usonic_error_old
- 1651 13b0 0200A0E1 		.word	U_Kd_z
- 1652 13b4 0310A0E1 		.word	1154777088
- 1653 13b8 FEFFFFEB 		.word	Ben_thrust
- 1654 13bc 0030A0E1 	.LFE7:
- 1656 13c4 8C309FE5 		.align	2
- 1657 13c8 002093E5 		.global	Bens_Command
- 1659 13d0 003093E5 	Bens_Command:
- 1660 13d4 023063E0 	.LFB8:
- 1661 13d8 0300A0E1 		.loc 1 392 0
- 1662 13dc FEFFFFEB 		@ Function supports interworking.
- 1663 13e0 0020A0E1 		@ args = 0, pretend = 0, frame = 0
- 1664 13e4 78309FE5 		@ frame_needed = 1, uses_anonymous_args = 0
- 1665 13e8 003093E5 		mov	ip, sp
- 1666 13ec 0200A0E1 	.LCFI23:
- 1667 13f0 0310A0E1 		stmfd	sp!, {fp, ip, lr, pc}
- 1668 13f4 FEFFFFEB 	.LCFI24:
- 1669 13f8 0030A0E1 		sub	fp, ip, #4
- 1670 13fc 0400A0E1 	.LCFI25:
- 1671 1400 0310A0E1 		.loc 1 394 0
- 1672 1404 FEFFFFEB 		ldr	r2, .L80
- 1673 1408 0030A0E1 		mov	r3, #2
- 1674 140c 0300A0E1 		strb	r3, [r2, #0]
- 1675 1410 50109FE5 		.loc 1 400 0
- 1676 1414 FEFFFFEB 		ldr	r2, .L80
- 1677 1418 0030A0E1 		mov	r3, #1
- 1678 141c 0300A0E1 		strb	r3, [r2, #1]
- 1679 1420 FEFFFFEB 		.loc 1 405 0
- 1680 1424 0030A0E1 		ldr	r2, .L80+4
- 1681 1428 0338A0E1 		mov	r3, #8
- 1682 142c 2328A0E1 		strh	r3, [r2, #8]	@ movhi
- 1683 1430 34309FE5 		.loc 1 408 0
- 1684 1434 B020C3E1 		ldr	r3, .L80+8
- 386:lab.c         **** ude controller active
- 387:lab.c         **** 				//0x02: attitude and throttle control: commands are input for standard attitude controller
- 1685              	r2, [r3, #6]	@ movhi
- 1686 1438 18309FE5 		.loc 1 414 0
- 1687 143c 002093E5 		sub	sp, fp, #12
- 1688 1440 18309FE5 		ldmfd	sp, {fp, sp, lr}
- 1689 1444 002083E5 		bx	lr
- 388:lab.c         **** ude controller active
- 1690              	
- 1691 1448 10D04BE2 		.align	2
- 1692 144c 10689DE8 	.L80:
- 1693 1450 1EFF2FE1 		.word	WO_SDK
- 1694              		.word	WO_CTRL_Input
- 1695              		.word	Ben_thrust
- 1696              	.LFE8:
- 1698 1458 00000000 		.comm	GPS_timeout,4,4
- 1699 145c 00000000 		.comm	SYSTEM_initialized,1,1
- 1700 1460 00000000 		.comm	takeoff2,4,4
- 1701 1464 00000000 		.comm	initialize,4,4
- 1702 1468 0080D444 		.comm	velocityEstHolder,4,4
- 1703 146c 00000000 		.comm	VelEstX,4,4
- 1704              		.comm	VelEstY,4,4
- 1705              		.comm	VelEstZ,4,4
- 1706              		.comm	previousXMeas,4,4
- 1707              		.comm	previousYMeas,4,4
- 1708              		.comm	previousZMeas,4,4
- 1709              		.comm	errorcum,12,4
- 1710              		.comm	IntegralHolder,4,4
- 389:lab.c         **** t mapping: commands are interpreted as pitch, roll, yaw 
- 390:lab.c         **** 				//      and thrust inputs; no attitude controller active
- 391:lab.c         **** 				//0x02: attitude and throttle control: commands are input for standard attitude controller
- 392:lab.c         **** 				//0x03: GPS waypoint control
- 1711              	4
- 1712              		.comm	real_mocap,32,4
- 1713              		.comm	mocap,32,4
- 1714              		.comm	u,16,4
- 1715 1470 0DC0A0E1 		.comm	Winv,64,4
- 1716              		.comm	cnt_u,16,4
- 1717 1474 00D82DE9 		.comm	omega_cmd2,16,4
- 1718              		.comm	omega_cmd,16,4
- 1719 1478 04B04CE2 		.comm	cmd,16,4
- 1720              		.comm	roll_desired,4,4
- 393:lab.c         **** _SDK.ctrl_enabled=1;	//0: disable control by HL processor
- 394:lab.c         **** 				//1: enable control by HL processor
- 1721              	ch_desired,4,4
- 1722 147c 38209FE5 		.comm	yaw_desired,4,4
- 1723 1480 0230A0E3 		.comm	x_nom,16,4
- 1724 1484 0030C2E5 		.comm	z,12,4
- 395:lab.c         **** nt control
- 396:lab.c         **** 
- 397:lab.c         **** 	WO_SDK.ctrl_enabled=1;	//0: disable control by HL processor
- 398:lab.c         **** 				//1: enable control by HL processor
- 399:lab.c         **** 	////////////////////////////////////////////////
- 400:lab.c         **** 
- 1725              	mm	dt,4,4
- 1726 1488 2C209FE5 		.section	.debug_frame,"",%progbits
- 1727 148c 0130A0E3 	.Lframe0:
- 1728 1490 0130C2E5 		.4byte	.LECIE0-.LSCIE0
- 401:lab.c         **** rol by HL processor
- 402:lab.c         **** 				//1: enable control by HL processor
- 403:lab.c         **** 	////////////////////////////////////////////////
+ 354:lab.c         **** 	Winv[0] = 0;
+ 355:lab.c         **** 	Winv[1] = twolkF;
+ 356:lab.c         **** 	Winv[2] = -fourkM;
+ 357:lab.c         **** 	Winv[3] = fourkF;
+ 1498              	r3, .L67+60
+ 1499 11b8 1C201BE5 		ldr	r3, [r3, #0]	@ float
+ 1500 11bc 48319FE5 		mov	r0, r3
+ 1501 11c0 023193E7 		bl	__fixunssfsi
+ 1502 11c4 0300A0E1 		mov	r3, r0
+ 1503 11c8 40119FE5 		and	r3, r3, #255
+ 1504 11cc FEFFFFEB 		ldr	r2, .L67+72
+ 1505 11d0 0030A0E1 		strb	r3, [r2, #0]
+ 1506 11d4 000053E3 		.loc 1 368 0
+ 1507 11d8 000000BA 		ldr	r3, .L67+60
+ 1508 11dc 040000EA 		ldr	r3, [r3, #4]	@ float
+ 1509              		mov	r0, r3
+ 358:lab.c         **** at fourkF = 1.0/(4.0*kF);
+ 1510              	sfsi
+ 1511 11e0 1C101BE5 		mov	r3, r0
+ 1512 11e4 20219FE5 		and	r3, r3, #255
+ 1513 11e8 20319FE5 		ldr	r2, .L67+72
+ 1514 11ec 013182E7 		strb	r3, [r2, #3]
+ 1515 11f0 0D0000EA 		.loc 1 369 0
+ 1516              		ldr	r3, .L67+60
+ 359:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 360:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 1517              	, [r3, #8]	@ float
+ 1518 11f4 1C201BE5 		mov	r0, r3
+ 1519 11f8 0C319FE5 		bl	__fixunssfsi
+ 1520 11fc 023193E7 		mov	r3, r0
+ 1521 1200 0300A0E1 		and	r3, r3, #255
+ 1522 1204 08119FE5 		ldr	r2, .L67+72
+ 1523 1208 FEFFFFEB 		strb	r3, [r2, #1]
+ 1524 120c 0030A0E1 		.loc 1 370 0
+ 1525 1210 000053E3 		ldr	r3, .L67+60
+ 1526 1214 000000CA 		ldr	r3, [r3, #12]	@ float
+ 1527 1218 030000EA 		mov	r0, r3
+ 1528              		bl	__fixunssfsi
+ 361:lab.c         **** peed and commands ////////////
+ 1529              		and	r3, r3, #255
+ 1530 121c 1C101BE5 		ldr	r2, .L67+72
+ 1531 1220 E4209FE5 		strb	r3, [r2, #2]
+ 1532 1224 E8309FE5 		.loc 1 372 0
+ 1533 1228 013182E7 		sub	sp, fp, #24
+ 1534              		ldmfd	sp, {r4, r5, r6, fp, sp, lr}
+ 1535              		bx	lr
+ 1536 122c 1C301BE5 	.L68:
+ 1537 1230 013083E2 		.align	2
+ 1538 1234 1C300BE5 	.L67:
+ 1539              		.word	1070499056
+ 1540 1238 1C301BE5 		.word	-1792478831
+ 1541 123c 030053E3 		.word	1077534565
+ 1542 1240 8AFFFFDA 		.word	2001935796
+ 362:lab.c         **** ////////////////////////////////////////////
+ 363:lab.c         **** 
+ 364:lab.c         **** 	//////// Translate commanded torques and thrust into rotor speed and commands ////////////
+ 365:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 366:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 367:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 1543              		.word	l
+ 1544 1244 C0309FE5 		.word	kF
+ 1545 1248 003093E5 		.word	kM
+ 1546 124c 0300A0E1 		.word	Winv
+ 1547 1250 FEFFFFEB 		.word	0
+ 1548 1254 0030A0E1 		.word	cnt_u
+ 1549 1258 FF3003E2 		.word	omega_cmd2
+ 1550 125c B4209FE5 		.word	MAXPHI2
+ 1551 1260 0030C2E5 		.word	MINPHI2
+ 368:lab.c         ****  fourkM = 1.0/(4.0*kM);
+ 1552              	ega_cmd
+ 1553 1264 A0309FE5 		.word	cmd
+ 1554 1268 043093E5 		.word	1065353216
+ 1555 126c 0300A0E1 		.word	1128792064
+ 1556 1270 FEFFFFEB 		.word	WO_Direct_Individual_Motor_Control
+ 1557 1274 0030A0E1 	.LFE6:
+ 1559 127c 94209FE5 		.global	__floatsisf
+ 1560 1280 0330C2E5 		.global	__fixsfsi
+ 369:lab.c         **** HAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 1561              	
+ 1562 1284 80309FE5 		.global	Bens_Control_Law
+ 1564 128c 0300A0E1 	Bens_Control_Law:
+ 1565 1290 FEFFFFEB 	.LFB7:
+ 1566 1294 0030A0E1 		.loc 1 376 0
+ 1567 1298 FF3003E2 		@ Function supports interworking.
+ 1568 129c 74209FE5 		@ args = 0, pretend = 0, frame = 12
+ 1569 12a0 0130C2E5 		@ frame_needed = 1, uses_anonymous_args = 0
+ 370:lab.c         **** d torques and thrust into rotor speed and commands ////////////
+ 1570              	 sp
+ 1571 12a4 60309FE5 	.LCFI19:
+ 1572 12a8 0C3093E5 		stmfd	sp!, {r4, fp, ip, lr, pc}
+ 1573 12ac 0300A0E1 	.LCFI20:
+ 1574 12b0 FEFFFFEB 		sub	fp, ip, #4
+ 1575 12b4 0030A0E1 	.LCFI21:
+ 1576 12b8 FF3003E2 		sub	sp, sp, #12
+ 1577 12bc 54209FE5 	.LCFI22:
+ 1578 12c0 0230C2E5 		.loc 1 377 0
+ 371:lab.c         **** ////////////////////////////////////////////
+ 372:lab.c         **** 
+ 1579              	#10
+ 1580 12c4 18D04BE2 		str	r3, [fp, #-20]
+ 1581 12c8 70689DE8 		.loc 1 379 0
+ 1582 12cc 1EFF2FE1 		ldr	r3, .L88
+ 1583              		ldr	r3, [r3, #0]
+ 1584              		cmp	r3, #70
+ 1585              		ble	.L70
+ 1586 12d0 F084CE3F 		.loc 1 380 0
+ 1587 12d4 91F12895 		mov	r3, #70
+ 1588 12d8 65DF3940 		str	r3, [fp, #-20]
+ 1589 12dc B41D5377 		b	.L72
+ 1590 12e0 00000000 	.L70:
+ 1591 12e4 00000000 		.loc 1 381 0
+ 1592 12e8 00000000 		ldr	r3, .L88
+ 1593 12ec 00000000 		ldr	r3, [r3, #0]
+ 1594 12f0 00000000 		cmp	r3, #6
+ 1595 12f4 00000000 		bgt	.L73
+ 1596 12f8 00000000 		.loc 1 382 0
+ 1597 12fc 00000000 		mov	r3, #7
+ 1598 1300 00000000 		str	r3, [fp, #-20]
+ 1599 1304 00000000 		b	.L72
+ 1600 1308 00000000 	.L73:
+ 1601 130c 00000000 		.loc 1 384 0
+ 1602 1310 0000803F 		ldr	r3, .L88
+ 1603 1314 00004843 		ldr	r3, [r3, #0]
+ 1604 1318 00000000 		str	r3, [fp, #-20]
+ 1605              	.L72:
+ 1606              		.loc 1 386 0
+ 1607              		ldr	r3, .L88+4
+ 1608              		ldrh	r3, [r3, #0]
+ 1609              		mov	r3, r3, asl #16
+ 1610              		mov	r2, r3, asr #16
+ 1611              		ldr	r3, [fp, #-20]
+ 1612              		rsb	r2, r2, r3
+ 1613              		ldr	r3, .L88+8
+ 373:lab.c         **** /////// Translate commanded torques and thrust into rotor speed and commands ////////////
+ 374:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 375:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 376:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 1614              	r	r3, [fp, #-20]
+ 1615              		cmp	r3, #7
+ 1616              		bgt	.L75
+ 1617              		.loc 1 390 0
+ 1618 131c 0DC0A0E1 		ldr	r3, .L88+12
+ 1619              		ldr	r1, [r3, #0]
+ 1620 1320 10D82DE9 		ldr	r3, .L88+16
+ 1621              		smull	r2, r3, r1, r3
+ 1622 1324 04B04CE2 		mov	r2, r3, asr #1
+ 1623              		mov	r3, r1, asr #31
+ 1624 1328 0CD04DE2 		rsb	r2, r3, r2
+ 1625              		str	r2, [fp, #-28]
+ 377:lab.c         **** at fourkM = 1.0/(4.0*kM);
+ 1626              	, #-28]
+ 1627 132c 0A30A0E3 		mov	r3, r3, asl #2
+ 1628 1330 14300BE5 		ldr	r2, [fp, #-28]
+ 378:lab.c         **** HAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 379:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 1629              	d	r3, r3, r2
+ 1630 1334 78329FE5 		rsb	r1, r3, r1
+ 1631 1338 003093E5 		str	r1, [fp, #-28]
+ 1632 133c 460053E3 		ldr	r3, [fp, #-28]
+ 1633 1340 020000DA 		cmp	r3, #0
+ 380:lab.c         **** peed and commands ////////////
+ 1634              	.L79
+ 1635 1344 4630A0E3 		.loc 1 392 0
+ 1636 1348 14300BE5 		ldr	r3, .L88+20
+ 1637 134c 090000EA 		ldrh	r3, [r3, #0]
+ 1638              		sub	r3, r3, #1
+ 381:lab.c         **** ////////////////////////////////////////////
+ 1639              	r3, r3, asl #16
+ 1640 1350 5C329FE5 		mov	r2, r3, lsr #16
+ 1641 1354 003093E5 		ldr	r3, .L88+20
+ 1642 1358 060053E3 		strh	r2, [r3, #0]	@ movhi
+ 1643 135c 020000CA 		b	.L79
+ 382:lab.c         **** 	//////// Translate commanded torques and thrust into rotor speed and commands ////////////
+ 1644              	
+ 1645 1360 0730A0E3 		.loc 1 397 0
+ 1646 1364 14300BE5 		ldr	r3, .L88+24
+ 1647 1368 020000EA 		ldrh	r3, [r3, #0]
+ 1648              		mov	r3, r3, asl #16
+ 383:lab.c         **** // NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 384:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 1649              		r3, r3, asr #16
+ 1650 136c 40329FE5 		cmp	r3, #1
+ 1651 1370 003093E5 		bne	.L80
+ 1652 1374 14300BE5 		.loc 1 399 0
+ 1653              		ldr	r3, .L88+12
+ 385:lab.c         **** peed and commands ////////////
+ 386:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 1654              	r1, [r3, #0]
+ 1655 1378 38329FE5 		ldr	r3, .L88+28
+ 1656 137c B030D3E1 		smull	r2, r3, r1, r3
+ 1657 1380 0338A0E1 		mov	r2, r3, asr #6
+ 1658 1384 4328A0E1 		mov	r3, r1, asr #31
+ 1659 1388 14301BE5 		rsb	r2, r3, r2
+ 1660 138c 032062E0 		str	r2, [fp, #-24]
+ 1661 1390 24329FE5 		ldr	r3, [fp, #-24]
+ 1662 1394 002083E5 		mov	r3, r3, asl #2
+ 387:lab.c         **** d torques and thrust into rotor speed and commands ////////////
+ 388:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 1663              	[fp, #-24]
+ 1664 1398 14301BE5 		add	r3, r3, r2
+ 1665 139c 070053E3 		mov	r2, r3, asl #2
+ 1666 13a0 180000CA 		add	r3, r3, r2
+ 389:lab.c         **** d torques and thrust into rotor speed and commands ////////////
+ 390:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 1667              		r3, r3, asl #3
+ 1668 13a4 14329FE5 		rsb	r1, r3, r1
+ 1669 13a8 001093E5 		str	r1, [fp, #-24]
+ 1670 13ac 10329FE5 		ldr	r3, [fp, #-24]
+ 1671 13b0 9123C3E0 		cmp	r3, #0
+ 1672 13b4 C320A0E1 		bne	.L80
+ 1673 13b8 C13FA0E1 		ldr	r3, .L88+4
+ 1674 13bc 022063E0 		ldrh	r3, [r3, #0]
+ 1675 13c0 1C200BE5 		mov	r3, r3, asl #16
+ 1676 13c4 1C301BE5 		mov	r3, r3, asr #16
+ 1677 13c8 0331A0E1 		cmp	r3, #6
+ 1678 13cc 1C201BE5 		ble	.L80
+ 1679 13d0 023083E0 		.loc 1 401 0
+ 1680 13d4 011063E0 		ldr	r3, .L88+4
+ 1681 13d8 1C100BE5 		ldrh	r3, [r3, #0]
+ 1682 13dc 1C301BE5 		sub	r3, r3, #1
+ 1683 13e0 000053E3 		mov	r3, r3, asl #16
+ 1684 13e4 5D00001A 		mov	r2, r3, lsr #16
+ 391:lab.c         **** d torques and thrust into rotor speed and commands ////////////
+ 392:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 1685              	trh	r2, [r3, #0]	@ movhi
+ 1686 13e8 D8319FE5 		.loc 1 402 0
+ 1687 13ec B030D3E1 		ldr	r3, .L88+4
+ 1688 13f0 013043E2 		ldrh	r3, [r3, #0]
+ 1689 13f4 0338A0E1 		mov	r3, r3, asl #16
+ 1690 13f8 2328A0E1 		mov	r3, r3, asr #16
+ 1691 13fc C4319FE5 		cmp	r3, #6
+ 1692 1400 B020C3E1 		bgt	.L80
+ 1693 1404 550000EA 		.loc 1 404 0
+ 1694              		ldr	r3, .L88+4
+ 393:lab.c         **** d torques and thrust into rotor speed and commands ////////////
+ 394:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 395:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 396:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 397:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
+ 1695              	7
+ 1696 1408 BC319FE5 		strh	r2, [r3, #0]	@ movhi
+ 1697 140c B030D3E1 	.L80:
+ 1698 1410 0338A0E1 		.loc 1 408 0
+ 1699 1414 4338A0E1 		ldr	r3, .L88+8
+ 1700 1418 010053E3 		ldr	r3, [r3, #0]
+ 1701 141c 2900001A 		mov	r0, r3
+ 398:lab.c         **** HAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 399:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 1702              	loatsisf
+ 1703 1420 98319FE5 		mov	r2, r0
+ 1704 1424 001093E5 		ldr	r3, .L88+32
+ 1705 1428 A0319FE5 		ldr	r3, [r3, #0]	@ float
+ 1706 142c 9123C3E0 		mov	r0, r2
+ 1707 1430 4323A0E1 		mov	r1, r3
+ 1708 1434 C13FA0E1 		bl	__mulsf3
+ 1709 1438 022063E0 		mov	r3, r0
+ 1710 143c 18200BE5 		mov	r4, r3
+ 1711 1440 18301BE5 		ldr	r3, .L88+36
+ 1712 1444 0331A0E1 		ldr	r3, [r3, #136]
+ 1713 1448 18201BE5 		mov	r0, r3
+ 1714 144c 023083E0 		bl	__floatsisf
+ 1715 1450 0321A0E1 		mov	r2, r0
+ 1716 1454 023083E0 		ldr	r3, .L88+40
+ 1717 1458 8331A0E1 		ldr	r3, [r3, #0]	@ float
+ 1718 145c 011063E0 		mov	r0, r2
+ 1719 1460 18100BE5 		mov	r1, r3
+ 1720 1464 18301BE5 		bl	__mulsf3
+ 1721 1468 000053E3 		mov	r3, r0
+ 1722 146c 1500001A 		mov	r0, r4
+ 1723 1470 40319FE5 		mov	r1, r3
+ 1724 1474 B030D3E1 		bl	__subsf3
+ 1725 1478 0338A0E1 		mov	r3, r0
+ 1726 147c 4338A0E1 		mov	r0, r3
+ 1727 1480 060053E3 		ldr	r1, .L88+44	@ float
+ 1728 1484 0F0000DA 		bl	__addsf3
+ 400:lab.c         **** peed and commands ////////////
+ 401:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 1729              		__fixsfsi
+ 1730 1488 28319FE5 		mov	r3, r0
+ 1731 148c B030D3E1 		mov	r3, r3, asl #16
+ 1732 1490 013043E2 		mov	r2, r3, lsr #16
+ 1733 1494 0338A0E1 		ldr	r3, .L88+20
+ 1734 1498 2328A0E1 		strh	r2, [r3, #0]	@ movhi
+ 1735 149c 14319FE5 	.L79:
+ 1736 14a0 B020C3E1 		.loc 1 415 0
+ 402:lab.c         **** d torques and thrust into rotor speed and commands ////////////
+ 1737              	 .L88+20
+ 1738 14a4 0C319FE5 		ldrh	r3, [r3, #0]
+ 1739 14a8 B030D3E1 		mov	r3, r3, asl #16
+ 1740 14ac 0338A0E1 		mov	r3, r3, asr #16
+ 1741 14b0 4338A0E1 		cmp	r3, #9
+ 1742 14b4 060053E3 		bgt	.L85
+ 1743 14b8 020000CA 		.loc 1 416 0
+ 403:lab.c         **** ////////////////////////////////////////////
  404:lab.c         **** 
- 405:lab.c         **** 	//////// Translate commanded torques and thrust into rotor speed and commands ////////////
- 1729              	IE0:
- 1730 1494 24209FE5 		.4byte	0xffffffff
- 1731 1498 0830A0E3 		.byte	0x1
- 1732 149c B830C2E1 		.ascii	"\000"
- 406:lab.c         **** ////////////////
- 407:lab.c         **** 
- 408:lab.c         **** 	//////// Translate commanded torques and thrust into rotor speed and commands ////////////
- 1733              	eb128 0x1
- 1734 14a0 1C309FE5 		.sleb128 -4
- 1735 14a4 B020D3E1 		.byte	0xe
- 1736 14a8 10309FE5 		.byte	0xc
- 1737 14ac B620C3E1 		.uleb128 0xd
- 409:lab.c         **** ////////////////
+ 1744              	, .L88+20
+ 1745 14bc F4309FE5 		mov	r2, #10
+ 1746 14c0 0720A0E3 		strh	r2, [r3, #0]	@ movhi
+ 1747 14c4 B020C3E1 	.L85:
+ 1748              		.loc 1 418 0
+ 405:lab.c         **** /////// Translate commanded torques and thrust into rotor speed and commands ////////////
+ 406:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 407:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 408:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 1749              	r3, .L88+8
+ 1750 14c8 EC309FE5 		ldr	r2, [r3, #0]
+ 1751 14cc 003093E5 		ldr	r3, .L88+48
+ 1752 14d0 0300A0E1 		str	r2, [r3, #0]
+ 1753 14d4 FEFFFFEB 		.loc 1 419 0
+ 1754 14d8 0020A0E1 		ldr	r3, .L88+12
+ 1755 14dc F0309FE5 		ldr	r3, [r3, #0]
+ 1756 14e0 003093E5 		add	r2, r3, #1
+ 1757 14e4 0200A0E1 		ldr	r3, .L88+12
+ 1758 14e8 0310A0E1 		str	r2, [r3, #0]
+ 1759 14ec FEFFFFEB 		.loc 1 420 0
+ 1760 14f0 0030A0E1 		sub	sp, fp, #16
+ 1761 14f4 0340A0E1 		ldmfd	sp, {r4, fp, sp, lr}
+ 1762 14f8 D8309FE5 		bx	lr
+ 1763 14fc 883093E5 	.L89:
+ 1764 1500 0300A0E1 		.align	2
+ 1765 1504 FEFFFFEB 	.L88:
+ 1766 1508 0020A0E1 		.word	USMaxBot_range1
+ 1767 150c C8309FE5 		.word	setpoint
+ 1768 1510 003093E5 		.word	usonic_error
+ 1769 1514 0200A0E1 		.word	clock_divider
+ 1770 1518 0310A0E1 		.word	1717986919
+ 1771 151c FEFFFFEB 		.word	Ben_thrust
+ 1772 1520 0030A0E1 		.word	landing_flag
+ 1773 1524 0400A0E1 		.word	1374389535
+ 1774 1528 0310A0E1 		.word	U_Kp_z
+ 1775 152c FEFFFFEB 		.word	RO_ALL_Data
+ 1776 1530 0030A0E1 		.word	U_Kd_z
+ 1777 1534 0300A0E1 		.word	1154777088
+ 1778 1538 A0109FE5 		.word	usonic_error_old
+ 1779 153c FEFFFFEB 	.LFE7:
+ 1781 1544 0300A0E1 		.align	2
+ 1782 1548 FEFFFFEB 		.global	Bens_Command
+ 1784 1550 0338A0E1 	Bens_Command:
+ 1785 1554 2328A0E1 	.LFB8:
+ 1786 1558 68309FE5 		.loc 1 424 0
+ 1787 155c B020C3E1 		@ Function supports interworking.
+ 1788              		@ args = 0, pretend = 0, frame = 0
+ 409:lab.c         **** at fourkM = 1.0/(4.0*kM);
  410:lab.c         **** 
- 411:lab.c         **** 	//////// Translate commanded torques and thrust into rotor speed and commands ////////////
- 412:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
- 413:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
- 414:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
- 1738              	b128 0x0
- 1739 14b0 0CD04BE2 		.align	2
- 1740 14b4 00689DE8 	.LECIE0:
- 1741 14b8 1EFF2FE1 	.LSFDE0:
- 1742              		.4byte	.LEFDE0-.LASFDE0
- 1743              	.LASFDE0:
- 1744              		.4byte	.Lframe0
- 1745 14bc 00000000 		.4byte	.LFB2
- 1746 14c0 00000000 		.4byte	.LFE2-.LFB2
- 1747 14c4 00000000 		.byte	0x4
- 1748              		.4byte	.LCFI0-.LFB2
- 1749              		.byte	0xd
- 1750              		.uleb128 0xc
- 1751              		.byte	0x4
- 1752              		.4byte	.LCFI1-.LCFI0
- 1753              		.byte	0x8e
- 1754              		.uleb128 0x2
- 1755              		.byte	0x8d
- 1756              		.uleb128 0x3
- 1757              		.byte	0x8b
- 1758              		.uleb128 0x4
- 1759              		.byte	0x4
- 1760              		.4byte	.LCFI2-.LCFI1
- 1761              		.byte	0xc
- 1762              		.uleb128 0xb
- 1763              		.uleb128 0x4
- 1764              		.align	2
- 1765              	.LEFDE0:
- 1766              	.LSFDE2:
- 1767              		.4byte	.LEFDE2-.LASFDE2
- 1768              	.LASFDE2:
- 1769              		.4byte	.Lframe0
- 1770              		.4byte	.LFB3
- 1771              		.4byte	.LFE3-.LFB3
- 1772              		.byte	0x4
- 1773              		.4byte	.LCFI3-.LFB3
- 1774              		.byte	0xd
- 1775              		.uleb128 0xc
- 1776              		.byte	0x4
- 1777              		.4byte	.LCFI4-.LCFI3
- 1999              		.4byte	.LFB5-.Ltext0
+ 411:lab.c         **** 	Winv[0] = 0;
+ 412:lab.c         **** 	Winv[1] = twolkF;
+ 413:lab.c         **** 	Winv[2] = -fourkM;
+ 414:lab.c         **** 	Winv[3] = fourkF;
+ 415:lab.c         **** 	Winv[1*4+0] = -twolkF;
+ 1789              	 = 0
+ 1790 1560 60309FE5 		mov	ip, sp
+ 1791 1564 B030D3E1 	.LCFI23:
+ 1792 1568 0338A0E1 		stmfd	sp!, {fp, ip, lr, pc}
+ 1793 156c 4338A0E1 	.LCFI24:
+ 1794 1570 090053E3 		sub	fp, ip, #4
+ 1795 1574 020000CA 	.LCFI25:
+ 416:lab.c         **** 
+ 1796              	 426 0
+ 1797 1578 48309FE5 		ldr	r2, .L92
+ 1798 157c 0A20A0E3 		mov	r3, #2
+ 1799 1580 B020C3E1 		strb	r3, [r2, #0]
+ 1800              		.loc 1 432 0
+ 417:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 418:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 1801              	r2, .L92
+ 1802 1584 30309FE5 		mov	r3, #1
+ 1803 1588 002093E5 		strb	r3, [r2, #1]
+ 1804 158c 50309FE5 		.loc 1 437 0
+ 1805 1590 002083E5 		ldr	r2, .L92+4
+ 419:lab.c         **** peed and commands ////////////
+ 1806              	r3, #8
+ 1807 1594 24309FE5 		strh	r3, [r2, #8]	@ movhi
+ 1808 1598 003093E5 		.loc 1 440 0
+ 1809 159c 012083E2 		ldr	r3, .L92+8
+ 1810 15a0 18309FE5 		ldrh	r2, [r3, #0]
+ 1811 15a4 002083E5 		ldr	r3, .L92+4
+ 420:lab.c         **** ////////////////////////////////////////////
+ 1812              	r2, [r3, #6]	@ movhi
+ 1813 15a8 10D04BE2 		.loc 1 446 0
+ 1814 15ac 10689DE8 		sub	sp, fp, #12
+ 1815 15b0 1EFF2FE1 		ldmfd	sp, {fp, sp, lr}
+ 1816              		bx	lr
+ 1817              	.L93:
+ 1818              		.align	2
+ 1819 15b4 00000000 	.L92:
+ 1820 15b8 00000000 		.word	WO_SDK
+ 1821 15bc 00000000 		.word	WO_CTRL_Input
+ 1822 15c0 00000000 		.word	Ben_thrust
+ 1823 15c4 67666666 	.LFE8:
+ 1825 15cc 00000000 		.comm	GPS_timeout,4,4
+ 1826 15d0 1F85EB51 		.comm	SYSTEM_initialized,1,1
+ 1827 15d4 00000000 		.comm	takeoff2,4,4
+ 1828 15d8 00000000 		.comm	initialize,4,4
+ 1829 15dc 00000000 		.comm	velocityEstHolder,4,4
+ 1830 15e0 0080D444 		.comm	VelEstX,4,4
+ 1831 15e4 00000000 		.comm	VelEstY,4,4
+ 1832              		.comm	VelEstZ,4,4
+ 1833              		.comm	previousXMeas,4,4
+ 1834              		.comm	previousYMeas,4,4
+ 1835              		.comm	previousZMeas,4,4
+ 1836              		.comm	errorcum,12,4
+ 1837              		.comm	IntegralHolder,4,4
+ 1838              		.comm	imusensor,68,4
+ 421:lab.c         **** 	//////// Translate commanded torques and thrust into rotor speed and commands ////////////
+ 422:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 423:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 424:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 1839              	mm	mocap,32,4
+ 1840              		.comm	u,16,4
+ 1841              		.comm	Winv,64,4
+ 1842              		.comm	cnt_u,16,4
+ 1843 15e8 0DC0A0E1 		.comm	omega_cmd2,16,4
+ 1844              		.comm	omega_cmd,16,4
+ 1845 15ec 00D82DE9 		.comm	cmd,16,4
+ 1846              		.comm	roll_desired,4,4
+ 1847 15f0 04B04CE2 		.comm	pitch_desired,4,4
+ 1848              		.comm	yaw_desired,4,4
+ 425:lab.c         **** at fourkM = 1.0/(4.0*kM);
+ 426:lab.c         **** 
+ 1849              	om,16,4
+ 1850 15f4 38209FE5 		.comm	z,12,4
+ 1851 15f8 0230A0E3 		.comm	dt,4,4
+ 1852 15fc 0030C2E5 		.section	.debug_frame,"",%progbits
+ 427:lab.c         **** T CG IS IN THE SAME PLANE AS THE ROTORS
+ 428:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 429:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 430:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
+ 431:lab.c         **** 
+ 432:lab.c         **** 	Winv[0] = 0;
+ 1853              	ame0:
+ 1854 1600 2C209FE5 		.4byte	.LECIE0-.LSCIE0
+ 1855 1604 0130A0E3 	.LSCIE0:
+ 1856 1608 0130C2E5 		.4byte	0xffffffff
+ 433:lab.c         **** SAME PLANE AS THE ROTORS
+ 434:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 435:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 436:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
+ 437:lab.c         **** 
+ 1857              	te	0x1
+ 1858 160c 24209FE5 		.ascii	"\000"
+ 1859 1610 0830A0E3 		.uleb128 0x1
+ 1860 1614 B830C2E1 		.sleb128 -4
+ 438:lab.c         **** T CG IS IN THE SAME PLANE AS THE ROTORS
+ 439:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 440:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 1861              	te	0xe
+ 1862 1618 1C309FE5 		.byte	0xc
+ 1863 161c B020D3E1 		.uleb128 0xd
+ 1864 1620 10309FE5 		.uleb128 0x0
+ 1865 1624 B620C3E1 		.align	2
+ 441:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 442:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 443:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 444:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
+ 445:lab.c         **** 
+ 446:lab.c         **** 	Winv[0] = 0;
+ 1866              	E0:
+ 1867 1628 0CD04BE2 	.LSFDE0:
+ 1868 162c 00689DE8 		.4byte	.LEFDE0-.LASFDE0
+ 1869 1630 1EFF2FE1 	.LASFDE0:
+ 1870              		.4byte	.Lframe0
+ 1871              		.4byte	.LFB2
+ 1872              		.4byte	.LFE2-.LFB2
+ 1873 1634 00000000 		.byte	0x4
+ 1874 1638 00000000 		.4byte	.LCFI0-.LFB2
+ 1875 163c 00000000 		.byte	0xd
+ 1876              		.uleb128 0xc
+ 1877              		.byte	0x4
+ 1878              		.4byte	.LCFI1-.LCFI0
+ 1879              		.byte	0x8e
+ 1880              		.uleb128 0x2
+ 1881              		.byte	0x8d
+ 1882              		.uleb128 0x3
+ 1883              		.byte	0x8b
+ 1884              		.uleb128 0x4
+ 1885              		.byte	0x4
+ 1886              		.4byte	.LCFI2-.LCFI1
+ 1887              		.byte	0xc
+ 1888              		.uleb128 0xb
+ 1889              		.uleb128 0x4
+ 1890              		.align	2
+ 1891              	.LEFDE0:
+ 1892              	.LSFDE2:
+ 1893              		.4byte	.LEFDE2-.LASFDE2
+ 1894              	.LASFDE2:
+ 1895              		.4byte	.Lframe0
+ 1896              		.4byte	.LFB3
+ 1897              		.4byte	.LFE3-.LFB3
+ 1898              		.byte	0x4
+ 1899              		.4byte	.LCFI3-.LFB3
+ 1900              		.byte	0xd
+ 1901              		.uleb128 0xc
+ 1902              		.byte	0x4
+ 1903              		.4byte	.LCFI4-.LCFI3
+ 1904              		.byte	0x8e
+ 1905              		.uleb128 0x2
+ 2127              		.2byte	0x1
 DEFINED SYMBOLS
                             *ABS*:00000000 lab.c
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:15     .data:00000000 mass
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:16     .data:00000000 $d
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:21     .data:00000004 kF
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:27     .data:00000008 kM
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:33     .data:0000000c l
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:39     .data:00000010 MAXPHI2
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:45     .data:00000014 MINPHI2
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:51     .data:00000018 g
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:58     .bss:00000000 Ben_thrust
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:65     .data:0000001c U_Kp_z
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:72     .bss:00000004 U_Kd_z
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:78     .bss:00000008 U_Ki_z
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:84     .bss:0000000c usonic_error
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:90     .bss:00000010 usonic_error_old
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:96     .text:00000000 lab
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:103    .text:00000000 $a
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:155    .text:00000060 VelocityEst
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:1592   .text:0000131c Bens_Control_Law
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:1709   .text:00001470 Bens_Command
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:138    .text:00000054 $d
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:15     .data:00000000 mass
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:16     .data:00000000 $d
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:21     .data:00000004 kF
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:27     .data:00000008 kM
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:33     .data:0000000c l
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:39     .data:00000010 MAXPHI2
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:45     .data:00000014 MINPHI2
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:51     .data:00000018 g
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:58     .bss:00000000 Ben_thrust
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:65     .data:0000001c U_Kp_z
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:71     .data:00000020 U_Kd_z
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:78     .bss:00000004 U_Ki_z
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:85     .data:00000024 setpoint
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:92     .bss:00000008 usonic_error
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:98     .bss:0000000c usonic_error_old
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:104    .bss:00000010 landing_flag
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:110    .bss:00000014 clock_divider
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:116    .text:00000000 lab
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:123    .text:00000000 $a
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:175    .text:00000060 VelocityEst
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:1612   .text:0000131c Bens_Control_Law
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:1837   .text:000015e8 Bens_Command
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:158    .text:00000054 $d
                             *COM*:00000010 x_nom
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:161    .text:00000060 $a
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:220    .text:00000108 $d
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:181    .text:00000060 $a
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:240    .text:00000108 $d
                             *COM*:00000004 initialize
                             *COM*:00000004 previousXMeas
                             *COM*:00000004 previousYMeas
@@ -2179,9 +2336,9 @@ C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:220    .text:00000108 $d
                             *COM*:00000020 real_mocap
                             *COM*:00000020 mocap
                             *COM*:00000004 velocityEstHolder
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:236    .text:00000140 $a
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:535    .text:00000578 lab3
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:861    .text:000009dc $d
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:256    .text:00000140 $a
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:555    .text:00000578 lab3
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:881    .text:000009dc $d
                             *COM*:00000004 takeoff2
                             *COM*:00000004 IntegralHolder
                             *COM*:00000004 pitch_desired
@@ -2191,20 +2348,20 @@ C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:861    .text:000009dc $d
                             *COM*:00000010 cnt_u
                             *COM*:00000010 u
                             *COM*:0000000c errorcum
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:890    .text:00000a4c $a
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:1070   .text:00000c90 lab2
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:1168   .text:00000da8 $d
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:1183   .text:00000dcc Command
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:1189   .text:00000dcc $a
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:1566   .text:000012d0 $d
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:910    .text:00000a4c $a
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:1090   .text:00000c90 lab2
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:1188   .text:00000da8 $d
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:1203   .text:00000dcc Command
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:1209   .text:00000dcc $a
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:1586   .text:000012d0 $d
                             *COM*:00000040 Winv
                             *COM*:00000010 omega_cmd2
                             *COM*:00000010 omega_cmd
                             *COM*:00000010 cmd
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:1598   .text:0000131c $a
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:1697   .text:00001454 $d
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:1715   .text:00001470 $a
-C:\Users\bkuo\AppData\Local\Temp/ccuUbaaa.s:1745   .text:000014bc $d
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:1618   .text:0000131c $a
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:1819   .text:000015b4 $d
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:1843   .text:000015e8 $a
+C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:1873   .text:00001634 $d
                             *COM*:00000004 GPS_timeout
                             *COM*:00000001 SYSTEM_initialized
                             *COM*:0000000c z
@@ -2231,4 +2388,5 @@ WO_Direct_Individual_Motor_Control
 __floatsisf
 __fixsfsi
 USMaxBot_range1
+RO_ALL_Data
 WO_CTRL_Input

@@ -97,7 +97,7 @@ extern int USMaxBot_range1;
 extern short Ben_thrust;
 extern float U_Kp_z;
 extern float U_Kd_z;
-extern short landing_flag;
+extern short landing_flag
 //End Ben Kuo Add
 
 void timer0ISR(void) __irq

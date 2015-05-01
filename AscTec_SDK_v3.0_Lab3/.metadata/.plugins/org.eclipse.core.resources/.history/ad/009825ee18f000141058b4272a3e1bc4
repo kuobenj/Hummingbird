@@ -56,16 +56,12 @@ extern int USMaxBot_range1;
 short Ben_thrust = 0;
 
 	//USonic Gains
-	float U_Kp_z = -40.0;
-	float U_Kd_z = 2.0;//-20;
+	float U_Kp_z = -20.0;
+	float U_Kd_z = 0.0;//-20;
 	float U_Ki_z = 0.0;
-
-	short setpoint = 30;
 
 int usonic_error = 0;
 int usonic_error_old = 0;
-short landing_flag = 0;
-long clock_divider = 0;
 
 
 //End Benjamin Kuo Additions
@@ -374,49 +370,21 @@ void Command() {
 
 /*----------------Ben's Control Law ---------------*/
 void Bens_Control_Law() {
+	short setpoint = 10;
 	int Usonic_local = 10;
 
 	if (USMaxBot_range1 > 70)
 		Usonic_local = 70;
-	else if(USMaxBot_range1 < 7)
-		Usonic_local = 7;
+	else if(USMaxBot_range1 < 10)
+		Usonic_local = 10;
 	else
 		Usonic_local = USMaxBot_range1;
 
 	usonic_error =(Usonic_local-setpoint);
 
-	if (Usonic_local <= 7)
-	{
-		if ((clock_divider % 5) == 0)
-		{
-			Ben_thrust--;
-		}
-	}
-	else
-	{
-		if(landing_flag == 1)
-		{
-		if (((clock_divider % 200) == 0) && (setpoint > 6))
-			{
-				setpoint--;
-				if (setpoint <= 6)
-				{
-					setpoint = 7;
-				}
-			}
-		}
-		Ben_thrust = U_Kp_z*usonic_error-U_Kd_z*RO_ALL_Data.fusion_dheight+1700;
-	}
-
-	// if (clock_divider == 30000)
-	// {
-	// 	landing_flag = 1;
-	// }
-	if(Ben_thrust < 10)
-		Ben_thrust = 10;
+	Ben_thrust = U_Kp_z*usonic_error+U_Kd_z*(usonic_error-usonic_error_old)+1700;
 
 	usonic_error_old = usonic_error;
-	clock_divider++;
 }
 /*-------------- End Ben's Command -------------*/
 
