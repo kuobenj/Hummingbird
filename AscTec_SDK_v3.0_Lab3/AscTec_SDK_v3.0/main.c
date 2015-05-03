@@ -95,6 +95,7 @@ extern int USMaxBot_range1;
 
 //Ben Kuo Add
 extern short Ben_thrust;
+extern short setpoint;
 extern float U_Kp_z;
 extern float U_Kd_z;
 extern short landing_flag;
@@ -382,6 +383,9 @@ void ACISDK(void)
 	aciPublishVariable(&USMaxBot_range1, VARTYPE_INT32, 0x0608, "range_read", "Range Sensor", "inches");
 	aciPublishVariable(&Ben_thrust, VARTYPE_INT32, 0x0518, "Ben_thrust", "Thrust output", "not sure yet");
 	aciPublishVariable(&RO_ALL_Data.fusion_dheight, VARTYPE_INT32, 0x0305, "DataFusionHeight", "DataFusionHeight", "mm");
+	aciPublishVariable(&RO_RC_Data.channel[6], VARTYPE_INT32, 0x060C, "Data6", "Data Channel 6", "UL");
+	aciPublishVariable(&RO_RC_Data.channel[7], VARTYPE_INT32, 0x060D, "Data7", "Data Channel 6", "UL");
+	aciPublishVariable(&setpoint, VARTYPE_INT16, 0x060E, "setpoint", "setpoint", "inches");
 	//aciPublishCommand(&(Ben_thrust), VARTYPE_UINT16 , 0x0518, "Thrust_send", "Thrust Command we send", "UL");
 	// aciPublishCommand(&U_Kp_z, VARTYPE_SINGLE , 0x0518, "P Thrust Gain", "For Tuning the Gain for Hovering", "UL");
 	// aciPublishCommand(&U_Kd_z, VARTYPE_SINGLE , 0x0519, "D Thrust Gain", "For Tuning the Gain for Hovering", "UL");

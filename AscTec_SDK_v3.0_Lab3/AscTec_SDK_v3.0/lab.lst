@@ -1452,11 +1452,11 @@
  1202              		mov	r4, r1
  1203              		mov	r5, r3
  1204              		mov	r6, r4
- 298:lab.c         **** d torques and thrust into rotor speed and commands ////////////
- 299:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
- 300:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
- 301:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
- 302:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
+ 298:lab.c         **** float twolkF = 1.0/(2.0*l*kF);
+ 299:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 300:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
+ 301:lab.c         **** 
+ 302:lab.c         **** 	Winv[0] = 0;
  1205              	, [r3, #0]	@ float
  1206              		mov	r0, r3
  1207              		bl	__extendsfdf2
@@ -1469,28 +1469,28 @@
  1214              		bl	__muldf3
  1215 0dd8 18D04DE2 		mov	r3, r0
  1216              		mov	r4, r1
- 303:lab.c         **** HAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 303:lab.c         ****  IN THE SAME PLANE AS THE ROTORS
  304:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
  1217              	69547520
  1218 0ddc FC249FE5 		add	r0, r0, #3145728
  1219 0de0 0030A0E3 		mov	r1, #0
  1220 0de4 0030C2E5 		mov	r2, r3
- 305:lab.c         **** peed and commands ////////////
- 306:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
- 307:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
- 308:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
- 309:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
- 310:lab.c         **** 
+ 305:lab.c         **** loat fourkF = 1.0/(4.0*kF);
+ 306:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
+ 307:lab.c         **** 
+ 308:lab.c         **** 	Winv[0] = 0;
+ 309:lab.c         **** 	Winv[1] = twolkF;
+ 310:lab.c         **** 	Winv[2] = -fourkM;
  1221              		r3, r4
  1222 0de8 F0249FE5 		bl	__divdf3
  1223 0dec 0130A0E3 		mov	r3, r0
  1224 0df0 0130C2E5 		mov	r4, r1
- 311:lab.c         **** T CG IS IN THE SAME PLANE AS THE ROTORS
- 312:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
- 313:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
- 314:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
- 315:lab.c         **** 
- 316:lab.c         **** 	Winv[0] = 0;
+ 311:lab.c         **** wolkF = 1.0/(2.0*l*kF);
+ 312:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 313:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
+ 314:lab.c         **** 
+ 315:lab.c         **** 	Winv[0] = 0;
+ 316:lab.c         **** 	Winv[1] = twolkF;
  1225              		r0, r3
  1226 0df4 E8349FE5 		mov	r1, r4
  1227 0df8 003093E5 		bl	__truncdfsf2
@@ -1533,7 +1533,7 @@
  1264 0e8c FEFFFFEB 		mov	r4, r1
  1265 0e90 0030A0E1 		mov	r0, r3
  1266 0e94 28300BE5 		mov	r1, r4
- 317:lab.c         **** SAME PLANE AS THE ROTORS
+ 317:lab.c         **** S THE ROTORS
  1267              	
  1268 0e98 48349FE5 		mov	r3, #0
  1269 0e9c 003093E5 		bl	__muldf3
@@ -1562,7 +1562,7 @@
  1292 0ef8 FEFFFFEB 		str	r3, [r2, #4]	@ float
  1293 0efc 0030A0E1 		.loc 1 322 0
  1294 0f00 24300BE5 		ldr	r3, [fp, #-32]
- 318:lab.c         **** d torques and thrust into rotor speed and commands ////////////
+ 318:lab.c         **** float twolkF = 1.0/(2.0*l*kF);
  1295              	ldr	r3, .L67+32
  1296 0f04 E0339FE5 		str	r2, [r3, #8]	@ float
  1297 0f08 003093E5 		.loc 1 323 0
@@ -1591,35 +1591,35 @@
  1320 0f64 FEFFFFEB 		ldr	r3, .L67+36	@ float
  1321 0f68 0030A0E1 		str	r3, [r2, #32]	@ float
  1322 0f6c 20300BE5 		.loc 1 329 0
- 319:lab.c         **** ////////////////////////////////////////////
- 320:lab.c         **** 
+ 319:lab.c         ****  rotor speed and commands ////////////
+ 320:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
  1323              	 r3, #-2147483648
  1324 0f70 78239FE5 		ldr	r3, .L67+32
  1325 0f74 78339FE5 		str	r2, [r3, #36]	@ float
  1326 0f78 003082E5 		.loc 1 330 0
- 321:lab.c         **** /////// Translate commanded torques and thrust into rotor speed and commands ////////////
+ 321:lab.c         **** loat twolkF = 1.0/(2.0*l*kF);
  1327              		r3, [fp, #-32]
  1328 0f7c 6C239FE5 		eor	r2, r3, #-2147483648
  1329 0f80 28301BE5 		ldr	r3, .L67+32
  1330 0f84 043082E5 		str	r2, [r3, #40]	@ float
- 322:lab.c         **** // NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 322:lab.c         ****  rotor speed and commands ////////////
  1331              	c 1 331 0
  1332 0f88 20301BE5 		ldr	r2, .L67+32
  1333 0f8c 022123E2 		ldr	r3, [fp, #-36]	@ float
  1334 0f90 58339FE5 		str	r3, [r2, #44]	@ float
  1335 0f94 082083E5 		.loc 1 332 0
- 323:lab.c         **** d torques and thrust into rotor speed and commands ////////////
+ 323:lab.c         **** // NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
  1336              	r2, .L67+32
  1337 0f98 50239FE5 		ldr	r3, [fp, #-40]	@ float
  1338 0f9c 24301BE5 		str	r3, [r2, #48]	@ float
  1339 0fa0 0C3082E5 		.loc 1 333 0
- 324:lab.c         **** ////////////////////////////////////////////
+ 324:lab.c         **** float twolkF = 1.0/(2.0*l*kF);
  1340              		r2, .L67+32
  1341 0fa4 28301BE5 		ldr	r3, .L67+36	@ float
  1342 0fa8 022123E2 		str	r3, [r2, #52]	@ float
  1343 0fac 3C339FE5 		.loc 1 334 0
  1344 0fb0 102083E5 		ldr	r2, .L67+32
- 325:lab.c         **** 	//////// Translate commanded torques and thrust into rotor speed and commands ////////////
+ 325:lab.c         ****  rotor speed and commands ////////////
  1345              	r3, [fp, #-32]	@ float
  1346 0fb4 34239FE5 		str	r3, [r2, #56]	@ float
  1347 0fb8 34339FE5 		.loc 1 335 0
@@ -1629,55 +1629,55 @@
  1350 0fc0 28239FE5 		str	r3, [r2, #60]	@ float
  1351 0fc4 20301BE5 		.loc 1 337 0
  1352 0fc8 183082E5 		ldr	r3, .L67+40
- 327:lab.c         **** d torques and thrust into rotor speed and commands ////////////
+ 327:lab.c         **** float twolkF = 1.0/(2.0*l*kF);
  1353              		r3, [sp, #0]
  1354 0fcc 1C239FE5 		ldr	r3, .L67+44
  1355 0fd0 24301BE5 		str	r3, [sp, #4]
  1356 0fd4 1C3082E5 		mov	r0, #4
- 328:lab.c         **** ////////////////////////////////////////////
+ 328:lab.c         ****  rotor speed and commands ////////////
  1357              		r1, #4
  1358 0fd8 10239FE5 		mov	r2, #1
  1359 0fdc 10339FE5 		ldr	r3, .L67+32
  1360 0fe0 203082E5 		bl	matrix_multiply
- 329:lab.c         **** 	//////// Translate commanded torques and thrust into rotor speed and commands ////////////
+ 329:lab.c         **** // NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
  1361              	c 1 340 0
  1362 0fe4 28301BE5 		mov	r3, #0
  1363 0fe8 022123E2 		str	r3, [fp, #-28]
  1364 0fec FC329FE5 		b	.L51
  1365 0ff0 242083E5 	.L52:
- 330:lab.c         **** // NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 330:lab.c         **** float twolkF = 1.0/(2.0*l*kF);
  1366              	 1 341 0
  1367 0ff4 20301BE5 		ldr	r2, [fp, #-28]
  1368 0ff8 022123E2 		ldr	r3, .L67+44
  1369 0ffc EC329FE5 		ldr	r2, [r3, r2, asl #2]	@ float
  1370 1000 282083E5 		ldr	r3, .L67+48
- 331:lab.c         **** d torques and thrust into rotor speed and commands ////////////
+ 331:lab.c         ****  rotor speed and commands ////////////
  1371              	r3, [r3, #0]	@ float
  1372 1004 E4229FE5 		mov	r0, r2
  1373 1008 24301BE5 		mov	r1, r3
  1374 100c 2C3082E5 		bl	__gtsf2
- 332:lab.c         **** ////////////////////////////////////////////
+ 332:lab.c         **** // NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
  1375              		r3, r0
  1376 1010 D8229FE5 		cmp	r3, #0
  1377 1014 28301BE5 		bgt	.L55
  1378 1018 303082E5 		b	.L53
- 333:lab.c         **** 	//////// Translate commanded torques and thrust into rotor speed and commands ////////////
+ 333:lab.c         **** float twolkF = 1.0/(2.0*l*kF);
  1379              	:
  1380 101c CC229FE5 		.loc 1 342 0
  1381 1020 CC329FE5 		ldr	r1, [fp, #-28]
  1382 1024 343082E5 		ldr	r3, .L67+48
- 334:lab.c         **** // NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 334:lab.c         ****  rotor speed and commands ////////////
  1383              		r2, [r3, #0]	@ float
  1384 1028 C0229FE5 		ldr	r3, .L67+44
  1385 102c 20301BE5 		str	r2, [r3, r1, asl #2]	@ float
  1386 1030 383082E5 		b	.L56
- 335:lab.c         **** d torques and thrust into rotor speed and commands ////////////
+ 335:lab.c         **** // NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
  1387              	:
  1388 1034 B4229FE5 		.loc 1 344 0
  1389 1038 24301BE5 		ldr	r2, [fp, #-28]
  1390 103c 3C3082E5 		ldr	r3, .L67+44
- 336:lab.c         **** ////////////////////////////////////////////
- 337:lab.c         **** 
+ 336:lab.c         **** float twolkF = 1.0/(2.0*l*kF);
+ 337:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
  1391              		r2, [r3, r2, asl #2]	@ float
  1392 1040 B0329FE5 		ldr	r3, .L67+52
  1393 1044 00308DE5 		ldr	r3, [r3, #0]	@ float
@@ -1688,7 +1688,7 @@
  1398 1058 0120A0E3 		cmp	r3, #0
  1399 105c 8C329FE5 		blt	.L58
  1400 1060 FEFFFFEB 		b	.L56
- 338:lab.c         **** /////// Translate commanded torques and thrust into rotor speed and commands ////////////
+ 338:lab.c         **** ///////
  339:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
  340:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
  1401              	c 1 345 0
@@ -1711,7 +1711,7 @@
  1417 1098 000000CA 		mov	r0, r3
  1418 109c 050000EA 		mov	r1, r4
  1419              		bl	sqrt
- 342:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 342:lab.c         **** ///////
  1420              	ov	r4, r1
  1421 10a0 1C101BE5 		mov	r0, r3
  1422 10a4 54329FE5 		mov	r1, r4
@@ -1720,8 +1720,8 @@
  1425 10b0 012183E7 		ldr	r3, .L67+56
  1426 10b4 100000EA 		str	r2, [r3, r5, asl #2]	@ float
  1427              		.loc 1 350 0
- 343:lab.c         **** d torques and thrust into rotor speed and commands ////////////
- 344:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 343:lab.c         **** // NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 344:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
  1428              	 [fp, #-28]
  1429 10b8 1C201BE5 		ldr	r2, [fp, #-28]
  1430 10bc 38329FE5 		ldr	r3, .L67+56
@@ -1736,7 +1736,7 @@
  1439 10e0 000000BA 		ldmia	r2, {r2-r3}
  1440 10e4 040000EA 		bl	__muldf3
  1441              		mov	r3, r0
- 345:lab.c         **** d torques and thrust into rotor speed and commands ////////////
+ 345:lab.c         **** loat fourkF = 1.0/(4.0*kF);
  1442              	ov	r0, r3
  1443 10e8 1C101BE5 		mov	r1, r4
  1444 10ec 10329FE5 		adr	r2, .L67+8
@@ -1744,8 +1744,8 @@
  1446 10f4 00329FE5 		bl	__subdf3
  1447 10f8 012183E7 		mov	r3, r0
  1448              		mov	r4, r1
- 346:lab.c         **** ////////////////////////////////////////////
- 347:lab.c         **** 
+ 346:lab.c         **** ///////
+ 347:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
  1449              	, r3
  1450 10fc 1C501BE5 		mov	r1, r4
  1451 1100 1C201BE5 		bl	__truncdfsf2
@@ -1766,9 +1766,9 @@
  1466 113c 0020A0E1 	.L61:
  1467 1140 C0319FE5 		.loc 1 358 0
  1468 1144 052183E7 		ldr	r1, [fp, #-28]
- 348:lab.c         **** /////// Translate commanded torques and thrust into rotor speed and commands ////////////
- 349:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
- 350:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 348:lab.c         **** loat twolkF = 1.0/(2.0*l*kF);
+ 349:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 350:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
  1469              	r	r3, .L67+64	@ float
  1470 1148 1C501BE5 		str	r3, [r2, r1, asl #2]	@ float
  1471 114c 1C201BE5 		b	.L62
@@ -1798,13 +1798,13 @@
  1495 11ac 0020A0E1 	.L51:
  1496 11b0 54319FE5 		ldr	r3, [fp, #-28]
  1497 11b4 052183E7 		cmp	r3, #3
- 351:lab.c         **** oat fourkF = 1.0/(4.0*kF);
- 352:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
- 353:lab.c         **** 
- 354:lab.c         **** 	Winv[0] = 0;
- 355:lab.c         **** 	Winv[1] = twolkF;
- 356:lab.c         **** 	Winv[2] = -fourkM;
- 357:lab.c         **** 	Winv[3] = fourkF;
+ 351:lab.c         **** SSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 352:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 353:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 354:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
+ 355:lab.c         **** 
+ 356:lab.c         **** 	Winv[0] = 0;
+ 357:lab.c         **** 	Winv[1] = twolkF;
  1498              	r3, .L67+60
  1499 11b8 1C201BE5 		ldr	r3, [r3, #0]	@ float
  1500 11bc 48319FE5 		mov	r0, r3
@@ -1817,7 +1817,7 @@
  1507 11d8 000000BA 		ldr	r3, .L67+60
  1508 11dc 040000EA 		ldr	r3, [r3, #4]	@ float
  1509              		mov	r0, r3
- 358:lab.c         **** at fourkF = 1.0/(4.0*kF);
+ 358:lab.c         **** ] = -fourkM;
  1510              	sfsi
  1511 11e0 1C101BE5 		mov	r3, r0
  1512 11e4 20219FE5 		and	r3, r3, #255
@@ -1825,8 +1825,8 @@
  1514 11ec 013182E7 		strb	r3, [r2, #3]
  1515 11f0 0D0000EA 		.loc 1 369 0
  1516              		ldr	r3, .L67+60
- 359:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
- 360:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 359:lab.c         **** wolkF = 1.0/(2.0*l*kF);
+ 360:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
  1517              	, [r3, #8]	@ float
  1518 11f4 1C201BE5 		mov	r0, r3
  1519 11f8 0C319FE5 		bl	__fixunssfsi
@@ -1839,7 +1839,7 @@
  1526 1214 000000CA 		ldr	r3, [r3, #12]	@ float
  1527 1218 030000EA 		mov	r0, r3
  1528              		bl	__fixunssfsi
- 361:lab.c         **** peed and commands ////////////
+ 361:lab.c         **** ///////
  1529              		and	r3, r3, #255
  1530 121c 1C101BE5 		ldr	r2, .L67+72
  1531 1220 E4209FE5 		strb	r3, [r2, #2]
@@ -1854,12 +1854,12 @@
  1540 1238 1C301BE5 		.word	-1792478831
  1541 123c 030053E3 		.word	1077534565
  1542 1240 8AFFFFDA 		.word	2001935796
- 362:lab.c         **** ////////////////////////////////////////////
- 363:lab.c         **** 
- 364:lab.c         **** 	//////// Translate commanded torques and thrust into rotor speed and commands ////////////
- 365:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
- 366:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
- 367:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 362:lab.c         **** // NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 363:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 364:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 365:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
+ 366:lab.c         **** 
+ 367:lab.c         **** 	Winv[0] = 0;
  1543              		.word	l
  1544 1244 C0309FE5 		.word	kF
  1545 1248 003093E5 		.word	kM
@@ -1869,7 +1869,7 @@
  1549 1258 FF3003E2 		.word	omega_cmd2
  1550 125c B4209FE5 		.word	MAXPHI2
  1551 1260 0030C2E5 		.word	MINPHI2
- 368:lab.c         ****  fourkM = 1.0/(4.0*kM);
+ 368:lab.c         **** 1] = twolkF;
  1552              	ega_cmd
  1553 1264 A0309FE5 		.word	cmd
  1554 1268 043093E5 		.word	1065353216
@@ -1878,31 +1878,31 @@
  1557 1274 0030A0E1 	.LFE6:
  1559 127c 94209FE5 		.global	__floatsisf
  1560 1280 0330C2E5 		.global	__fixsfsi
- 369:lab.c         **** HAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 369:lab.c         **** S THE ROTORS
  1561              	
  1562 1284 80309FE5 		.global	Bens_Control_Law
  1564 128c 0300A0E1 	Bens_Control_Law:
  1565 1290 FEFFFFEB 	.LFB7:
  1566 1294 0030A0E1 		.loc 1 376 0
  1567 1298 FF3003E2 		@ Function supports interworking.
- 1568 129c 74209FE5 		@ args = 0, pretend = 0, frame = 12
+ 1568 129c 74209FE5 		@ args = 0, pretend = 0, frame = 8
  1569 12a0 0130C2E5 		@ frame_needed = 1, uses_anonymous_args = 0
- 370:lab.c         **** d torques and thrust into rotor speed and commands ////////////
+ 370:lab.c         **** float twolkF = 1.0/(2.0*l*kF);
  1570              	 sp
  1571 12a4 60309FE5 	.LCFI19:
  1572 12a8 0C3093E5 		stmfd	sp!, {r4, fp, ip, lr, pc}
  1573 12ac 0300A0E1 	.LCFI20:
  1574 12b0 FEFFFFEB 		sub	fp, ip, #4
  1575 12b4 0030A0E1 	.LCFI21:
- 1576 12b8 FF3003E2 		sub	sp, sp, #12
+ 1576 12b8 FF3003E2 		sub	sp, sp, #8
  1577 12bc 54209FE5 	.LCFI22:
  1578 12c0 0230C2E5 		.loc 1 377 0
- 371:lab.c         **** ////////////////////////////////////////////
- 372:lab.c         **** 
+ 371:lab.c         ****  rotor speed and commands ////////////
+ 372:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
  1579              	#10
  1580 12c4 18D04BE2 		str	r3, [fp, #-20]
  1581 12c8 70689DE8 		.loc 1 379 0
- 1582 12cc 1EFF2FE1 		ldr	r3, .L88
+ 1582 12cc 1EFF2FE1 		ldr	r3, .L86
  1583              		ldr	r3, [r3, #0]
  1584              		cmp	r3, #70
  1585              		ble	.L70
@@ -1912,7 +1912,7 @@
  1589 12dc B41D5377 		b	.L72
  1590 12e0 00000000 	.L70:
  1591 12e4 00000000 		.loc 1 381 0
- 1592 12e8 00000000 		ldr	r3, .L88
+ 1592 12e8 00000000 		ldr	r3, .L86
  1593 12ec 00000000 		ldr	r3, [r3, #0]
  1594 12f0 00000000 		cmp	r3, #6
  1595 12f4 00000000 		bgt	.L73
@@ -1922,410 +1922,412 @@
  1599 1304 00000000 		b	.L72
  1600 1308 00000000 	.L73:
  1601 130c 00000000 		.loc 1 384 0
- 1602 1310 0000803F 		ldr	r3, .L88
+ 1602 1310 0000803F 		ldr	r3, .L86
  1603 1314 00004843 		ldr	r3, [r3, #0]
  1604 1318 00000000 		str	r3, [fp, #-20]
  1605              	.L72:
  1606              		.loc 1 386 0
- 1607              		ldr	r3, .L88+4
+ 1607              		ldr	r3, .L86+4
  1608              		ldrh	r3, [r3, #0]
  1609              		mov	r3, r3, asl #16
  1610              		mov	r2, r3, asr #16
  1611              		ldr	r3, [fp, #-20]
  1612              		rsb	r2, r2, r3
- 1613              		ldr	r3, .L88+8
- 373:lab.c         **** /////// Translate commanded torques and thrust into rotor speed and commands ////////////
- 374:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
- 375:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
- 376:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 1613              		ldr	r3, .L86+8
+ 373:lab.c         **** loat twolkF = 1.0/(2.0*l*kF);
+ 374:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 375:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
+ 376:lab.c         **** 
  1614              	r	r3, [fp, #-20]
  1615              		cmp	r3, #7
  1616              		bgt	.L75
- 1617              		.loc 1 390 0
- 1618 131c 0DC0A0E1 		ldr	r3, .L88+12
- 1619              		ldr	r1, [r3, #0]
- 1620 1320 10D82DE9 		ldr	r3, .L88+16
- 1621              		smull	r2, r3, r1, r3
- 1622 1324 04B04CE2 		mov	r2, r3, asr #1
- 1623              		mov	r3, r1, asr #31
- 1624 1328 0CD04DE2 		rsb	r2, r3, r2
- 1625              		str	r2, [fp, #-28]
- 377:lab.c         **** at fourkM = 1.0/(4.0*kM);
- 1626              	, #-28]
- 1627 132c 0A30A0E3 		mov	r3, r3, asl #2
- 1628 1330 14300BE5 		ldr	r2, [fp, #-28]
- 378:lab.c         **** HAT CG IS IN THE SAME PLANE AS THE ROTORS
- 379:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
- 1629              	d	r3, r3, r2
- 1630 1334 78329FE5 		rsb	r1, r3, r1
- 1631 1338 003093E5 		str	r1, [fp, #-28]
- 1632 133c 460053E3 		ldr	r3, [fp, #-28]
- 1633 1340 020000DA 		cmp	r3, #0
- 380:lab.c         **** peed and commands ////////////
- 1634              	.L79
- 1635 1344 4630A0E3 		.loc 1 392 0
- 1636 1348 14300BE5 		ldr	r3, .L88+20
- 1637 134c 090000EA 		ldrh	r3, [r3, #0]
- 1638              		sub	r3, r3, #1
- 381:lab.c         **** ////////////////////////////////////////////
- 1639              	r3, r3, asl #16
- 1640 1350 5C329FE5 		mov	r2, r3, lsr #16
- 1641 1354 003093E5 		ldr	r3, .L88+20
- 1642 1358 060053E3 		strh	r2, [r3, #0]	@ movhi
- 1643 135c 020000CA 		b	.L79
- 382:lab.c         **** 	//////// Translate commanded torques and thrust into rotor speed and commands ////////////
- 1644              	
- 1645 1360 0730A0E3 		.loc 1 397 0
- 1646 1364 14300BE5 		ldr	r3, .L88+24
- 1647 1368 020000EA 		ldrh	r3, [r3, #0]
- 1648              		mov	r3, r3, asl #16
- 383:lab.c         **** // NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
- 384:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
- 1649              		r3, r3, asr #16
- 1650 136c 40329FE5 		cmp	r3, #1
- 1651 1370 003093E5 		bne	.L80
- 1652 1374 14300BE5 		.loc 1 399 0
- 1653              		ldr	r3, .L88+12
- 385:lab.c         **** peed and commands ////////////
- 386:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
- 1654              	r1, [r3, #0]
- 1655 1378 38329FE5 		ldr	r3, .L88+28
- 1656 137c B030D3E1 		smull	r2, r3, r1, r3
- 1657 1380 0338A0E1 		mov	r2, r3, asr #6
- 1658 1384 4328A0E1 		mov	r3, r1, asr #31
- 1659 1388 14301BE5 		rsb	r2, r3, r2
- 1660 138c 032062E0 		str	r2, [fp, #-24]
- 1661 1390 24329FE5 		ldr	r3, [fp, #-24]
- 1662 1394 002083E5 		mov	r3, r3, asl #2
- 387:lab.c         **** d torques and thrust into rotor speed and commands ////////////
+ 1617              		.loc 1 392 0
+ 1618 131c 0DC0A0E1 		ldr	r3, .L86+12
+ 1619              		ldrh	r3, [r3, #0]
+ 1620 1320 10D82DE9 		sub	r3, r3, #1
+ 1621              		mov	r3, r3, asl #16
+ 1622 1324 04B04CE2 		mov	r2, r3, lsr #16
+ 1623              		ldr	r3, .L86+12
+ 1624 1328 08D04DE2 		strh	r2, [r3, #0]	@ movhi
+ 1625              		b	.L77
+ 377:lab.c         **** UMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 1626              	1 397 0
+ 1627 132c 0A30A0E3 		ldr	r3, .L86+16
+ 1628 1330 14300BE5 		ldrh	r3, [r3, #0]
+ 378:lab.c         **** float twolkF = 1.0/(2.0*l*kF);
+ 379:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 1629              	v	r3, r3, asl #16
+ 1630 1334 5C329FE5 		mov	r3, r3, asr #16
+ 1631 1338 003093E5 		cmp	r3, #1
+ 1632 133c 460053E3 		bne	.L78
+ 1633 1340 020000DA 		.loc 1 399 0
+ 380:lab.c         **** ///////
+ 1634              	r3, .L86+20
+ 1635 1344 4630A0E3 		ldr	r1, [r3, #0]
+ 1636 1348 14300BE5 		ldr	r3, .L86+24
+ 1637 134c 090000EA 		smull	r2, r3, r1, r3
+ 1638              		mov	r2, r3, asr #4
+ 381:lab.c         **** // NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 1639              	r3, r1, asr #31
+ 1640 1350 40329FE5 		rsb	r2, r3, r2
+ 1641 1354 003093E5 		str	r2, [fp, #-24]
+ 1642 1358 060053E3 		ldr	r3, [fp, #-24]
+ 1643 135c 020000CA 		mov	r3, r3, asl #2
+ 382:lab.c         **** float twolkF = 1.0/(2.0*l*kF);
+ 1644              	r2, [fp, #-24]
+ 1645 1360 0730A0E3 		add	r3, r3, r2
+ 1646 1364 14300BE5 		mov	r2, r3, asl #2
+ 1647 1368 020000EA 		add	r3, r3, r2
+ 1648              		mov	r3, r3, asl #1
+ 383:lab.c         ****  rotor speed and commands ////////////
+ 384:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 1649              	r1, r3, r1
+ 1650 136c 24329FE5 		str	r1, [fp, #-24]
+ 1651 1370 003093E5 		ldr	r3, [fp, #-24]
+ 1652 1374 14300BE5 		cmp	r3, #0
+ 1653              		bne	.L78
+ 385:lab.c         **** loat twolkF = 1.0/(2.0*l*kF);
+ 386:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 1654              	r3, .L86+4
+ 1655 1378 1C329FE5 		ldrh	r3, [r3, #0]
+ 1656 137c B030D3E1 		mov	r3, r3, asl #16
+ 1657 1380 0338A0E1 		mov	r3, r3, asr #16
+ 1658 1384 4328A0E1 		cmp	r3, #6
+ 1659 1388 14301BE5 		ble	.L78
+ 1660 138c 032062E0 		.loc 1 401 0
+ 1661 1390 08329FE5 		ldr	r3, .L86+4
+ 1662 1394 002083E5 		ldrh	r3, [r3, #0]
+ 387:lab.c         **** ///////
  388:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
- 1663              	[fp, #-24]
- 1664 1398 14301BE5 		add	r3, r3, r2
- 1665 139c 070053E3 		mov	r2, r3, asl #2
- 1666 13a0 180000CA 		add	r3, r3, r2
- 389:lab.c         **** d torques and thrust into rotor speed and commands ////////////
- 390:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
- 1667              		r3, r3, asl #3
- 1668 13a4 14329FE5 		rsb	r1, r3, r1
- 1669 13a8 001093E5 		str	r1, [fp, #-24]
- 1670 13ac 10329FE5 		ldr	r3, [fp, #-24]
- 1671 13b0 9123C3E0 		cmp	r3, #0
- 1672 13b4 C320A0E1 		bne	.L80
- 1673 13b8 C13FA0E1 		ldr	r3, .L88+4
- 1674 13bc 022063E0 		ldrh	r3, [r3, #0]
- 1675 13c0 1C200BE5 		mov	r3, r3, asl #16
- 1676 13c4 1C301BE5 		mov	r3, r3, asr #16
- 1677 13c8 0331A0E1 		cmp	r3, #6
- 1678 13cc 1C201BE5 		ble	.L80
- 1679 13d0 023083E0 		.loc 1 401 0
- 1680 13d4 011063E0 		ldr	r3, .L88+4
- 1681 13d8 1C100BE5 		ldrh	r3, [r3, #0]
- 1682 13dc 1C301BE5 		sub	r3, r3, #1
- 1683 13e0 000053E3 		mov	r3, r3, asl #16
- 1684 13e4 5D00001A 		mov	r2, r3, lsr #16
- 391:lab.c         **** d torques and thrust into rotor speed and commands ////////////
- 392:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
- 1685              	trh	r2, [r3, #0]	@ movhi
- 1686 13e8 D8319FE5 		.loc 1 402 0
- 1687 13ec B030D3E1 		ldr	r3, .L88+4
- 1688 13f0 013043E2 		ldrh	r3, [r3, #0]
- 1689 13f4 0338A0E1 		mov	r3, r3, asl #16
- 1690 13f8 2328A0E1 		mov	r3, r3, asr #16
- 1691 13fc C4319FE5 		cmp	r3, #6
- 1692 1400 B020C3E1 		bgt	.L80
- 1693 1404 550000EA 		.loc 1 404 0
- 1694              		ldr	r3, .L88+4
- 393:lab.c         **** d torques and thrust into rotor speed and commands ////////////
- 394:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
- 395:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
- 396:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
- 397:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
- 1695              	7
- 1696 1408 BC319FE5 		strh	r2, [r3, #0]	@ movhi
- 1697 140c B030D3E1 	.L80:
- 1698 1410 0338A0E1 		.loc 1 408 0
- 1699 1414 4338A0E1 		ldr	r3, .L88+8
- 1700 1418 010053E3 		ldr	r3, [r3, #0]
- 1701 141c 2900001A 		mov	r0, r3
- 398:lab.c         **** HAT CG IS IN THE SAME PLANE AS THE ROTORS
- 399:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
- 1702              	loatsisf
- 1703 1420 98319FE5 		mov	r2, r0
- 1704 1424 001093E5 		ldr	r3, .L88+32
- 1705 1428 A0319FE5 		ldr	r3, [r3, #0]	@ float
- 1706 142c 9123C3E0 		mov	r0, r2
- 1707 1430 4323A0E1 		mov	r1, r3
- 1708 1434 C13FA0E1 		bl	__mulsf3
- 1709 1438 022063E0 		mov	r3, r0
- 1710 143c 18200BE5 		mov	r4, r3
- 1711 1440 18301BE5 		ldr	r3, .L88+36
- 1712 1444 0331A0E1 		ldr	r3, [r3, #136]
- 1713 1448 18201BE5 		mov	r0, r3
- 1714 144c 023083E0 		bl	__floatsisf
- 1715 1450 0321A0E1 		mov	r2, r0
- 1716 1454 023083E0 		ldr	r3, .L88+40
- 1717 1458 8331A0E1 		ldr	r3, [r3, #0]	@ float
- 1718 145c 011063E0 		mov	r0, r2
- 1719 1460 18100BE5 		mov	r1, r3
- 1720 1464 18301BE5 		bl	__mulsf3
- 1721 1468 000053E3 		mov	r3, r0
- 1722 146c 1500001A 		mov	r0, r4
- 1723 1470 40319FE5 		mov	r1, r3
- 1724 1474 B030D3E1 		bl	__subsf3
- 1725 1478 0338A0E1 		mov	r3, r0
- 1726 147c 4338A0E1 		mov	r0, r3
- 1727 1480 060053E3 		ldr	r1, .L88+44	@ float
- 1728 1484 0F0000DA 		bl	__addsf3
- 400:lab.c         **** peed and commands ////////////
- 401:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
- 1729              		__fixsfsi
- 1730 1488 28319FE5 		mov	r3, r0
- 1731 148c B030D3E1 		mov	r3, r3, asl #16
- 1732 1490 013043E2 		mov	r2, r3, lsr #16
- 1733 1494 0338A0E1 		ldr	r3, .L88+20
- 1734 1498 2328A0E1 		strh	r2, [r3, #0]	@ movhi
- 1735 149c 14319FE5 	.L79:
- 1736 14a0 B020C3E1 		.loc 1 415 0
- 402:lab.c         **** d torques and thrust into rotor speed and commands ////////////
- 1737              	 .L88+20
- 1738 14a4 0C319FE5 		ldrh	r3, [r3, #0]
- 1739 14a8 B030D3E1 		mov	r3, r3, asl #16
- 1740 14ac 0338A0E1 		mov	r3, r3, asr #16
- 1741 14b0 4338A0E1 		cmp	r3, #9
- 1742 14b4 060053E3 		bgt	.L85
- 1743 14b8 020000CA 		.loc 1 416 0
- 403:lab.c         **** ////////////////////////////////////////////
- 404:lab.c         **** 
- 1744              	, .L88+20
- 1745 14bc F4309FE5 		mov	r2, #10
- 1746 14c0 0720A0E3 		strh	r2, [r3, #0]	@ movhi
- 1747 14c4 B020C3E1 	.L85:
- 1748              		.loc 1 418 0
- 405:lab.c         **** /////// Translate commanded torques and thrust into rotor speed and commands ////////////
- 406:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
- 407:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
- 408:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
- 1749              	r3, .L88+8
- 1750 14c8 EC309FE5 		ldr	r2, [r3, #0]
- 1751 14cc 003093E5 		ldr	r3, .L88+48
- 1752 14d0 0300A0E1 		str	r2, [r3, #0]
- 1753 14d4 FEFFFFEB 		.loc 1 419 0
- 1754 14d8 0020A0E1 		ldr	r3, .L88+12
- 1755 14dc F0309FE5 		ldr	r3, [r3, #0]
- 1756 14e0 003093E5 		add	r2, r3, #1
- 1757 14e4 0200A0E1 		ldr	r3, .L88+12
- 1758 14e8 0310A0E1 		str	r2, [r3, #0]
- 1759 14ec FEFFFFEB 		.loc 1 420 0
- 1760 14f0 0030A0E1 		sub	sp, fp, #16
- 1761 14f4 0340A0E1 		ldmfd	sp, {r4, fp, sp, lr}
- 1762 14f8 D8309FE5 		bx	lr
- 1763 14fc 883093E5 	.L89:
- 1764 1500 0300A0E1 		.align	2
- 1765 1504 FEFFFFEB 	.L88:
- 1766 1508 0020A0E1 		.word	USMaxBot_range1
- 1767 150c C8309FE5 		.word	setpoint
- 1768 1510 003093E5 		.word	usonic_error
- 1769 1514 0200A0E1 		.word	clock_divider
- 1770 1518 0310A0E1 		.word	1717986919
- 1771 151c FEFFFFEB 		.word	Ben_thrust
- 1772 1520 0030A0E1 		.word	landing_flag
- 1773 1524 0400A0E1 		.word	1374389535
- 1774 1528 0310A0E1 		.word	U_Kp_z
- 1775 152c FEFFFFEB 		.word	RO_ALL_Data
- 1776 1530 0030A0E1 		.word	U_Kd_z
- 1777 1534 0300A0E1 		.word	1154777088
- 1778 1538 A0109FE5 		.word	usonic_error_old
- 1779 153c FEFFFFEB 	.LFE7:
- 1781 1544 0300A0E1 		.align	2
- 1782 1548 FEFFFFEB 		.global	Bens_Command
- 1784 1550 0338A0E1 	Bens_Command:
- 1785 1554 2328A0E1 	.LFB8:
- 1786 1558 68309FE5 		.loc 1 424 0
- 1787 155c B020C3E1 		@ Function supports interworking.
- 1788              		@ args = 0, pretend = 0, frame = 0
- 409:lab.c         **** at fourkM = 1.0/(4.0*kM);
- 410:lab.c         **** 
- 411:lab.c         **** 	Winv[0] = 0;
- 412:lab.c         **** 	Winv[1] = twolkF;
- 413:lab.c         **** 	Winv[2] = -fourkM;
- 414:lab.c         **** 	Winv[3] = fourkF;
- 415:lab.c         **** 	Winv[1*4+0] = -twolkF;
- 1789              	 = 0
- 1790 1560 60309FE5 		mov	ip, sp
- 1791 1564 B030D3E1 	.LCFI23:
- 1792 1568 0338A0E1 		stmfd	sp!, {fp, ip, lr, pc}
- 1793 156c 4338A0E1 	.LCFI24:
- 1794 1570 090053E3 		sub	fp, ip, #4
- 1795 1574 020000CA 	.LCFI25:
- 416:lab.c         **** 
- 1796              	 426 0
- 1797 1578 48309FE5 		ldr	r2, .L92
- 1798 157c 0A20A0E3 		mov	r3, #2
- 1799 1580 B020C3E1 		strb	r3, [r2, #0]
- 1800              		.loc 1 432 0
- 417:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
- 418:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
- 1801              	r2, .L92
- 1802 1584 30309FE5 		mov	r3, #1
- 1803 1588 002093E5 		strb	r3, [r2, #1]
- 1804 158c 50309FE5 		.loc 1 437 0
- 1805 1590 002083E5 		ldr	r2, .L92+4
- 419:lab.c         **** peed and commands ////////////
- 1806              	r3, #8
- 1807 1594 24309FE5 		strh	r3, [r2, #8]	@ movhi
- 1808 1598 003093E5 		.loc 1 440 0
- 1809 159c 012083E2 		ldr	r3, .L92+8
- 1810 15a0 18309FE5 		ldrh	r2, [r3, #0]
- 1811 15a4 002083E5 		ldr	r3, .L92+4
- 420:lab.c         **** ////////////////////////////////////////////
- 1812              	r2, [r3, #6]	@ movhi
- 1813 15a8 10D04BE2 		.loc 1 446 0
- 1814 15ac 10689DE8 		sub	sp, fp, #12
- 1815 15b0 1EFF2FE1 		ldmfd	sp, {fp, sp, lr}
- 1816              		bx	lr
- 1817              	.L93:
- 1818              		.align	2
- 1819 15b4 00000000 	.L92:
- 1820 15b8 00000000 		.word	WO_SDK
- 1821 15bc 00000000 		.word	WO_CTRL_Input
- 1822 15c0 00000000 		.word	Ben_thrust
- 1823 15c4 67666666 	.LFE8:
- 1825 15cc 00000000 		.comm	GPS_timeout,4,4
- 1826 15d0 1F85EB51 		.comm	SYSTEM_initialized,1,1
- 1827 15d4 00000000 		.comm	takeoff2,4,4
- 1828 15d8 00000000 		.comm	initialize,4,4
- 1829 15dc 00000000 		.comm	velocityEstHolder,4,4
- 1830 15e0 0080D444 		.comm	VelEstX,4,4
- 1831 15e4 00000000 		.comm	VelEstY,4,4
- 1832              		.comm	VelEstZ,4,4
- 1833              		.comm	previousXMeas,4,4
- 1834              		.comm	previousYMeas,4,4
- 1835              		.comm	previousZMeas,4,4
- 1836              		.comm	errorcum,12,4
- 1837              		.comm	IntegralHolder,4,4
- 1838              		.comm	imusensor,68,4
- 421:lab.c         **** 	//////// Translate commanded torques and thrust into rotor speed and commands ////////////
- 422:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
- 423:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
- 424:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
- 1839              	mm	mocap,32,4
- 1840              		.comm	u,16,4
- 1841              		.comm	Winv,64,4
- 1842              		.comm	cnt_u,16,4
- 1843 15e8 0DC0A0E1 		.comm	omega_cmd2,16,4
- 1844              		.comm	omega_cmd,16,4
- 1845 15ec 00D82DE9 		.comm	cmd,16,4
- 1846              		.comm	roll_desired,4,4
- 1847 15f0 04B04CE2 		.comm	pitch_desired,4,4
- 1848              		.comm	yaw_desired,4,4
- 425:lab.c         **** at fourkM = 1.0/(4.0*kM);
- 426:lab.c         **** 
- 1849              	om,16,4
- 1850 15f4 38209FE5 		.comm	z,12,4
- 1851 15f8 0230A0E3 		.comm	dt,4,4
- 1852 15fc 0030C2E5 		.section	.debug_frame,"",%progbits
- 427:lab.c         **** T CG IS IN THE SAME PLANE AS THE ROTORS
- 428:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
- 429:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
- 430:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
- 431:lab.c         **** 
- 432:lab.c         **** 	Winv[0] = 0;
- 1853              	ame0:
- 1854 1600 2C209FE5 		.4byte	.LECIE0-.LSCIE0
- 1855 1604 0130A0E3 	.LSCIE0:
- 1856 1608 0130C2E5 		.4byte	0xffffffff
- 433:lab.c         **** SAME PLANE AS THE ROTORS
+ 1663              	r3, #1
+ 1664 1398 14301BE5 		mov	r3, r3, asl #16
+ 1665 139c 070053E3 		mov	r2, r3, lsr #16
+ 1666 13a0 070000CA 		ldr	r3, .L86+4
+ 389:lab.c         **** loat twolkF = 1.0/(2.0*l*kF);
+ 390:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 391:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
+ 392:lab.c         **** 
+ 1667              	h	r2, [r3, #0]	@ movhi
+ 1668 13a4 F8319FE5 		.loc 1 402 0
+ 1669 13a8 B030D3E1 		ldr	r3, .L86+4
+ 1670 13ac 013043E2 		ldrh	r3, [r3, #0]
+ 1671 13b0 0338A0E1 		mov	r3, r3, asl #16
+ 1672 13b4 2328A0E1 		mov	r3, r3, asr #16
+ 1673 13b8 E4319FE5 		cmp	r3, #6
+ 1674 13bc B020C3E1 		bgt	.L78
+ 1675 13c0 550000EA 		.loc 1 404 0
+ 1676              		ldr	r3, .L86+4
+ 393:lab.c         **** UMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 394:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 395:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 396:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
+ 397:lab.c         **** 
+ 1677              	7
+ 1678 13c4 DC319FE5 		strh	r2, [r3, #0]	@ movhi
+ 1679 13c8 B030D3E1 	.L78:
+ 1680 13cc 0338A0E1 		.loc 1 408 0
+ 1681 13d0 4338A0E1 		ldr	r3, .L86+8
+ 1682 13d4 010053E3 		ldr	r3, [r3, #0]
+ 1683 13d8 2900001A 		mov	r0, r3
+ 398:lab.c         **** [0] = 0;
+ 399:lab.c         **** 	Winv[1] = twolkF;
+ 1684              	loatsisf
+ 1685 13dc C8319FE5 		mov	r2, r0
+ 1686 13e0 001093E5 		ldr	r3, .L86+28
+ 1687 13e4 C4319FE5 		ldr	r3, [r3, #0]	@ float
+ 1688 13e8 9123C3E0 		mov	r0, r2
+ 1689 13ec 4322A0E1 		mov	r1, r3
+ 1690 13f0 C13FA0E1 		bl	__mulsf3
+ 1691 13f4 022063E0 		mov	r3, r0
+ 1692 13f8 18200BE5 		mov	r4, r3
+ 1693 13fc 18301BE5 		ldr	r3, .L86+32
+ 1694 1400 0331A0E1 		ldr	r3, [r3, #136]
+ 1695 1404 18201BE5 		mov	r0, r3
+ 1696 1408 023083E0 		bl	__floatsisf
+ 1697 140c 0321A0E1 		mov	r2, r0
+ 1698 1410 023083E0 		ldr	r3, .L86+36
+ 1699 1414 8330A0E1 		ldr	r3, [r3, #0]	@ float
+ 1700 1418 011063E0 		mov	r0, r2
+ 1701 141c 18100BE5 		mov	r1, r3
+ 1702 1420 18301BE5 		bl	__mulsf3
+ 1703 1424 000053E3 		mov	r3, r0
+ 1704 1428 1500001A 		mov	r0, r4
+ 1705 142c 68319FE5 		mov	r1, r3
+ 1706 1430 B030D3E1 		bl	__subsf3
+ 1707 1434 0338A0E1 		mov	r3, r0
+ 1708 1438 4338A0E1 		mov	r0, r3
+ 1709 143c 060053E3 		ldr	r1, .L86+40	@ float
+ 1710 1440 0F0000DA 		bl	__addsf3
+ 400:lab.c         **** S THE ROTORS
+ 401:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 1711              		__fixsfsi
+ 1712 1444 50319FE5 		mov	r3, r0
+ 1713 1448 B030D3E1 		mov	r3, r3, asl #16
+ 1714 144c 013043E2 		mov	r2, r3, lsr #16
+ 1715 1450 0338A0E1 		ldr	r3, .L86+12
+ 1716 1454 2328A0E1 		strh	r2, [r3, #0]	@ movhi
+ 1717 1458 3C319FE5 	.L77:
+ 1718 145c B020C3E1 		.loc 1 416 0
+ 402:lab.c         **** loat fourkF = 1.0/(4.0*kF);
+ 1719              	 .L86+44
+ 1720 1460 34319FE5 		ldrh	r2, [r3, #12]
+ 1721 1464 B030D3E1 		ldr	r3, .L86+48
+ 1722 1468 0338A0E1 		umull	r1, r3, r2, r3
+ 1723 146c 4338A0E1 		mov	r3, r3, lsr #7
+ 1724 1470 060053E3 		mov	r3, r3, asl #16
+ 1725 1474 020000CA 		mov	r3, r3, lsr #16
+ 403:lab.c         **** ///////
+ 404:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 1726              	, r3
+ 1727 1478 1C319FE5 		ldr	r3, .L86+4
+ 1728 147c 0720A0E3 		strh	r2, [r3, #0]	@ movhi
+ 1729 1480 B020C3E1 		.loc 1 423 0
+ 1730              		ldr	r3, .L86+12
+ 405:lab.c         **** loat twolkF = 1.0/(2.0*l*kF);
+ 406:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 407:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
+ 408:lab.c         **** 
+ 1731              		r3, [r3, #0]
+ 1732 1484 14319FE5 		mov	r3, r3, asl #16
+ 1733 1488 003093E5 		mov	r3, r3, asr #16
+ 1734 148c 0300A0E1 		cmp	r3, #9
+ 1735 1490 FEFFFFEB 		bgt	.L83
+ 1736 1494 0020A0E1 		.loc 1 424 0
+ 1737 1498 14319FE5 		ldr	r3, .L86+12
+ 1738 149c 003093E5 		mov	r2, #10
+ 1739 14a0 0200A0E1 		strh	r2, [r3, #0]	@ movhi
+ 1740 14a4 0310A0E1 	.L83:
+ 1741 14a8 FEFFFFEB 		.loc 1 426 0
+ 1742 14ac 0030A0E1 		ldr	r3, .L86+8
+ 1743 14b0 0340A0E1 		ldr	r2, [r3, #0]
+ 1744 14b4 FC309FE5 		ldr	r3, .L86+52
+ 1745 14b8 883093E5 		str	r2, [r3, #0]
+ 1746 14bc 0300A0E1 		.loc 1 427 0
+ 1747 14c0 FEFFFFEB 		ldr	r3, .L86+20
+ 1748 14c4 0020A0E1 		ldr	r3, [r3, #0]
+ 1749 14c8 EC309FE5 		add	r2, r3, #1
+ 1750 14cc 003093E5 		ldr	r3, .L86+20
+ 1751 14d0 0200A0E1 		str	r2, [r3, #0]
+ 1752 14d4 0310A0E1 		.loc 1 428 0
+ 1753 14d8 FEFFFFEB 		sub	sp, fp, #16
+ 1754 14dc 0030A0E1 		ldmfd	sp, {r4, fp, sp, lr}
+ 1755 14e0 0400A0E1 		bx	lr
+ 1756 14e4 0310A0E1 	.L87:
+ 1757 14e8 FEFFFFEB 		.align	2
+ 1758 14ec 0030A0E1 	.L86:
+ 1759 14f0 0300A0E1 		.word	USMaxBot_range1
+ 1760 14f4 C4109FE5 		.word	setpoint
+ 1761 14f8 FEFFFFEB 		.word	usonic_error
+ 1762 14fc 0030A0E1 		.word	Ben_thrust
+ 1763 1500 0300A0E1 		.word	landing_flag
+ 1764 1504 FEFFFFEB 		.word	clock_divider
+ 1765 1508 0030A0E1 		.word	1374389535
+ 1766 150c 0338A0E1 		.word	U_Kp_z
+ 1767 1510 2328A0E1 		.word	RO_ALL_Data
+ 1768 1514 88309FE5 		.word	U_Kd_z
+ 1769 1518 B020C3E1 		.word	1154777088
+ 1770              		.word	RO_RC_Data
+ 409:lab.c         **** UMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 410:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 411:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 412:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
+ 413:lab.c         **** 
+ 414:lab.c         **** 	Winv[0] = 0;
+ 415:lab.c         **** 	Winv[1] = twolkF;
+ 416:lab.c         **** 	Winv[2] = -fourkM;
+ 1771              	d
+ 1772 151c A0309FE5 	.LFE7:
+ 1774 1524 9C309FE5 		.align	2
+ 1775 1528 921383E0 		.global	Bens_Command
+ 1777 1530 0338A0E1 	Bens_Command:
+ 1778 1534 2338A0E1 	.LFB8:
+ 1779 1538 0320A0E1 		.loc 1 432 0
+ 1780 153c 58309FE5 		@ Function supports interworking.
+ 1781 1540 B020C3E1 		@ args = 0, pretend = 0, frame = 0
+ 417:lab.c         ****  = fourkF;
+ 418:lab.c         **** 	Winv[1*4+0] = -twolkF;
+ 419:lab.c         **** 	Winv[1*4+1] = 0;
+ 420:lab.c         **** 	Winv[1*4+2] = fourkM;
+ 421:lab.c         **** 	Winv[1*4+3] = fourkF;
+ 422:lab.c         **** 	Winv[2*4+0] = 0;
+ 423:lab.c         **** 	Winv[2*4+1] = -twolkF;
+ 1782              	eded = 1, uses_anonymous_args = 0
+ 1783 1544 58309FE5 		mov	ip, sp
+ 1784 1548 B030D3E1 	.LCFI23:
+ 1785 154c 0338A0E1 		stmfd	sp!, {fp, ip, lr, pc}
+ 1786 1550 4338A0E1 	.LCFI24:
+ 1787 1554 090053E3 		sub	fp, ip, #4
+ 1788 1558 020000CA 	.LCFI25:
+ 424:lab.c         **** 
+ 1789              	 434 0
+ 1790 155c 40309FE5 		ldr	r2, .L90
+ 1791 1560 0A20A0E3 		mov	r3, #2
+ 1792 1564 B020C3E1 		strb	r3, [r2, #0]
+ 1793              		.loc 1 440 0
+ 425:lab.c         **** F);
+ 426:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 1794              	r2, .L90
+ 1795 1568 30309FE5 		mov	r3, #1
+ 1796 156c 002093E5 		strb	r3, [r2, #1]
+ 1797 1570 54309FE5 		.loc 1 445 0
+ 1798 1574 002083E5 		ldr	r2, .L90+4
+ 427:lab.c         **** ///////
+ 1799              	r3, #8
+ 1800 1578 2C309FE5 		strh	r3, [r2, #8]	@ movhi
+ 1801 157c 003093E5 		.loc 1 448 0
+ 1802 1580 012083E2 		ldr	r3, .L90+8
+ 1803 1584 20309FE5 		ldrh	r2, [r3, #0]
+ 1804 1588 002083E5 		ldr	r3, .L90+4
+ 428:lab.c         **** // NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
+ 1805              	r2, [r3, #6]	@ movhi
+ 1806 158c 10D04BE2 		.loc 1 454 0
+ 1807 1590 10689DE8 		sub	sp, fp, #12
+ 1808 1594 1EFF2FE1 		ldmfd	sp, {fp, sp, lr}
+ 1809              		bx	lr
+ 1810              	.L91:
+ 1811              		.align	2
+ 1812 1598 00000000 	.L90:
+ 1813 159c 00000000 		.word	WO_SDK
+ 1814 15a0 00000000 		.word	WO_CTRL_Input
+ 1815 15a4 00000000 		.word	Ben_thrust
+ 1816 15a8 00000000 	.LFE8:
+ 1818 15b0 1F85EB51 		.comm	GPS_timeout,4,4
+ 1819 15b4 00000000 		.comm	SYSTEM_initialized,1,1
+ 1820 15b8 00000000 		.comm	takeoff2,4,4
+ 1821 15bc 00000000 		.comm	initialize,4,4
+ 1822 15c0 0080D444 		.comm	velocityEstHolder,4,4
+ 1823 15c4 00000000 		.comm	VelEstX,4,4
+ 1824 15c8 993D60F6 		.comm	VelEstY,4,4
+ 1825 15cc 00000000 		.comm	VelEstZ,4,4
+ 1826              		.comm	previousXMeas,4,4
+ 1827              		.comm	previousYMeas,4,4
+ 1828              		.comm	previousZMeas,4,4
+ 1829              		.comm	errorcum,12,4
+ 1830              		.comm	IntegralHolder,4,4
+ 1831              		.comm	imusensor,68,4
+ 1832              		.comm	real_mocap,32,4
+ 429:lab.c         **** float twolkF = 1.0/(2.0*l*kF);
+ 430:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 431:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
+ 432:lab.c         **** 
+ 1833              	6,4
+ 1834              		.comm	Winv,64,4
+ 1835              		.comm	cnt_u,16,4
+ 1836              		.comm	omega_cmd2,16,4
+ 1837 15d0 0DC0A0E1 		.comm	omega_cmd,16,4
+ 1838              		.comm	cmd,16,4
+ 1839 15d4 00D82DE9 		.comm	roll_desired,4,4
+ 1840              		.comm	pitch_desired,4,4
+ 1841 15d8 04B04CE2 		.comm	yaw_desired,4,4
+ 1842              		.comm	x_nom,16,4
+ 433:lab.c         **** UMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
  434:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
- 435:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 1843              	2,4
+ 1844 15dc 38209FE5 		.comm	dt,4,4
+ 1845 15e0 0230A0E3 		.section	.debug_frame,"",%progbits
+ 1846 15e4 0030C2E5 	.Lframe0:
+ 435:lab.c         **** loat fourkF = 1.0/(4.0*kF);
  436:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
  437:lab.c         **** 
- 1857              	te	0x1
- 1858 160c 24209FE5 		.ascii	"\000"
- 1859 1610 0830A0E3 		.uleb128 0x1
- 1860 1614 B830C2E1 		.sleb128 -4
- 438:lab.c         **** T CG IS IN THE SAME PLANE AS THE ROTORS
- 439:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
- 440:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
- 1861              	te	0xe
- 1862 1618 1C309FE5 		.byte	0xc
- 1863 161c B020D3E1 		.uleb128 0xd
- 1864 1620 10309FE5 		.uleb128 0x0
- 1865 1624 B620C3E1 		.align	2
- 441:lab.c         **** 	// NOTE METHOD BELOW ASSUMES THAT CG IS IN THE SAME PLANE AS THE ROTORS
- 442:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
- 443:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
- 444:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
- 445:lab.c         **** 
- 446:lab.c         **** 	Winv[0] = 0;
- 1866              	E0:
- 1867 1628 0CD04BE2 	.LSFDE0:
- 1868 162c 00689DE8 		.4byte	.LEFDE0-.LASFDE0
- 1869 1630 1EFF2FE1 	.LASFDE0:
- 1870              		.4byte	.Lframe0
- 1871              		.4byte	.LFB2
- 1872              		.4byte	.LFE2-.LFB2
- 1873 1634 00000000 		.byte	0x4
- 1874 1638 00000000 		.4byte	.LCFI0-.LFB2
- 1875 163c 00000000 		.byte	0xd
- 1876              		.uleb128 0xc
- 1877              		.byte	0x4
- 1878              		.4byte	.LCFI1-.LCFI0
- 1879              		.byte	0x8e
- 1880              		.uleb128 0x2
- 1881              		.byte	0x8d
- 1882              		.uleb128 0x3
- 1883              		.byte	0x8b
- 1884              		.uleb128 0x4
- 1885              		.byte	0x4
- 1886              		.4byte	.LCFI2-.LCFI1
- 1887              		.byte	0xc
- 1888              		.uleb128 0xb
- 1889              		.uleb128 0x4
- 1890              		.align	2
- 1891              	.LEFDE0:
- 1892              	.LSFDE2:
- 1893              		.4byte	.LEFDE2-.LASFDE2
- 1894              	.LASFDE2:
- 1895              		.4byte	.Lframe0
- 1896              		.4byte	.LFB3
- 1897              		.4byte	.LFE3-.LFB3
- 1898              		.byte	0x4
- 1899              		.4byte	.LCFI3-.LFB3
- 1900              		.byte	0xd
- 1901              		.uleb128 0xc
- 1902              		.byte	0x4
- 1903              		.4byte	.LCFI4-.LCFI3
- 1904              		.byte	0x8e
- 1905              		.uleb128 0x2
- 2127              		.2byte	0x1
+ 438:lab.c         **** 	Winv[0] = 0;
+ 439:lab.c         **** 	Winv[1] = twolkF;
+ 440:lab.c         **** 	Winv[2] = -fourkM;
+ 1847              	yte	.LECIE0-.LSCIE0
+ 1848 15e8 2C209FE5 	.LSCIE0:
+ 1849 15ec 0130A0E3 		.4byte	0xffffffff
+ 1850 15f0 0130C2E5 		.byte	0x1
+ 441:lab.c         **** wolkF = 1.0/(2.0*l*kF);
+ 442:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 443:lab.c         **** 	float fourkM = 1.0/(4.0*kM);
+ 444:lab.c         **** 
+ 445:lab.c         **** 	Winv[0] = 0;
+ 1851              	cii	"\000"
+ 1852 15f4 24209FE5 		.uleb128 0x1
+ 1853 15f8 0830A0E3 		.sleb128 -4
+ 1854 15fc B830C2E1 		.byte	0xe
+ 446:lab.c         ****  IN THE SAME PLANE AS THE ROTORS
+ 447:lab.c         **** 	float twolkF = 1.0/(2.0*l*kF);
+ 448:lab.c         **** 	float fourkF = 1.0/(4.0*kF);
+ 1855              	te	0xc
+ 1856 1600 1C309FE5 		.uleb128 0xd
+ 1857 1604 B020D3E1 		.uleb128 0x0
+ 1858 1608 10309FE5 		.align	2
+ 1859 160c B620C3E1 	.LECIE0:
+ 449:lab.c         **** oat fourkM = 1.0/(4.0*kM);
+ 450:lab.c         **** 
+ 451:lab.c         **** 	Winv[0] = 0;
+ 452:lab.c         **** 	Winv[1] = twolkF;
+ 453:lab.c         **** 	Winv[2] = -fourkM;
+ 454:lab.c         **** 	Winv[3] = fourkF;
+ 1860              	E0:
+ 1861 1610 0CD04BE2 		.4byte	.LEFDE0-.LASFDE0
+ 1862 1614 00689DE8 	.LASFDE0:
+ 1863 1618 1EFF2FE1 		.4byte	.Lframe0
+ 1864              		.4byte	.LFB2
+ 1865              		.4byte	.LFE2-.LFB2
+ 1866              		.byte	0x4
+ 1867 161c 00000000 		.4byte	.LCFI0-.LFB2
+ 1868 1620 00000000 		.byte	0xd
+ 1869 1624 00000000 		.uleb128 0xc
+ 1870              		.byte	0x4
+ 1871              		.4byte	.LCFI1-.LCFI0
+ 1872              		.byte	0x8e
+ 1873              		.uleb128 0x2
+ 1874              		.byte	0x8d
+ 1875              		.uleb128 0x3
+ 1876              		.byte	0x8b
+ 1877              		.uleb128 0x4
+ 1878              		.byte	0x4
+ 1879              		.4byte	.LCFI2-.LCFI1
+ 1880              		.byte	0xc
+ 1881              		.uleb128 0xb
+ 1882              		.uleb128 0x4
+ 1883              		.align	2
+ 1884              	.LEFDE0:
+ 1885              	.LSFDE2:
+ 1886              		.4byte	.LEFDE2-.LASFDE2
+ 1887              	.LASFDE2:
+ 1888              		.4byte	.Lframe0
+ 1889              		.4byte	.LFB3
+ 1890              		.4byte	.LFE3-.LFB3
+ 1891              		.byte	0x4
+ 1892              		.4byte	.LCFI3-.LFB3
+ 1893              		.byte	0xd
+ 1894              		.uleb128 0xc
+ 1895              		.byte	0x4
+ 1896              		.4byte	.LCFI4-.LCFI3
+ 1897              		.byte	0x8e
+ 1898              		.uleb128 0x2
+ 1899              		.byte	0x8d
+ 2121              		.byte	0x5d
 DEFINED SYMBOLS
                             *ABS*:00000000 lab.c
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:15     .data:00000000 mass
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:16     .data:00000000 $d
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:21     .data:00000004 kF
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:27     .data:00000008 kM
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:33     .data:0000000c l
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:39     .data:00000010 MAXPHI2
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:45     .data:00000014 MINPHI2
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:51     .data:00000018 g
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:58     .bss:00000000 Ben_thrust
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:65     .data:0000001c U_Kp_z
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:71     .data:00000020 U_Kd_z
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:78     .bss:00000004 U_Ki_z
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:85     .data:00000024 setpoint
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:92     .bss:00000008 usonic_error
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:98     .bss:0000000c usonic_error_old
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:104    .bss:00000010 landing_flag
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:110    .bss:00000014 clock_divider
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:116    .text:00000000 lab
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:123    .text:00000000 $a
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:175    .text:00000060 VelocityEst
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:1612   .text:0000131c Bens_Control_Law
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:1837   .text:000015e8 Bens_Command
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:158    .text:00000054 $d
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:15     .data:00000000 mass
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:16     .data:00000000 $d
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:21     .data:00000004 kF
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:27     .data:00000008 kM
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:33     .data:0000000c l
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:39     .data:00000010 MAXPHI2
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:45     .data:00000014 MINPHI2
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:51     .data:00000018 g
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:58     .bss:00000000 Ben_thrust
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:65     .data:0000001c U_Kp_z
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:71     .data:00000020 U_Kd_z
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:78     .bss:00000004 U_Ki_z
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:85     .data:00000024 setpoint
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:92     .bss:00000008 usonic_error
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:98     .bss:0000000c usonic_error_old
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:104    .bss:00000010 landing_flag
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:110    .bss:00000014 clock_divider
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:116    .text:00000000 lab
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:123    .text:00000000 $a
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:175    .text:00000060 VelocityEst
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:1612   .text:0000131c Bens_Control_Law
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:1831   .text:000015d0 Bens_Command
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:158    .text:00000054 $d
                             *COM*:00000010 x_nom
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:181    .text:00000060 $a
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:240    .text:00000108 $d
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:181    .text:00000060 $a
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:240    .text:00000108 $d
                             *COM*:00000004 initialize
                             *COM*:00000004 previousXMeas
                             *COM*:00000004 previousYMeas
@@ -2336,9 +2338,9 @@ C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:240    .text:00000108 $d
                             *COM*:00000020 real_mocap
                             *COM*:00000020 mocap
                             *COM*:00000004 velocityEstHolder
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:256    .text:00000140 $a
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:555    .text:00000578 lab3
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:881    .text:000009dc $d
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:256    .text:00000140 $a
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:555    .text:00000578 lab3
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:881    .text:000009dc $d
                             *COM*:00000004 takeoff2
                             *COM*:00000004 IntegralHolder
                             *COM*:00000004 pitch_desired
@@ -2348,20 +2350,20 @@ C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:881    .text:000009dc $d
                             *COM*:00000010 cnt_u
                             *COM*:00000010 u
                             *COM*:0000000c errorcum
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:910    .text:00000a4c $a
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:1090   .text:00000c90 lab2
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:1188   .text:00000da8 $d
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:1203   .text:00000dcc Command
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:1209   .text:00000dcc $a
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:1586   .text:000012d0 $d
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:910    .text:00000a4c $a
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:1090   .text:00000c90 lab2
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:1188   .text:00000da8 $d
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:1203   .text:00000dcc Command
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:1209   .text:00000dcc $a
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:1586   .text:000012d0 $d
                             *COM*:00000040 Winv
                             *COM*:00000010 omega_cmd2
                             *COM*:00000010 omega_cmd
                             *COM*:00000010 cmd
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:1618   .text:0000131c $a
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:1819   .text:000015b4 $d
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:1843   .text:000015e8 $a
-C:\Users\bkuo\AppData\Local\Temp/ccuObaaa.s:1873   .text:00001634 $d
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:1618   .text:0000131c $a
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:1812   .text:00001598 $d
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:1837   .text:000015d0 $a
+C:\Users\bkuo\AppData\Local\Temp/cc2laaaa.s:1867   .text:0000161c $d
                             *COM*:00000004 GPS_timeout
                             *COM*:00000001 SYSTEM_initialized
                             *COM*:0000000c z
@@ -2389,4 +2391,5 @@ __floatsisf
 __fixsfsi
 USMaxBot_range1
 RO_ALL_Data
+RO_RC_Data
 WO_CTRL_Input

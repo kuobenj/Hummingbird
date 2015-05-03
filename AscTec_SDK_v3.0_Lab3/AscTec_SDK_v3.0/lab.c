@@ -387,16 +387,16 @@ void Bens_Control_Law() {
 
 	if (Usonic_local <= 7)
 	{
-		if ((clock_divider % 5) == 0)
-		{
+		// if ((clock_divider % 5) == 0)
+		// {
 			Ben_thrust--;
-		}
+		// }
 	}
 	else
 	{
 		if(landing_flag == 1)
 		{
-		if (((clock_divider % 200) == 0) && (setpoint > 6))
+		if (((clock_divider % 50) == 0) && (setpoint > 6))
 			{
 				setpoint--;
 				if (setpoint <= 6)
@@ -412,6 +412,14 @@ void Bens_Control_Law() {
 	// {
 	// 	landing_flag = 1;
 	// }
+
+	setpoint = RO_RC_Data.channel[6]/133;
+
+	// if (RO_RC_Data.channel[6] < 1000)
+	// 	landing_flag = 0;
+	// else
+	// 	landing_flag = 1;
+
 	if(Ben_thrust < 10)
 		Ben_thrust = 10;
 
